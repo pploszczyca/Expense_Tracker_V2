@@ -6,11 +6,14 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.expensetrackerv2.models.Expense
 import com.example.expensetrackerv2.providers.SampleDataProvider
 import com.example.expensetrackerv2.ui.theme.ExpenseTrackerV2Theme
+import com.example.expensetrackerv2.utilities.DateUtils
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun ExpenseCard(expense: Expense) {
@@ -19,12 +22,12 @@ fun ExpenseCard(expense: Expense) {
             .fillMaxWidth()
             .padding(3.dp)
     ) {
-        Column {
-            Text(style = MaterialTheme.typography.caption, text = expense.date.toString())
+        Column(modifier = Modifier.padding(10.dp)) {
+            Text(style = MaterialTheme.typography.caption, text = DateUtils.toOnlyDateString(expense.date))
             Row(modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween){
                 Text(style = MaterialTheme.typography.h5, text = expense.title)
-                Text(style = MaterialTheme.typography.h5, text = expense.price.toString())
+                Text(style = MaterialTheme.typography.h5, text = expense.price.toString(), color = if(expense.price < 0) Color.Red else Color.Green)
             }
         }
     }

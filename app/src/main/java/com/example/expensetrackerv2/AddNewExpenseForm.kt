@@ -1,5 +1,6 @@
 package com.example.expensetrackerv2
 
+import android.content.Context
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
@@ -14,12 +15,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.example.expensetrackerv2.database.AppDatabase
+import com.example.expensetrackerv2.models.Expense
 import com.example.expensetrackerv2.ui.theme.ExpenseTrackerV2Theme
 import com.example.expensetrackerv2.utilities.DateUtils
 import java.util.*
 
 @Composable
-fun AddNewExpenseForm() {
+fun AddNewExpenseForm(navController: NavController, context: Context?) {
     var title by remember { mutableStateOf("") }
     var price by remember { mutableStateOf("") }
     var date by remember { mutableStateOf(DateUtils.toOnlyDateString(Date())) }
@@ -64,7 +68,10 @@ fun AddNewExpenseForm() {
     }
 
     Box(modifier = Modifier.fillMaxSize(), Alignment.BottomEnd) {
-        Button(onClick = { /*TODO*/ }, modifier = Modifier.padding(10.dp)) {
+        Button(onClick = {
+            AppDatabase.getInstance(context = context).expenseDao().insertAllExpenses(expenses = arrayOf(Expense(title = title, date = DateUtils.stringToDate(date), price = price.toDouble(), place = place, description = description, typeOfExpenseId = 1)))
+            navController.navigate(Routes.Main.route)
+        }, modifier = Modifier.padding(10.dp)) {
             Text(text = "Add")
         }
     }
@@ -74,7 +81,7 @@ fun AddNewExpenseForm() {
 @Composable
 fun AddNewExpenseFormPreview() {
     ExpenseTrackerV2Theme {
-        AddNewExpenseForm()
+//        AddNewExpenseForm()
     }
 
 }

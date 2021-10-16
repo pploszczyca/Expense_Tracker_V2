@@ -1,5 +1,6 @@
 package com.example.expensetrackerv2
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -22,6 +23,9 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.expensetrackerv2.database.AppDatabase
+import com.example.expensetrackerv2.database.ExpenseDao
+import com.example.expensetrackerv2.models.TypeOfExpense
 import com.example.expensetrackerv2.providers.SampleDataProvider
 
 class MainActivity : ComponentActivity() {
@@ -31,7 +35,7 @@ class MainActivity : ComponentActivity() {
             ExpenseTrackerV2Theme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
-                    NavHostComposable()
+                    NavHostComposable(applicationContext)
                 }
             }
         }
@@ -39,17 +43,23 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun NavHostComposable() {
+fun NavHostComposable(context: Context?) {
     val navController = rememberNavController()
+    val expenseDao = AppDatabase.getInstance(context = context).expenseDao()
+
+    if(expenseDao.getAllTypesOfExpense().isEmpty() && expenseDao.getAllExpenses().isEmpty()) {
+        SampleDataProvider.sampleTypeOfExpense(context)
+        SampleDataProvider.sampleExpenses(context)
+    }
 
     NavHost(navController = navController, startDestination = Routes.Main.route) {
-        composable(Routes.Main.route) { MainComposable(expenses = SampleDataProvider.sampleExpenses(), navController = navController)}
-        composable(Routes.ExpenseForm.route) { AddNewExpenseForm() }
+        composable(Routes.Main.route) { MainComposable(expenses = expenseDao.getAllExpenses(), navController = navController, typeOfExpenseMap = expenseDao.getAllTypesOfExpenseAsMap())}
+        composable(Routes.ExpenseForm.route) { AddNewExpenseForm(navController = navController, context = context) }
     }
 }
 
 @Composable
-fun MainComposable(expenses: List<Expense>, navController: NavController) {
+fun MainComposable(expenses: List<Expense>, typeOfExpenseMap: Map<Int, TypeOfExpense> , navController: NavController) {
     val scaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()
 
@@ -79,16 +89,16 @@ fun MainComposable(expenses: List<Expense>, navController: NavController) {
         floatingActionButtonPosition = FabPosition.Center,
         isFloatingActionButtonDocked = true,
         content = { innerPadding ->
-            ExpenesList(expenses = expenses)
+            ExpenesList(expenses = expenses, typeOfExpenseMap = typeOfExpenseMap)
         }
     )
 }
 
 @Composable
-fun ExpenesList(expenses: List<Expense>) {
+fun ExpenesList(expenses: List<Expense>, typeOfExpenseMap: Map<Int, TypeOfExpense>) {
     LazyColumn(Modifier.padding(3.dp)) {
         items(expenses) { expense ->
-            ExpenseCard(expense = expense)
+            ExpenseCard(expense = expense, typeOfExpense = typeOfExpenseMap[expense.typeOfExpenseId])
         }
     }
 }
@@ -99,6 +109,6 @@ fun ExpenesList(expenses: List<Expense>) {
 fun DefaultPreview() {
     ExpenseTrackerV2Theme {
 //        MainComposable(SampleDataProvider.sampleExpenses())
-        NavHostComposable()
+//        NavHostComposable()
     }
 }

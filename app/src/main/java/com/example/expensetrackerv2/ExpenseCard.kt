@@ -10,13 +10,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.expensetrackerv2.models.Expense
+import com.example.expensetrackerv2.models.Type
+import com.example.expensetrackerv2.models.TypeOfExpense
 import com.example.expensetrackerv2.providers.SampleDataProvider
 import com.example.expensetrackerv2.ui.theme.ExpenseTrackerV2Theme
 import com.example.expensetrackerv2.utilities.DateUtils
-import java.time.format.DateTimeFormatter
 
 @Composable
-fun ExpenseCard(expense: Expense) {
+fun ExpenseCard(expense: Expense, typeOfExpense: TypeOfExpense?) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -27,7 +28,7 @@ fun ExpenseCard(expense: Expense) {
             Row(modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween){
                 Text(style = MaterialTheme.typography.h5, text = expense.title)
-                Text(style = MaterialTheme.typography.h5, text = expense.price.toString(), color = if(expense.price < 0) Color.Red else Color.Green)
+                Text(style = MaterialTheme.typography.h5, text = (expense.price * typeOfExpense!!.type.multiplier).toString(), color = if(typeOfExpense.type == Type.OUTGO) Color.Red else Color.Green)
             }
         }
     }
@@ -37,6 +38,6 @@ fun ExpenseCard(expense: Expense) {
 @Composable
 fun ExpenseCardPreview() {
     ExpenseTrackerV2Theme {
-        ExpenseCard(expense = SampleDataProvider.sampleExpenses()[0])
+        ExpenseCard(expense = Expense(title = "Zakupy w Biedronce", price = 50.0, description = "Opis", place = "Wadowice"), typeOfExpense = TypeOfExpense(name = "Zakupy", type = Type.OUTGO))
     }
 }

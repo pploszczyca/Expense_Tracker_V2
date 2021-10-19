@@ -14,7 +14,9 @@ abstract class ExpenseDao {
     @Query("SELECT * FROM typeofexpense")
     abstract fun getAllTypesOfExpense(): List<TypeOfExpense>
 
-    fun getAllTypesOfExpenseAsMap(): Map<Int, TypeOfExpense> = getAllTypesOfExpense().map { it.id to it }.toMap()
+    fun getAllTypesOfExpenseAsMapWithIdKey(): Map<Int, TypeOfExpense> = getAllTypesOfExpense().map { it.id to it }.toMap()
+
+    fun getAllTypesOfExpenseAsMapWithNameKey(): Map<String, TypeOfExpense> = getAllTypesOfExpense().map { it.name to it }.toMap()
 
     @Insert
     abstract fun insertAllExpenses(vararg expenses: Expense)

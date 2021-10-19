@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
@@ -24,7 +25,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.expensetrackerv2.database.AppDatabase
-import com.example.expensetrackerv2.database.ExpenseDao
 import com.example.expensetrackerv2.models.TypeOfExpense
 import com.example.expensetrackerv2.providers.SampleDataProvider
 
@@ -53,7 +53,7 @@ fun NavHostComposable(context: Context?) {
     }
 
     NavHost(navController = navController, startDestination = Routes.Main.route) {
-        composable(Routes.Main.route) { MainComposable(expenses = expenseDao.getAllExpenses(), navController = navController, typeOfExpenseMap = expenseDao.getAllTypesOfExpenseAsMap())}
+        composable(Routes.Main.route) { MainComposable(expenses = expenseDao.getAllExpenses(), navController = navController, typeOfExpenseMap = expenseDao.getAllTypesOfExpenseAsMapWithIdKey())}
         composable(Routes.ExpenseForm.route) { AddNewExpenseForm(navController = navController, context = context) }
     }
 }

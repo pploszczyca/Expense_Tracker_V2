@@ -4,10 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.ArrowDropUp
-import androidx.compose.material.icons.filled.Message
-import androidx.compose.material.icons.filled.Place
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,6 +13,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.expensetrackerv2.database.AppDatabase
+import com.example.expensetrackerv2.database.ExpenseDao
 import com.example.expensetrackerv2.models.Expense
 import com.example.expensetrackerv2.models.Type
 import com.example.expensetrackerv2.models.TypeOfExpense
@@ -41,35 +40,74 @@ fun ExtraContentRow(contentName: String, contentIcon: ImageVector, contentString
 }
 
 @Composable
-fun ExpenseCard(expense: Expense, typeOfExpense: TypeOfExpense?) {
-    var visible by remember { mutableStateOf(false) }
-    var dropDownIconRotation = if(visible) 0f else -180f
+fun ExpenseCard(expense: Expense, typeOfExpense: TypeOfExpense?, expenseDao: ExpenseDao) {
+    var isCardExtended by remember { mutableStateOf(false) }
+    val dropDownIconRotation = if(isCardExtended) 0f else -180f
+    var isDeleteDialogOpen by remember { mutableStateOf(false) }
+    var isCardHidden by remember { mutableStateOf(false) }
 
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(3.dp)
-            .clickable {
-                visible = !visible
-            }
-    ) {
-        Column(modifier = Modifier.padding(10.dp)) {
-            Row(modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween){
-                Text(style = MaterialTheme.typography.caption, text = DateUtils.toOnlyDateString(expense.date))
-                Icon(Icons.Default.ArrowDropUp, contentDescription = null, modifier = Modifier.rotate(dropDownIconRotation))
-            }
-            Row(modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween){
-                Text(style = MaterialTheme.typography.h5, text = expense.title)
-                Text(style = MaterialTheme.typography.h5, text = (expense.price * typeOfExpense!!.type.multiplier).toString(), color = if(typeOfExpense.type == Type.OUTGO) Color.Red else Color.Green)
-            }
+    if(!isCardHidden) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(3.dp)
+                .clickable {
+                    isCardExtended = !isCardExtended
+                }
+        ) {
+            Column(modifier = Modifier.padding(10.dp)) {
+                Row(modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween){
+                    Text(style = MaterialTheme.typography.caption, text = DateUtils.toOnlyDateString(expense.date))
+                    Icon(Icons.Default.ArrowDropUp, contentDescription = null, modifier = Modifier.rotate(dropDownIconRotation))
+                }
+                Row(modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween){
+                    Text(style = MaterialTheme.typography.h5, text = expense.title)
+                    Text(style = MaterialTheme.typography.h5, text = (expense.price * typeOfExpense!!.type.multiplier).toString(), color = if(typeOfExpense.type == Type.OUTGO) Color.Red else Color.Green)
+                }
 
-            if(visible) {
-                ExtraContentRow("Place:", Icons.Default.Place, expense.place)
-                ExtraContentRow("Description:", Icons.Default.Message, expense.description)
+                if(isCardExtended) {
+                    ExtraContentRow("Place:", Icons.Default.Place, expense.place)
+                    ExtraContentRow("Description:", Icons.Default.Message, expense.description)
+                    Row(modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.End) {
+                        TextButton(onClick = { /*TODO*/ }) {
+                            Icon(Icons.Default.Edit, contentDescription = null);
+                            Text(text = "Edit")
+                        }
+
+                        TextButton(onClick = { isDeleteDialogOpen = true  }) {
+                            Icon(Icons.Default.Delete, contentDescription = null);
+                            Text(text = "Delete")
+                        }
+                    }
+                }
             }
         }
+    }
+
+    if(isDeleteDialogOpen) {
+        AlertDialog(onDismissRequest = { isDeleteDialogOpen = false },
+            title = { Text("Delete expense") },
+            text = { Text("Do you want to delete it?") },
+            confirmButton = {
+                TextButton(onClick = {
+                    expenseDao.deleteExpense(expense)
+                    isDeleteDialogOpen = false
+                    isCardHidden = true
+                }) {
+                    Text(text = "Yes")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    isDeleteDialogOpen = false
+                }) {
+                    Text(text = "No")
+                }
+            }
+        )
     }
 }
 
@@ -77,6 +115,6 @@ fun ExpenseCard(expense: Expense, typeOfExpense: TypeOfExpense?) {
 @Composable
 fun ExpenseCardPreview() {
     ExpenseTrackerV2Theme {
-        ExpenseCard(expense = Expense(title = "Zakupy w Biedronce", price = 50.0, description = "Opis", place = "Wadowice"), typeOfExpense = TypeOfExpense(name = "Zakupy", type = Type.OUTGO))
+//        ExpenseCard(expense = Expense(title = "Zakupy w Biedronce", price = 50.0, description = "Opis", place = "Wadowice"), typeOfExpense = TypeOfExpense(name = "Zakupy", type = Type.OUTGO))
     }
 }

@@ -4,8 +4,8 @@ import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
@@ -25,6 +25,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.expensetrackerv2.database.AppDatabase
+import com.example.expensetrackerv2.database.ExpenseDao
 import com.example.expensetrackerv2.models.TypeOfExpense
 import com.example.expensetrackerv2.providers.SampleDataProvider
 
@@ -53,15 +54,17 @@ fun NavHostComposable(context: Context?) {
     }
 
     NavHost(navController = navController, startDestination = Routes.Main.route) {
-        composable(Routes.Main.route) { MainComposable(expenses = expenseDao.getAllExpenses(), navController = navController, typeOfExpenseMap = expenseDao.getAllTypesOfExpenseAsMapWithIdKey())}
+        composable(Routes.Main.route) { MainComposable(navController = navController, expenseDao = expenseDao)}
         composable(Routes.ExpenseForm.route) { AddNewExpenseForm(navController = navController, context = context) }
     }
 }
 
 @Composable
-fun MainComposable(expenses: List<Expense>, typeOfExpenseMap: Map<Int, TypeOfExpense> , navController: NavController) {
+fun MainComposable(navController: NavController, expenseDao: ExpenseDao) {
     val scaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()
+    val expenses = expenseDao.getAllExpenses()
+    val typeOfExpenseMap = expenseDao.getAllTypesOfExpenseAsMapWithIdKey()
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -89,16 +92,18 @@ fun MainComposable(expenses: List<Expense>, typeOfExpenseMap: Map<Int, TypeOfExp
         floatingActionButtonPosition = FabPosition.Center,
         isFloatingActionButtonDocked = true,
         content = { innerPadding ->
-            ExpenesList(expenses = expenses, typeOfExpenseMap = typeOfExpenseMap)
+            Box(modifier = Modifier.padding(innerPadding)) {
+                ExpensesList(expenses = expenses, typeOfExpenseMap = typeOfExpenseMap, expenseDao)
+            }
         }
     )
 }
 
 @Composable
-fun ExpenesList(expenses: List<Expense>, typeOfExpenseMap: Map<Int, TypeOfExpense>) {
+fun ExpensesList(expenses: List<Expense>, typeOfExpenseMap: Map<Int, TypeOfExpense>, expenseDao: ExpenseDao) {
     LazyColumn(Modifier.padding(3.dp)) {
         items(expenses) { expense ->
-            ExpenseCard(expense = expense, typeOfExpense = typeOfExpenseMap[expense.typeOfExpenseId])
+            ExpenseCard(expense = expense, typeOfExpense = typeOfExpenseMap[expense.typeOfExpenseId], expenseDao)
         }
     }
 }

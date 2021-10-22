@@ -11,9 +11,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.expensetrackerv2.database.AppDatabase
 import com.example.expensetrackerv2.database.ExpenseDao
 import com.example.expensetrackerv2.models.Expense
 import com.example.expensetrackerv2.models.Type
@@ -63,7 +63,7 @@ fun ExpenseCard(expense: Expense, typeOfExpense: TypeOfExpense?, expenseDao: Exp
                 }
                 Row(modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween){
-                    Text(style = MaterialTheme.typography.h5, text = expense.title)
+                    Text(style = MaterialTheme.typography.h5, text = expense.title, fontStyle = FontStyle.Italic)
                     Text(style = MaterialTheme.typography.h5, text = (expense.price * typeOfExpense!!.type.multiplier).toString(), color = if(typeOfExpense.type == Type.OUTGO) Color.Red else Color.Green)
                 }
 

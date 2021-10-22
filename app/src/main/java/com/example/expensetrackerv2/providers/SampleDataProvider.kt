@@ -8,7 +8,7 @@ import com.example.expensetrackerv2.models.TypeOfExpense
 
 object SampleDataProvider {
     fun sampleTypeOfExpense(context: Context?) {
-        AppDatabase.getInstance(context).expenseDao().insertAllTypesOfExpense(TypeOfExpense(name = "Zakupy", type = Type.OUTGO), TypeOfExpense(name = "Na życie", type = Type.INCOME))
+        AppDatabase.getInstance(context).expenseDao().insertAllTypesOfExpense(TypeOfExpense(name = "Expense", type = Type.OUTGO), TypeOfExpense(name = "Income", type = Type.INCOME))
     }
 
     fun sampleExpenses(context: Context?) {

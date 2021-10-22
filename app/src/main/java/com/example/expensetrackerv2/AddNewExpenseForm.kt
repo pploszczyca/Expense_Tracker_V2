@@ -72,8 +72,6 @@ fun AddNewExpenseForm(navController: NavController?, context: Context?) {
             .fillMaxWidth()
             .padding(5.dp))
 
-        Text(text = "Type", style = MaterialTheme.typography.subtitle2, modifier = Modifier.padding(5.dp))
-
         Row(modifier = Modifier.selectableGroup().padding(5.dp)) {
             typeOfExpenseList.forEach { typeOfExpense ->
                 RadioButton(selected = type == typeOfExpense, onClick = {

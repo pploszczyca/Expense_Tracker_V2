@@ -11,15 +11,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.expensetrackerv2.database.ExpenseDao
+import androidx.navigation.NavController
+import com.example.expensetrackerv2.database.AppDatabase
 import com.example.expensetrackerv2.models.Expense
 import com.example.expensetrackerv2.models.Type
 import com.example.expensetrackerv2.models.TypeOfExpense
 import com.example.expensetrackerv2.ui.theme.ExpenseTrackerV2Theme
 import com.example.expensetrackerv2.utilities.DateUtils
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 @Composable
 fun ExtraContentRow(contentName: String, contentIcon: ImageVector, contentString: String) {
@@ -40,11 +44,12 @@ fun ExtraContentRow(contentName: String, contentIcon: ImageVector, contentString
 }
 
 @Composable
-fun ExpenseCard(expense: Expense, typeOfExpense: TypeOfExpense?, expenseDao: ExpenseDao) {
+fun ExpenseCard(expense: Expense, typeOfExpense: TypeOfExpense?, navController: NavController) {
     var isCardExtended by remember { mutableStateOf(false) }
     val dropDownIconRotation = if(isCardExtended) 0f else -180f
     var isDeleteDialogOpen by remember { mutableStateOf(false) }
     var isCardHidden by remember { mutableStateOf(false) }
+    val expenseDao = AppDatabase.getInstance(LocalContext.current).expenseDao()
 
     if(!isCardHidden) {
         Card(
@@ -72,7 +77,7 @@ fun ExpenseCard(expense: Expense, typeOfExpense: TypeOfExpense?, expenseDao: Exp
                     ExtraContentRow("Description:", Icons.Default.Message, expense.description)
                     Row(modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.End) {
-                        TextButton(onClick = { /*TODO*/ }) {
+                        TextButton(onClick = { navController.navigate(Routes.ExpenseForm.route.plus("?EXPENSE_ID=${expense.id}")) }) {
                             Icon(Icons.Default.Edit, contentDescription = null);
                             Text(text = "Edit")
                         }
@@ -93,7 +98,11 @@ fun ExpenseCard(expense: Expense, typeOfExpense: TypeOfExpense?, expenseDao: Exp
             text = { Text("Do you want to delete it?") },
             confirmButton = {
                 TextButton(onClick = {
-                    expenseDao.deleteExpense(expense)
+                    runBlocking {
+                        launch {
+                            expenseDao.deleteExpense(expense)
+                        }
+                    }
                     isDeleteDialogOpen = false
                     isCardHidden = true
                 }) {

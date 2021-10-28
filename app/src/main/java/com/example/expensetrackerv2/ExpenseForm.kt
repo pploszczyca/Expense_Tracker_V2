@@ -10,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -25,8 +26,10 @@ import kotlinx.coroutines.runBlocking
 fun ExpenseForm(navController: NavController?, expenseID: Int? = 0) {
     val expenseDao = AppDatabase.getInstance(context = LocalContext.current).expenseDao()
     val expense = if (expenseID == 0) Expense() else expenseDao.getExpense(expenseID!!)
-
     val typeOfExpenseMap = expenseDao.getAllTypesOfExpenseAsMapWithIdKey()
+
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
 
     var title by remember { mutableStateOf(expense.title) }
     var price by remember { mutableStateOf(if(expense.price == 0.0) "" else expense.price.toString()) }
@@ -35,9 +38,10 @@ fun ExpenseForm(navController: NavController?, expenseID: Int? = 0) {
     var place by remember { mutableStateOf(expense.place) }
     var description by remember { mutableStateOf(expense.description) }
 
+    val checkForm = title != "" && price != "" && price.toDouble() >= 0.0 && type != null
 
     Column {
-        OutlinedTextField(value = title, onValueChange = {title = it}, label = { Text("Title")}, leadingIcon = { Icon(
+        OutlinedTextField(value = title, onValueChange = {title = it}, label = { Text("Title")}, keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words) ,leadingIcon = { Icon(
             Icons.Default.Title,
             contentDescription = null
         )} , modifier = Modifier
@@ -58,21 +62,23 @@ fun ExpenseForm(navController: NavController?, expenseID: Int? = 0) {
             .fillMaxWidth()
             .padding(5.dp))
 
-        OutlinedTextField(value = place, onValueChange = {place = it}, label = { Text("Place")}, leadingIcon = { Icon(
+        OutlinedTextField(value = place, onValueChange = {place = it}, label = { Text("Place")}, keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words), leadingIcon = { Icon(
             Icons.Default.Place,
             contentDescription = null
         )} ,modifier = Modifier
             .fillMaxWidth()
             .padding(5.dp))
 
-        OutlinedTextField(value = description, onValueChange = {description = it}, label = { Text("Description")}, leadingIcon = { Icon(
+        OutlinedTextField(value = description, onValueChange = {description = it}, label = { Text("Description")}, keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences), leadingIcon = { Icon(
             Icons.Default.Message,
             contentDescription = null
         )} ,modifier = Modifier
             .fillMaxWidth()
             .padding(5.dp))
 
-        Row(modifier = Modifier.selectableGroup().padding(5.dp)) {
+        Row(modifier = Modifier
+            .selectableGroup()
+            .padding(5.dp)) {
             typeOfExpenseMap.forEach { typeOfExpense ->
                 RadioButton(selected = type == typeOfExpense.value, onClick = {
                     type = typeOfExpense.value
@@ -84,22 +90,31 @@ fun ExpenseForm(navController: NavController?, expenseID: Int? = 0) {
     }
 
     Box(modifier = Modifier.fillMaxSize(), Alignment.BottomEnd) {
-        Button(onClick = {
-            runBlocking {
-                launch {
-                    expense.title = title
-                    expense.date = DateUtils.stringToDate(date)
-                    expense.price = price.toDouble()
-                    expense.place = place
-                    expense.description = description
-                    expense.typeOfExpenseId = type!!.id
+        SnackbarHost(hostState = snackbarHostState, modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 56.dp))
 
-                    // if id = 0 that means is new expense
-                    if(expense.id == 0)  expenseDao.insertAllExpenses(expense) else expenseDao.updateExpense(expense)
+        Button(onClick = {
+            if (checkForm) {
+                runBlocking {
+                    launch {
+                        expense.title = title
+                        expense.date = DateUtils.stringToDate(date)
+                        expense.price = price.toDouble()
+                        expense.place = place
+                        expense.description = description
+                        expense.typeOfExpenseId = type!!.id
+
+                        // if id = 0 that means is new expense
+                        if(expense.id == 0)  expenseDao.insertAllExpenses(expense) else expenseDao.updateExpense(expense)
+                    }
+                }
+                navController!!.navigate(Routes.Main.route)
+            } else {
+                scope.launch {
+                    snackbarHostState.showSnackbar(message = "Data is incorrect")
                 }
             }
-            navController!!.navigate(Routes.Main.route)
-        }, modifier = Modifier.padding(10.dp)) {
+
+        }, modifier = Modifier.padding(20.dp)) {
             Text(text = if(expense.id == 0) "Add" else "Update")
         }
     }

@@ -46,12 +46,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
-//@Preview(showBackground = true)
-//@Composable
-//fun DefaultPreview() {
-//    ExpenseTrackerV2Theme {
-////        MainComposable(SampleDataProvider.sampleExpenses())
-////        NavHostComposable()
-//    }
-//}

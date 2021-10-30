@@ -15,18 +15,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.expensetrackerv2.models.Expense
-import com.example.expensetrackerv2.models.Type
-import com.example.expensetrackerv2.models.TypeOfExpense
-import com.example.expensetrackerv2.models.getKey
+import com.example.expensetrackerv2.database.models.Type
+import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
+import com.example.expensetrackerv2.database.models.view_models.getKey
 import com.example.expensetrackerv2.utilities.DateUtils
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ExpensesList(expenses: List<Expense>, typeOfExpenseMap: Map<Int, TypeOfExpense>, navController: NavController) {
+fun ExpensesList(expenseWithItsTypeList: List<ExpenseWithItsType>, navController: NavController) {
     LazyColumn(Modifier.padding(3.dp)) {
-        expenses.groupBy { it.getKey() }.forEach { (initial, expensesInSpecificDate) ->
-            val calculateSumOfValue = {type: Type -> expensesInSpecificDate.filter { typeOfExpenseMap[it.typeOfExpenseId]!!.type == type }.map { it.price }.sum()}
+        expenseWithItsTypeList.groupBy { it.getKey() }.forEach { (_, expensesInSpecificDate) ->
+            val calculateSumOfValue = {type: Type -> expensesInSpecificDate.filter { it.type == type }.map { it.price }.sum()}
 
             val incomeValue = calculateSumOfValue(Type.INCOME)
             val outgoValue = calculateSumOfValue(Type.OUTGO)
@@ -48,8 +47,7 @@ fun ExpensesList(expenses: List<Expense>, typeOfExpenseMap: Map<Int, TypeOfExpen
 
             items(expensesInSpecificDate) { expense ->
                 ExpenseCard(
-                    expense = expense,
-                    typeOfExpense = typeOfExpenseMap[expense.typeOfExpenseId],
+                    expenseWithItsType = expense,
                     navController = navController
                 )
             }

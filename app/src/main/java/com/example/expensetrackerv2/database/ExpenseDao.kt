@@ -1,8 +1,9 @@
 package com.example.expensetrackerv2.database
 
 import androidx.room.*
-import com.example.expensetrackerv2.models.Expense
-import com.example.expensetrackerv2.models.TypeOfExpense
+import com.example.expensetrackerv2.database.models.Expense
+import com.example.expensetrackerv2.database.models.TypeOfExpense
+import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
 
 @Dao
 abstract class ExpenseDao {
@@ -13,10 +14,17 @@ abstract class ExpenseDao {
     @Query("SELECT * FROM typeofexpense")
     abstract fun getAllTypesOfExpense(): List<TypeOfExpense>
 
-    fun getAllTypesOfExpenseAsMapWithIdKey(): Map<Int, TypeOfExpense> = getAllTypesOfExpense().map { it.id to it }.toMap()
+    @Query("SELECT * FROM ExpenseWithItsType")
+    abstract fun getAllExpenseWithItsType(): List<ExpenseWithItsType>
+
+    @Query("SELECT * FROM ExpenseWithItsType WHERE id = :expenseID")
+    abstract fun getAllExpenseWithItsType(expenseID: Int): List<ExpenseWithItsType>
 
     @Query("SELECT * FROM expense WHERE id = :expenseID")
     abstract fun getExpense(expenseID: Int): Expense
+
+    @Query("SELECT * FROM ExpenseWithItsType WHERE id = :expenseID")
+    abstract fun getExpenseWithItsType(expenseID: Int): ExpenseWithItsType
 
     // INSERTS
     @Insert
@@ -30,6 +38,13 @@ abstract class ExpenseDao {
     abstract suspend fun updateExpense(expense: Expense)
 
     // DELETES
+    @Query("DELETE FROM Expense WHERE id = :id")
+    abstract suspend fun deleteExpenseByID(id: Int)
+
     @Delete
     abstract suspend fun deleteExpense(expense: Expense)
+
+    suspend fun deleteExpense(expenseWithItsType: ExpenseWithItsType) = deleteExpenseByID(expenseWithItsType.id)
+
+
 }

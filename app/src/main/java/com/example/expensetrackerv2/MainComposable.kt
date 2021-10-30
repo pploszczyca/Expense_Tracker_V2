@@ -16,37 +16,47 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.expensetrackerv2.database.AppDatabase
-import com.example.expensetrackerv2.models.Expense
-import com.example.expensetrackerv2.models.TypeOfExpense
+import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
 import com.example.expensetrackerv2.providers.SampleDataProvider
+import kotlinx.coroutines.launch
 
 @Composable
-fun MainExpensesInformation(expenses: List<Expense>, typeOfExpenseMap: Map<Int, TypeOfExpense>) {
-    val moneyInWalletAmount = expenses.map { expense ->  expense.price * (typeOfExpenseMap[expense.typeOfExpenseId]?.type?.multiplier ?: 0) }.sum()
+fun MainExpensesInformation(expenseWithItsTypeList: List<ExpenseWithItsType> ) {
+    val moneyInWalletAmount = expenseWithItsTypeList.map { expense ->
+        expense.price * expense.type.multiplier
+    }.sum()
 
-    Text("In Wallet: $moneyInWalletAmount", Modifier.padding(5.dp), style = MaterialTheme.typography.h4)
+    Text(
+        "In Wallet: $moneyInWalletAmount",
+        Modifier.padding(5.dp),
+        style = MaterialTheme.typography.h4
+    )
 }
 
 @Composable
 fun MainComposable(navController: NavController) {
     val expenseDao = AppDatabase.getInstance(context = LocalContext.current).expenseDao()
 
-    if(expenseDao.getAllTypesOfExpense().isEmpty() && expenseDao.getAllExpenses().isEmpty()) {
-        SampleDataProvider.sampleTypeOfExpense(LocalContext.current)
-        SampleDataProvider.sampleExpenses(LocalContext.current)
-    }
-
     val scaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()
     val expenses = expenseDao.getAllExpenses()
-    val typeOfExpenseMap = expenseDao.getAllTypesOfExpenseAsMapWithIdKey()
+    val expenseWithItsTypeList = expenseDao.getAllExpenseWithItsType()
+
+    if (expenseDao.getAllTypesOfExpense().isEmpty() && expenses.isEmpty()) {
+        SampleDataProvider.sampleTypeOfExpense(LocalContext.current)
+        SampleDataProvider.sampleExpenses(LocalContext.current)
+    }
 
     Scaffold(
         scaffoldState = scaffoldState,
         drawerContent = { Text(text = "Placeholder") },
         bottomBar = {
             BottomAppBar(cutoutShape = CircleShape) {
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = {
+                    coroutineScope.launch {
+                        scaffoldState.drawerState.open()
+                    }
+                }) {
                     Icon(Icons.Filled.Menu, contentDescription = "Menu")
                 }
 
@@ -68,12 +78,17 @@ fun MainComposable(navController: NavController) {
         isFloatingActionButtonDocked = true,
         content = { innerPadding ->
             Box(modifier = Modifier.padding(innerPadding)) {
-                Column(modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 10.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally) {
-                    MainExpensesInformation(expenses, typeOfExpenseMap)
-                    ExpensesList(expenses = expenses, typeOfExpenseMap = typeOfExpenseMap, navController = navController)
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 10.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    MainExpensesInformation(expenseWithItsTypeList)
+                    ExpensesList(
+                        expenseWithItsTypeList = expenseWithItsTypeList,
+                        navController = navController
+                    )
                 }
             }
         }

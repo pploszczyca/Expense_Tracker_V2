@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.models
+package com.example.expensetrackerv2.database.models
 
 enum class Type(val multiplier: Int) {
     INCOME(1),

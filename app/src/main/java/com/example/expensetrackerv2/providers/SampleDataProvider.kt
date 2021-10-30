@@ -2,9 +2,9 @@ package com.example.expensetrackerv2.providers
 
 import android.content.Context
 import com.example.expensetrackerv2.database.AppDatabase
-import com.example.expensetrackerv2.models.Expense
-import com.example.expensetrackerv2.models.Type
-import com.example.expensetrackerv2.models.TypeOfExpense
+import com.example.expensetrackerv2.database.models.Expense
+import com.example.expensetrackerv2.database.models.Type
+import com.example.expensetrackerv2.database.models.TypeOfExpense
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 

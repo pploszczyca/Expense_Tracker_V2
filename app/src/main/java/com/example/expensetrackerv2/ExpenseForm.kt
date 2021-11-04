@@ -26,7 +26,9 @@ import kotlinx.coroutines.runBlocking
 @Composable
 fun ExpenseForm(navController: NavController?, expenseID: Int? = 0) {
     val expenseDao = AppDatabase.getInstance(context = LocalContext.current).expenseDao()
-    val expenseWithItsType = if (expenseID == 0) ExpenseWithItsType() else expenseDao.getExpenseWithItsType(expenseID!!)
+    val expenseWithItsType =
+        if (expenseID == 0) ExpenseWithItsType() else expenseDao.getExpenseWithItsType(expenseID!!)
+    val expenses = expenseDao.getAllExpenses()
     val typeOfExpenseList = expenseDao.getAllTypesOfExpense()
 
     val scope = rememberCoroutineScope()
@@ -39,87 +41,53 @@ fun ExpenseForm(navController: NavController?, expenseID: Int? = 0) {
     var place by remember { mutableStateOf(expenseWithItsType.place) }
     var description by remember { mutableStateOf(expenseWithItsType.description) }
 
-    val checkForm = title != "" && price != "" && price.toDouble() >= 0.0 && type != null
+    val checkForm = title != "" && price != "" && price.toDouble() >= 0.0
 
     Column {
-        OutlinedTextField(
+        AutoCompleteOutlinedTextField(
             value = title,
             onValueChange = { title = it },
-            label = { Text("Title") },
-            keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words),
-            leadingIcon = {
-                Icon(
-                    Icons.Default.Title,
-                    contentDescription = null
-                )
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(5.dp))
-
-        OutlinedTextField(
-            value = price,
-            onValueChange = { price = it },
-            label = { Text("Price") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            leadingIcon = {
-                Icon(
-                    Icons.Default.AttachMoney,
-                    contentDescription = null
-                )
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(5.dp))
-
-        OutlinedTextField(value = date,
-            onValueChange = { date = it },
-            label = { Text("Date") },
-            leadingIcon = {
-                Icon(
-                    Icons.Default.Today,
-                    contentDescription = null
-                )
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(5.dp)
+            icon = Icons.Default.Title,
+            label = "Title",
+            suggestionsInput = expenses.map { it.title }
         )
 
-        OutlinedTextField(
+        ExpenseFormTextField(
+            value = price,
+            onValueChange = { price = it },
+            icon = Icons.Default.AttachMoney,
+            label = "Price",
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+        )
+
+        ExpenseFormTextField(
+            value = date,
+            onValueChange = { date = it },
+            icon = Icons.Default.Today,
+            label = "Date"
+        )
+
+        AutoCompleteOutlinedTextField(
             value = place,
             onValueChange = { place = it },
-            label = { Text("Place") },
-            keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words),
-            leadingIcon = {
-                Icon(
-                    Icons.Default.Place,
-                    contentDescription = null
-                )
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(5.dp))
+            icon = Icons.Default.Place,
+            label = "Place",
+            suggestionsInput = expenses.map { it.place }
+        )
 
-        OutlinedTextField(
+        ExpenseFormTextField(
             value = description,
             onValueChange = { description = it },
-            label = { Text("Description") },
-            keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
-            leadingIcon = {
-                Icon(
-                    Icons.Default.Message,
-                    contentDescription = null
-                )
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(5.dp))
+            icon = Icons.Default.Message,
+            label = "Description",
+            keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences)
+        )
 
         Row(
             modifier = Modifier
                 .selectableGroup()
                 .padding(5.dp)
+                .padding(start = 10.dp)
         ) {
             typeOfExpenseList.forEach { typeOfExpense ->
                 RadioButton(selected = type == typeOfExpense.id, onClick = {
@@ -168,13 +136,4 @@ fun ExpenseForm(navController: NavController?, expenseID: Int? = 0) {
             Text(text = if (expenseWithItsType.id == 0) "Add" else "Update")
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun AddNewExpenseFormPreview() {
-    ExpenseTrackerV2Theme {
-        ExpenseForm(navController = null)
-    }
-
 }

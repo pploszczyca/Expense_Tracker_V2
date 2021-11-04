@@ -18,13 +18,14 @@ import androidx.navigation.NavController
 import com.example.expensetrackerv2.database.AppDatabase
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
 import com.example.expensetrackerv2.providers.SampleDataProvider
+import com.example.expensetrackerv2.utilities.MathUtils
 import kotlinx.coroutines.launch
 
 @Composable
 fun MainExpensesInformation(expenseWithItsTypeList: List<ExpenseWithItsType> ) {
-    val moneyInWalletAmount = expenseWithItsTypeList.map { expense ->
+    val moneyInWalletAmount = MathUtils.roundToMoney(expenseWithItsTypeList.map { expense ->
         expense.price * expense.type.multiplier
-    }.sum()
+    }.sum())
 
     Text(
         "In Wallet: $moneyInWalletAmount",

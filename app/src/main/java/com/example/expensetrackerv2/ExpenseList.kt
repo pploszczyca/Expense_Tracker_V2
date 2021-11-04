@@ -19,13 +19,14 @@ import com.example.expensetrackerv2.database.models.Type
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
 import com.example.expensetrackerv2.database.models.view_models.getKey
 import com.example.expensetrackerv2.utilities.DateUtils
+import com.example.expensetrackerv2.utilities.MathUtils
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ExpensesList(expenseWithItsTypeList: List<ExpenseWithItsType>, navController: NavController) {
     LazyColumn(Modifier.padding(3.dp)) {
         expenseWithItsTypeList.groupBy { it.getKey() }.forEach { (_, expensesInSpecificDate) ->
-            val calculateSumOfValue = {type: Type -> expensesInSpecificDate.filter { it.type == type }.map { it.price }.sum()}
+            val calculateSumOfValue = {type: Type -> MathUtils.roundToMoney(expensesInSpecificDate.filter { it.type == type }.map { it.price }.sum())}
 
             val incomeValue = calculateSumOfValue(Type.INCOME)
             val outgoValue = calculateSumOfValue(Type.OUTGO)

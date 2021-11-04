@@ -14,11 +14,8 @@ abstract class ExpenseDao {
     @Query("SELECT * FROM typeofexpense")
     abstract fun getAllTypesOfExpense(): List<TypeOfExpense>
 
-    @Query("SELECT * FROM ExpenseWithItsType")
+    @Query("SELECT * FROM ExpenseWithItsType ORDER BY date DESC")
     abstract fun getAllExpenseWithItsType(): List<ExpenseWithItsType>
-
-    @Query("SELECT * FROM ExpenseWithItsType WHERE id = :expenseID")
-    abstract fun getAllExpenseWithItsType(expenseID: Int): List<ExpenseWithItsType>
 
     @Query("SELECT * FROM expense WHERE id = :expenseID")
     abstract fun getExpense(expenseID: Int): Expense

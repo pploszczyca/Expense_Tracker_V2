@@ -20,28 +20,50 @@ import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsTy
 import com.example.expensetrackerv2.database.models.view_models.getKey
 import com.example.expensetrackerv2.utilities.DateUtils
 import com.example.expensetrackerv2.utilities.MathUtils
+import java.math.RoundingMode
+import java.text.DecimalFormat
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ExpensesList(expenseWithItsTypeList: List<ExpenseWithItsType>, navController: NavController) {
+    val decimalFormat = DecimalFormat("#.##")
+    decimalFormat.roundingMode = RoundingMode.CEILING
+
     LazyColumn(Modifier.padding(3.dp)) {
         expenseWithItsTypeList.groupBy { it.getKey() }.forEach { (_, expensesInSpecificDate) ->
-            val calculateSumOfValue = {type: Type -> MathUtils.roundToMoney(expensesInSpecificDate.filter { it.type == type }.map { it.price }.sum())}
+            val calculateSumOfValue = { type: Type ->
+                MathUtils.roundToMoney(expensesInSpecificDate.filter { it.type == type }
+                    .map { it.price }.sum())
+            }
 
-            val incomeValue = calculateSumOfValue(Type.INCOME)
-            val outgoValue = calculateSumOfValue(Type.OUTGO)
+            val incomeValue = decimalFormat.format(calculateSumOfValue(Type.INCOME))
+            val outgoValue = decimalFormat.format(calculateSumOfValue(Type.OUTGO))
 
             stickyHeader {
                 Row(
-                    Modifier.fillMaxWidth().background(MaterialTheme.colors.background).padding(10.dp),
+                    Modifier
+                        .fillMaxWidth()
+                        .background(MaterialTheme.colors.background)
+                        .padding(10.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(DateUtils.dateToStringWithMonthAndYear(date = expensesInSpecificDate.first().date), style = MaterialTheme.typography.subtitle1)
+                    Text(
+                        DateUtils.dateToStringWithMonthAndYear(date = expensesInSpecificDate.first().date),
+                        style = MaterialTheme.typography.subtitle1
+                    )
 
                     Row {
-                        Text("-$outgoValue", style = MaterialTheme.typography.subtitle1, color = Color.Red)
+                        Text(
+                            "-$outgoValue",
+                            style = MaterialTheme.typography.subtitle1,
+                            color = Color.Red
+                        )
                         Text("/", style = MaterialTheme.typography.subtitle1)
-                        Text("$incomeValue", style = MaterialTheme.typography.subtitle1, color = Color.Green)
+                        Text(
+                            incomeValue,
+                            style = MaterialTheme.typography.subtitle1,
+                            color = Color.Green
+                        )
                     }
                 }
             }

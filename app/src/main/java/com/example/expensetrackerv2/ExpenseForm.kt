@@ -125,7 +125,8 @@ fun ExpenseForm(navController: NavController?, expenseID: Int? = 0) {
                         expense
                     )
                 }
-                navController!!.navigate(Routes.Main.route)
+                navController!!.popBackStack()
+                navController.navigate(Routes.Main.route)
             } else {
                 scope.launch {
                     snackbarHostState.showSnackbar(message = "Data is incorrect")

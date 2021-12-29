@@ -71,7 +71,8 @@ fun MainComposable(navController: NavController) {
             }
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { navController.navigate(Routes.ExpenseForm.route) }) {
+            FloatingActionButton(onClick = {
+                navController.navigate(Routes.ExpenseForm.route) }) {
                 Icon(Icons.Filled.Add, contentDescription = "Add")
             }
         },

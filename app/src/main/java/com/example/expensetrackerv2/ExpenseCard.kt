@@ -87,7 +87,8 @@ fun ExpenseCard(expenseWithItsType: ExpenseWithItsType, navController: NavContro
                     Text(
                         style = MaterialTheme.typography.h5,
                         text = expenseWithItsType.title,
-                        fontStyle = FontStyle.Italic
+                        fontStyle = FontStyle.Italic,
+                        modifier = Modifier.weight(1f)
                     )
                     Text(
                         style = MaterialTheme.typography.h5,

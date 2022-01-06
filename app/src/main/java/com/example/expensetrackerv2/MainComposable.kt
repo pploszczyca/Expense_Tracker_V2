@@ -1,5 +1,8 @@
 package com.example.expensetrackerv2
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
@@ -9,6 +12,8 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,6 +23,7 @@ import androidx.navigation.NavController
 import com.example.expensetrackerv2.database.AppDatabase
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
 import com.example.expensetrackerv2.providers.SampleDataProvider
+import com.example.expensetrackerv2.utilities.JSONUtils
 import com.example.expensetrackerv2.utilities.MathUtils
 import kotlinx.coroutines.launch
 
@@ -36,7 +42,8 @@ fun MainExpensesInformation(expenseWithItsTypeList: List<ExpenseWithItsType> ) {
 
 @Composable
 fun MainComposable(navController: NavController) {
-    val expenseDao = AppDatabase.getInstance(context = LocalContext.current).expenseDao()
+    val currentContext = LocalContext.current
+    val expenseDao = AppDatabase.getInstance(context = currentContext).expenseDao()
 
     val scaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()
@@ -44,13 +51,48 @@ fun MainComposable(navController: NavController) {
     val expenseWithItsTypeList = expenseDao.getAllExpenseWithItsType()
 
     if (expenseDao.getAllTypesOfExpense().isEmpty() && expenses.isEmpty()) {
-        SampleDataProvider.sampleTypeOfExpense(LocalContext.current)
-        SampleDataProvider.sampleExpenses(LocalContext.current)
+        SampleDataProvider.sampleTypeOfExpense(currentContext)
+        SampleDataProvider.sampleExpenses(currentContext)
+    }
+
+    val exportToJsonFileResult = remember { mutableStateOf<Uri?>(null) }
+    val importFromJsonFileResult = remember { mutableStateOf<Uri?>(null) }
+
+    val exportToJsonLauncher = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument()) {
+        exportToJsonFileResult.value = it
+    }
+
+    val importFromJsonLauncher = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) {
+        importFromJsonFileResult.value = it
+    }
+
+    exportToJsonFileResult.value?.let { uri -> currentContext.contentResolver.openOutputStream(uri)?.write(JSONUtils.exportExpensesListToJson(expenses).toByteArray()) }
+    importFromJsonFileResult.value?.let {uri ->
+        coroutineScope.launch {
+            expenseDao.deleteAllExpenses()
+            expenseDao.insertAllExpenses(JSONUtils.importExpensesListFromJson(currentContext.contentResolver.openInputStream(uri)?.bufferedReader()?.use { it.readText() }!!))
+        }
     }
 
     Scaffold(
         scaffoldState = scaffoldState,
-        drawerContent = { Text(text = "Placeholder") },
+        drawerContent = {
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()) {
+                TextButton(onClick = { exportToJsonLauncher.launch("backup_expenses.json") }, modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)) {
+                    Text(text = "Export to JSON")
+                }
+
+                TextButton(onClick = { importFromJsonLauncher.launch(arrayOf("application/json")) }, modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)) {
+                    Text(text = "Import from JSON")
+                }
+            }
+        },
         bottomBar = {
             BottomAppBar(cutoutShape = CircleShape) {
                 IconButton(onClick = {

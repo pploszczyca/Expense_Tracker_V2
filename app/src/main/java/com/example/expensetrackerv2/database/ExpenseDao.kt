@@ -27,6 +27,8 @@ abstract class ExpenseDao {
     @Insert
     abstract suspend fun insertAllExpenses(vararg expenses: Expense)
 
+    suspend fun insertAllExpenses(expenses: List<Expense>) = expenses.forEach { insertAllExpenses(it) }
+
     @Insert
     abstract suspend fun insertAllTypesOfExpense(vararg expenses: TypeOfExpense)
 
@@ -37,6 +39,9 @@ abstract class ExpenseDao {
     // DELETES
     @Query("DELETE FROM Expense WHERE id = :id")
     abstract suspend fun deleteExpenseByID(id: Int)
+
+    @Query("DELETE FROM EXPENSE")
+    abstract suspend fun deleteAllExpenses()
 
     @Delete
     abstract suspend fun deleteExpense(expense: Expense)

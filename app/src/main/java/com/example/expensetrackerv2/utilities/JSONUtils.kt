@@ -9,5 +9,6 @@ object JSONUtils {
 
     fun exportExpensesListToJson(expensesList: List<Expense>): String = gson.toJson(expensesList)
 
-    fun importExpensesListFromJson(expensesListJson: String): List<Expense> = gson.fromJson(expensesListJson, object : TypeToken<List<Expense>>() {}.type)
+    fun importExpensesListFromJson(expensesListJson: String): List<Expense> =
+        gson.fromJson(expensesListJson, object : TypeToken<List<Expense>>() {}.type)
 }

@@ -9,9 +9,13 @@ import com.example.expensetrackerv2.database.models.Expense
 import com.example.expensetrackerv2.database.models.TypeOfExpense
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
 
-@Database(entities = [Expense::class, TypeOfExpense::class], views = [ExpenseWithItsType::class] ,version = 1)
+@Database(
+    entities = [Expense::class, TypeOfExpense::class],
+    views = [ExpenseWithItsType::class],
+    version = 1
+)
 @TypeConverters(Converters::class)
-abstract class AppDatabase: RoomDatabase() {
+abstract class AppDatabase : RoomDatabase() {
     abstract fun expenseDao(): ExpenseDao
 
     companion object {
@@ -20,7 +24,7 @@ abstract class AppDatabase: RoomDatabase() {
 
         fun getInstance(context: Context?): AppDatabase {
             synchronized(this) {
-                if(INSTANCE == null) {
+                if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(
                         context!!,
                         AppDatabase::class.java, "expense-tracker-db"

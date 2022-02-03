@@ -18,6 +18,7 @@ data class ExpenseWithItsType(
 )
 
 data class ExpenseMonthYearKey(val year: Int, val month: Int)
+
 fun ExpenseWithItsType.getKey() = ExpenseMonthYearKey(this.date.year, this.date.month)
 
 

@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2
+package com.example.expensetrackerv2.ui.form
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectableGroup
@@ -12,20 +12,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.expensetrackerv2.Routes
 import com.example.expensetrackerv2.database.AppDatabase
 import com.example.expensetrackerv2.database.models.Expense
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
-import com.example.expensetrackerv2.ui.theme.ExpenseTrackerV2Theme
 import com.example.expensetrackerv2.utilities.DateUtils
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 @Composable
 fun ExpenseForm(navController: NavController?, expenseID: Int? = 0) {
-    val expenseDao = AppDatabase.getInstance(context = LocalContext.current).expenseDao()
+    val currentContext = LocalContext.current
+    val expenseDao = AppDatabase.getInstance(context = currentContext).expenseDao()
     val expenseWithItsType =
         if (expenseID == 0) ExpenseWithItsType() else expenseDao.getExpenseWithItsType(expenseID!!)
     val expenses = expenseDao.getAllExpenses()

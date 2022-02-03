@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2
+package com.example.expensetrackerv2.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -16,6 +16,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.expensetrackerv2.Routes
 import com.example.expensetrackerv2.database.AppDatabase
 import com.example.expensetrackerv2.database.models.Type
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
@@ -99,7 +100,11 @@ fun ExpenseCard(expenseWithItsType: ExpenseWithItsType, navController: NavContro
 
                 if (isCardExtended) {
                     ExtraContentRow("Place:", Icons.Default.Place, expenseWithItsType.place)
-                    ExtraContentRow("Description:", Icons.Default.Message, expenseWithItsType.description)
+                    ExtraContentRow(
+                        "Description:",
+                        Icons.Default.Message,
+                        expenseWithItsType.description
+                    )
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.End

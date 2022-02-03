@@ -6,20 +6,26 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.expensetrackerv2.ui.MainComposable
+import com.example.expensetrackerv2.ui.form.ExpenseForm
 
 @Composable
 fun NavHostComposable() {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = Routes.Main.route) {
-        composable(Routes.Main.route) { MainComposable(navController = navController)}
-        composable(Routes.ExpenseForm.route.plus("?EXPENSE_ID={EXPENSE_ID}"),
+        composable(Routes.Main.route) { MainComposable(navController = navController) }
+        composable(
+            Routes.ExpenseForm.route.plus("?EXPENSE_ID={EXPENSE_ID}"),
             arguments = listOf(navArgument("EXPENSE_ID") {
                 type = NavType.IntType
                 defaultValue = 0
             })
         ) { backStackEntry ->
-            ExpenseForm(navController = navController, expenseID = backStackEntry.arguments?.getInt("EXPENSE_ID"))
+            ExpenseForm(
+                navController = navController,
+                expenseID = backStackEntry.arguments?.getInt("EXPENSE_ID")
+            )
         }
     }
 }

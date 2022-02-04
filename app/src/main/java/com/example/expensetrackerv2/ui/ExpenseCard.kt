@@ -19,13 +19,13 @@ import com.example.expensetrackerv2.R
 import com.example.expensetrackerv2.Routes
 import com.example.expensetrackerv2.database.models.Type
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
+import com.example.expensetrackerv2.ui.theme.ExpenseColor
 import com.example.expensetrackerv2.ui.theme.ExpenseTrackerV2Theme
 import com.example.expensetrackerv2.ui.theme.IncomeColor
-import com.example.expensetrackerv2.ui.theme.ExpenseColor
 import com.example.expensetrackerv2.utilities.DateUtils
 
 @Composable
-fun ExtraContentRow(contentName: String, contentIcon: ImageVector, contentString: String) {
+private fun ExtraContentRow(contentName: String, contentIcon: ImageVector, contentString: String) {
     Spacer(modifier = Modifier.height(5.dp))
     if (contentString.isNotEmpty()) {
         Row(
@@ -44,6 +44,44 @@ fun ExtraContentRow(contentName: String, contentIcon: ImageVector, contentString
                 )
             }
             Text(style = MaterialTheme.typography.subtitle1, text = contentString)
+        }
+    }
+}
+
+@Composable
+private fun ExtraContentExpenseCard(
+    expenseWithItsType: ExpenseWithItsType,
+    navController: NavController,
+    onDeleteButtonClick: (ExpenseWithItsType) -> Unit
+) {
+    ExtraContentRow(
+        stringResource(id = R.string.place),
+        Icons.Default.Place,
+        expenseWithItsType.place
+    )
+    ExtraContentRow(
+        stringResource(id = R.string.description),
+        Icons.Default.Message,
+        expenseWithItsType.description
+    )
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.End
+    ) {
+        TextButton(onClick = {
+            navController.navigate(
+                Routes.ExpenseForm.route.plus(
+                    "?EXPENSE_ID=${expenseWithItsType.id}"
+                )
+            )
+        }) {
+            Icon(Icons.Default.Edit, contentDescription = null);
+            Text(text = stringResource(id = R.string.edit))
+        }
+
+        TextButton(onClick = { onDeleteButtonClick(expenseWithItsType) }) {
+            Icon(Icons.Default.Delete, contentDescription = null);
+            Text(text = stringResource(id = R.string.delete))
         }
     }
 }
@@ -98,36 +136,7 @@ fun ExpenseCard(
             }
 
             if (isCardExtended) {
-                ExtraContentRow(
-                    stringResource(id = R.string.place),
-                    Icons.Default.Place,
-                    expenseWithItsType.place
-                )
-                ExtraContentRow(
-                    stringResource(id = R.string.description),
-                    Icons.Default.Message,
-                    expenseWithItsType.description
-                )
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    TextButton(onClick = {
-                        navController.navigate(
-                            Routes.ExpenseForm.route.plus(
-                                "?EXPENSE_ID=${expenseWithItsType.id}"
-                            )
-                        )
-                    }) {
-                        Icon(Icons.Default.Edit, contentDescription = null);
-                        Text(text = stringResource(id = R.string.edit))
-                    }
-
-                    TextButton(onClick = { onDeleteButtonClick(expenseWithItsType) }) {
-                        Icon(Icons.Default.Delete, contentDescription = null);
-                        Text(text = stringResource(id = R.string.delete))
-                    }
-                }
+                ExtraContentExpenseCard(expenseWithItsType, navController, onDeleteButtonClick)
             }
         }
     }

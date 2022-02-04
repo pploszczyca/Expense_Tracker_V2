@@ -8,7 +8,7 @@ import java.util.*
 @Entity
 data class Expense(
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+    val id: Int = ExpenseConstants.NEW_EXPENSE,
     var title: String = "",
     var price: Double = 0.0,        // price >= 0
     var date: Date = Date(),

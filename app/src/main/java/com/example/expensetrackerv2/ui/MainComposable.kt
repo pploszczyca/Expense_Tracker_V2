@@ -12,8 +12,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.expensetrackerv2.R
 import com.example.expensetrackerv2.Routes
 import com.example.expensetrackerv2.database.AppDatabase
 import com.example.expensetrackerv2.database.models.view_models.ExpenseMonthYearKey
@@ -28,7 +30,7 @@ private fun MainExpensesInformation(expenseWithItsTypeList: MutableState<List<Ex
     val moneyInWalletAmount = MathUtils.sumMoneyInList(expenseWithItsTypeList.value)
 
     Text(
-        "In Wallet: $moneyInWalletAmount",
+        "${stringResource(id = R.string.in_wallet)} $moneyInWalletAmount",
         Modifier.padding(5.dp),
         style = MaterialTheme.typography.h4
     )
@@ -73,7 +75,7 @@ fun MainComposable(navController: NavController) {
                         scaffoldState.drawerState.open()
                     }
                 }) {
-                    Icon(Icons.Filled.Menu, contentDescription = "Menu")
+                    Icon(Icons.Filled.Menu, contentDescription = stringResource(id = R.string.menu_icon))
                 }
 
                 Spacer(Modifier.weight(1f, true))
@@ -83,12 +85,12 @@ fun MainComposable(navController: NavController) {
                         expenseWithItsTypeList.value = expenseDao.getAllExpenseWithItsType()
                         isFiltered.value = false
                     }) {
-                        Icon(Icons.Filled.Close, contentDescription = "Reset")
+                        Icon(Icons.Filled.Close, contentDescription = stringResource(id = R.string.reset_icon))
                     }
                 }
 
                 IconButton(onClick = { /* TODO */ }) {
-                    Icon(Icons.Filled.Search, contentDescription = "Localized description")
+                    Icon(Icons.Filled.Search, contentDescription = stringResource(id = R.string.search_icon))
                 }
             }
         },
@@ -96,7 +98,7 @@ fun MainComposable(navController: NavController) {
             FloatingActionButton(onClick = {
                 navController.navigate(Routes.ExpenseForm.route)
             }) {
-                Icon(Icons.Filled.Add, contentDescription = "Add")
+                Icon(Icons.Filled.Add, contentDescription = stringResource(id = R.string.add_icon))
             }
         },
         floatingActionButtonPosition = FabPosition.Center,

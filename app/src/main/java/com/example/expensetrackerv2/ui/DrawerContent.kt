@@ -18,7 +18,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.expensetrackerv2.R
 import com.example.expensetrackerv2.database.AppDatabase
 import com.example.expensetrackerv2.database.models.view_models.ExpenseMonthYearKey
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
@@ -61,6 +63,7 @@ fun DrawerContent(
     val currentContext = LocalContext.current
     val expenseDao = AppDatabase.getInstance(context = currentContext).expenseDao()
     val expenseWithItsTypeList = expenseDao.getAllExpenseWithItsType()
+    val exportJsonFileName = stringResource(id = R.string.drawer_months_title)
 
     val coroutineScope = rememberCoroutineScope()
 
@@ -102,17 +105,17 @@ fun DrawerContent(
             .fillMaxHeight()
     ) {
 
-        Text("Months", style = MaterialTheme.typography.h5, modifier = Modifier.padding(16.dp))
+        Text(stringResource(id = R.string.drawer_months_title), style = MaterialTheme.typography.h5, modifier = Modifier.padding(16.dp))
 
         ShowMonthButtons(expenseWithItsTypeList, onMonthButtonClick)
 
-        Text("Options", style = MaterialTheme.typography.h5, modifier = Modifier.padding(16.dp))
+        Text(stringResource(id = R.string.drawer_options_title), style = MaterialTheme.typography.h5, modifier = Modifier.padding(16.dp))
 
         TextButton(
-            onClick = { exportToJsonLauncher.launch("backup_expenses.json") }, modifier = Modifier
+            onClick = { exportToJsonLauncher.launch(exportJsonFileName) }, modifier = Modifier
                 .padding(8.dp)
         ) {
-            Text(text = "Export to JSON")
+            Text(text = stringResource(id = R.string.drawer_export_to_json))
         }
 
         TextButton(
@@ -120,7 +123,7 @@ fun DrawerContent(
             modifier = Modifier
                 .padding(8.dp)
         ) {
-            Text(text = "Import from JSON")
+            Text(text = stringResource(id = R.string.drawer_import_from_json))
         }
     }
 }

@@ -12,10 +12,12 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.expensetrackerv2.R
 import com.example.expensetrackerv2.Routes
 import com.example.expensetrackerv2.database.AppDatabase
 import com.example.expensetrackerv2.database.models.Type
@@ -28,7 +30,7 @@ import kotlinx.coroutines.runBlocking
 @Composable
 fun ExtraContentRow(contentName: String, contentIcon: ImageVector, contentString: String) {
     Spacer(modifier = Modifier.height(5.dp))
-    if (contentString != "") {
+    if (contentString.isNotEmpty()) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -99,9 +101,9 @@ fun ExpenseCard(expenseWithItsType: ExpenseWithItsType, navController: NavContro
                 }
 
                 if (isCardExtended) {
-                    ExtraContentRow("Place:", Icons.Default.Place, expenseWithItsType.place)
+                    ExtraContentRow(stringResource(id = R.string.place), Icons.Default.Place, expenseWithItsType.place)
                     ExtraContentRow(
-                        "Description:",
+                        stringResource(id = R.string.description),
                         Icons.Default.Message,
                         expenseWithItsType.description
                     )
@@ -117,12 +119,12 @@ fun ExpenseCard(expenseWithItsType: ExpenseWithItsType, navController: NavContro
                             )
                         }) {
                             Icon(Icons.Default.Edit, contentDescription = null);
-                            Text(text = "Edit")
+                            Text(text = stringResource(id = R.string.edit))
                         }
 
                         TextButton(onClick = { isDeleteDialogOpen = true }) {
                             Icon(Icons.Default.Delete, contentDescription = null);
-                            Text(text = "Delete")
+                            Text(text = stringResource(id = R.string.delete))
                         }
                     }
                 }
@@ -132,8 +134,8 @@ fun ExpenseCard(expenseWithItsType: ExpenseWithItsType, navController: NavContro
 
     if (isDeleteDialogOpen) {
         AlertDialog(onDismissRequest = { isDeleteDialogOpen = false },
-            title = { Text("Delete expense") },
-            text = { Text("Do you want to delete it?") },
+            title = { Text(stringResource(id = R.string.delete_expense_title)) },
+            text = { Text(stringResource(id = R.string.delete_expense_question)) },
             confirmButton = {
                 TextButton(onClick = {
                     runBlocking {
@@ -144,14 +146,14 @@ fun ExpenseCard(expenseWithItsType: ExpenseWithItsType, navController: NavContro
                     isDeleteDialogOpen = false
                     isCardHidden = true
                 }) {
-                    Text(text = "Yes")
+                    Text(text = stringResource(id = R.string.yes))
                 }
             },
             dismissButton = {
                 TextButton(onClick = {
                     isDeleteDialogOpen = false
                 }) {
-                    Text(text = "No")
+                    Text(text = stringResource(id = R.string.no))
                 }
             }
         )

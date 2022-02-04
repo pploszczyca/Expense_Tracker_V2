@@ -10,13 +10,16 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.expensetrackerv2.R
 import com.example.expensetrackerv2.Routes
 import com.example.expensetrackerv2.database.AppDatabase
 import com.example.expensetrackerv2.database.models.Expense
+import com.example.expensetrackerv2.database.models.ExpenseConstants
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
 import com.example.expensetrackerv2.utilities.DateUtils
 import kotlinx.coroutines.launch
@@ -30,6 +33,7 @@ fun ExpenseForm(navController: NavController?, expenseID: Int? = 0) {
         if (expenseID == 0) ExpenseWithItsType() else expenseDao.getExpenseWithItsType(expenseID!!)
     val expenses = expenseDao.getAllExpenses()
     val typeOfExpenseList = expenseDao.getAllTypesOfExpense()
+    val dataIsIncorrectString = stringResource(id = R.string.expense_form_data_incorrect)
 
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -41,14 +45,14 @@ fun ExpenseForm(navController: NavController?, expenseID: Int? = 0) {
     var place by remember { mutableStateOf(expenseWithItsType.place) }
     var description by remember { mutableStateOf(expenseWithItsType.description) }
 
-    val checkForm = title != "" && price != "" && price.toDouble() >= 0.0
+    val checkForm = title.isNotEmpty() && price.isNotEmpty() && price.toDouble() >= 0.0
 
     Column {
         AutoCompleteOutlinedTextField(
             value = title,
             onValueChange = { title = it },
             icon = Icons.Default.Title,
-            label = "Title",
+            label = stringResource(id = R.string.expense_form_title),
             suggestionsInput = expenses.map { it.title }
         )
 
@@ -56,7 +60,7 @@ fun ExpenseForm(navController: NavController?, expenseID: Int? = 0) {
             value = price,
             onValueChange = { price = it },
             icon = Icons.Default.AttachMoney,
-            label = "Price",
+            label = stringResource(id = R.string.expense_form_price),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
 
@@ -64,14 +68,14 @@ fun ExpenseForm(navController: NavController?, expenseID: Int? = 0) {
             value = date,
             onValueChange = { date = it },
             icon = Icons.Default.Today,
-            label = "Date"
+            label = stringResource(id = R.string.expense_form_date)
         )
 
         AutoCompleteOutlinedTextField(
             value = place,
             onValueChange = { place = it },
             icon = Icons.Default.Place,
-            label = "Place",
+            label = stringResource(id = R.string.expense_form_place),
             suggestionsInput = expenses.map { it.place }
         )
 
@@ -79,7 +83,7 @@ fun ExpenseForm(navController: NavController?, expenseID: Int? = 0) {
             value = description,
             onValueChange = { description = it },
             icon = Icons.Default.Message,
-            label = "Description",
+            label = stringResource(id = R.string.expense_form_description),
             keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences)
         )
 
@@ -120,8 +124,9 @@ fun ExpenseForm(navController: NavController?, expenseID: Int? = 0) {
                         typeOfExpenseId = type,
                     )
 
-                    // if id = 0 that means is new expense
-                    if (expense.id == 0) expenseDao.insertAllExpenses(expense) else expenseDao.updateExpense(
+                    if (expense.id == ExpenseConstants.NEW_EXPENSE) expenseDao.insertAllExpenses(
+                        expense
+                    ) else expenseDao.updateExpense(
                         expense
                     )
                 }
@@ -129,12 +134,16 @@ fun ExpenseForm(navController: NavController?, expenseID: Int? = 0) {
                 navController.navigate(Routes.Main.route)
             } else {
                 scope.launch {
-                    snackbarHostState.showSnackbar(message = "Data is incorrect")
+                    snackbarHostState.showSnackbar(message = dataIsIncorrectString)
                 }
             }
 
         }, modifier = Modifier.padding(20.dp)) {
-            Text(text = if (expenseWithItsType.id == 0) "Add" else "Update")
+            Text(
+                text = if (expenseWithItsType.id == ExpenseConstants.NEW_EXPENSE) stringResource(id = R.string.expense_form_add) else stringResource(
+                    id = R.string.expense_form_update
+                )
+            )
         }
     }
 }

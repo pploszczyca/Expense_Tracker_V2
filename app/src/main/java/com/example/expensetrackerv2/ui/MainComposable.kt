@@ -114,7 +114,8 @@ fun MainComposable(navController: NavController) {
                     MainExpensesInformation(expenseWithItsTypeList)
                     ExpensesList(
                         expenseWithItsTypeList = expenseWithItsTypeList,
-                        navController = navController
+                        navController = navController,
+                        expenseDao = expenseDao
                     )
                 }
             }

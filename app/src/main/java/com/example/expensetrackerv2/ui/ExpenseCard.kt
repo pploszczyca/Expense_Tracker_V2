@@ -9,9 +9,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -19,13 +17,12 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.expensetrackerv2.R
 import com.example.expensetrackerv2.Routes
-import com.example.expensetrackerv2.database.AppDatabase
 import com.example.expensetrackerv2.database.models.Type
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
 import com.example.expensetrackerv2.ui.theme.ExpenseTrackerV2Theme
+import com.example.expensetrackerv2.ui.theme.IncomeColor
+import com.example.expensetrackerv2.ui.theme.ExpenseColor
 import com.example.expensetrackerv2.utilities.DateUtils
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 @Composable
 fun ExtraContentRow(contentName: String, contentIcon: ImageVector, contentString: String) {
@@ -52,111 +49,87 @@ fun ExtraContentRow(contentName: String, contentIcon: ImageVector, contentString
 }
 
 @Composable
-fun ExpenseCard(expenseWithItsType: ExpenseWithItsType, navController: NavController) {
+fun ExpenseCard(
+    expenseWithItsType: ExpenseWithItsType,
+    navController: NavController,
+    onDeleteButtonClick: (ExpenseWithItsType) -> Unit
+) {
     var isCardExtended by remember { mutableStateOf(false) }
     val dropDownIconRotation = if (isCardExtended) 0f else -180f
-    var isDeleteDialogOpen by remember { mutableStateOf(false) }
-    var isCardHidden by remember { mutableStateOf(false) }
-    val expenseDao = AppDatabase.getInstance(LocalContext.current).expenseDao()
 
-    if (!isCardHidden) {
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(3.dp)
-                .clickable {
-                    isCardExtended = !isCardExtended
-                }
-        ) {
-            Column(modifier = Modifier.padding(10.dp)) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(3.dp)
+            .clickable {
+                isCardExtended = !isCardExtended
+            }
+    ) {
+        Column(modifier = Modifier.padding(10.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    style = MaterialTheme.typography.caption,
+                    text = DateUtils.toOnlyDateString(expenseWithItsType.date)
+                )
+                Icon(
+                    Icons.Default.ArrowDropUp,
+                    contentDescription = null,
+                    modifier = Modifier.rotate(dropDownIconRotation)
+                )
+            }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    style = MaterialTheme.typography.h5,
+                    text = expenseWithItsType.title,
+                    fontStyle = FontStyle.Italic,
+                    modifier = Modifier.weight(1f)
+                )
+                Text(
+                    style = MaterialTheme.typography.h5,
+                    text = (expenseWithItsType.price * expenseWithItsType.type.multiplier).toString(),
+                    color = if (expenseWithItsType.type == Type.OUTGO) ExpenseColor else IncomeColor
+                )
+            }
+
+            if (isCardExtended) {
+                ExtraContentRow(
+                    stringResource(id = R.string.place),
+                    Icons.Default.Place,
+                    expenseWithItsType.place
+                )
+                ExtraContentRow(
+                    stringResource(id = R.string.description),
+                    Icons.Default.Message,
+                    expenseWithItsType.description
+                )
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
+                    horizontalArrangement = Arrangement.End
                 ) {
-                    Text(
-                        style = MaterialTheme.typography.caption,
-                        text = DateUtils.toOnlyDateString(expenseWithItsType.date)
-                    )
-                    Icon(
-                        Icons.Default.ArrowDropUp,
-                        contentDescription = null,
-                        modifier = Modifier.rotate(dropDownIconRotation)
-                    )
-                }
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        style = MaterialTheme.typography.h5,
-                        text = expenseWithItsType.title,
-                        fontStyle = FontStyle.Italic,
-                        modifier = Modifier.weight(1f)
-                    )
-                    Text(
-                        style = MaterialTheme.typography.h5,
-                        text = (expenseWithItsType.price * expenseWithItsType.type.multiplier).toString(),
-                        color = if (expenseWithItsType.type == Type.OUTGO) Color.Red else Color.Green
-                    )
-                }
-
-                if (isCardExtended) {
-                    ExtraContentRow(stringResource(id = R.string.place), Icons.Default.Place, expenseWithItsType.place)
-                    ExtraContentRow(
-                        stringResource(id = R.string.description),
-                        Icons.Default.Message,
-                        expenseWithItsType.description
-                    )
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.End
-                    ) {
-                        TextButton(onClick = {
-                            navController.navigate(
-                                Routes.ExpenseForm.route.plus(
-                                    "?EXPENSE_ID=${expenseWithItsType.id}"
-                                )
+                    TextButton(onClick = {
+                        navController.navigate(
+                            Routes.ExpenseForm.route.plus(
+                                "?EXPENSE_ID=${expenseWithItsType.id}"
                             )
-                        }) {
-                            Icon(Icons.Default.Edit, contentDescription = null);
-                            Text(text = stringResource(id = R.string.edit))
-                        }
+                        )
+                    }) {
+                        Icon(Icons.Default.Edit, contentDescription = null);
+                        Text(text = stringResource(id = R.string.edit))
+                    }
 
-                        TextButton(onClick = { isDeleteDialogOpen = true }) {
-                            Icon(Icons.Default.Delete, contentDescription = null);
-                            Text(text = stringResource(id = R.string.delete))
-                        }
+                    TextButton(onClick = { onDeleteButtonClick(expenseWithItsType) }) {
+                        Icon(Icons.Default.Delete, contentDescription = null);
+                        Text(text = stringResource(id = R.string.delete))
                     }
                 }
             }
         }
-    }
-
-    if (isDeleteDialogOpen) {
-        AlertDialog(onDismissRequest = { isDeleteDialogOpen = false },
-            title = { Text(stringResource(id = R.string.delete_expense_title)) },
-            text = { Text(stringResource(id = R.string.delete_expense_question)) },
-            confirmButton = {
-                TextButton(onClick = {
-                    runBlocking {
-                        launch {
-                            expenseDao.deleteExpense(expenseWithItsType)
-                        }
-                    }
-                    isDeleteDialogOpen = false
-                    isCardHidden = true
-                }) {
-                    Text(text = stringResource(id = R.string.yes))
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = {
-                    isDeleteDialogOpen = false
-                }) {
-                    Text(text = stringResource(id = R.string.no))
-                }
-            }
-        )
     }
 }
 

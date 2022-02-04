@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 @Composable
-fun ExpenseForm(navController: NavController?, expenseID: Int? = 0) {
+fun ExpenseForm(navController: NavController?, expenseID: Int? = ExpenseConstants.NEW_EXPENSE_ID) {
     val currentContext = LocalContext.current
     val expenseDao = AppDatabase.getInstance(context = currentContext).expenseDao()
     val expenseWithItsType =
@@ -124,7 +124,7 @@ fun ExpenseForm(navController: NavController?, expenseID: Int? = 0) {
                         typeOfExpenseId = type,
                     )
 
-                    if (expense.id == ExpenseConstants.NEW_EXPENSE) expenseDao.insertAllExpenses(
+                    if (expense.id == ExpenseConstants.NEW_EXPENSE_ID) expenseDao.insertAllExpenses(
                         expense
                     ) else expenseDao.updateExpense(
                         expense
@@ -140,7 +140,7 @@ fun ExpenseForm(navController: NavController?, expenseID: Int? = 0) {
 
         }, modifier = Modifier.padding(20.dp)) {
             Text(
-                text = if (expenseWithItsType.id == ExpenseConstants.NEW_EXPENSE) stringResource(id = R.string.expense_form_add) else stringResource(
+                text = if (expenseWithItsType.id == ExpenseConstants.NEW_EXPENSE_ID) stringResource(id = R.string.expense_form_add) else stringResource(
                     id = R.string.expense_form_update
                 )
             )

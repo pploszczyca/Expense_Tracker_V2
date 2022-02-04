@@ -10,15 +10,16 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.expensetrackerv2.database.ExpenseDao
 import com.example.expensetrackerv2.database.models.Type
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
 import com.example.expensetrackerv2.database.models.view_models.getKey
+import com.example.expensetrackerv2.ui.theme.IncomeColor
+import com.example.expensetrackerv2.ui.theme.ExpenseColor
 import com.example.expensetrackerv2.utilities.DateUtils
 import com.example.expensetrackerv2.utilities.MathUtils
 import java.math.RoundingMode
@@ -28,10 +29,19 @@ import java.text.DecimalFormat
 @Composable
 fun ExpensesList(
     expenseWithItsTypeList: MutableState<List<ExpenseWithItsType>>,
-    navController: NavController
+    navController: NavController,
+    expenseDao: ExpenseDao
 ) {
     val decimalFormat = DecimalFormat("#.##")
     decimalFormat.roundingMode = RoundingMode.CEILING
+
+    val isDeleteDialogOpen = remember { mutableStateOf(false) }
+    val expenseWithItsTypeToDelete = remember { mutableStateOf(ExpenseWithItsType()) }
+
+    val onDeleteButtonClick = { expenseWithItsType: ExpenseWithItsType ->
+        expenseWithItsTypeToDelete.value = expenseWithItsType
+        isDeleteDialogOpen.value = true
+    }
 
     LazyColumn(Modifier.padding(3.dp)) {
         expenseWithItsTypeList.value.groupBy { it.getKey() }
@@ -61,13 +71,13 @@ fun ExpensesList(
                             Text(
                                 outgoValue,
                                 style = MaterialTheme.typography.subtitle1,
-                                color = Color.Red
+                                color = ExpenseColor
                             )
                             Text("/", style = MaterialTheme.typography.subtitle1)
                             Text(
                                 incomeValue,
                                 style = MaterialTheme.typography.subtitle1,
-                                color = Color.Green
+                                color = IncomeColor
                             )
                         }
                     }
@@ -76,9 +86,16 @@ fun ExpensesList(
                 items(expensesInSpecificDate) { expense ->
                     ExpenseCard(
                         expenseWithItsType = expense,
-                        navController = navController
+                        navController = navController,
+                        onDeleteButtonClick = onDeleteButtonClick
                     )
                 }
             }
     }
+
+    DeleteExpenseAlertDialog(
+        isDeleteDialogOpen = isDeleteDialogOpen,
+        expenseDao = expenseDao,
+        expenseWithItsType = expenseWithItsTypeToDelete
+    )
 }

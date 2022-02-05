@@ -73,4 +73,6 @@ dependencies {
     implementation('org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0-native-mt')
 
     implementation 'com.google.code.gson:gson:2.8.9'
+
+    implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
 }

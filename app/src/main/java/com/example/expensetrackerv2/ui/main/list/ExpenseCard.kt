@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.ui
+package com.example.expensetrackerv2.ui.main.list
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*

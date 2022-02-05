@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.ui
+package com.example.expensetrackerv2.ui.main
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -12,10 +12,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -25,6 +23,7 @@ import com.example.expensetrackerv2.database.AppDatabase
 import com.example.expensetrackerv2.database.models.view_models.ExpenseMonthYearKey
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
 import com.example.expensetrackerv2.database.models.view_models.getKey
+import com.example.expensetrackerv2.database.repositories.ExpenseWithItsTypeRepository
 import com.example.expensetrackerv2.utilities.DateUtils
 import com.example.expensetrackerv2.utilities.JSONUtils
 import kotlinx.coroutines.Job
@@ -58,12 +57,14 @@ private fun ShowMonthButtons(
 @Composable
 fun DrawerContent(
     onMonthButtonClick: (expenseMonthYearKey: ExpenseMonthYearKey) -> Unit,
-    closeDrawer: () -> Job
+    closeDrawer: () -> Job,
+    expenseWithItsTypeRepository: ExpenseWithItsTypeRepository
 ) {
     val currentContext = LocalContext.current
     val expenseDao = AppDatabase.getInstance(context = currentContext).expenseDao()
-    val expenseWithItsTypeList = expenseDao.getAllExpenseWithItsType()
     val exportJsonFileName = stringResource(id = R.string.drawer_months_title)
+    val expenseWithItsTypeList by expenseWithItsTypeRepository.getExpenses()
+        .observeAsState(listOf())
 
     val coroutineScope = rememberCoroutineScope()
 
@@ -85,6 +86,7 @@ fun DrawerContent(
         currentContext.contentResolver.openOutputStream(uri)
             ?.write(JSONUtils.exportExpensesListToJson(expenseDao.getAllExpenses()).toByteArray())
     }
+
     importFromJsonFileResult.value?.let { uri ->
         closeDrawer()
         coroutineScope.launch {
@@ -105,11 +107,19 @@ fun DrawerContent(
             .fillMaxHeight()
     ) {
 
-        Text(stringResource(id = R.string.drawer_months_title), style = MaterialTheme.typography.h5, modifier = Modifier.padding(16.dp))
+        Text(
+            stringResource(id = R.string.drawer_months_title),
+            style = MaterialTheme.typography.h5,
+            modifier = Modifier.padding(16.dp)
+        )
 
         ShowMonthButtons(expenseWithItsTypeList, onMonthButtonClick)
 
-        Text(stringResource(id = R.string.drawer_options_title), style = MaterialTheme.typography.h5, modifier = Modifier.padding(16.dp))
+        Text(
+            stringResource(id = R.string.drawer_options_title),
+            style = MaterialTheme.typography.h5,
+            modifier = Modifier.padding(16.dp)
+        )
 
         TextButton(
             onClick = { exportToJsonLauncher.launch(exportJsonFileName) }, modifier = Modifier

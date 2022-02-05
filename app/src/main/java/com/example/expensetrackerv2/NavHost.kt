@@ -6,8 +6,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.expensetrackerv2.ui.MainComposable
 import com.example.expensetrackerv2.ui.form.ExpenseForm
+import com.example.expensetrackerv2.ui.main.MainComposable
 
 @Composable
 fun NavHostComposable() {

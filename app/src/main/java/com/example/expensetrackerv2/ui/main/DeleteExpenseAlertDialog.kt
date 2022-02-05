@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.ui
+package com.example.expensetrackerv2.ui.main
 
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Text
@@ -7,13 +7,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.res.stringResource
 import com.example.expensetrackerv2.R
-import com.example.expensetrackerv2.database.ExpenseDao
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
+import com.example.expensetrackerv2.database.repositories.ExpenseWithItsTypeRepository
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 @Composable
-fun DeleteExpenseAlertDialog(isDeleteDialogOpen: MutableState<Boolean>, expenseDao: ExpenseDao, expenseWithItsType: MutableState<ExpenseWithItsType>) {
+fun DeleteExpenseAlertDialog(
+    isDeleteDialogOpen: MutableState<Boolean>,
+    expenseWithItsTypeRepository: ExpenseWithItsTypeRepository,
+    expenseWithItsType: MutableState<ExpenseWithItsType>
+) {
     if (isDeleteDialogOpen.value) {
         AlertDialog(onDismissRequest = { isDeleteDialogOpen.value = false },
             title = { Text(stringResource(id = R.string.delete_expense_title)) },
@@ -22,7 +26,7 @@ fun DeleteExpenseAlertDialog(isDeleteDialogOpen: MutableState<Boolean>, expenseD
                 TextButton(onClick = {
                     runBlocking {
                         launch {
-                            expenseDao.deleteExpense(expenseWithItsType.value)
+                            expenseWithItsTypeRepository.deleteExpense(expenseWithItsType.value)
                         }
                     }
                     isDeleteDialogOpen.value = false

@@ -18,9 +18,9 @@ import androidx.navigation.NavController
 import com.example.expensetrackerv2.R
 import com.example.expensetrackerv2.Routes
 import com.example.expensetrackerv2.database.AppDatabase
-import com.example.expensetrackerv2.database.models.Expense
 import com.example.expensetrackerv2.database.models.ExpenseConstants
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
+import com.example.expensetrackerv2.database.repositories.ExpenseWithItsTypeDatabaseRepository
 import com.example.expensetrackerv2.utilities.DateUtils
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -29,8 +29,11 @@ import kotlinx.coroutines.runBlocking
 fun ExpenseForm(navController: NavController?, expenseID: Int? = ExpenseConstants.NEW_EXPENSE_ID) {
     val currentContext = LocalContext.current
     val expenseDao = AppDatabase.getInstance(context = currentContext).expenseDao()
+    val expenseWithItsTypeRepository = ExpenseWithItsTypeDatabaseRepository(expenseDao)
     val expenseWithItsType =
-        if (expenseID == 0) ExpenseWithItsType() else expenseDao.getExpenseWithItsType(expenseID!!)
+        if (expenseID == 0) ExpenseWithItsType() else expenseWithItsTypeRepository.getExpense(
+            expenseID!!
+        )
     val expenses = expenseDao.getAllExpenses()
     val typeOfExpenseList = expenseDao.getAllTypesOfExpense()
     val dataIsIncorrectString = stringResource(id = R.string.expense_form_data_incorrect)
@@ -40,7 +43,7 @@ fun ExpenseForm(navController: NavController?, expenseID: Int? = ExpenseConstant
 
     var title by remember { mutableStateOf(expenseWithItsType.title) }
     var price by remember { mutableStateOf(if (expenseWithItsType.price == 0.0) "" else expenseWithItsType.price.toString()) }
-    var type by remember { mutableStateOf(expenseWithItsType.typeID) }
+    var typeOfExpense by remember { mutableStateOf(typeOfExpenseList.first()) }
     var date by remember { mutableStateOf(DateUtils.toOnlyDateString(expenseWithItsType.date)) }
     var place by remember { mutableStateOf(expenseWithItsType.place) }
     var description by remember { mutableStateOf(expenseWithItsType.description) }
@@ -93,11 +96,11 @@ fun ExpenseForm(navController: NavController?, expenseID: Int? = ExpenseConstant
                 .padding(5.dp)
                 .padding(start = 10.dp)
         ) {
-            typeOfExpenseList.forEach { typeOfExpense ->
-                RadioButton(selected = type == typeOfExpense.id, onClick = {
-                    type = typeOfExpense.id
+            typeOfExpenseList.forEach { expenseType ->
+                RadioButton(selected = typeOfExpense == expenseType, onClick = {
+                    typeOfExpense = expenseType
                 })
-                Text(text = typeOfExpense.name, style = MaterialTheme.typography.subtitle1)
+                Text(text = expenseType.name, style = MaterialTheme.typography.subtitle1)
                 Spacer(modifier = Modifier.size(8.dp))
             }
         }
@@ -114,20 +117,22 @@ fun ExpenseForm(navController: NavController?, expenseID: Int? = ExpenseConstant
         Button(onClick = {
             if (checkForm) {
                 runBlocking {
-                    val expense = Expense(
+                    val newExpenseWithItsType = ExpenseWithItsType(
                         id = expenseWithItsType.id,
                         title = title,
                         date = DateUtils.stringToDate(date),
                         price = price.toDouble(),
                         place = place,
                         description = description,
-                        typeOfExpenseId = type,
+                        type = typeOfExpense.type,
+                        typeID = typeOfExpense.id,
+                        typeName = typeOfExpense.name
                     )
 
-                    if (expense.id == ExpenseConstants.NEW_EXPENSE_ID) expenseDao.insertAllExpenses(
-                        expense
-                    ) else expenseDao.updateExpense(
-                        expense
+                    if (newExpenseWithItsType.id == ExpenseConstants.NEW_EXPENSE_ID) expenseWithItsTypeRepository.insertExpense(
+                        newExpenseWithItsType
+                    ) else expenseWithItsTypeRepository.updateExpense(
+                        newExpenseWithItsType
                     )
                 }
                 navController!!.popBackStack()
@@ -140,7 +145,9 @@ fun ExpenseForm(navController: NavController?, expenseID: Int? = ExpenseConstant
 
         }, modifier = Modifier.padding(20.dp)) {
             Text(
-                text = if (expenseWithItsType.id == ExpenseConstants.NEW_EXPENSE_ID) stringResource(id = R.string.expense_form_add) else stringResource(
+                text = if (expenseWithItsType.id == ExpenseConstants.NEW_EXPENSE_ID) stringResource(
+                    id = R.string.expense_form_add
+                ) else stringResource(
                     id = R.string.expense_form_update
                 )
             )

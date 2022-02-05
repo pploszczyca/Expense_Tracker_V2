@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.ui
+package com.example.expensetrackerv2.ui.main.list
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -10,30 +10,34 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.expensetrackerv2.database.ExpenseDao
 import com.example.expensetrackerv2.database.models.Type
+import com.example.expensetrackerv2.database.models.view_models.ExpenseMonthYearKey
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
 import com.example.expensetrackerv2.database.models.view_models.getKey
-import com.example.expensetrackerv2.ui.theme.IncomeColor
+import com.example.expensetrackerv2.database.repositories.ExpenseWithItsTypeRepository
+import com.example.expensetrackerv2.ui.main.DeleteExpenseAlertDialog
 import com.example.expensetrackerv2.ui.theme.ExpenseColor
+import com.example.expensetrackerv2.ui.theme.IncomeColor
 import com.example.expensetrackerv2.utilities.DateUtils
 import com.example.expensetrackerv2.utilities.MathUtils
-import java.math.RoundingMode
-import java.text.DecimalFormat
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ExpensesList(
-    expenseWithItsTypeList: MutableState<List<ExpenseWithItsType>>,
+    expenseWithItsTypeRepository: ExpenseWithItsTypeRepository,
     navController: NavController,
-    expenseDao: ExpenseDao
+    expenseMonthYearKey: ExpenseMonthYearKey?
 ) {
-    val decimalFormat = DecimalFormat("#.##")
-    decimalFormat.roundingMode = RoundingMode.CEILING
+    val expenseWithItsTypeList by expenseWithItsTypeRepository.getExpenses(expenseMonthYearKey)
+        .observeAsState(listOf())
 
     val isDeleteDialogOpen = remember { mutableStateOf(false) }
     val expenseWithItsTypeToDelete = remember { mutableStateOf(ExpenseWithItsType()) }
@@ -44,15 +48,15 @@ fun ExpensesList(
     }
 
     LazyColumn(Modifier.padding(3.dp)) {
-        expenseWithItsTypeList.value.groupBy { it.getKey() }
+        expenseWithItsTypeList.groupBy { it.getKey() }
             .forEach { (_, expensesInSpecificDate) ->
                 val filterExpenseListByType =
                     { type: Type -> expensesInSpecificDate.filter { it.type == type } }
 
                 val incomeValue =
-                    decimalFormat.format(MathUtils.sumMoneyInList(filterExpenseListByType(Type.INCOME)))
+                    MathUtils.sumMoneyInListToString(filterExpenseListByType(Type.INCOME))
                 val outgoValue =
-                    decimalFormat.format(MathUtils.sumMoneyInList(filterExpenseListByType(Type.OUTGO)))
+                    MathUtils.sumMoneyInListToString(filterExpenseListByType(Type.OUTGO))
 
                 stickyHeader {
                     Row(
@@ -95,7 +99,7 @@ fun ExpensesList(
 
     DeleteExpenseAlertDialog(
         isDeleteDialogOpen = isDeleteDialogOpen,
-        expenseDao = expenseDao,
-        expenseWithItsType = expenseWithItsTypeToDelete
+        expenseWithItsType = expenseWithItsTypeToDelete,
+        expenseWithItsTypeRepository = expenseWithItsTypeRepository
     )
 }

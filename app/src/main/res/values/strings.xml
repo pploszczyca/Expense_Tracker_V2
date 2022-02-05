@@ -31,4 +31,7 @@
     <string name="expense_form_data_incorrect">Data is incorrect</string>
     <string name="expense_form_add">Add</string>
     <string name="expense_form_update">Update</string>
+
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
 </resources>

@@ -18,7 +18,11 @@ fun ExpenseFormTextField(
     onValueChange: (String) -> Unit,
     icon: ImageVector,
     label: String = "",
-    keyboardOptions: KeyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words)
+    keyboardOptions: KeyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words),
+    enabled: Boolean = true,
+    modifier: Modifier = Modifier
+        .fillMaxWidth()
+        .padding(5.dp)
 ) {
     OutlinedTextField(
         value = value.toString(),
@@ -31,8 +35,7 @@ fun ExpenseFormTextField(
                 contentDescription = null
             )
         },
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(5.dp)
+        enabled = enabled,
+        modifier = modifier
     )
 }

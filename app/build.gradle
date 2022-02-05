@@ -75,4 +75,6 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.9'
 
     implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
+
+    implementation "io.github.vanpra.compose-material-dialogs:datetime:0.6.3"
 }

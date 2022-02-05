@@ -9,8 +9,8 @@ object DateUtils {
         SimpleDateFormat("MMMM yyyy").format(date)
 
     @JvmStatic
-    fun toOnlyDateString(date: Date): String = SimpleDateFormat("dd/MM/yyyy").format(date)
+    fun toOnlyDateString(date: Date): String = SimpleDateFormat("yyyy-MM-dd").format(date)
 
     @JvmStatic
-    fun stringToDate(stringDate: String): Date = SimpleDateFormat("dd/MM/yyyy").parse(stringDate)
+    fun stringToDate(stringDate: String): Date = SimpleDateFormat("yyyy-MM-dd").parse(stringDate)
 }

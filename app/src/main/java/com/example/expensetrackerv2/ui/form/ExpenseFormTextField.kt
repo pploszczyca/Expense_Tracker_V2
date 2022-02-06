@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun ExpenseFormTextField(
     value: Any,
-    onValueChange: (String) -> Unit,
+    onValueChange: (String) -> Unit = {},
     icon: ImageVector,
     label: String = "",
     keyboardOptions: KeyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words),

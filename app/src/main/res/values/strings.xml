@@ -22,7 +22,9 @@
     <string name="json_export_file_name">backup_expenses.json</string>
     <string name="drawer_export_to_json">Export to JSON</string>
     <string name="drawer_import_from_json">Import from JSON</string>
+    <string name="drawer_statistics">Statistics</string>
 
+    <string name="expense_form">Form</string>
     <string name="expense_form_title">Title</string>
     <string name="expense_form_price">Price</string>
     <string name="expense_form_date">Date</string>
@@ -32,6 +34,13 @@
     <string name="expense_form_add">Add</string>
     <string name="expense_form_update">Update</string>
 
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+
+    <string name="from_date">From Date:</string>
+    <string name="to_date">To Date:</string>
+
+    <string name="total">Total</string>
+    <string name="total_expenses">Total Expenses</string>
+    <string name="total_incomes">Total Incomes</string>
 </resources>

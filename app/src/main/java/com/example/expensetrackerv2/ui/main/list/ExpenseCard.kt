@@ -1,5 +1,8 @@
 package com.example.expensetrackerv2.ui.main.list
 
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -93,12 +96,17 @@ fun ExpenseCard(
     onDeleteButtonClick: (ExpenseWithItsType) -> Unit
 ) {
     var isCardExtended by remember { mutableStateOf(false) }
-    val dropDownIconRotation = if (isCardExtended) 0f else -180f
+
+    val dropDownIconRotation by animateFloatAsState(
+        targetValue = if (isCardExtended) 0f else -180f,
+        animationSpec = tween(250)
+    )
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(3.dp)
+            .animateContentSize()
             .clickable {
                 isCardExtended = !isCardExtended
             }

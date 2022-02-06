@@ -13,7 +13,7 @@ abstract class ExpenseDao {
     abstract fun getAllExpenses(): List<Expense>
 
     @Query("SELECT * FROM typeofexpense")
-    abstract fun getAllTypesOfExpense(): List<TypeOfExpense>
+    abstract fun getAllTypesOfExpense(): LiveData<List<TypeOfExpense>>
 
     @Query("SELECT * FROM ExpenseWithItsType ORDER BY date DESC")
     abstract fun getAllExpenseWithItsType(): LiveData<List<ExpenseWithItsType>>
@@ -38,6 +38,9 @@ abstract class ExpenseDao {
     @Update
     abstract suspend fun updateExpense(expense: Expense)
 
+    @Update
+    abstract suspend fun updateTypeOfExpense(typeOfExpense: TypeOfExpense)
+
     // DELETES
     @Query("DELETE FROM Expense WHERE id = :id")
     abstract suspend fun deleteExpenseByID(id: Int)
@@ -51,5 +54,6 @@ abstract class ExpenseDao {
     suspend fun deleteExpense(expenseWithItsType: ExpenseWithItsType) =
         deleteExpenseByID(expenseWithItsType.id)
 
-
+    @Delete
+    abstract suspend fun deleteTypeOfExpense(vararg typeOfExpense: TypeOfExpense)
 }

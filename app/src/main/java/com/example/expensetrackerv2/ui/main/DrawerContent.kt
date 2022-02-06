@@ -18,7 +18,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.expensetrackerv2.R
+import com.example.expensetrackerv2.Routes
 import com.example.expensetrackerv2.database.AppDatabase
 import com.example.expensetrackerv2.database.models.view_models.ExpenseMonthYearKey
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
@@ -58,7 +60,8 @@ private fun ShowMonthButtons(
 fun DrawerContent(
     onMonthButtonClick: (expenseMonthYearKey: ExpenseMonthYearKey) -> Unit,
     closeDrawer: () -> Job,
-    expenseWithItsTypeRepository: ExpenseWithItsTypeRepository
+    expenseWithItsTypeRepository: ExpenseWithItsTypeRepository,
+    navController: NavController
 ) {
     val currentContext = LocalContext.current
     val expenseDao = AppDatabase.getInstance(context = currentContext).expenseDao()
@@ -120,6 +123,13 @@ fun DrawerContent(
             style = MaterialTheme.typography.h5,
             modifier = Modifier.padding(16.dp)
         )
+
+        TextButton(onClick = {
+            navController.navigate(Routes.ExpenseStatistics.route)
+            closeDrawer()
+        }, modifier = Modifier.padding(8.dp)) {
+            Text(text = stringResource(id = R.string.drawer_statistics))
+        }
 
         TextButton(
             onClick = { exportToJsonLauncher.launch(exportJsonFileName) }, modifier = Modifier

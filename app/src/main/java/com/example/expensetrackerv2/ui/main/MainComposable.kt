@@ -11,16 +11,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.expensetrackerv2.R
 import com.example.expensetrackerv2.Routes
-import com.example.expensetrackerv2.database.AppDatabase
 import com.example.expensetrackerv2.database.models.view_models.ExpenseMonthYearKey
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
-import com.example.expensetrackerv2.database.repositories.ExpenseWithItsTypeDatabaseRepository
 import com.example.expensetrackerv2.database.repositories.ExpenseWithItsTypeRepository
 import com.example.expensetrackerv2.ui.main.list.ExpensesList
 import com.example.expensetrackerv2.utilities.MathUtils
@@ -65,11 +62,10 @@ private fun MainContent(
 }
 
 @Composable
-fun MainComposable(navController: NavController) {
-    val currentContext = LocalContext.current
-    val expenseDao = AppDatabase.getInstance(context = currentContext).expenseDao()
-    val expenseWithItsTypeDatabaseRepository = ExpenseWithItsTypeDatabaseRepository(expenseDao)
-
+fun MainComposable(
+    navController: NavController,
+    expenseWithItsTypeRepository: ExpenseWithItsTypeRepository
+) {
     val scaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()
 
@@ -90,7 +86,8 @@ fun MainComposable(navController: NavController) {
             DrawerContent(
                 onMonthButtonClick,
                 closeDrawer,
-                expenseWithItsTypeDatabaseRepository
+                expenseWithItsTypeRepository,
+                navController
             )
         },
         bottomBar = {
@@ -108,7 +105,7 @@ fun MainComposable(navController: NavController) {
         content = { innerPadding ->
             MainContent(
                 innerPadding,
-                expenseWithItsTypeDatabaseRepository,
+                expenseWithItsTypeRepository,
                 navController,
                 actualExpenseMonthYearKey.value
             )

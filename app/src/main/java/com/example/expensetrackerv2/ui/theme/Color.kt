@@ -2,9 +2,9 @@ package com.example.expensetrackerv2.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple200 = Color(0xFFBB86FC)
-val Purple500 = Color(0xFF6200EE)
-val Purple700 = Color(0xFF3700B3)
-val Teal200 = Color(0xFF03DAC5)
+val Blue200 = Color(0xff90caf9)
+val Blue500 = Color(0xff2196f3)
+val Blue700 = Color(0xff1976d2)
+val DeepOrange200 = Color(0xffffab91)
 val ExpenseColor = Color(0xffff1744)
 val IncomeColor = Color(0xff76ff03)

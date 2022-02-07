@@ -37,7 +37,10 @@ fun ExpensesList(
     expenseMonthYearKey: ExpenseMonthYearKey? = null,
     titleToSearch: String = ""
 ) {
-    val expenseWithItsTypeList by expenseWithItsTypeRepository.getExpenses(expenseMonthYearKey, titleToSearch)
+    val expenseWithItsTypeList by expenseWithItsTypeRepository.getExpenses(
+        expenseMonthYearKey,
+        titleToSearch
+    )
         .observeAsState(listOf())
 
     val isDeleteDialogOpen = remember { mutableStateOf(false) }

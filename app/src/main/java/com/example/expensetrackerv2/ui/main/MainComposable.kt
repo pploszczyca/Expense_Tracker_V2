@@ -48,9 +48,12 @@ private fun MainContent(
                 .padding(top = 10.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            if(isMainExpenseInformationVisible) {
+            if (isMainExpenseInformationVisible) {
                 MainExpensesInformation(
-                    expenseWithItsTypeRepository.getExpenses(actualExpenseMonthYearKey, titleToSearch)
+                    expenseWithItsTypeRepository.getExpenses(
+                        actualExpenseMonthYearKey,
+                        titleToSearch
+                    )
                         .observeAsState(listOf()).value
                 )
             }

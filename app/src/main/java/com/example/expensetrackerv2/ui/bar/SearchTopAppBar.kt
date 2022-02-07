@@ -19,7 +19,10 @@ fun SearchTopAppBar(onTrailingIconClick: () -> Unit, onValueChange: (String) -> 
     TopAppBar(backgroundColor = Color.Unspecified) {
         TextField(
             value = value,
-            colors = TextFieldDefaults.textFieldColors(focusedIndicatorColor = Color.Unspecified, backgroundColor = Color.Unspecified),
+            colors = TextFieldDefaults.textFieldColors(
+                focusedIndicatorColor = Color.Unspecified,
+                backgroundColor = Color.Unspecified
+            ),
             singleLine = true,
             onValueChange = {
                 value = it

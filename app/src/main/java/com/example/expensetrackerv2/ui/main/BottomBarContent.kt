@@ -23,7 +23,8 @@ import kotlinx.coroutines.launch
 fun BottomBarContent(
     coroutineScope: CoroutineScope,
     scaffoldState: ScaffoldState,
-    actualExpenseMonthYearKey: MutableState<ExpenseMonthYearKey?>
+    actualExpenseMonthYearKey: MutableState<ExpenseMonthYearKey?>,
+    onSearchButtonClick: () -> Unit
 ) {
     BottomAppBar(cutoutShape = CircleShape) {
         IconButton(onClick = {
@@ -47,7 +48,7 @@ fun BottomBarContent(
             }
         }
 
-        IconButton(onClick = { /* TODO */ }) {
+        IconButton(onClick = { onSearchButtonClick() }) {
             Icon(
                 Icons.Filled.Search,
                 contentDescription = stringResource(id = R.string.search_icon)

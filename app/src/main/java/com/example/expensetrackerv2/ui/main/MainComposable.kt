@@ -4,11 +4,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -19,6 +16,7 @@ import com.example.expensetrackerv2.Routes
 import com.example.expensetrackerv2.database.models.view_models.ExpenseMonthYearKey
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
 import com.example.expensetrackerv2.database.repositories.ExpenseWithItsTypeRepository
+import com.example.expensetrackerv2.ui.bar.SearchTopAppBar
 import com.example.expensetrackerv2.ui.main.list.ExpensesList
 import com.example.expensetrackerv2.utilities.MathUtils
 import kotlinx.coroutines.launch
@@ -39,7 +37,9 @@ private fun MainContent(
     innerPadding: PaddingValues,
     expenseWithItsTypeRepository: ExpenseWithItsTypeRepository,
     navController: NavController,
-    actualExpenseMonthYearKey: ExpenseMonthYearKey?
+    actualExpenseMonthYearKey: ExpenseMonthYearKey? = null,
+    titleToSearch: String = "",
+    isMainExpenseInformationVisible: Boolean = true
 ) {
     Box(modifier = Modifier.padding(innerPadding)) {
         Column(
@@ -48,14 +48,17 @@ private fun MainContent(
                 .padding(top = 10.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            MainExpensesInformation(
-                expenseWithItsTypeRepository.getExpenses(actualExpenseMonthYearKey)
-                    .observeAsState(listOf()).value
-            )
+            if(isMainExpenseInformationVisible) {
+                MainExpensesInformation(
+                    expenseWithItsTypeRepository.getExpenses(actualExpenseMonthYearKey, titleToSearch)
+                        .observeAsState(listOf()).value
+                )
+            }
             ExpensesList(
                 expenseWithItsTypeRepository = expenseWithItsTypeRepository,
                 navController = navController,
-                expenseMonthYearKey = actualExpenseMonthYearKey
+                expenseMonthYearKey = actualExpenseMonthYearKey,
+                titleToSearch = titleToSearch
             )
         }
     }
@@ -80,6 +83,15 @@ fun MainComposable(
         actualExpenseMonthYearKey.value = expenseMonthYearKey
     }
 
+    var topBarVisibility by remember {
+        mutableStateOf(false)
+    }
+    var titleToSearch by remember {
+        mutableStateOf("")
+    }
+
+    val onSearchButtonClick = { topBarVisibility = true }
+
     Scaffold(
         scaffoldState = scaffoldState,
         drawerContent = {
@@ -90,8 +102,23 @@ fun MainComposable(
                 navController
             )
         },
+        topBar = {
+            if (topBarVisibility) {
+                SearchTopAppBar(
+                    onTrailingIconClick = {
+                        topBarVisibility = false
+                        titleToSearch = ""
+                    },
+                    onValueChange = { titleToSearch = it })
+            }
+        },
         bottomBar = {
-            BottomBarContent(coroutineScope, scaffoldState, actualExpenseMonthYearKey)
+            BottomBarContent(
+                coroutineScope,
+                scaffoldState,
+                actualExpenseMonthYearKey,
+                onSearchButtonClick
+            )
         },
         floatingActionButton = {
             FloatingActionButton(onClick = {
@@ -107,7 +134,9 @@ fun MainComposable(
                 innerPadding,
                 expenseWithItsTypeRepository,
                 navController,
-                actualExpenseMonthYearKey.value
+                actualExpenseMonthYearKey.value,
+                titleToSearch,
+                topBarVisibility.not()
             )
         }
     )

@@ -16,9 +16,16 @@ class ExpenseWithItsTypeDatabaseRepository(private val expenseDao: ExpenseDao) :
     override fun getExpenses(): LiveData<List<ExpenseWithItsType>> =
         expenseWithItsTypeLiveData
 
-    override fun getExpenses(expenseMonthYearKey: ExpenseMonthYearKey?): LiveData<List<ExpenseWithItsType>> =
+    override fun getExpenses(
+        expenseMonthYearKey: ExpenseMonthYearKey?,
+        titleToSearch: String
+    ): LiveData<List<ExpenseWithItsType>> =
         Transformations.map(expenseWithItsTypeLiveData) { it ->
-            it.filter { expenseMonthYearKey == null || it.getKey() == expenseMonthYearKey }
+            it.filter {
+                (expenseMonthYearKey == null || it.getKey() == expenseMonthYearKey) && it.title.contains(
+                    titleToSearch, true
+                )
+            }
         }
 
     override fun getExpense(expenseID: Int): ExpenseWithItsType =

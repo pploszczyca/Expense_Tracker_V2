@@ -6,7 +6,7 @@ import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsTy
 
 interface ExpenseWithItsTypeRepository {
     fun getExpenses(): LiveData<List<ExpenseWithItsType>>
-    fun getExpenses(expenseMonthYearKey: ExpenseMonthYearKey?): LiveData<List<ExpenseWithItsType>>
+    fun getExpenses(expenseMonthYearKey: ExpenseMonthYearKey? = null, titleToSearch: String = ""): LiveData<List<ExpenseWithItsType>>
     fun getExpense(expenseID: Int): ExpenseWithItsType
 
     suspend fun insertExpense(expenseWithItsType: ExpenseWithItsType)

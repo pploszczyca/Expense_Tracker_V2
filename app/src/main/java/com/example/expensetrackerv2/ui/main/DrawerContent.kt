@@ -131,6 +131,13 @@ fun DrawerContent(
             Text(text = stringResource(id = R.string.drawer_statistics))
         }
 
+        TextButton(onClick = {
+            navController.navigate(Routes.TypeOfExpenseSettings.route)
+            closeDrawer()
+        }, modifier = Modifier.padding(8.dp)) {
+            Text(text = stringResource(id = R.string.drawer_type_of_expense_settings))
+        }
+
         TextButton(
             onClick = { exportToJsonLauncher.launch(exportJsonFileName) }, modifier = Modifier
                 .padding(8.dp)

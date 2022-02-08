@@ -11,6 +11,7 @@ import com.example.expensetrackerv2.database.repositories.TypeOfExpenseRepositor
 import com.example.expensetrackerv2.ui.form.ExpenseForm
 import com.example.expensetrackerv2.ui.main.MainComposable
 import com.example.expensetrackerv2.ui.statistics.ExpensesStatistics
+import com.example.expensetrackerv2.ui.type_of_expense_settings.TypeOfExpenseSettings
 
 @Composable
 fun NavHostComposable(
@@ -44,6 +45,12 @@ fun NavHostComposable(
             ExpensesStatistics(
                 navController = navController,
                 expenseWithItsTypeRepository = expenseWithItsTypeRepository
+            )
+        }
+        composable(Routes.TypeOfExpenseSettings.route) {
+            TypeOfExpenseSettings(
+                typeOfExpenseRepository = typeOfExpenseRepository,
+                navController = navController
             )
         }
     }

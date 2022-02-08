@@ -55,7 +55,15 @@ fun ExpenseForm(
 
     var title by remember { mutableStateOf(expenseWithItsType.title) }
     var price by remember { mutableStateOf(if (expenseWithItsType.price == 0.0) "" else expenseWithItsType.price.toString()) }
-    var typeOfExpense by remember { mutableStateOf(typeOfExpenseList.first()) }
+    var typeOfExpense by remember {
+        mutableStateOf(
+            TypeOfExpense(
+                id = expenseWithItsType.typeID,
+                name = expenseWithItsType.typeName,
+                type = expenseWithItsType.type
+            )
+        )
+    }
     var date by remember { mutableStateOf(DateUtils.toOnlyDateString(expenseWithItsType.date)) }
     var place by remember { mutableStateOf(expenseWithItsType.place) }
     var description by remember { mutableStateOf(expenseWithItsType.description) }
@@ -111,16 +119,17 @@ fun ExpenseForm(
                 keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences)
             )
 
-            Row(
+            Column(
                 modifier = Modifier
-                    .selectableGroup(),
-                verticalAlignment = CenterVertically
+                    .selectableGroup()
             ) {
                 typeOfExpenseList.forEach { expenseType ->
-                    RadioButton(selected = typeOfExpense == expenseType, onClick = {
-                        typeOfExpense = expenseType
-                    })
-                    Text(text = expenseType.name, style = MaterialTheme.typography.subtitle1)
+                    Row(verticalAlignment = CenterVertically) {
+                        RadioButton(selected = typeOfExpense == expenseType, onClick = {
+                            typeOfExpense = expenseType
+                        })
+                        Text(text = expenseType.name, style = MaterialTheme.typography.subtitle1)
+                    }
                 }
             }
         }
@@ -164,9 +173,9 @@ fun ExpenseForm(
             }, modifier = Modifier.padding(20.dp)) {
                 Text(
                     text = if (expenseWithItsType.id == ExpenseConstants.NEW_EXPENSE_ID) stringResource(
-                        id = R.string.expense_form_add
+                        id = R.string.add
                     ) else stringResource(
-                        id = R.string.expense_form_update
+                        id = R.string.update
                     )
                 )
             }

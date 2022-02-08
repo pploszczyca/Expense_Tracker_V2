@@ -22,6 +22,6 @@ And import Project by Android Studio Menu > File > Import project
 - [X] Export/Import data to/from JSON,
 - [X] Filter data in main list menu by months,
 - [X] Statistics in specific period of time
-- [ ] Search specific expense,
+- [X] Search specific expense,
 - [ ] Customizable expense's/income's groups,
 - [ ] Graph for visualizing money flow.

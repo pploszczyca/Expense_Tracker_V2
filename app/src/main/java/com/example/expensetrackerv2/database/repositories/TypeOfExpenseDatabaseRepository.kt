@@ -3,8 +3,9 @@ package com.example.expensetrackerv2.database.repositories
 import androidx.lifecycle.LiveData
 import com.example.expensetrackerv2.database.ExpenseDao
 import com.example.expensetrackerv2.database.models.TypeOfExpense
+import javax.inject.Inject
 
-class TypeOfExpenseDatabaseRepository(private val expenseDao: ExpenseDao) :
+class TypeOfExpenseDatabaseRepository @Inject constructor(private val expenseDao: ExpenseDao) :
     TypeOfExpenseRepository {
     private val typeOfExpenseLiveData = expenseDao.getAllTypesOfExpense()
 

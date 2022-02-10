@@ -1,31 +1,33 @@
 package com.example.expensetrackerv2
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.ui.platform.LocalContext
-import com.example.expensetrackerv2.database.AppDatabase
-import com.example.expensetrackerv2.database.repositories.ExpenseWithItsTypeDatabaseRepository
-import com.example.expensetrackerv2.database.repositories.TypeOfExpenseDatabaseRepository
+import com.example.expensetrackerv2.database.repositories.ExpenseWithItsTypeRepository
+import com.example.expensetrackerv2.database.repositories.TypeOfExpenseRepository
 import com.example.expensetrackerv2.ui.theme.ExpenseTrackerV2Theme
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-class MainActivity : ComponentActivity() {
+@AndroidEntryPoint
+class MainActivity : AppCompatActivity() {
+
+    @Inject
+    lateinit var expenseWithItsTypeRepository: ExpenseWithItsTypeRepository
+
+    @Inject
+    lateinit var typeOfExpenseRepository: TypeOfExpenseRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             ExpenseTrackerV2Theme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
-                    val currentContext = LocalContext.current
-                    val expenseDao = AppDatabase.getInstance(context = currentContext).expenseDao()
-                    val expenseWithItsTypeDatabaseRepository =
-                        ExpenseWithItsTypeDatabaseRepository(expenseDao)
-                    val typeOfExpenseRepository = TypeOfExpenseDatabaseRepository(expenseDao)
-
                     NavHostComposable(
-                        expenseWithItsTypeRepository = expenseWithItsTypeDatabaseRepository,
+                        expenseWithItsTypeRepository = expenseWithItsTypeRepository,
                         typeOfExpenseRepository = typeOfExpenseRepository
                     )
                 }

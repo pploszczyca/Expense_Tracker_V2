@@ -21,13 +21,11 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.expensetrackerv2.R
 import com.example.expensetrackerv2.Routes
-import com.example.expensetrackerv2.database.AppDatabase
 import com.example.expensetrackerv2.database.models.view_models.ExpenseMonthYearKey
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
 import com.example.expensetrackerv2.database.models.view_models.getKey
 import com.example.expensetrackerv2.database.repositories.ExpenseWithItsTypeRepository
 import com.example.expensetrackerv2.utilities.DateUtils
-import com.example.expensetrackerv2.utilities.JSONUtils
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.util.*
@@ -61,10 +59,10 @@ fun DrawerContent(
     onMonthButtonClick: (expenseMonthYearKey: ExpenseMonthYearKey) -> Unit,
     closeDrawer: () -> Job,
     expenseWithItsTypeRepository: ExpenseWithItsTypeRepository,
-    navController: NavController
+    navController: NavController,
 ) {
     val currentContext = LocalContext.current
-    val expenseDao = AppDatabase.getInstance(context = currentContext).expenseDao()
+//    val expenseDao = AppDatabase.getInstance(context = currentContext).expenseDao()
     val exportJsonFileName = stringResource(id = R.string.drawer_months_title)
     val expenseWithItsTypeList by expenseWithItsTypeRepository.getExpenses()
         .observeAsState(listOf())
@@ -86,21 +84,21 @@ fun DrawerContent(
 
     exportToJsonFileResult.value?.let { uri ->
         closeDrawer()
-        currentContext.contentResolver.openOutputStream(uri)
-            ?.write(JSONUtils.exportExpensesListToJson(expenseDao.getAllExpenses()).toByteArray())
+//        currentContext.contentResolver.openOutputStream(uri)
+//            ?.write(JSONUtils.exportExpensesListToJson(expenseWithItsTypeList).toByteArray())
     }
 
     importFromJsonFileResult.value?.let { uri ->
         closeDrawer()
         coroutineScope.launch {
-            expenseDao.deleteAllExpenses()
-            expenseDao.insertAllExpenses(
-                JSONUtils.importExpensesListFromJson(
-                    currentContext.contentResolver.openInputStream(
-                        uri
-                    )?.bufferedReader()?.use { it.readText() }!!
-                )
-            )
+//            expenseDao.deleteAllExpenses()
+//            expenseDao.insertAllExpenses(
+//                JSONUtils.importExpensesListFromJson(
+//                    currentContext.contentResolver.openInputStream(
+//                        uri
+//                    )?.bufferedReader()?.use { it.readText() }!!
+//                )
+//            )
         }
     }
 

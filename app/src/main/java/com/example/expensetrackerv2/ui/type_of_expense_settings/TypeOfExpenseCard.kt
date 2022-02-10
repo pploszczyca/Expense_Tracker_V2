@@ -23,9 +23,11 @@ fun TypeOfExpenseCard(
     onUpdateButtonClick: (TypeOfExpense) -> Unit,
     onDeleteButtonClick: (TypeOfExpense) -> Unit
 ) {
-    Card(modifier = Modifier
-        .fillMaxWidth()
-        .padding(2.dp)) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(2.dp)
+    ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically

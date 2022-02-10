@@ -6,6 +6,7 @@ Simple Expense Tracker app for managing your expenses/incomes.
 * Jetpack Compose
 * Room Database
 * Gson
+* Hilt
 * [Compose Material Dialogs](https://github.com/vanpra/compose-material-dialogs) - for date dialog picker
 
 ## Installation

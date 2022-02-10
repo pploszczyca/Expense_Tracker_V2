@@ -7,8 +7,9 @@ import com.example.expensetrackerv2.database.models.Expense
 import com.example.expensetrackerv2.database.models.view_models.ExpenseMonthYearKey
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
 import com.example.expensetrackerv2.database.models.view_models.getKey
+import javax.inject.Inject
 
-class ExpenseWithItsTypeDatabaseRepository(private val expenseDao: ExpenseDao) :
+class ExpenseWithItsTypeDatabaseRepository @Inject constructor(private val expenseDao: ExpenseDao) :
     ExpenseWithItsTypeRepository {
 
     private val expenseWithItsTypeLiveData = expenseDao.getAllExpenseWithItsType()

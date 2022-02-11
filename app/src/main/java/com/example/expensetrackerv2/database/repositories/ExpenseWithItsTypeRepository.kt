@@ -11,7 +11,7 @@ interface ExpenseWithItsTypeRepository {
         titleToSearch: String = ""
     ): LiveData<List<ExpenseWithItsType>>
 
-    fun getExpense(expenseID: Int): ExpenseWithItsType
+    fun getExpense(expenseID: Int): LiveData<ExpenseWithItsType>
 
     suspend fun insertExpense(expenseWithItsType: ExpenseWithItsType)
 

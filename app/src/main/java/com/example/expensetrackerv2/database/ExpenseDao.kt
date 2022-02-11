@@ -22,7 +22,7 @@ abstract class ExpenseDao {
     abstract fun getExpense(expenseID: Int): Expense
 
     @Query("SELECT * FROM ExpenseWithItsType WHERE id = :expenseID")
-    abstract fun getExpenseWithItsType(expenseID: Int): ExpenseWithItsType
+    abstract fun getExpenseWithItsType(expenseID: Int): LiveData<ExpenseWithItsType>
 
     // INSERTS
     @Insert

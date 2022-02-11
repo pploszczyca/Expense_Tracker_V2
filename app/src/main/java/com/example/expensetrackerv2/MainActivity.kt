@@ -2,11 +2,13 @@ package com.example.expensetrackerv2
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import com.example.expensetrackerv2.database.repositories.ExpenseWithItsTypeRepository
 import com.example.expensetrackerv2.database.repositories.TypeOfExpenseRepository
+import com.example.expensetrackerv2.ui.statistics.ExpensesStatisticsViewModel
 import com.example.expensetrackerv2.ui.theme.ExpenseTrackerV2Theme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject

@@ -7,6 +7,7 @@ import com.example.expensetrackerv2.database.models.Expense
 import com.example.expensetrackerv2.database.models.view_models.ExpenseMonthYearKey
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
 import com.example.expensetrackerv2.database.models.view_models.getKey
+import com.example.expensetrackerv2.database.models.view_models.toExpense
 import javax.inject.Inject
 
 class ExpenseWithItsTypeDatabaseRepository @Inject constructor(private val expenseDao: ExpenseDao) :
@@ -29,28 +30,17 @@ class ExpenseWithItsTypeDatabaseRepository @Inject constructor(private val expen
             }
         }
 
-    override fun getExpense(expenseID: Int): ExpenseWithItsType =
+    override fun getExpense(expenseID: Int): LiveData<ExpenseWithItsType> =
         expenseDao.getExpenseWithItsType(expenseID)
-
-    private fun convertExpenseWithItsTypeToExpense(expenseWithItsType: ExpenseWithItsType): Expense =
-        Expense(
-            id = expenseWithItsType.id,
-            title = expenseWithItsType.title,
-            price = expenseWithItsType.price,
-            date = expenseWithItsType.date,
-            description = expenseWithItsType.description,
-            place = expenseWithItsType.place,
-            typeOfExpenseId = expenseWithItsType.typeID
-        )
 
     override suspend fun insertExpense(expenseWithItsType: ExpenseWithItsType) =
         expenseDao.insertAllExpenses(
-            convertExpenseWithItsTypeToExpense(expenseWithItsType)
+            expenseWithItsType.toExpense()
         )
 
     override suspend fun deleteExpense(expenseWithItsType: ExpenseWithItsType) =
         expenseDao.deleteExpense(expenseWithItsType)
 
     override suspend fun updateExpense(expenseWithItsType: ExpenseWithItsType) =
-        expenseDao.updateExpense(convertExpenseWithItsTypeToExpense(expenseWithItsType))
+        expenseDao.updateExpense(expenseWithItsType.toExpense())
 }

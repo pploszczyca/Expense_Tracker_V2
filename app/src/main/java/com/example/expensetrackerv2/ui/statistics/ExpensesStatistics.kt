@@ -5,7 +5,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -14,40 +15,43 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.expensetrackerv2.R
 import com.example.expensetrackerv2.database.models.Type
-import com.example.expensetrackerv2.database.repositories.ExpenseWithItsTypeRepository
 import com.example.expensetrackerv2.ui.bar.TopAppBarWithBack
 import com.example.expensetrackerv2.ui.form.CalendarDialogField
 import com.example.expensetrackerv2.ui.theme.ExpenseColor
 import com.example.expensetrackerv2.ui.theme.IncomeColor
 import com.example.expensetrackerv2.utilities.DateUtils
 import com.example.expensetrackerv2.utilities.MathUtils
-import java.util.*
 
 @Composable
 fun ExpensesStatistics(
     navController: NavController,
-    expenseWithItsTypeRepository: ExpenseWithItsTypeRepository
+    expensesStatisticsViewModel: ExpensesStatisticsViewModel
 ) {
-    var fromDate by remember {
-        mutableStateOf(DateUtils.toOnlyDateString(Date()))
-    }
-    var toDate by remember {
-        mutableStateOf(DateUtils.toOnlyDateString(Date()))
-    }
-    val expenseWithItsTypeFilteredList = expenseWithItsTypeRepository.getExpenses()
-        .observeAsState(listOf()).value.filter { DateUtils.toOnlyDateString(it.date) in fromDate..toDate }
+    val fromDate = expensesStatisticsViewModel.fromDate
+    val toDate = expensesStatisticsViewModel.toDate
+    val expenseWithItsTypeFilteredList = expensesStatisticsViewModel.expenseWithItsTypeLiveDataList.observeAsState(
+        emptyList()
+    ).value.filter { DateUtils.toOnlyDateString(it.date) in fromDate.value..toDate.value }
 
     Scaffold(content = {
         Column(modifier = Modifier.fillMaxSize()) {
             CalendarDialogField(
-                date = fromDate,
+                date = fromDate.value,
                 label = stringResource(id = R.string.from_date),
-                onDatePickerPick = { dateFromDialog -> fromDate = dateFromDialog.toString() })
+                onDatePickerPick = { dateFromDialog ->
+                    expensesStatisticsViewModel.onFromDateChange(
+                        dateFromDialog
+                    )
+                })
 
             CalendarDialogField(
-                date = toDate,
+                date = toDate.value,
                 label = stringResource(id = R.string.to_date),
-                onDatePickerPick = { dateFromDialog -> toDate = dateFromDialog.toString() })
+                onDatePickerPick = { dateFromDialog ->
+                    expensesStatisticsViewModel.onToDateChange(
+                        dateFromDialog
+                    )
+                })
 
             Spacer(modifier = Modifier.padding(4.dp))
 
@@ -59,13 +63,13 @@ fun ExpensesStatistics(
 
             StatisticsCard(
                 title = stringResource(id = R.string.total_expenses),
-                number = MathUtils.sumMoneyInListToString(expenseWithItsTypeFilteredList.filter { it.type == Type.OUTGO }),
+                number = MathUtils.sumMoneyInListByTypeToString(expenseWithItsTypeFilteredList, Type.OUTGO),
                 color = ExpenseColor
             )
 
             StatisticsCard(
                 title = stringResource(id = R.string.total_incomes),
-                number = MathUtils.sumMoneyInListToString(expenseWithItsTypeFilteredList.filter { it.type == Type.INCOME }),
+                number = MathUtils.sumMoneyInListByTypeToString(expenseWithItsTypeFilteredList, Type.INCOME),
                 color = IncomeColor
             )
         }

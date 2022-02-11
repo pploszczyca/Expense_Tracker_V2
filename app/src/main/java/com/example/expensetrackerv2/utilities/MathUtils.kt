@@ -1,5 +1,6 @@
 package com.example.expensetrackerv2.utilities
 
+import com.example.expensetrackerv2.database.models.Type
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
 import java.math.RoundingMode
 import java.text.DecimalFormat
@@ -22,4 +23,6 @@ object MathUtils {
         decimalFormat.format(
             sumMoneyInList(expenseWithItsTypeList)
         )
+
+    fun sumMoneyInListByTypeToString(expenseWithItsTypeList: List<ExpenseWithItsType>, type: Type): String = sumMoneyInListToString(expenseWithItsTypeList.filter { it.type == type })
 }

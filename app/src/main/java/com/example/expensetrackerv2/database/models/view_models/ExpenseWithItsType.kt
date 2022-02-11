@@ -1,6 +1,7 @@
 package com.example.expensetrackerv2.database.models.view_models
 
 import androidx.room.DatabaseView
+import com.example.expensetrackerv2.database.models.Expense
 import com.example.expensetrackerv2.database.models.Type
 import java.util.*
 
@@ -15,6 +16,16 @@ data class ExpenseWithItsType(
     val typeID: Int = 0,
     val typeName: String = "",
     val type: Type = Type.OUTGO
+)
+
+fun ExpenseWithItsType.toExpense(): Expense = Expense(
+    id = id,
+    title = title,
+    price = price,
+    date = date,
+    description = description,
+    place = place,
+    typeOfExpenseId = typeID
 )
 
 data class ExpenseMonthYearKey(val year: Int, val month: Int)

@@ -37,10 +37,11 @@ fun ExpenseForm(
     typeOfExpenseRepository: TypeOfExpenseRepository,
     expenseID: Int? = ExpenseConstants.NEW_EXPENSE_ID
 ) {
-    val expenseWithItsType =
-        if (expenseID == ExpenseConstants.NEW_EXPENSE_ID) ExpenseWithItsType() else expenseWithItsTypeRepository.getExpense(
-            expenseID!!
-        )
+//    val expenseWithItsType =
+//        if (expenseID == ExpenseConstants.NEW_EXPENSE_ID) ExpenseWithItsType() else expenseWithItsTypeRepository.getExpense(
+//            expenseID!!
+//        )
+    val expenseWithItsType = if (expenseID == ExpenseConstants.NEW_EXPENSE_ID) expenseWithItsTypeRepository.getExpense(expenseID).observeAsState(ExpenseWithItsType()).value else ExpenseWithItsType()
     val expensesWithItsTypeList by expenseWithItsTypeRepository.getExpenses()
         .observeAsState(listOf())
     val typeOfExpenseList by typeOfExpenseRepository.getAllTypeOfExpenses().observeAsState(

@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.use_cases
+package com.example.expensetrackerv2.use_cases.expense
 
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
 import com.example.expensetrackerv2.database.repositories.ExpenseWithItsTypeRepository

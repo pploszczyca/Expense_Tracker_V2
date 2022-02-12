@@ -9,7 +9,6 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.expensetrackerv2.database.models.ExpenseConstants
 import com.example.expensetrackerv2.database.repositories.ExpenseWithItsTypeRepository
-import com.example.expensetrackerv2.database.repositories.TypeOfExpenseRepository
 import com.example.expensetrackerv2.ui.form.AddEditForm
 import com.example.expensetrackerv2.ui.form.AddEditFormEvent
 import com.example.expensetrackerv2.ui.form.AddEditFormViewModel
@@ -17,15 +16,16 @@ import com.example.expensetrackerv2.ui.main.MainComposable
 import com.example.expensetrackerv2.ui.statistics.ExpensesStatistics
 import com.example.expensetrackerv2.ui.statistics.ExpensesStatisticsViewModel
 import com.example.expensetrackerv2.ui.type_of_expense_settings.TypeOfExpenseSettings
+import com.example.expensetrackerv2.ui.type_of_expense_settings.TypeOfExpenseSettingsModelView
 
 @Composable
 fun NavHostComposable(
     expenseWithItsTypeRepository: ExpenseWithItsTypeRepository,
-    typeOfExpenseRepository: TypeOfExpenseRepository
 ) {
     val navController = rememberNavController()
     val expensesStatisticsViewModel: ExpensesStatisticsViewModel = viewModel()
     val expensesFormViewModel: AddEditFormViewModel = viewModel()
+    val typeOfExpenseSettingsModelView: TypeOfExpenseSettingsModelView = viewModel()
 
     NavHost(navController = navController, startDestination = Routes.Main.route) {
         composable(Routes.Main.route) {
@@ -51,8 +51,7 @@ fun NavHostComposable(
 
             AddEditForm(
                 navController = navController,
-                expenseID = backStackEntry.arguments?.getInt("EXPENSE_ID"),
-                addEditFormViewModel = expensesFormViewModel
+                viewModel = expensesFormViewModel
             )
         }
         composable(Routes.ExpenseStatistics.route) {
@@ -63,8 +62,8 @@ fun NavHostComposable(
         }
         composable(Routes.TypeOfExpenseSettings.route) {
             TypeOfExpenseSettings(
-                typeOfExpenseRepository = typeOfExpenseRepository,
-                navController = navController
+                navController = navController,
+                modelView = typeOfExpenseSettingsModelView
             )
         }
     }

@@ -4,7 +4,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -14,17 +15,14 @@ import com.example.expensetrackerv2.database.models.TypeOfExpense
 
 @Composable
 fun TypeOfExpenseDialogForm(
-    typeOfExpense: TypeOfExpense,
-    confirmButtonTitle: String,
-    onConfirmButtonClick: (TypeOfExpense) -> Unit,
-    onDismissButtonClick: () -> Unit
+    modelView: TypeOfExpenseSettingsModelView
 ) {
-    var name by remember {
-        mutableStateOf(typeOfExpense.name)
-    }
-    var type by remember {
-        mutableStateOf(typeOfExpense.type)
-    }
+    val id by modelView.id
+    val name by modelView.name
+    val type by modelView.type
+
+    val confirmButtonTitle =
+        stringResource(id = if (modelView.isThisNewTypeOfExpense()) R.string.add else R.string.update)
 
     AlertDialog(
         title = { Text(text = stringResource(id = R.string.type_of_expense_form_title)) },
@@ -33,7 +31,7 @@ fun TypeOfExpenseDialogForm(
                 OutlinedTextField(
                     value = name,
                     label = { Text(stringResource(id = R.string.name)) },
-                    onValueChange = { name = it })
+                    onValueChange = { modelView.onEvent(TypeOfExpenseSettingsEvent.NameChange(it)) })
 
                 Row(
                     modifier = Modifier
@@ -41,29 +39,37 @@ fun TypeOfExpenseDialogForm(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Type.values().forEach { typeValue ->
-                        RadioButton(selected = typeValue == type, onClick = { type = typeValue })
+                        RadioButton(
+                            selected = typeValue == type,
+                            onClick = {
+                                modelView.onEvent(
+                                    TypeOfExpenseSettingsEvent.TypeChange(typeValue)
+                                )
+                            })
                         Text(text = typeValue.name, style = MaterialTheme.typography.subtitle1)
                     }
                 }
             }
         },
         dismissButton = {
-            TextButton(onClick = { onDismissButtonClick() }) {
+            TextButton(onClick = { modelView.onEvent(TypeOfExpenseSettingsEvent.CloseFormDialog()) }) {
                 Text(text = stringResource(id = R.string.cancel))
             }
         },
         confirmButton = {
             TextButton(onClick = {
-                onConfirmButtonClick(
-                    TypeOfExpense(
-                        id = typeOfExpense.id,
-                        name = name,
-                        type = type
+                modelView.onEvent(
+                    TypeOfExpenseSettingsEvent.DialogFormSubmit(
+                        TypeOfExpense(
+                            id = id,
+                            name = name,
+                            type = type
+                        )
                     )
                 )
             }) {
                 Text(text = confirmButtonTitle)
             }
         },
-        onDismissRequest = { onDismissButtonClick() })
+        onDismissRequest = { modelView.onEvent(TypeOfExpenseSettingsEvent.CloseFormDialog()) })
 }

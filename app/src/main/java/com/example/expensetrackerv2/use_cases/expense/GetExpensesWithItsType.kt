@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.use_cases
+package com.example.expensetrackerv2.use_cases.expense
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations

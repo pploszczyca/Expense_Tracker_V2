@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
-import com.example.expensetrackerv2.use_cases.GetExpensesWithItsType
+import com.example.expensetrackerv2.use_cases.expense.GetExpensesWithItsType
 import com.example.expensetrackerv2.utilities.DateUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate

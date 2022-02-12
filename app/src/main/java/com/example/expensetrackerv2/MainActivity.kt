@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import com.example.expensetrackerv2.database.repositories.ExpenseWithItsTypeRepository
-import com.example.expensetrackerv2.database.repositories.TypeOfExpenseRepository
 import com.example.expensetrackerv2.ui.theme.ExpenseTrackerV2Theme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -17,9 +16,6 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var expenseWithItsTypeRepository: ExpenseWithItsTypeRepository
 
-    @Inject
-    lateinit var typeOfExpenseRepository: TypeOfExpenseRepository
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -28,7 +24,6 @@ class MainActivity : AppCompatActivity() {
                 Surface(color = MaterialTheme.colors.background) {
                     NavHostComposable(
                         expenseWithItsTypeRepository = expenseWithItsTypeRepository,
-                        typeOfExpenseRepository = typeOfExpenseRepository
                     )
                 }
             }

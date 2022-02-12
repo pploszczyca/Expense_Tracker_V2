@@ -9,38 +9,26 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.expensetrackerv2.R
 import com.example.expensetrackerv2.database.models.TypeOfExpense
-import com.example.expensetrackerv2.database.models.TypeOfExpenseConstants
-import com.example.expensetrackerv2.database.repositories.TypeOfExpenseRepository
 import com.example.expensetrackerv2.ui.bar.TopAppBarWithBack
-import kotlinx.coroutines.runBlocking
 
 @Composable
 fun TypeOfExpenseSettings(
     navController: NavController,
-    typeOfExpenseRepository: TypeOfExpenseRepository
+    modelView: TypeOfExpenseSettingsModelView
 ) {
-    val typeOfExpenseList by typeOfExpenseRepository.getAllTypeOfExpenses().observeAsState(listOf())
+    val typeOfExpenseList by modelView.typesOfExpense.collectAsState(initial = emptyList())
 
-    var typeOfExpense by remember {
-        mutableStateOf(TypeOfExpense())
-    }
-    val isThisNewTypeOfExpense = typeOfExpense.id == TypeOfExpenseConstants.NEW_TYPE_OF_EXPENSE_ID
-    val confirmButtonTitle =
-        stringResource(id = if (isThisNewTypeOfExpense) R.string.add else R.string.update)
-    var isDialogFormVisible by remember {
-        mutableStateOf(false)
-    }
-    var isDeleteDialogFormVisible by remember {
-        mutableStateOf(false)
-    }
+    val isDialogFormVisible by modelView.isDialogFormVisible
+    val isDeleteDialogFormVisible by modelView.isDeleteDialogFormVisible
 
     Scaffold(
         topBar = {
@@ -51,7 +39,7 @@ fun TypeOfExpenseSettings(
         },
 
         floatingActionButton = {
-            FloatingActionButton(onClick = { isDialogFormVisible = true }) {
+            FloatingActionButton(onClick = { modelView.onEvent(TypeOfExpenseSettingsEvent.OpenFormDialog()) }) {
                 Icon(Icons.Filled.Add, contentDescription = stringResource(id = R.string.add_icon))
             }
         },
@@ -65,52 +53,28 @@ fun TypeOfExpenseSettings(
                     TypeOfExpenseCard(
                         typeOfExpense = typeOfExpenseItem,
                         onUpdateButtonClick = {
-                            typeOfExpense = it
-                            isDialogFormVisible = true
+                            modelView.onEvent(
+                                TypeOfExpenseSettingsEvent.OpenFormDialog(
+                                    it
+                                )
+                            )
                         },
                         onDeleteButtonClick = {
-                            typeOfExpense = it
-                            isDeleteDialogFormVisible = true
+                            modelView.onEvent(
+                                TypeOfExpenseSettingsEvent.OpenDeleteDialog(
+                                    it
+                                )
+                            )
                         })
                 }
             }
 
             if (isDialogFormVisible) {
-                TypeOfExpenseDialogForm(
-                    typeOfExpense = typeOfExpense,
-                    confirmButtonTitle = confirmButtonTitle,
-                    onConfirmButtonClick = {
-                        runBlocking {
-                            if (isThisNewTypeOfExpense) {
-                                typeOfExpenseRepository.insertTypeOfExpense(it)
-                            } else {
-                                typeOfExpenseRepository.updateTypeOfExpense(it)
-                            }
-                            typeOfExpense = TypeOfExpense()
-                        }
-                        isDialogFormVisible = false
-                    },
-                    onDismissButtonClick = {
-                        typeOfExpense = TypeOfExpense()
-                        isDialogFormVisible = false
-                    }
-                )
+                TypeOfExpenseDialogForm(modelView = modelView)
             }
 
             if (isDeleteDialogFormVisible) {
-                TypeOfExpenseDeleteDialog(
-                    typeOfExpense = typeOfExpense,
-                    onConfirmButtonClick = {
-                        runBlocking {
-                            typeOfExpenseRepository.deleteTypeOfExpense(it)
-                        }
-                        isDeleteDialogFormVisible = false
-                        typeOfExpense = TypeOfExpense()
-                    },
-                    onDismissButtonClick = {
-                        isDeleteDialogFormVisible = false
-                        typeOfExpense = TypeOfExpense()
-                    })
+                TypeOfExpenseDeleteDialog(modelView = modelView)
             }
         })
 }

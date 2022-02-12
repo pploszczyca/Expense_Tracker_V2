@@ -9,11 +9,8 @@ import androidx.compose.material.icons.filled.AttachMoney
 import androidx.compose.material.icons.filled.Message
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.filled.Title
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -30,25 +27,23 @@ import kotlinx.coroutines.launch
 @Composable
 fun AddEditForm(
     navController: NavController,
-    addEditFormViewModel: AddEditFormViewModel
+    viewModel: AddEditFormViewModel
 ) {
-    val typeOfExpenseList by addEditFormViewModel.typesOfExpense.observeAsState(
-        emptyList()
-    )
-    val titlesList by addEditFormViewModel.expensesTitles.observeAsState(emptyList())
-    val placesList by addEditFormViewModel.expensesPlaces.observeAsState(emptyList())
+    val typeOfExpenseList by viewModel.typesOfExpense.collectAsState(initial = emptyList())
+    val titlesList by viewModel.expensesTitles.observeAsState(emptyList())
+    val placesList by viewModel.expensesPlaces.observeAsState(emptyList())
 
     val dataIsIncorrectString = stringResource(id = R.string.expense_form_data_incorrect)
 
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
 
-    val title by addEditFormViewModel.title
-    val price by addEditFormViewModel.price
-    val typeOfExpense by addEditFormViewModel.typeOfExpense
-    val date by addEditFormViewModel.date
-    val place by addEditFormViewModel.place
-    val description by addEditFormViewModel.description
+    val title by viewModel.title
+    val price by viewModel.price
+    val typeOfExpense by viewModel.typeOfExpense
+    val date by viewModel.date
+    val place by viewModel.place
+    val description by viewModel.description
 
     val checkForm =
         title.isNotEmpty() && price.isNotEmpty() && price.toDouble() >= 0.0 && typeOfExpenseList.contains(
@@ -64,7 +59,7 @@ fun AddEditForm(
         Column {
             AutoCompleteOutlinedTextField(
                 value = title,
-                onValueChange = { addEditFormViewModel.onEvent(AddEditFormEvent.TitleChange(it)) },
+                onValueChange = { viewModel.onEvent(AddEditFormEvent.TitleChange(it)) },
                 icon = Icons.Default.Title,
                 label = stringResource(id = R.string.expense_form_title),
                 suggestionsInput = titlesList
@@ -72,7 +67,7 @@ fun AddEditForm(
 
             AddEditFormTextField(
                 value = price,
-                onValueChange = { addEditFormViewModel.onEvent(AddEditFormEvent.PriceChange(it)) },
+                onValueChange = { viewModel.onEvent(AddEditFormEvent.PriceChange(it)) },
                 icon = Icons.Default.AttachMoney,
                 label = stringResource(id = R.string.expense_form_price),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
@@ -82,12 +77,12 @@ fun AddEditForm(
                 date = DateUtils.toOnlyDateString(date),
                 label = stringResource(id = R.string.expense_form_date)
             ) { dateFromDialog ->
-                addEditFormViewModel.onEvent(AddEditFormEvent.DateChange(dateFromDialog.toString()))
+                viewModel.onEvent(AddEditFormEvent.DateChange(dateFromDialog.toString()))
             }
 
             AutoCompleteOutlinedTextField(
                 value = place,
-                onValueChange = { addEditFormViewModel.onEvent(AddEditFormEvent.PlaceChange(it)) },
+                onValueChange = { viewModel.onEvent(AddEditFormEvent.PlaceChange(it)) },
                 icon = Icons.Default.Place,
                 label = stringResource(id = R.string.expense_form_place),
                 suggestionsInput = placesList
@@ -95,7 +90,7 @@ fun AddEditForm(
 
             AddEditFormTextField(
                 value = description,
-                onValueChange = { addEditFormViewModel.onEvent(AddEditFormEvent.DescriptionChange(it)) },
+                onValueChange = { viewModel.onEvent(AddEditFormEvent.DescriptionChange(it)) },
                 icon = Icons.Default.Message,
                 label = stringResource(id = R.string.expense_form_description),
                 keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences)
@@ -108,7 +103,7 @@ fun AddEditForm(
                 typeOfExpenseList.forEach { expenseType ->
                     Row(verticalAlignment = CenterVertically) {
                         RadioButton(selected = typeOfExpense == expenseType, onClick = {
-                            addEditFormViewModel.onEvent(
+                            viewModel.onEvent(
                                 AddEditFormEvent.TypeOfAddEditChange(
                                     expenseType
                                 )
@@ -130,7 +125,7 @@ fun AddEditForm(
 
             Button(onClick = {
                 if (checkForm) {
-                    addEditFormViewModel.formSubmit()
+                    viewModel.formSubmit()
                     navController.navigateUp()
                 } else {
                     scope.launch {
@@ -140,7 +135,7 @@ fun AddEditForm(
 
             }, modifier = Modifier.padding(20.dp)) {
                 Text(
-                    text = if (addEditFormViewModel.isNewExpense()) stringResource(
+                    text = if (viewModel.isNewExpense()) stringResource(
                         id = R.string.add
                     ) else stringResource(
                         id = R.string.update

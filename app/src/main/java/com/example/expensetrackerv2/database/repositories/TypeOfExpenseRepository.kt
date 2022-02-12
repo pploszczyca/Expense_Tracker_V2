@@ -1,10 +1,10 @@
 package com.example.expensetrackerv2.database.repositories
 
-import androidx.lifecycle.LiveData
 import com.example.expensetrackerv2.database.models.TypeOfExpense
+import kotlinx.coroutines.flow.Flow
 
 interface TypeOfExpenseRepository {
-    fun getAllTypeOfExpenses(): LiveData<List<TypeOfExpense>>
+    fun getAllTypeOfExpenses(): Flow<List<TypeOfExpense>>
 
     suspend fun insertTypeOfExpense(typeOfExpense: TypeOfExpense)
 

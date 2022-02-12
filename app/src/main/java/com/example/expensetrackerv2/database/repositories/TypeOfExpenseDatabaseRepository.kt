@@ -1,15 +1,15 @@
 package com.example.expensetrackerv2.database.repositories
 
-import androidx.lifecycle.LiveData
 import com.example.expensetrackerv2.database.ExpenseDao
 import com.example.expensetrackerv2.database.models.TypeOfExpense
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class TypeOfExpenseDatabaseRepository @Inject constructor(private val expenseDao: ExpenseDao) :
     TypeOfExpenseRepository {
     private val typeOfExpenseLiveData = expenseDao.getAllTypesOfExpense()
 
-    override fun getAllTypeOfExpenses(): LiveData<List<TypeOfExpense>> = typeOfExpenseLiveData
+    override fun getAllTypeOfExpenses(): Flow<List<TypeOfExpense>> = typeOfExpenseLiveData
 
     override suspend fun insertTypeOfExpense(typeOfExpense: TypeOfExpense) =
         expenseDao.insertAllTypesOfExpense(typeOfExpense)

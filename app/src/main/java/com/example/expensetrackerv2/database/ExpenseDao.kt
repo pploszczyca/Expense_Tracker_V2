@@ -14,7 +14,7 @@ abstract class ExpenseDao {
     abstract fun getAllExpenses(): List<Expense>
 
     @Query("SELECT * FROM typeofexpense")
-    abstract fun getAllTypesOfExpense(): LiveData<List<TypeOfExpense>>
+    abstract fun getAllTypesOfExpense(): Flow<List<TypeOfExpense>>
 
     @Query("SELECT * FROM ExpenseWithItsType ORDER BY date DESC")
     abstract fun getAllExpenseWithItsType(): LiveData<List<ExpenseWithItsType>>

@@ -9,9 +9,11 @@ import com.example.expensetrackerv2.database.models.ExpenseConstants
 import com.example.expensetrackerv2.database.models.TypeOfExpense
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
 import com.example.expensetrackerv2.database.models.view_models.getTypeOfExpense
-import com.example.expensetrackerv2.use_cases.*
+import com.example.expensetrackerv2.use_cases.expense.*
+import com.example.expensetrackerv2.use_cases.type_of_expense.GetTypesOfExpense
 import com.example.expensetrackerv2.utilities.DateUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.util.*
@@ -49,9 +51,9 @@ class AddEditFormViewModel @Inject constructor(
 
     val expensesTitles: LiveData<List<String>> = getExpensesTitles()
     val expensesPlaces: LiveData<List<String>> = getExpensesPlaces()
-    val typesOfExpense: LiveData<List<TypeOfExpense>> = getTypesOfExpense()
+    val typesOfExpense: Flow<List<TypeOfExpense>> = getTypesOfExpense()
 
-    val isNewExpense = { id.value == ExpenseConstants.NEW_EXPENSE_ID }
+    fun isNewExpense() = id.value == ExpenseConstants.NEW_EXPENSE_ID
 
     private fun changeFormStates(expenseWithItsType: ExpenseWithItsType) {
         listOf(
@@ -68,7 +70,6 @@ class AddEditFormViewModel @Inject constructor(
         viewModelScope.launch {
             getExpenseWithItsType(expenseID).collect {
                 val expenseWithItsType = it ?: ExpenseWithItsType()
-                _id.value = expenseWithItsType.id
                 changeFormStates(expenseWithItsType)
             }
         }
@@ -77,7 +78,8 @@ class AddEditFormViewModel @Inject constructor(
     fun onEvent(event: AddEditFormEvent) {
         when (event) {
             is AddEditFormEvent.IdChange -> {
-                loadExpenseWithItsType(event.value)
+                _id.value = event.value
+                loadExpenseWithItsType(id.value)
             }
             is AddEditFormEvent.TitleChange -> {
                 _title.value = event.value

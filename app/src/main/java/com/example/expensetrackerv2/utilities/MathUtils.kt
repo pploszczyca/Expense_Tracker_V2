@@ -24,5 +24,8 @@ object MathUtils {
             sumMoneyInList(expenseWithItsTypeList)
         )
 
-    fun sumMoneyInListByTypeToString(expenseWithItsTypeList: List<ExpenseWithItsType>, type: Type): String = sumMoneyInListToString(expenseWithItsTypeList.filter { it.type == type })
+    fun sumMoneyInListByTypeToString(
+        expenseWithItsTypeList: List<ExpenseWithItsType>,
+        type: Type
+    ): String = sumMoneyInListToString(expenseWithItsTypeList.filter { it.type == type })
 }

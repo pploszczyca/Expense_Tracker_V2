@@ -27,7 +27,7 @@ fun AutoCompleteOutlinedTextField(
     val suggestions = suggestionsInput.distinct()
 
     Column(modifier = Modifier.fillMaxWidth()) {
-        ExpenseFormTextField(
+        AddEditFormTextField(
             value = value,
             onValueChange = {
                 onValueChange(it)

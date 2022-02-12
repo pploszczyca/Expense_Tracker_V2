@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,9 +28,10 @@ fun ExpensesStatistics(
 ) {
     val fromDate = expensesStatisticsViewModel.fromDate
     val toDate = expensesStatisticsViewModel.toDate
-    val expenseWithItsTypeFilteredList = expensesStatisticsViewModel.expenseWithItsTypeLiveDataList.observeAsState(
-        emptyList()
-    ).value.filter { DateUtils.toOnlyDateString(it.date) in fromDate.value..toDate.value }
+    val expenseWithItsTypeFilteredList =
+        expensesStatisticsViewModel.expenseWithItsTypeLiveDataList.observeAsState(
+            emptyList()
+        ).value.filter { DateUtils.toOnlyDateString(it.date) in fromDate.value..toDate.value }
 
     Scaffold(content = {
         Column(modifier = Modifier.fillMaxSize()) {
@@ -63,13 +63,19 @@ fun ExpensesStatistics(
 
             StatisticsCard(
                 title = stringResource(id = R.string.total_expenses),
-                number = MathUtils.sumMoneyInListByTypeToString(expenseWithItsTypeFilteredList, Type.OUTGO),
+                number = MathUtils.sumMoneyInListByTypeToString(
+                    expenseWithItsTypeFilteredList,
+                    Type.OUTGO
+                ),
                 color = ExpenseColor
             )
 
             StatisticsCard(
                 title = stringResource(id = R.string.total_incomes),
-                number = MathUtils.sumMoneyInListByTypeToString(expenseWithItsTypeFilteredList, Type.INCOME),
+                number = MathUtils.sumMoneyInListByTypeToString(
+                    expenseWithItsTypeFilteredList,
+                    Type.INCOME
+                ),
                 color = IncomeColor
             )
         }

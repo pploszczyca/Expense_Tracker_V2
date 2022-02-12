@@ -3,11 +3,11 @@ package com.example.expensetrackerv2.database.repositories
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.example.expensetrackerv2.database.ExpenseDao
-import com.example.expensetrackerv2.database.models.Expense
 import com.example.expensetrackerv2.database.models.view_models.ExpenseMonthYearKey
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
 import com.example.expensetrackerv2.database.models.view_models.getKey
 import com.example.expensetrackerv2.database.models.view_models.toExpense
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class ExpenseWithItsTypeDatabaseRepository @Inject constructor(private val expenseDao: ExpenseDao) :
@@ -30,7 +30,7 @@ class ExpenseWithItsTypeDatabaseRepository @Inject constructor(private val expen
             }
         }
 
-    override fun getExpense(expenseID: Int): LiveData<ExpenseWithItsType> =
+    override fun getExpense(expenseID: Int): Flow<ExpenseWithItsType?> =
         expenseDao.getExpenseWithItsType(expenseID)
 
     override suspend fun insertExpense(expenseWithItsType: ExpenseWithItsType) =

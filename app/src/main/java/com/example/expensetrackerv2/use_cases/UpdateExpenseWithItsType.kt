@@ -5,5 +5,6 @@ import com.example.expensetrackerv2.database.repositories.ExpenseWithItsTypeRepo
 import javax.inject.Inject
 
 class UpdateExpenseWithItsType @Inject constructor(private val expenseWithItsTypeRepository: ExpenseWithItsTypeRepository) {
-    suspend operator fun invoke(expenseWithItsType: ExpenseWithItsType) = expenseWithItsTypeRepository.updateExpense(expenseWithItsType)
+    suspend operator fun invoke(expenseWithItsType: ExpenseWithItsType) =
+        expenseWithItsTypeRepository.updateExpense(expenseWithItsType)
 }

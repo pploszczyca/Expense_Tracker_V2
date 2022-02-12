@@ -5,6 +5,7 @@ import androidx.room.*
 import com.example.expensetrackerv2.database.models.Expense
 import com.example.expensetrackerv2.database.models.TypeOfExpense
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 abstract class ExpenseDao {
@@ -22,7 +23,7 @@ abstract class ExpenseDao {
     abstract fun getExpense(expenseID: Int): Expense
 
     @Query("SELECT * FROM ExpenseWithItsType WHERE id = :expenseID")
-    abstract fun getExpenseWithItsType(expenseID: Int): LiveData<ExpenseWithItsType>
+    abstract fun getExpenseWithItsType(expenseID: Int): Flow<ExpenseWithItsType?>
 
     // INSERTS
     @Insert

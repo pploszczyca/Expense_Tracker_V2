@@ -28,7 +28,7 @@ fun CalendarDialogField(
 ) {
     val dialogState = rememberMaterialDialogState()
 
-    ExpenseFormTextField(
+    AddEditFormTextField(
         value = date,
         icon = icon,
         label = label,

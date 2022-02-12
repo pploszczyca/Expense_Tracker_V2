@@ -6,7 +6,6 @@ import com.example.expensetrackerv2.database.models.view_models.ExpenseMonthYear
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
 import com.example.expensetrackerv2.database.models.view_models.getKey
 import com.example.expensetrackerv2.database.repositories.ExpenseWithItsTypeRepository
-import com.example.expensetrackerv2.utilities.DateUtils
 import javax.inject.Inject
 
 class GetExpensesWithItsType @Inject constructor(private val expenseWithItsTypeRepository: ExpenseWithItsTypeRepository) {

@@ -3,6 +3,7 @@ package com.example.expensetrackerv2.database.models.view_models
 import androidx.room.DatabaseView
 import com.example.expensetrackerv2.database.models.Expense
 import com.example.expensetrackerv2.database.models.Type
+import com.example.expensetrackerv2.database.models.TypeOfExpense
 import java.util.*
 
 @DatabaseView("SELECT e.id, e.title, e.price, e.date, e.description, e.place, t.id AS typeID, t.name AS typeName, t.type FROM Expense AS e INNER JOIN TypeOfExpense AS t ON e.type_of_expense_id = t.id")
@@ -26,6 +27,12 @@ fun ExpenseWithItsType.toExpense(): Expense = Expense(
     description = description,
     place = place,
     typeOfExpenseId = typeID
+)
+
+fun ExpenseWithItsType.getTypeOfExpense(): TypeOfExpense = TypeOfExpense(
+    id = typeID,
+    name = typeName,
+    type = type
 )
 
 data class ExpenseMonthYearKey(val year: Int, val month: Int)

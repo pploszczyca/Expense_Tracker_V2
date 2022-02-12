@@ -13,7 +13,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ExpenseFormTextField(
+fun AddEditFormTextField(
     value: Any,
     onValueChange: (String) -> Unit = {},
     icon: ImageVector,

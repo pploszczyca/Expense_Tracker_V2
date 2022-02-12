@@ -3,6 +3,7 @@ package com.example.expensetrackerv2.database.repositories
 import androidx.lifecycle.LiveData
 import com.example.expensetrackerv2.database.models.view_models.ExpenseMonthYearKey
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
+import kotlinx.coroutines.flow.Flow
 
 interface ExpenseWithItsTypeRepository {
     fun getExpenses(): LiveData<List<ExpenseWithItsType>>
@@ -11,7 +12,7 @@ interface ExpenseWithItsTypeRepository {
         titleToSearch: String = ""
     ): LiveData<List<ExpenseWithItsType>>
 
-    fun getExpense(expenseID: Int): LiveData<ExpenseWithItsType>
+    fun getExpense(expenseID: Int): Flow<ExpenseWithItsType?>
 
     suspend fun insertExpense(expenseWithItsType: ExpenseWithItsType)
 

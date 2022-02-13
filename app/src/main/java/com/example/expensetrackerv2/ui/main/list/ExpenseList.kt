@@ -11,18 +11,12 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.expensetrackerv2.database.models.Type
-import com.example.expensetrackerv2.database.models.view_models.ExpenseMonthYearKey
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
 import com.example.expensetrackerv2.database.models.view_models.getKey
-import com.example.expensetrackerv2.database.repositories.ExpenseWithItsTypeRepository
 import com.example.expensetrackerv2.ui.main.DeleteExpenseAlertDialog
 import com.example.expensetrackerv2.ui.theme.ExpenseColor
 import com.example.expensetrackerv2.ui.theme.IncomeColor
@@ -32,25 +26,13 @@ import com.example.expensetrackerv2.utilities.MathUtils
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ExpensesList(
-    expenseWithItsTypeRepository: ExpenseWithItsTypeRepository,
+    expenseWithItsTypeList: List<ExpenseWithItsType>,
     navController: NavController,
-    expenseMonthYearKey: ExpenseMonthYearKey? = null,
-    titleToSearch: String = ""
+    onDeleteButtonClick: (ExpenseWithItsType) -> Unit,
+    onDismissDeleteButtonClick: () -> Unit,
+    onConfirmDeleteButtonClick: () -> Unit,
+    isDeleteDialogVisible: Boolean
 ) {
-    val expenseWithItsTypeList by expenseWithItsTypeRepository.getExpenses(
-        expenseMonthYearKey,
-        titleToSearch
-    )
-        .observeAsState(listOf())
-
-    val isDeleteDialogOpen = remember { mutableStateOf(false) }
-    val expenseWithItsTypeToDelete = remember { mutableStateOf(ExpenseWithItsType()) }
-
-    val onDeleteButtonClick = { expenseWithItsType: ExpenseWithItsType ->
-        expenseWithItsTypeToDelete.value = expenseWithItsType
-        isDeleteDialogOpen.value = true
-    }
-
     LazyColumn(Modifier.padding(3.dp)) {
         expenseWithItsTypeList.groupBy { it.getKey() }
             .forEach { (_, expensesInSpecificDate) ->
@@ -101,9 +83,11 @@ fun ExpensesList(
             }
     }
 
-    DeleteExpenseAlertDialog(
-        isDeleteDialogOpen = isDeleteDialogOpen,
-        expenseWithItsType = expenseWithItsTypeToDelete,
-        expenseWithItsTypeRepository = expenseWithItsTypeRepository
-    )
+    if (isDeleteDialogVisible) {
+        DeleteExpenseAlertDialog(
+            onDismissClick = onDismissDeleteButtonClick,
+            onConfirmButtonClick = onConfirmDeleteButtonClick
+        )
+    }
+
 }

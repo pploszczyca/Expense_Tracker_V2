@@ -1,11 +1,7 @@
 package com.example.expensetrackerv2.database.repositories
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 import com.example.expensetrackerv2.database.ExpenseDao
-import com.example.expensetrackerv2.database.models.view_models.ExpenseMonthYearKey
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
-import com.example.expensetrackerv2.database.models.view_models.getKey
 import com.example.expensetrackerv2.database.models.view_models.toExpense
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -13,22 +9,8 @@ import javax.inject.Inject
 class ExpenseWithItsTypeDatabaseRepository @Inject constructor(private val expenseDao: ExpenseDao) :
     ExpenseWithItsTypeRepository {
 
-    private val expenseWithItsTypeLiveData = expenseDao.getAllExpenseWithItsType()
-
-    override fun getExpenses(): LiveData<List<ExpenseWithItsType>> =
-        expenseWithItsTypeLiveData
-
-    override fun getExpenses(
-        expenseMonthYearKey: ExpenseMonthYearKey?,
-        titleToSearch: String
-    ): LiveData<List<ExpenseWithItsType>> =
-        Transformations.map(expenseWithItsTypeLiveData) { it ->
-            it.filter {
-                (expenseMonthYearKey == null || it.getKey() == expenseMonthYearKey) && it.title.contains(
-                    titleToSearch, true
-                )
-            }
-        }
+    override fun getExpenses(): Flow<List<ExpenseWithItsType>> =
+        expenseDao.getAllExpenseWithItsType()
 
     override fun getExpense(expenseID: Int): Flow<ExpenseWithItsType?> =
         expenseDao.getExpenseWithItsType(expenseID)
@@ -40,6 +22,10 @@ class ExpenseWithItsTypeDatabaseRepository @Inject constructor(private val expen
 
     override suspend fun deleteExpense(expenseWithItsType: ExpenseWithItsType) =
         expenseDao.deleteExpense(expenseWithItsType)
+
+    override suspend fun deleteAll() {
+        expenseDao.deleteAllExpenses()
+    }
 
     override suspend fun updateExpense(expenseWithItsType: ExpenseWithItsType) =
         expenseDao.updateExpense(expenseWithItsType.toExpense())

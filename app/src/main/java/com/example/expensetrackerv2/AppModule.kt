@@ -1,5 +1,6 @@
 package com.example.expensetrackerv2
 
+import android.content.ContentResolver
 import android.content.Context
 import androidx.room.Room
 import com.example.expensetrackerv2.database.AppDatabase
@@ -40,5 +41,8 @@ object AppModule {
     fun provideTypeOfExpenseRepository(expenseDao: ExpenseDao): TypeOfExpenseRepository =
         TypeOfExpenseDatabaseRepository(expenseDao)
 
-
+    @Provides
+    @Singleton
+    fun provideContentResolver(@ApplicationContext appContext: Context): ContentResolver =
+        appContext.contentResolver
 }

@@ -1,12 +1,10 @@
 package com.example.expensetrackerv2.use_cases.expense
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class GetExpensesPlaces @Inject constructor(private val getExpensesWithItsType: GetExpensesWithItsType) {
-    operator fun invoke(): LiveData<List<String>> =
-        Transformations.map(getExpensesWithItsType()) { it ->
-            it.map { it.place }
-        }
+    operator fun invoke(): Flow<List<String>> =
+        getExpensesWithItsType().map { list -> list.map { it.place }.distinct() }
 }

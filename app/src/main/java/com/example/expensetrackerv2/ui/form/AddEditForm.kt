@@ -10,7 +10,6 @@ import androidx.compose.material.icons.filled.Message
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.filled.Title
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -30,8 +29,8 @@ fun AddEditForm(
     viewModel: AddEditFormViewModel
 ) {
     val typeOfExpenseList by viewModel.typesOfExpense.collectAsState(initial = emptyList())
-    val titlesList by viewModel.expensesTitles.observeAsState(emptyList())
-    val placesList by viewModel.expensesPlaces.observeAsState(emptyList())
+    val titlesList by viewModel.expensesTitles.collectAsState(emptyList())
+    val placesList by viewModel.expensesPlaces.collectAsState(emptyList())
 
     val dataIsIncorrectString = stringResource(id = R.string.expense_form_data_incorrect)
 

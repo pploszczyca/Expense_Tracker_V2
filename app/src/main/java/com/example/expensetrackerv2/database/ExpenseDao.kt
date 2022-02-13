@@ -1,6 +1,5 @@
 package com.example.expensetrackerv2.database
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.expensetrackerv2.database.models.Expense
 import com.example.expensetrackerv2.database.models.TypeOfExpense
@@ -17,7 +16,7 @@ abstract class ExpenseDao {
     abstract fun getAllTypesOfExpense(): Flow<List<TypeOfExpense>>
 
     @Query("SELECT * FROM ExpenseWithItsType ORDER BY date DESC")
-    abstract fun getAllExpenseWithItsType(): LiveData<List<ExpenseWithItsType>>
+    abstract fun getAllExpenseWithItsType(): Flow<List<ExpenseWithItsType>>
 
     @Query("SELECT * FROM expense WHERE id = :expenseID")
     abstract fun getExpense(expenseID: Int): Expense

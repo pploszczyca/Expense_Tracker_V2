@@ -7,6 +7,7 @@ Simple Expense Tracker app for managing your expenses/incomes.
 * Room Database
 * Gson
 * Hilt
+* MVVM architectural pattern
 * [Compose Material Dialogs](https://github.com/vanpra/compose-material-dialogs) - for date dialog picker
 
 ## Installation

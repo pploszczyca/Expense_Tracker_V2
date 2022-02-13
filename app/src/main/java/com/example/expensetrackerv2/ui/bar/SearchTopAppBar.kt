@@ -5,28 +5,27 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
-fun SearchTopAppBar(onTrailingIconClick: () -> Unit, onValueChange: (String) -> Unit) {
-    var value by remember {
-        mutableStateOf("")
-    }
-
+fun SearchTopAppBar(
+    searchedValue: String = "",
+    onTrailingIconClick: () -> Unit,
+    onValueChange: (String) -> Unit
+) {
     TopAppBar(backgroundColor = Color.Unspecified) {
         TextField(
-            value = value,
+            value = searchedValue,
             colors = TextFieldDefaults.textFieldColors(
                 focusedIndicatorColor = Color.Unspecified,
                 backgroundColor = Color.Unspecified
             ),
             singleLine = true,
             onValueChange = {
-                value = it
-                onValueChange(value)
+                onValueChange(it)
             },
             modifier = Modifier.fillMaxSize(),
             leadingIcon = {
@@ -50,5 +49,5 @@ fun SearchTopAppBar(onTrailingIconClick: () -> Unit, onValueChange: (String) -> 
 @Composable
 @Preview
 fun SearchTopAppBarPreview() {
-    SearchTopAppBar({}) {}
+    SearchTopAppBar(onTrailingIconClick = {}) {}
 }

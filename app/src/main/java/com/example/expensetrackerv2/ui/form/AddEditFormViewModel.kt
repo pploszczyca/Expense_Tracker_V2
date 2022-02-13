@@ -2,7 +2,6 @@ package com.example.expensetrackerv2.ui.form
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.expensetrackerv2.database.models.ExpenseConstants
@@ -22,7 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AddEditFormViewModel @Inject constructor(
     private val getExpenseWithItsType: GetExpenseWithItsType,
-    private val addExpenseWithItsType: AddExpenseWithItsType,
+    private val insertExpenseWithItsType: InsertExpenseWithItsType,
     private val updateExpenseWithItsType: UpdateExpenseWithItsType,
     private val getExpensesTitles: GetExpensesTitles,
     private val getExpensesPlaces: GetExpensesPlaces,
@@ -49,8 +48,8 @@ class AddEditFormViewModel @Inject constructor(
     private val _description = mutableStateOf("")
     val description: State<String> = _description
 
-    val expensesTitles: LiveData<List<String>> = getExpensesTitles()
-    val expensesPlaces: LiveData<List<String>> = getExpensesPlaces()
+    val expensesTitles: Flow<List<String>> = getExpensesTitles()
+    val expensesPlaces: Flow<List<String>> = getExpensesPlaces()
     val typesOfExpense: Flow<List<TypeOfExpense>> = getTypesOfExpense()
 
     fun isNewExpense() = id.value == ExpenseConstants.NEW_EXPENSE_ID
@@ -117,7 +116,7 @@ class AddEditFormViewModel @Inject constructor(
     private fun insertOrUpdateNewExpense(newExpenseWithItsType: ExpenseWithItsType) {
         runBlocking {
             if (isNewExpense()) {
-                addExpenseWithItsType(newExpenseWithItsType)
+                insertExpenseWithItsType(newExpenseWithItsType)
             } else {
                 updateExpenseWithItsType(newExpenseWithItsType)
             }

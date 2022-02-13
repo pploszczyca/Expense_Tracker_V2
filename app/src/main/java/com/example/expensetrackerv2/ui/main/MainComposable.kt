@@ -4,8 +4,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -15,16 +17,14 @@ import com.example.expensetrackerv2.R
 import com.example.expensetrackerv2.Routes
 import com.example.expensetrackerv2.database.models.view_models.ExpenseMonthYearKey
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
-import com.example.expensetrackerv2.database.repositories.ExpenseWithItsTypeRepository
+import com.example.expensetrackerv2.database.models.view_models.getKey
 import com.example.expensetrackerv2.ui.bar.SearchTopAppBar
 import com.example.expensetrackerv2.ui.main.list.ExpensesList
 import com.example.expensetrackerv2.utilities.MathUtils
 import kotlinx.coroutines.launch
 
 @Composable
-private fun MainExpensesInformation(expenseWithItsTypeList: List<ExpenseWithItsType>) {
-    val moneyInWalletAmount = MathUtils.sumMoneyInList(expenseWithItsTypeList)
-
+private fun MainExpensesInformation(moneyInWalletAmount: Double) {
     Text(
         "${stringResource(id = R.string.in_wallet)} $moneyInWalletAmount",
         Modifier.padding(5.dp),
@@ -35,11 +35,13 @@ private fun MainExpensesInformation(expenseWithItsTypeList: List<ExpenseWithItsT
 @Composable
 private fun MainContent(
     innerPadding: PaddingValues,
-    expenseWithItsTypeRepository: ExpenseWithItsTypeRepository,
+    expenseWithItsTypeList: List<ExpenseWithItsType>,
     navController: NavController,
-    actualExpenseMonthYearKey: ExpenseMonthYearKey? = null,
-    titleToSearch: String = "",
-    isMainExpenseInformationVisible: Boolean = true
+    isMainExpenseInformationVisible: Boolean,
+    isDeleteDialogVisible: Boolean,
+    onDeleteButtonClick: (ExpenseWithItsType) -> Unit,
+    onDismissDeleteButtonClick: () -> Unit,
+    onConfirmDeleteButtonClick: () -> Unit,
 ) {
     Box(modifier = Modifier.padding(innerPadding)) {
         Column(
@@ -50,18 +52,18 @@ private fun MainContent(
         ) {
             if (isMainExpenseInformationVisible) {
                 MainExpensesInformation(
-                    expenseWithItsTypeRepository.getExpenses(
-                        actualExpenseMonthYearKey,
-                        titleToSearch
+                    moneyInWalletAmount = MathUtils.sumMoneyInList(
+                        expenseWithItsTypeList
                     )
-                        .observeAsState(listOf()).value
                 )
             }
             ExpensesList(
-                expenseWithItsTypeRepository = expenseWithItsTypeRepository,
+                expenseWithItsTypeList = expenseWithItsTypeList,
                 navController = navController,
-                expenseMonthYearKey = actualExpenseMonthYearKey,
-                titleToSearch = titleToSearch
+                onDeleteButtonClick = onDeleteButtonClick,
+                onDismissDeleteButtonClick = onDismissDeleteButtonClick,
+                onConfirmDeleteButtonClick = onConfirmDeleteButtonClick,
+                isDeleteDialogVisible = isDeleteDialogVisible
             )
         }
     }
@@ -70,58 +72,80 @@ private fun MainContent(
 @Composable
 fun MainComposable(
     navController: NavController,
-    expenseWithItsTypeRepository: ExpenseWithItsTypeRepository
+    viewModel: MainViewModel
 ) {
     val scaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()
 
-    val actualExpenseMonthYearKey = remember {
-        mutableStateOf<ExpenseMonthYearKey?>(null)
-    }
+    val searchedTitle by viewModel.searchedTitle
+    val currentMonthYearKey by viewModel.currentMonthYearKey
 
+    fun checkIfHasKeyAndContainsSearchedTitle(expenseWithItsType: ExpenseWithItsType): Boolean =
+        (currentMonthYearKey == null || expenseWithItsType.getKey() == currentMonthYearKey) && expenseWithItsType.title.contains(
+            searchedTitle
+        )
+
+    val expensesWithItsTypeList =
+        viewModel.expensesWithItsType.collectAsState(initial = emptyList()).value.filter {
+            checkIfHasKeyAndContainsSearchedTitle(
+                it
+            )
+        }
+
+    val isTopBarVisible by viewModel.isTopBarVisible
+    val isDeleteDialogVisible by viewModel.isDeleteDialogVisible
+
+    val openDrawer = { coroutineScope.launch { scaffoldState.drawerState.open() } }
     val closeDrawer = { coroutineScope.launch { scaffoldState.drawerState.close() } }
 
-    val onMonthButtonClick = { expenseMonthYearKey: ExpenseMonthYearKey ->
+    val onMonthButtonClick = { key: ExpenseMonthYearKey ->
         closeDrawer()
-        actualExpenseMonthYearKey.value = expenseMonthYearKey
+        viewModel.onEvent(MainEvent.MonthYearKeyChange(key))
     }
 
-    var topBarVisibility by remember {
-        mutableStateOf(false)
+    val closeSearchTopAppBar = {
+        viewModel.onEvent(MainEvent.TopBarVisibilityChange(false))
+        viewModel.onEvent(MainEvent.SearchedTitleChange(""))
     }
-    var titleToSearch by remember {
-        mutableStateOf("")
-    }
-
-    val onSearchButtonClick = { topBarVisibility = true }
 
     Scaffold(
         scaffoldState = scaffoldState,
         drawerContent = {
             DrawerContent(
-                onMonthButtonClick,
-                closeDrawer,
-                expenseWithItsTypeRepository,
-                navController
+                onMonthButtonClick = onMonthButtonClick,
+                onExportToJsonClick = { uri ->
+                    viewModel.onEvent(
+                        MainEvent.ExportToJsonButtonClick(
+                            uri
+                        )
+                    )
+                },
+                onImportFromJsonClick = { uri ->
+                    viewModel.onEvent(
+                        MainEvent.ImportFromJsonButtonClick(
+                            uri
+                        )
+                    )
+                },
+                closeDrawer = closeDrawer,
+                monthYearKeyList = expensesWithItsTypeList.map { it.getKey() }.distinct(),
+                navController = navController
             )
         },
         topBar = {
-            if (topBarVisibility) {
+            if (isTopBarVisible) {
                 SearchTopAppBar(
-                    onTrailingIconClick = {
-                        topBarVisibility = false
-                        titleToSearch = ""
-                    },
-                    onValueChange = { titleToSearch = it })
+                    searchedValue = searchedTitle,
+                    onTrailingIconClick = closeSearchTopAppBar,
+                    onValueChange = { viewModel.onEvent(MainEvent.SearchedTitleChange(it)) })
             }
         },
         bottomBar = {
             BottomBarContent(
-                coroutineScope,
-                scaffoldState,
-                actualExpenseMonthYearKey,
-                onSearchButtonClick
-            )
+                onMenuButtonClick = { openDrawer() },
+                isClearButtonVisible = viewModel.isClearButtonVisible(),
+                onClearButtonClick = { viewModel.onEvent(MainEvent.MonthYearKeyChange(null)) },
+                onSearchButtonClick = { viewModel.onEvent(MainEvent.TopBarVisibilityChange(true)) })
         },
         floatingActionButton = {
             FloatingActionButton(onClick = {
@@ -134,13 +158,14 @@ fun MainComposable(
         isFloatingActionButtonDocked = true,
         content = { innerPadding ->
             MainContent(
-                innerPadding,
-                expenseWithItsTypeRepository,
-                navController,
-                actualExpenseMonthYearKey.value,
-                titleToSearch,
-                topBarVisibility.not()
-            )
+                innerPadding = innerPadding,
+                expenseWithItsTypeList = expensesWithItsTypeList,
+                navController = navController,
+                isMainExpenseInformationVisible = viewModel.isMainExpenseInformationVisible(),
+                isDeleteDialogVisible = isDeleteDialogVisible,
+                onDeleteButtonClick = { viewModel.onEvent(MainEvent.DeleteButtonClick(it)) },
+                onDismissDeleteButtonClick = { viewModel.onEvent(MainEvent.DismissDeleteButtonClick()) },
+                onConfirmDeleteButtonClick = { viewModel.onEvent(MainEvent.ConfirmDeleteButtonClick()) })
         }
     )
 }

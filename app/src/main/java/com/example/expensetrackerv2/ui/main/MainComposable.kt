@@ -8,7 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -27,7 +26,7 @@ import kotlinx.coroutines.launch
 private fun MainExpensesInformation(moneyInWalletAmount: Double) {
     Text(
         "${stringResource(id = R.string.in_wallet)} $moneyInWalletAmount",
-        Modifier.padding(5.dp),
+        Modifier.absolutePadding(left = 12.dp, bottom = 16.dp, top = 16.dp),
         style = MaterialTheme.typography.h4
     )
 }
@@ -48,7 +47,6 @@ private fun MainContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 10.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             if (isMainExpenseInformationVisible) {
                 MainExpensesInformation(
@@ -82,7 +80,8 @@ fun MainComposable(
 
     fun checkIfHasKeyAndContainsSearchedTitle(expenseWithItsType: ExpenseWithItsType): Boolean =
         (currentMonthYearKey == null || expenseWithItsType.getKey() == currentMonthYearKey) && expenseWithItsType.title.contains(
-            searchedTitle
+            searchedTitle,
+            true
         )
 
     val expensesWithItsTypeList =

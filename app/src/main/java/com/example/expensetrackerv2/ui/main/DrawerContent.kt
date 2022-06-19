@@ -3,12 +3,11 @@ package com.example.expensetrackerv2.ui.main
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
@@ -29,12 +28,11 @@ private fun ShowMonthButtons(
     monthYearKeyList: List<ExpenseMonthYearKey>,
     onClick: (expenseMonthYearKey: ExpenseMonthYearKey) -> Unit
 ) {
-    LazyColumn {
-        items(monthYearKeyList)
-        { key ->
+    Column {
+        monthYearKeyList.map { key ->
             TextButton(
                 onClick = { onClick(key) }, modifier = Modifier
-                    .padding(8.dp)
+                    .absolutePadding(left = 8.dp, bottom = 3.dp, top = 3.dp)
             ) {
                 val date = Date()
                 date.month = key.month
@@ -72,6 +70,7 @@ fun DrawerContent(
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
+            .verticalScroll(rememberScrollState())
     ) {
 
         Text(

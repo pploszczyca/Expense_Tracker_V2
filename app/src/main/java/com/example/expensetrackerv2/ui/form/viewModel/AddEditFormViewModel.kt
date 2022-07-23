@@ -14,7 +14,7 @@ abstract class AddEditFormViewModel: ViewModel() {
         val id: String,
         val title: String,
         val price: String,
-        val typesOfExpense: List<TypeOfExpenseRecord>,
+        val typeOfExpenseRecords: List<TypeOfExpenseRecord>,
         val date: Date,
         val place: String,
         val description: String,
@@ -24,7 +24,7 @@ abstract class AddEditFormViewModel: ViewModel() {
         data class TypeOfExpenseRecord(
             val id: Int,
             val name: String,
-            val clicked: Boolean
+            val selected: Boolean
         )
     }
 
@@ -33,9 +33,9 @@ abstract class AddEditFormViewModel: ViewModel() {
         data class TitleChange(val title: String) : Event()
         data class PriceChange(val price: String) : Event()
         data class TypeOfAddEditChange(val id: Int) : Event()
-        data class DateChange(val value: String) : Event()
-        data class PlaceChange(val value: String) : Event()
-        data class DescriptionChange(val value: String) : Event()
+        data class DateChange(val date: String) : Event()
+        data class PlaceChange(val place: String) : Event()
+        data class DescriptionChange(val description: String) : Event()
         object FormSubmit: Event()
     }
 }

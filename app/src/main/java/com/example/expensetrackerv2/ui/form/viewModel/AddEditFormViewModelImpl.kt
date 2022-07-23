@@ -1,19 +1,18 @@
 package com.example.expensetrackerv2.ui.form.viewModel
 
-import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import com.example.expensetrackerv2.database.models.ExpenseConstants
 import com.example.expensetrackerv2.database.models.TypeOfExpense
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
-import com.example.expensetrackerv2.database.models.view_models.getTypeOfExpense
+import com.example.expensetrackerv2.ui.form.mappers.AddEditFormStateMapper
 import com.example.expensetrackerv2.use_cases.expense.*
 import com.example.expensetrackerv2.use_cases.type_of_expense.GetTypesOfExpense
 import com.example.expensetrackerv2.utilities.DateUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
@@ -25,48 +24,74 @@ class AddEditFormViewModelImpl @Inject constructor(
     private val updateExpenseWithItsType: UpdateExpenseWithItsType,
     private val getExpensesTitles: GetExpensesTitles,
     private val getExpensesPlaces: GetExpensesPlaces,
-    private val getTypesOfExpense: GetTypesOfExpense
-) : ViewModel() {
-    private val _id = mutableStateOf(ExpenseConstants.NEW_EXPENSE_ID)
-    val id: State<Int> = _id
+    private val getTypesOfExpense: GetTypesOfExpense,
+    private val addEditFormStateMapper: AddEditFormStateMapper = AddEditFormStateMapper()
+) : AddEditFormViewModel() {
+    private var state by mutableStateOf(State())
 
-    private val _title = mutableStateOf("")
-    val title: State<String> = _title
+    override val viewState: androidx.compose.runtime.State<ViewState>
+        get() = mutableStateOf(addEditFormStateMapper.toViewState(state))
 
-    private val _price = mutableStateOf("")
-    val price: State<String> = _price
+    init {
+        viewModelScope.launch(Dispatchers.IO) {
+            getExpensesTitles().collect {
+                state = state.copy(
+                    expensesTitles = it
+                )
+            }
+        }
 
-    private val _typeOfExpense = mutableStateOf(TypeOfExpense())
-    val typeOfExpense: State<TypeOfExpense> = _typeOfExpense
+        viewModelScope.launch(Dispatchers.IO) {
+            getExpensesPlaces().collect {
+                state = state.copy(
+                    expensesPlaces = it
+                )
+            }
+        }
 
-    private val _date = mutableStateOf(Date())
-    val date: State<Date> = _date
+        viewModelScope.launch(Dispatchers.IO) {
+            getTypesOfExpense().collect {
+                state = state.copy(
+                    typeOfExpenses = it
+                )
+            }
+        }
+    }
 
-    private val _place = mutableStateOf("")
-    val place: State<String> = _place
+    override fun onEvent(event: Event) {
+        when (event) {
+            is Event.FormSubmit -> formSubmit()
+            else -> state = when (event) {
+                is Event.IdChange -> {
+                    loadExpenseWithItsType(event.id)
+                    state.copy(id = event.id)
+                }
+                is Event.TitleChange -> state.copy(title = event.title)
+                is Event.PriceChange -> state.copy(price = event.price)
+                is Event.DateChange -> state.copy(date = DateUtils.stringToDate(event.date))
+                is Event.PlaceChange -> state.copy(place = event.place)
+                is Event.DescriptionChange -> state.copy(place = event.description)
+                is Event.TypeOfAddEditChange -> state.copy(selectedTypeOfExpenseId = event.id)
+                else -> state
+            }
+        }
+    }
 
-    private val _description = mutableStateOf("")
-    val description: State<String> = _description
+    fun formSubmit() {
+        insertOrUpdateNewExpense(addEditFormStateMapper.toExpenseWithItsType(state))
+    }
 
-    val expensesTitles: Flow<List<String>> = getExpensesTitles()
-    val expensesPlaces: Flow<List<String>> = getExpensesPlaces()
-    val typesOfExpense: Flow<List<TypeOfExpense>> = getTypesOfExpense()
-
-    fun isNewExpense() = id.value == ExpenseConstants.NEW_EXPENSE_ID
-
-    private fun changeFormStates(expenseWithItsType: ExpenseWithItsType) {
-        listOf(
-            AddEditFormEvent.TitleChange(expenseWithItsType.title),
-            AddEditFormEvent.PriceChange(if (expenseWithItsType.price != 0.0) expenseWithItsType.price.toString() else ""),
-            AddEditFormEvent.DateChange(DateUtils.toOnlyDateString(expenseWithItsType.date)),
-            AddEditFormEvent.PlaceChange(expenseWithItsType.place),
-            AddEditFormEvent.DescriptionChange(expenseWithItsType.description),
-            AddEditFormEvent.TypeOfAddEditChange(expenseWithItsType.getTypeOfExpense())
-        ).forEach { event -> onEvent(event) }
+    private fun insertOrUpdateNewExpense(newExpenseWithItsType: ExpenseWithItsType) {
+        viewModelScope.launch(Dispatchers.IO) {
+            when (state.isNewExpense) {
+                true -> insertExpenseWithItsType(newExpenseWithItsType)
+                false -> updateExpenseWithItsType(newExpenseWithItsType)
+            }
+        }
     }
 
     private fun loadExpenseWithItsType(expenseID: Int) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             getExpenseWithItsType(expenseID).collect {
                 val expenseWithItsType = it ?: ExpenseWithItsType()
                 changeFormStates(expenseWithItsType)
@@ -74,50 +99,29 @@ class AddEditFormViewModelImpl @Inject constructor(
         }
     }
 
-    fun onEvent(event: AddEditFormEvent) {
-        when (event) {
-            is AddEditFormEvent.IdChange -> {
-                _id.value = event.value
-                loadExpenseWithItsType(id.value)
-            }
-            is AddEditFormEvent.TitleChange ->
-                _title.value = event.value
-            is AddEditFormEvent.PriceChange ->
-                _price.value = event.value
-            is AddEditFormEvent.DateChange ->
-                _date.value = DateUtils.stringToDate(event.value)
-            is AddEditFormEvent.PlaceChange ->
-                _place.value = event.value
-            is AddEditFormEvent.DescriptionChange ->
-                _description.value = event.value
-            is AddEditFormEvent.TypeOfAddEditChange ->
-                _typeOfExpense.value = event.value
-        }
+    private fun changeFormStates(expenseWithItsType: ExpenseWithItsType) {
+        listOf(
+            Event.TitleChange(expenseWithItsType.title),
+            Event.PriceChange(if (expenseWithItsType.price != 0.0) expenseWithItsType.price.toString() else ""),
+            Event.DateChange(DateUtils.toOnlyDateString(expenseWithItsType.date)),
+            Event.PlaceChange(expenseWithItsType.place),
+            Event.DescriptionChange(expenseWithItsType.description),
+            Event.TypeOfAddEditChange(expenseWithItsType.id)
+        ).forEach { event -> onEvent(event) }
     }
 
-    private fun makeNewExpenseWithItsType() = ExpenseWithItsType(
-        id = id.value,
-        title = title.value,
-        date = date.value,
-        price = price.value.toDouble(),
-        place = place.value,
-        description = description.value,
-        type = typeOfExpense.value.type,
-        typeID = typeOfExpense.value.id,
-        typeName = typeOfExpense.value.name
-    )
-
-    private fun insertOrUpdateNewExpense(newExpenseWithItsType: ExpenseWithItsType) {
-        viewModelScope.launch(Dispatchers.IO) {
-            if (isNewExpense()) {
-                insertExpenseWithItsType(newExpenseWithItsType)
-            } else {
-                updateExpenseWithItsType(newExpenseWithItsType)
-            }
-        }
-    }
-
-    fun formSubmit() {
-        insertOrUpdateNewExpense(makeNewExpenseWithItsType())
+    data class State(
+        val id: Int = ExpenseConstants.NEW_EXPENSE_ID,
+        val title: String = "",
+        val price: String = "",
+        val selectedTypeOfExpenseId: Int = -1,
+        val date: Date = Date(),
+        val place: String = "",
+        val description: String = "",
+        val expensesTitles: List<String>? = null,
+        val expensesPlaces: List<String>? = null,
+        val typeOfExpenses: List<TypeOfExpense>? = null
+    ) {
+        val isNewExpense get() = id == ExpenseConstants.NEW_EXPENSE_ID
     }
 }

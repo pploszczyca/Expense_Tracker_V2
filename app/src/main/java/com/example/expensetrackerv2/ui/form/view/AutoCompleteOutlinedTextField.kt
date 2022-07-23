@@ -20,18 +20,14 @@ fun AutoCompleteOutlinedTextField(
     onValueChange: (String) -> Unit,
     icon: ImageVector,
     label: String = "",
-    suggestionsInput: List<String> = emptyList(),
+    suggestions: List<String> = emptyList(),
     keyboardOptions: KeyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words),
 ) {
-    var typedText by remember { mutableStateOf(value) }
-    val suggestions = suggestionsInput.distinct()
-
     Column(modifier = Modifier.fillMaxWidth()) {
         AddEditFormTextField(
             value = value,
             onValueChange = {
                 onValueChange(it)
-                typedText = it
             },
             icon = icon,
             label = label,
@@ -39,21 +35,16 @@ fun AutoCompleteOutlinedTextField(
         )
 
         DropdownMenu(
-            expanded = (typedText != "" && suggestions.isNotEmpty() && suggestions.filter {
-                it.contains(
-                    typedText
-                )
-            }.isNotEmpty() && suggestions.filter { it == typedText }.size != 1),
-            onDismissRequest = { },
+            expanded = (suggestions.isNotEmpty()),
+            onDismissRequest = {},
             modifier = Modifier
                 .fillMaxWidth()
                 .heightIn(max = 200.dp),
             properties = PopupProperties(focusable = false)
         ) {
-            suggestions.filter { it.contains(typedText) }.forEach { suggestedText ->
+            suggestions.forEach { suggestedText ->
                 DropdownMenuItem(
                     onClick = {
-                        typedText = suggestedText
                         onValueChange(suggestedText)
                     }) {
                     Text(text = suggestedText)

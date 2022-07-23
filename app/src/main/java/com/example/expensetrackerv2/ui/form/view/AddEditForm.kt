@@ -23,10 +23,8 @@ import androidx.navigation.NavController
 import com.example.expensetrackerv2.R
 import com.example.expensetrackerv2.ui.bar.TopAppBarWithBack
 import com.example.expensetrackerv2.ui.form.viewModel.AddEditFormViewModel
-import com.example.expensetrackerv2.ui.form.viewModel.AddEditFormViewModelImpl
 import com.example.expensetrackerv2.utilities.DateUtils
 import kotlinx.coroutines.launch
-import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun AddEditForm(
@@ -52,7 +50,7 @@ fun AddEditForm(
                 onValueChange = { viewModel.onEvent(AddEditFormViewModel.Event.TitleChange(it)) },
                 icon = Icons.Default.Title,
                 label = stringResource(id = R.string.expense_form_title),
-                suggestionsInput = viewState.titleSuggestions
+                suggestions = viewState.titleSuggestions
             )
 
             AddEditFormTextField(
@@ -75,7 +73,7 @@ fun AddEditForm(
                 onValueChange = { viewModel.onEvent(AddEditFormViewModel.Event.PlaceChange(it)) },
                 icon = Icons.Default.Place,
                 label = stringResource(id = R.string.expense_form_place),
-                suggestionsInput = viewState.placeSuggestions
+                suggestions = viewState.placeSuggestions
             )
 
             AddEditFormTextField(

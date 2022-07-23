@@ -21,8 +21,8 @@ class AddEditFormStateMapper {
             date = state.date,
             place = state.place,
             description = state.description,
-            titleSuggestions = getSimilarValues(state.expensesTitles, state.title) ?: emptyList(),
-            placeSuggestions = getSimilarValues(state.expensesTitles, state.place) ?: emptyList(),
+            titleSuggestions = getSimilarValues(state.expensesTitles, state.title),
+            placeSuggestions = getSimilarValues(state.expensesTitles, state.place),
             isAllDataLoaded = state.title.isNotEmpty() && state.price.isNotEmpty() && state.price.toDouble() >= 0.0 && state.selectedTypeOfExpenseId != -2,
             buttonTextId = when (state.isNewExpense) {
                 true -> R.string.add
@@ -31,10 +31,18 @@ class AddEditFormStateMapper {
         )
     }
 
-    private fun getSimilarValues(values: List<String>?, valueToMatch: String) =
-        values
+    private fun getSimilarValues(values: List<String>?, valueToMatch: String): List<String> {
+        if(valueToMatch.isEmpty()) return emptyList()
+
+        val filteredValues = values
             ?.distinct()
-            ?.filter { it.contains(valueToMatch) }
+            ?.filter { it.contains(valueToMatch) } ?: emptyList()
+
+        return when(filteredValues.lastIndexOf(valueToMatch) == -1) {
+            true -> filteredValues
+            false -> emptyList()
+        }
+    }
 
     fun toExpenseWithItsType(state: AddEditFormViewModelImpl.State): ExpenseWithItsType {
         val selectedTypeOfExpense: TypeOfExpense =

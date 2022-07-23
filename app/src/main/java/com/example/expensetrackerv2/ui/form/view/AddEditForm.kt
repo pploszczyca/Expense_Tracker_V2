@@ -20,13 +20,16 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.expensetrackerv2.R
 import com.example.expensetrackerv2.ui.bar.TopAppBarWithBack
+import com.example.expensetrackerv2.ui.form.view.AutoCompleteOutlinedTextField
+import com.example.expensetrackerv2.ui.form.viewModel.AddEditFormEvent
+import com.example.expensetrackerv2.ui.form.viewModel.AddEditFormViewModelImpl
 import com.example.expensetrackerv2.utilities.DateUtils
 import kotlinx.coroutines.launch
 
 @Composable
 fun AddEditForm(
     navController: NavController,
-    viewModel: AddEditFormViewModel
+    viewModel: AddEditFormViewModelImpl
 ) {
     val typeOfExpenseList by viewModel.typesOfExpense.collectAsState(initial = emptyList())
     val titlesList by viewModel.expensesTitles.collectAsState(emptyList())

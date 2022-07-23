@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.ui.form
+package com.example.expensetrackerv2.ui.form.viewModel
 
 import com.example.expensetrackerv2.database.models.TypeOfExpense
 

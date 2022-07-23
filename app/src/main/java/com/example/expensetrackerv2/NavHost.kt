@@ -9,8 +9,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.expensetrackerv2.database.models.ExpenseConstants
 import com.example.expensetrackerv2.ui.form.AddEditForm
-import com.example.expensetrackerv2.ui.form.AddEditFormEvent
-import com.example.expensetrackerv2.ui.form.AddEditFormViewModel
+import com.example.expensetrackerv2.ui.form.viewModel.AddEditFormEvent
+import com.example.expensetrackerv2.ui.form.viewModel.AddEditFormViewModelImpl
 import com.example.expensetrackerv2.ui.main.MainComposable
 import com.example.expensetrackerv2.ui.main.MainViewModel
 import com.example.expensetrackerv2.ui.statistics.ExpensesStatistics
@@ -22,7 +22,7 @@ import com.example.expensetrackerv2.ui.type_of_expense_settings.TypeOfExpenseSet
 fun NavHostComposable() {
     val navController = rememberNavController()
     val expensesStatisticsViewModel: ExpensesStatisticsViewModel = viewModel()
-    val expensesFormViewModel: AddEditFormViewModel = viewModel()
+    val expensesFormViewModel: AddEditFormViewModelImpl = viewModel()
     val typeOfExpenseSettingsModelView: TypeOfExpenseSettingsModelView = viewModel()
     val mainViewModel: MainViewModel = viewModel()
 

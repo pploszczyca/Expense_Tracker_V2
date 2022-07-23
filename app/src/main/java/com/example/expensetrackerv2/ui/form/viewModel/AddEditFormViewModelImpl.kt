@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.ui.form
+package com.example.expensetrackerv2.ui.form.viewModel
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -12,14 +12,14 @@ import com.example.expensetrackerv2.use_cases.expense.*
 import com.example.expensetrackerv2.use_cases.type_of_expense.GetTypesOfExpense
 import com.example.expensetrackerv2.utilities.DateUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
-class AddEditFormViewModel @Inject constructor(
+class AddEditFormViewModelImpl @Inject constructor(
     private val getExpenseWithItsType: GetExpenseWithItsType,
     private val insertExpenseWithItsType: InsertExpenseWithItsType,
     private val updateExpenseWithItsType: UpdateExpenseWithItsType,
@@ -80,24 +80,18 @@ class AddEditFormViewModel @Inject constructor(
                 _id.value = event.value
                 loadExpenseWithItsType(id.value)
             }
-            is AddEditFormEvent.TitleChange -> {
+            is AddEditFormEvent.TitleChange ->
                 _title.value = event.value
-            }
-            is AddEditFormEvent.PriceChange -> {
+            is AddEditFormEvent.PriceChange ->
                 _price.value = event.value
-            }
-            is AddEditFormEvent.DateChange -> {
+            is AddEditFormEvent.DateChange ->
                 _date.value = DateUtils.stringToDate(event.value)
-            }
-            is AddEditFormEvent.PlaceChange -> {
+            is AddEditFormEvent.PlaceChange ->
                 _place.value = event.value
-            }
-            is AddEditFormEvent.DescriptionChange -> {
+            is AddEditFormEvent.DescriptionChange ->
                 _description.value = event.value
-            }
-            is AddEditFormEvent.TypeOfAddEditChange -> {
+            is AddEditFormEvent.TypeOfAddEditChange ->
                 _typeOfExpense.value = event.value
-            }
         }
     }
 
@@ -114,7 +108,7 @@ class AddEditFormViewModel @Inject constructor(
     )
 
     private fun insertOrUpdateNewExpense(newExpenseWithItsType: ExpenseWithItsType) {
-        runBlocking {
+        viewModelScope.launch(Dispatchers.IO) {
             if (isNewExpense()) {
                 insertExpenseWithItsType(newExpenseWithItsType)
             } else {

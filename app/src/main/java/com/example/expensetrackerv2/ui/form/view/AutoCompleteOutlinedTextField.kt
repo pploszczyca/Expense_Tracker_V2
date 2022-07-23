@@ -13,7 +13,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
-import com.example.expensetrackerv2.ui.form.AddEditFormTextField
 
 @Composable
 fun AutoCompleteOutlinedTextField(

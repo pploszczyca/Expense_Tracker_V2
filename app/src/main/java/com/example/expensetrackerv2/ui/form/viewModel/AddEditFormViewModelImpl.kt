@@ -13,6 +13,7 @@ import com.example.expensetrackerv2.use_cases.type_of_expense.GetTypesOfExpense
 import com.example.expensetrackerv2.utilities.DateUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
@@ -25,12 +26,13 @@ class AddEditFormViewModelImpl @Inject constructor(
     private val getExpensesTitles: GetExpensesTitles,
     private val getExpensesPlaces: GetExpensesPlaces,
     private val getTypesOfExpense: GetTypesOfExpense,
-    private val addEditFormStateMapper: AddEditFormStateMapper = AddEditFormStateMapper()
 ) : AddEditFormViewModel() {
+    private val addEditFormStateMapper: AddEditFormStateMapper = AddEditFormStateMapper()
+
     private var state by mutableStateOf(State())
 
-    override val viewState: androidx.compose.runtime.State<ViewState>
-        get() = mutableStateOf(addEditFormStateMapper.toViewState(state))
+    override val viewState: ViewState
+        get() = addEditFormStateMapper.toViewState(state)
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
@@ -61,11 +63,8 @@ class AddEditFormViewModelImpl @Inject constructor(
     override fun onEvent(event: Event) {
         when (event) {
             is Event.FormSubmit -> formSubmit()
+            is Event.IdChange -> loadExpenseWithItsType(event.id)
             else -> state = when (event) {
-                is Event.IdChange -> {
-                    loadExpenseWithItsType(event.id)
-                    state.copy(id = event.id)
-                }
                 is Event.TitleChange -> state.copy(title = event.title)
                 is Event.PriceChange -> state.copy(price = event.price)
                 is Event.DateChange -> state.copy(date = DateUtils.stringToDate(event.date))
@@ -77,7 +76,7 @@ class AddEditFormViewModelImpl @Inject constructor(
         }
     }
 
-    fun formSubmit() {
+    private fun formSubmit() {
         insertOrUpdateNewExpense(addEditFormStateMapper.toExpenseWithItsType(state))
     }
 
@@ -91,23 +90,24 @@ class AddEditFormViewModelImpl @Inject constructor(
     }
 
     private fun loadExpenseWithItsType(expenseID: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            getExpenseWithItsType(expenseID).collect {
-                val expenseWithItsType = it ?: ExpenseWithItsType()
-                changeFormStates(expenseWithItsType)
-            }
+        viewModelScope.launch {
+            val expenseWithItsType = getExpenseWithItsType(expenseID).first()
+            changeFormStates(
+                expenseWithItsType = expenseWithItsType ?: ExpenseWithItsType()
+            )
         }
     }
 
     private fun changeFormStates(expenseWithItsType: ExpenseWithItsType) {
-        listOf(
-            Event.TitleChange(expenseWithItsType.title),
-            Event.PriceChange(if (expenseWithItsType.price != 0.0) expenseWithItsType.price.toString() else ""),
-            Event.DateChange(DateUtils.toOnlyDateString(expenseWithItsType.date)),
-            Event.PlaceChange(expenseWithItsType.place),
-            Event.DescriptionChange(expenseWithItsType.description),
-            Event.TypeOfAddEditChange(expenseWithItsType.id)
-        ).forEach { event -> onEvent(event) }
+        state = state.copy(
+            id = expenseWithItsType.id,
+            title = expenseWithItsType.title,
+            price = if (expenseWithItsType.price != 0.0) expenseWithItsType.price.toString() else "",
+            date = expenseWithItsType.date,
+            place = expenseWithItsType.place,
+            description = expenseWithItsType.description,
+            selectedTypeOfExpenseId = expenseWithItsType.typeID
+        )
     }
 
     data class State(

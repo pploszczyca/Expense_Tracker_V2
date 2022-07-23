@@ -1,17 +1,14 @@
 package com.example.expensetrackerv2.ui.form.viewModel
 
-import androidx.compose.runtime.State
 import androidx.lifecycle.ViewModel
-import com.example.expensetrackerv2.database.models.TypeOfExpense
 import java.util.*
 
-abstract class AddEditFormViewModel: ViewModel() {
-    abstract val viewState: State<ViewState>
+abstract class AddEditFormViewModel : ViewModel() {
+    abstract val viewState: ViewState
 
     abstract fun onEvent(event: Event)
 
     data class ViewState(
-        val id: String,
         val title: String,
         val price: String,
         val typeOfExpenseRecords: List<TypeOfExpenseRecord>,
@@ -20,6 +17,8 @@ abstract class AddEditFormViewModel: ViewModel() {
         val description: String,
         val titleSuggestions: List<String>,
         val placeSuggestions: List<String>,
+        val isAllDataLoaded: Boolean,
+        val buttonTextId: Int
     ) {
         data class TypeOfExpenseRecord(
             val id: Int,
@@ -36,6 +35,6 @@ abstract class AddEditFormViewModel: ViewModel() {
         data class DateChange(val date: String) : Event()
         data class PlaceChange(val place: String) : Event()
         data class DescriptionChange(val description: String) : Event()
-        object FormSubmit: Event()
+        object FormSubmit : Event()
     }
 }

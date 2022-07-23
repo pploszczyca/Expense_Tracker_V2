@@ -8,8 +8,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.expensetrackerv2.database.models.ExpenseConstants
-import com.example.expensetrackerv2.ui.form.AddEditForm
-import com.example.expensetrackerv2.ui.form.viewModel.AddEditFormEvent
+import com.example.expensetrackerv2.ui.form.view.AddEditForm
+import com.example.expensetrackerv2.ui.form.viewModel.AddEditFormViewModel
 import com.example.expensetrackerv2.ui.form.viewModel.AddEditFormViewModelImpl
 import com.example.expensetrackerv2.ui.main.MainComposable
 import com.example.expensetrackerv2.ui.main.MainViewModel
@@ -22,9 +22,9 @@ import com.example.expensetrackerv2.ui.type_of_expense_settings.TypeOfExpenseSet
 fun NavHostComposable() {
     val navController = rememberNavController()
     val expensesStatisticsViewModel: ExpensesStatisticsViewModel = viewModel()
-    val expensesFormViewModel: AddEditFormViewModelImpl = viewModel()
     val typeOfExpenseSettingsModelView: TypeOfExpenseSettingsModelView = viewModel()
     val mainViewModel: MainViewModel = viewModel()
+    val expensesFormViewModel: AddEditFormViewModel = viewModel<AddEditFormViewModelImpl>()
 
     NavHost(navController = navController, startDestination = Routes.Main.route) {
         composable(Routes.Main.route) {
@@ -37,17 +37,17 @@ fun NavHostComposable() {
                 defaultValue = 0
             })
         ) { backStackEntry ->
-            expensesFormViewModel.onEvent(
-                AddEditFormEvent.IdChange(
-                    backStackEntry.arguments?.getInt(
-                        "EXPENSE_ID"
-                    ) ?: ExpenseConstants.NEW_EXPENSE_ID
-                )
-            )
+//            val expensesFormViewModel: AddEditFormViewModelImpl = viewModel()
+
+            val id = backStackEntry.arguments?.getInt(
+                "EXPENSE_ID"
+            ) ?: ExpenseConstants.NEW_EXPENSE_ID
+
+            expensesFormViewModel.onEvent(AddEditFormViewModel.Event.IdChange(id))
 
             AddEditForm(
                 navController = navController,
-                viewModel = expensesFormViewModel
+                viewModel = expensesFormViewModel,
             )
         }
         composable(Routes.ExpenseStatistics.route) {

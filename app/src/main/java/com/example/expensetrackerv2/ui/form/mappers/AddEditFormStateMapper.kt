@@ -1,5 +1,6 @@
 package com.example.expensetrackerv2.ui.form.mappers
 
+import com.example.expensetrackerv2.R
 import com.example.expensetrackerv2.database.models.TypeOfExpense
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
 import com.example.expensetrackerv2.ui.form.viewModel.AddEditFormViewModel
@@ -8,7 +9,6 @@ import com.example.expensetrackerv2.ui.form.viewModel.AddEditFormViewModelImpl
 class AddEditFormStateMapper {
     fun toViewState(state: AddEditFormViewModelImpl.State): AddEditFormViewModel.ViewState {
         return AddEditFormViewModel.ViewState(
-            id = state.id.toString(),
             title = state.title,
             price = state.price,
             typeOfExpenseRecords = state.typeOfExpenses?.map {
@@ -23,6 +23,11 @@ class AddEditFormStateMapper {
             description = state.description,
             titleSuggestions = getSimilarValues(state.expensesTitles, state.title) ?: emptyList(),
             placeSuggestions = getSimilarValues(state.expensesTitles, state.place) ?: emptyList(),
+            isAllDataLoaded = state.title.isNotEmpty() && state.price.isNotEmpty() && state.price.toDouble() >= 0.0 && state.selectedTypeOfExpenseId != -2,
+            buttonTextId = when (state.isNewExpense) {
+                true -> R.string.add
+                false -> R.string.update
+            }
         )
     }
 

@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.ui.form
+package com.example.expensetrackerv2.ui.form.view
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding

@@ -15,7 +15,6 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.expensetrackerv2.R
@@ -23,7 +22,6 @@ import com.example.expensetrackerv2.Routes
 import com.example.expensetrackerv2.database.models.Type
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
 import com.example.expensetrackerv2.ui.theme.ExpenseColor
-import com.example.expensetrackerv2.ui.theme.ExpenseTrackerV2Theme
 import com.example.expensetrackerv2.ui.theme.IncomeColor
 import com.example.expensetrackerv2.utilities.DateUtils
 
@@ -78,12 +76,12 @@ private fun ExtraContentExpenseCard(
                 )
             )
         }) {
-            Icon(Icons.Default.Edit, contentDescription = null);
+            Icon(Icons.Default.Edit, contentDescription = null)
             Text(text = stringResource(id = R.string.edit))
         }
 
         TextButton(onClick = { onDeleteButtonClick(expenseWithItsType) }) {
-            Icon(Icons.Default.Delete, contentDescription = null);
+            Icon(Icons.Default.Delete, contentDescription = null)
             Text(text = stringResource(id = R.string.delete))
         }
     }

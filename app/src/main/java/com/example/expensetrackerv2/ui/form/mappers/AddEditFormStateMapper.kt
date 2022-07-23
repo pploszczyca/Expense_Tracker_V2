@@ -32,13 +32,13 @@ class AddEditFormStateMapper {
     }
 
     private fun getSimilarValues(values: List<String>?, valueToMatch: String): List<String> {
-        if(valueToMatch.isEmpty()) return emptyList()
+        if (valueToMatch.isEmpty()) return emptyList()
 
         val filteredValues = values
             ?.distinct()
             ?.filter { it.contains(valueToMatch) } ?: emptyList()
 
-        return when(filteredValues.lastIndexOf(valueToMatch) == -1) {
+        return when (filteredValues.lastIndexOf(valueToMatch) == -1) {
             true -> filteredValues
             false -> emptyList()
         }

@@ -3,9 +3,8 @@ package com.example.expensetrackerv2.ui.main
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.contract.ActivityResultContracts.CreateDocument
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
@@ -55,7 +54,7 @@ fun DrawerContent(
     val exportJsonFileName = stringResource(id = R.string.drawer_months_title)
 
     val exportToJsonLauncher =
-        rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument()) {
+        rememberLauncherForActivityResult(CreateDocument("todo/todo")) {
             onExportToJsonClick(it)
             closeDrawer()
         }

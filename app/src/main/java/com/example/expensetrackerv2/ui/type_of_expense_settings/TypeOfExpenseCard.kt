@@ -36,11 +36,11 @@ fun TypeOfExpenseCard(
 
             Row {
                 IconButton(onClick = { onUpdateButtonClick(typeOfExpense) }) {
-                    Icon(Icons.Default.Edit, contentDescription = null);
+                    Icon(Icons.Default.Edit, contentDescription = null)
                 }
 
                 IconButton(onClick = { onDeleteButtonClick(typeOfExpense) }) {
-                    Icon(Icons.Default.Delete, contentDescription = null);
+                    Icon(Icons.Default.Delete, contentDescription = null)
                 }
             }
         }

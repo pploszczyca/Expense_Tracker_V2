@@ -37,13 +37,11 @@ fun NavHostComposable() {
                 defaultValue = 0
             })
         ) { backStackEntry ->
-//            val expensesFormViewModel: AddEditFormViewModelImpl = viewModel()
-
             val id = backStackEntry.arguments?.getInt(
                 "EXPENSE_ID"
             ) ?: ExpenseConstants.NEW_EXPENSE_ID
 
-            expensesFormViewModel.onEvent(AddEditFormViewModel.Event.IdChange(id))
+            expensesFormViewModel.onEvent(AddEditFormViewModel.Event.IdChange(id = id))
 
             AddEditForm(
                 navController = navController,

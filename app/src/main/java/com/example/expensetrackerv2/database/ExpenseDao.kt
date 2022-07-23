@@ -28,9 +28,6 @@ abstract class ExpenseDao {
     @Insert
     abstract suspend fun insertAllExpenses(vararg expenses: Expense)
 
-    suspend fun insertAllExpenses(expenses: List<Expense>) =
-        expenses.forEach { insertAllExpenses(it) }
-
     @Insert
     abstract suspend fun insertAllTypesOfExpense(vararg expenses: TypeOfExpense)
 

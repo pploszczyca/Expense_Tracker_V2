@@ -41,17 +41,13 @@ class AddEditFormViewModelImpl @Inject constructor(
                     expensesTitles = it
                 )
             }
-        }
 
-        viewModelScope.launch(Dispatchers.Main) {
             getExpensesPlaces().collect {
                 state = state.copy(
                     expensesPlaces = it
                 )
             }
-        }
 
-        viewModelScope.launch(Dispatchers.Main) {
             getTypesOfExpense().collect {
                 state = state.copy(
                     typeOfExpenses = it
@@ -81,7 +77,7 @@ class AddEditFormViewModelImpl @Inject constructor(
     }
 
     private fun insertOrUpdateNewExpense(newExpenseWithItsType: ExpenseWithItsType) {
-        viewModelScope.launch(Dispatchers.Main) {
+        viewModelScope.launch(Dispatchers.IO) {
             when (state.isNewExpense) {
                 true -> insertExpenseWithItsType(newExpenseWithItsType)
                 false -> updateExpenseWithItsType(newExpenseWithItsType)
@@ -90,7 +86,7 @@ class AddEditFormViewModelImpl @Inject constructor(
     }
 
     private fun loadExpenseWithItsType(expenseID: Int) {
-        viewModelScope.launch(Dispatchers.Main) {
+        viewModelScope.launch(Dispatchers.IO) {
             val expenseWithItsType = getExpenseWithItsType(expenseID).first()
             changeFormStates(
                 expenseWithItsType = expenseWithItsType ?: ExpenseWithItsType()

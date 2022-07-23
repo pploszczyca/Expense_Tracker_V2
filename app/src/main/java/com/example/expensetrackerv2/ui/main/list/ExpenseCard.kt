@@ -149,11 +149,3 @@ fun ExpenseCard(
         }
     }
 }
-
-@Preview(showBackground = true)
-@Composable
-fun ExpenseCardPreview() {
-    ExpenseTrackerV2Theme {
-//        ExpenseCard(expense = Expense(title = "Zakupy w Biedronce", price = 50.0, description = "Opis", place = "Wadowice"), typeOfExpense = TypeOfExpense(name = "Zakupy", type = Type.OUTGO))
-    }
-}

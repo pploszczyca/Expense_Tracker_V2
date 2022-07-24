@@ -4,6 +4,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.expensetrackerv2.R
 import com.example.expensetrackerv2.database.models.ExpenseConstants
 import com.example.expensetrackerv2.database.models.TypeOfExpense
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
@@ -12,9 +13,9 @@ import com.example.expensetrackerv2.use_cases.expense.*
 import com.example.expensetrackerv2.use_cases.type_of_expense.GetTypesOfExpense
 import com.example.expensetrackerv2.utilities.DateUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import java.util.*
 import javax.inject.Inject
 
@@ -36,7 +37,7 @@ class AddEditFormViewModel @Inject constructor(
     private val _price = mutableStateOf("")
     val price: State<String> = _price
 
-    private val _typeOfExpense = mutableStateOf(TypeOfExpense())
+    private val _typeOfExpense = mutableStateOf(TypeOfExpense(id = -1))
     val typeOfExpense: State<TypeOfExpense> = _typeOfExpense
 
     private val _date = mutableStateOf(Date())
@@ -52,7 +53,13 @@ class AddEditFormViewModel @Inject constructor(
     val expensesPlaces: Flow<List<String>> = getExpensesPlaces()
     val typesOfExpense: Flow<List<TypeOfExpense>> = getTypesOfExpense()
 
-    fun isNewExpense() = id.value == ExpenseConstants.NEW_EXPENSE_ID
+    private val isNewExpense get() = id.value == ExpenseConstants.NEW_EXPENSE_ID
+    val isFormProper get() = _title.value.isNotEmpty() && _price.value.isNotEmpty() && _price.value.toDouble() >= 0.0 && _typeOfExpense.value.id != -1
+
+    val submitButtonTextId = when(isNewExpense) {
+        true -> R.string.add
+        false -> R.string.update
+    }
 
     private fun changeFormStates(expenseWithItsType: ExpenseWithItsType) {
         listOf(
@@ -80,24 +87,12 @@ class AddEditFormViewModel @Inject constructor(
                 _id.value = event.value
                 loadExpenseWithItsType(id.value)
             }
-            is AddEditFormEvent.TitleChange -> {
-                _title.value = event.value
-            }
-            is AddEditFormEvent.PriceChange -> {
-                _price.value = event.value
-            }
-            is AddEditFormEvent.DateChange -> {
-                _date.value = DateUtils.stringToDate(event.value)
-            }
-            is AddEditFormEvent.PlaceChange -> {
-                _place.value = event.value
-            }
-            is AddEditFormEvent.DescriptionChange -> {
-                _description.value = event.value
-            }
-            is AddEditFormEvent.TypeOfAddEditChange -> {
-                _typeOfExpense.value = event.value
-            }
+            is AddEditFormEvent.TitleChange -> _title.value = event.value
+            is AddEditFormEvent.PriceChange -> _price.value = event.value
+            is AddEditFormEvent.DateChange -> _date.value = DateUtils.stringToDate(event.value)
+            is AddEditFormEvent.PlaceChange -> _place.value = event.value
+            is AddEditFormEvent.DescriptionChange -> _description.value = event.value
+            is AddEditFormEvent.TypeOfAddEditChange -> _typeOfExpense.value = event.value
         }
     }
 
@@ -114,8 +109,8 @@ class AddEditFormViewModel @Inject constructor(
     )
 
     private fun insertOrUpdateNewExpense(newExpenseWithItsType: ExpenseWithItsType) {
-        runBlocking {
-            if (isNewExpense()) {
+        viewModelScope.launch(Dispatchers.IO) {
+            if (isNewExpense) {
                 insertExpenseWithItsType(newExpenseWithItsType)
             } else {
                 updateExpenseWithItsType(newExpenseWithItsType)

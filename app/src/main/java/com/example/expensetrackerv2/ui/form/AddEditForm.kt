@@ -28,26 +28,21 @@ fun AddEditForm(
     navController: NavController,
     viewModel: AddEditFormViewModel
 ) {
-    val typeOfExpenseList by viewModel.typesOfExpense.collectAsState(initial = emptyList())
-    val titlesList by viewModel.expensesTitles.collectAsState(emptyList())
-    val placesList by viewModel.expensesPlaces.collectAsState(emptyList())
-
-    val dataIsIncorrectString = stringResource(id = R.string.expense_form_data_incorrect)
-
-    val scope = rememberCoroutineScope()
-    val snackbarHostState = remember { SnackbarHostState() }
-
     val title by viewModel.title
     val price by viewModel.price
     val typeOfExpense by viewModel.typeOfExpense
     val date by viewModel.date
     val place by viewModel.place
     val description by viewModel.description
+    val typeOfExpenseList by viewModel.typesOfExpense.collectAsState(initial = emptyList())
+    val titleSuggestions by viewModel.expensesTitles.collectAsState(emptyList())
+    val placeSuggestions by viewModel.expensesPlaces.collectAsState(emptyList())
 
-    val checkForm =
-        title.isNotEmpty() && price.isNotEmpty() && price.toDouble() >= 0.0 && typeOfExpenseList.contains(
-            typeOfExpense
-        )
+    val dataIsIncorrectString = stringResource(id = R.string.expense_form_data_incorrect)
+    val submitButtonText = stringResource(id = viewModel.submitButtonTextId)
+
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(topBar = {
         TopAppBarWithBack(
@@ -61,7 +56,7 @@ fun AddEditForm(
                 onValueChange = { viewModel.onEvent(AddEditFormEvent.TitleChange(it)) },
                 icon = Icons.Default.Title,
                 label = stringResource(id = R.string.expense_form_title),
-                suggestionsInput = titlesList
+                suggestionsInput = titleSuggestions
             )
 
             AddEditFormTextField(
@@ -84,7 +79,7 @@ fun AddEditForm(
                 onValueChange = { viewModel.onEvent(AddEditFormEvent.PlaceChange(it)) },
                 icon = Icons.Default.Place,
                 label = stringResource(id = R.string.expense_form_place),
-                suggestionsInput = placesList
+                suggestionsInput = placeSuggestions
             )
 
             AddEditFormTextField(
@@ -123,7 +118,7 @@ fun AddEditForm(
             )
 
             Button(onClick = {
-                if (checkForm) {
+                if (viewModel.isFormProper) {
                     viewModel.formSubmit()
                     navController.navigateUp()
                 } else {
@@ -133,13 +128,7 @@ fun AddEditForm(
                 }
 
             }, modifier = Modifier.padding(20.dp)) {
-                Text(
-                    text = if (viewModel.isNewExpense()) stringResource(
-                        id = R.string.add
-                    ) else stringResource(
-                        id = R.string.update
-                    )
-                )
+                Text(text = submitButtonText)
             }
         }
     })

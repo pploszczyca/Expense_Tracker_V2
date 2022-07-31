@@ -15,5 +15,6 @@ object DateUtils {
     fun toOnlyDateString(date: Date): String = SimpleDateFormat(DATE_STRING_PATTERN).format(date)
 
     @JvmStatic
-    fun stringToDate(stringDate: String): Date = SimpleDateFormat(DATE_STRING_PATTERN).parse(stringDate)
+    fun stringToDate(stringDate: String): Date =
+        SimpleDateFormat(DATE_STRING_PATTERN).parse(stringDate)
 }

@@ -56,7 +56,7 @@ class AddEditFormViewModel @Inject constructor(
     private val isNewExpense get() = id.value == ExpenseConstants.NEW_EXPENSE_ID
     val isFormProper get() = _title.value.isNotEmpty() && _price.value.isNotEmpty() && _price.value.toDouble() >= 0.0 && _typeOfExpense.value.id != -1
 
-    val submitButtonTextId = when(isNewExpense) {
+    val submitButtonTextId = when (isNewExpense) {
         true -> R.string.add
         false -> R.string.update
     }

@@ -10,7 +10,8 @@ import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsTy
 @Database(
     entities = [Expense::class, TypeOfExpense::class],
     views = [ExpenseWithItsType::class],
-    version = 1
+    version = 1,
+    exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {

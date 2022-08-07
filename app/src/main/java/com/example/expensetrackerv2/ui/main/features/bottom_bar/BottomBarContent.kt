@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.ui.main
+package com.example.expensetrackerv2.ui.main.features.bottom_bar
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.shape.CircleShape

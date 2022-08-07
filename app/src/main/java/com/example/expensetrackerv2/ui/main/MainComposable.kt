@@ -18,7 +18,9 @@ import com.example.expensetrackerv2.database.models.view_models.ExpenseMonthYear
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
 import com.example.expensetrackerv2.database.models.view_models.getKey
 import com.example.expensetrackerv2.ui.bar.SearchTopAppBar
-import com.example.expensetrackerv2.ui.main.list.ExpensesList
+import com.example.expensetrackerv2.ui.main.features.drawer.DrawerContent
+import com.example.expensetrackerv2.ui.main.features.bottom_bar.BottomBarContent
+import com.example.expensetrackerv2.ui.main.features.list.ExpensesList
 import com.example.expensetrackerv2.utilities.MathUtils
 import kotlinx.coroutines.launch
 

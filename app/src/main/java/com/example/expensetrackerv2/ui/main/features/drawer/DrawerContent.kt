@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.ui.main
+package com.example.expensetrackerv2.ui.main.features.drawer
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult

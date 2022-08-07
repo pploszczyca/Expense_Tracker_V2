@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.ui.main.list
+package com.example.expensetrackerv2.ui.main.features.list
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -17,7 +17,7 @@ import androidx.navigation.NavController
 import com.example.expensetrackerv2.database.models.Type
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
 import com.example.expensetrackerv2.database.models.view_models.getKey
-import com.example.expensetrackerv2.ui.main.DeleteExpenseAlertDialog
+import com.example.expensetrackerv2.ui.main.features.delete_dialog.DeleteExpenseAlertDialog
 import com.example.expensetrackerv2.ui.theme.ExpenseColor
 import com.example.expensetrackerv2.ui.theme.IncomeColor
 import com.example.expensetrackerv2.utilities.DateUtils

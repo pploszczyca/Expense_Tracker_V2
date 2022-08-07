@@ -25,51 +25,6 @@ import com.example.expensetrackerv2.utilities.MathUtils
 import kotlinx.coroutines.launch
 
 @Composable
-private fun MainExpensesInformation(moneyInWalletAmount: Double) {
-    Text(
-        "${stringResource(id = R.string.in_wallet)} $moneyInWalletAmount",
-        Modifier.absolutePadding(left = 12.dp, bottom = 16.dp, top = 16.dp),
-        style = MaterialTheme.typography.h4
-    )
-}
-
-@Composable
-private fun MainContent(
-    innerPadding: PaddingValues,
-    expenseWithItsTypeList: List<ExpenseWithItsType>,
-    navController: NavController,
-    isMainExpenseInformationVisible: Boolean,
-    isDeleteDialogVisible: Boolean,
-    onDeleteButtonClick: (ExpenseWithItsType) -> Unit,
-    onDismissDeleteButtonClick: () -> Unit,
-    onConfirmDeleteButtonClick: () -> Unit,
-) {
-    Box(modifier = Modifier.padding(innerPadding)) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 10.dp),
-        ) {
-            if (isMainExpenseInformationVisible) {
-                MainExpensesInformation(
-                    moneyInWalletAmount = MathUtils.sumMoneyInList(
-                        expenseWithItsTypeList
-                    )
-                )
-            }
-            ExpensesList(
-                expenseWithItsTypeList = expenseWithItsTypeList,
-                navController = navController,
-                onDeleteButtonClick = onDeleteButtonClick,
-                onDismissDeleteButtonClick = onDismissDeleteButtonClick,
-                onConfirmDeleteButtonClick = onConfirmDeleteButtonClick,
-                isDeleteDialogVisible = isDeleteDialogVisible
-            )
-        }
-    }
-}
-
-@Composable
 fun MainComposable(
     navController: NavController,
     viewModel: MainViewModel
@@ -168,5 +123,50 @@ fun MainComposable(
                 onDismissDeleteButtonClick = { viewModel.onEvent(MainEvent.DismissDeleteButtonClick()) },
                 onConfirmDeleteButtonClick = { viewModel.onEvent(MainEvent.ConfirmDeleteButtonClick()) })
         }
+    )
+}
+
+@Composable
+private fun MainContent(
+    innerPadding: PaddingValues,
+    expenseWithItsTypeList: List<ExpenseWithItsType>,
+    navController: NavController,
+    isMainExpenseInformationVisible: Boolean,
+    isDeleteDialogVisible: Boolean,
+    onDeleteButtonClick: (ExpenseWithItsType) -> Unit,
+    onDismissDeleteButtonClick: () -> Unit,
+    onConfirmDeleteButtonClick: () -> Unit,
+) {
+    Box(modifier = Modifier.padding(innerPadding)) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 10.dp),
+        ) {
+            if (isMainExpenseInformationVisible) {
+                MainExpensesInformation(
+                    moneyInWalletAmount = MathUtils.sumMoneyInList(
+                        expenseWithItsTypeList
+                    )
+                )
+            }
+            ExpensesList(
+                expenseWithItsTypeList = expenseWithItsTypeList,
+                navController = navController,
+                onDeleteButtonClick = onDeleteButtonClick,
+                onDismissDeleteButtonClick = onDismissDeleteButtonClick,
+                onConfirmDeleteButtonClick = onConfirmDeleteButtonClick,
+                isDeleteDialogVisible = isDeleteDialogVisible
+            )
+        }
+    }
+}
+
+@Composable
+private fun MainExpensesInformation(moneyInWalletAmount: Double) {
+    Text(
+        "${stringResource(id = R.string.in_wallet)} $moneyInWalletAmount",
+        Modifier.absolutePadding(left = 12.dp, bottom = 16.dp, top = 16.dp),
+        style = MaterialTheme.typography.h4
     )
 }

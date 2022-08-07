@@ -32,19 +32,6 @@ fun MainComposable(
 
     val viewState = viewModel.viewState
 
-    fun checkIfHasKeyAndContainsSearchedTitle(expenseWithItsType: ExpenseWithItsType): Boolean =
-        (viewState.currentMonthYearKey == null || expenseWithItsType.getKey() == viewState.currentMonthYearKey) && expenseWithItsType.title.contains(
-            viewState.searchedTitle,
-            true
-        )
-
-    val expensesWithItsTypeList =
-        viewState.expensesWithItsType.filter {
-            checkIfHasKeyAndContainsSearchedTitle(
-                it
-            )
-        }
-
     val openDrawer = { coroutineScope.launch { scaffoldState.drawerState.open() } }
     val closeDrawer = { coroutineScope.launch { scaffoldState.drawerState.close() } }
 
@@ -78,7 +65,7 @@ fun MainComposable(
                     )
                 },
                 closeDrawer = closeDrawer,
-                monthYearKeyList = expensesWithItsTypeList.map { it.getKey() }.distinct(),
+                monthYearKeyList = viewState.monthYearKeys,
                 navController = navController
             )
         },
@@ -109,7 +96,7 @@ fun MainComposable(
         content = { innerPadding ->
             MainContent(
                 innerPadding = innerPadding,
-                expenseWithItsTypeList = expensesWithItsTypeList,
+                expenseWithItsTypeList = viewState.filteredExpenses,
                 navController = navController,
                 isMainExpenseInformationVisible = viewState.mainExpenseInformationVisible,
                 isDeleteDialogVisible = viewState.isDeleteDialogVisible,

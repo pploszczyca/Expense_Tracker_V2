@@ -43,32 +43,6 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun exportToJson(uri: Uri?) {
-        uri?.let { uri ->
-            viewModelScope.launch(Dispatchers.IO) {
-                contentResolver.openOutputStream(uri)
-                    ?.write(
-                        JSONUtils
-                            .exportExpensesListToJson(viewState.filteredExpenses)
-                            .toByteArray()
-                    )
-            }
-        }
-    }
-
-    private fun importFromJsonAndInsert(uri: Uri?) {
-        uri?.let { uri ->
-            viewModelScope.launch(Dispatchers.IO) {
-                deleteAllExpensesWithItsType()
-                JSONUtils.importExpensesListFromJson(
-                    contentResolver.openInputStream(
-                        uri
-                    )?.bufferedReader()?.use { it.readText() }!!
-                ).forEach { insertExpenseWithItsType(it) }
-            }
-        }
-    }
-
     fun onEvent(event: MainEvent) {
         when (event) {
             is MainEvent.MonthYearKeyChange -> viewState = viewState.copy(
@@ -107,6 +81,32 @@ class MainViewModel @Inject constructor(
                 isTopBarVisible = false,
                 searchedTitle = "",
             )
+        }
+    }
+
+    private fun exportToJson(uri: Uri?) {
+        uri?.let { uri ->
+            viewModelScope.launch(Dispatchers.IO) {
+                contentResolver.openOutputStream(uri)
+                    ?.write(
+                        JSONUtils
+                            .exportExpensesListToJson(viewState.filteredExpenses)
+                            .toByteArray()
+                    )
+            }
+        }
+    }
+
+    private fun importFromJsonAndInsert(uri: Uri?) {
+        uri?.let { uri ->
+            viewModelScope.launch(Dispatchers.IO) {
+                deleteAllExpensesWithItsType()
+                JSONUtils.importExpensesListFromJson(
+                    contentResolver.openInputStream(
+                        uri
+                    )?.bufferedReader()?.use { it.readText() }!!
+                ).forEach { insertExpenseWithItsType(it) }
+            }
         }
     }
 

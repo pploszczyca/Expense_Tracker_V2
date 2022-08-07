@@ -15,8 +15,8 @@ import com.example.expensetrackerv2.Routes
 import com.example.expensetrackerv2.database.models.view_models.ExpenseMonthYearKey
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
 import com.example.expensetrackerv2.ui.bar.SearchTopAppBar
-import com.example.expensetrackerv2.ui.main.features.drawer.DrawerContent
 import com.example.expensetrackerv2.ui.main.features.bottom_bar.BottomBarContent
+import com.example.expensetrackerv2.ui.main.features.drawer.DrawerContent
 import com.example.expensetrackerv2.ui.main.features.list.ExpensesList
 import kotlinx.coroutines.launch
 
@@ -45,16 +45,12 @@ fun MainComposable(
                 onMonthButtonClick = onMonthButtonClick,
                 onExportToJsonClick = { uri ->
                     viewModel.onEvent(
-                        MainEvent.ExportToJsonButtonClick(
-                            uri
-                        )
+                        MainEvent.ExportToJsonButtonClick(uri)
                     )
                 },
                 onImportFromJsonClick = { uri ->
                     viewModel.onEvent(
-                        MainEvent.ImportFromJsonButtonClick(
-                            uri
-                        )
+                        MainEvent.ImportFromJsonButtonClick(uri)
                     )
                 },
                 closeDrawer = closeDrawer,

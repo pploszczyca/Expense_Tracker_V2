@@ -99,6 +99,10 @@ class MainViewModel @Inject constructor(
             is MainEvent.DismissDeleteButtonClick -> viewState = viewState.copy(
                 isDeleteDialogVisible = false
             )
+            is MainEvent.OnTopBarTrailingIconClick -> viewState = viewState.copy(
+                isTopBarVisible = false,
+                searchedTitle = "",
+            )
         }
     }
 

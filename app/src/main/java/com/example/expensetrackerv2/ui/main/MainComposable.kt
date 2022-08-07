@@ -14,7 +14,6 @@ import com.example.expensetrackerv2.R
 import com.example.expensetrackerv2.Routes
 import com.example.expensetrackerv2.database.models.view_models.ExpenseMonthYearKey
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
-import com.example.expensetrackerv2.database.models.view_models.getKey
 import com.example.expensetrackerv2.ui.bar.SearchTopAppBar
 import com.example.expensetrackerv2.ui.main.features.drawer.DrawerContent
 import com.example.expensetrackerv2.ui.main.features.bottom_bar.BottomBarContent
@@ -30,7 +29,7 @@ fun MainComposable(
     val scaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()
 
-    val viewState = viewModel.viewState
+    val mainViewState = viewModel.viewState
 
     val openDrawer = { coroutineScope.launch { scaffoldState.drawerState.open() } }
     val closeDrawer = { coroutineScope.launch { scaffoldState.drawerState.close() } }
@@ -38,11 +37,6 @@ fun MainComposable(
     val onMonthButtonClick = { key: ExpenseMonthYearKey ->
         closeDrawer()
         viewModel.onEvent(MainEvent.MonthYearKeyChange(key))
-    }
-
-    val closeSearchTopAppBar = {
-        viewModel.onEvent(MainEvent.TopBarVisibilityChange(false))
-        viewModel.onEvent(MainEvent.SearchedTitleChange(""))
     }
 
     Scaffold(
@@ -65,22 +59,22 @@ fun MainComposable(
                     )
                 },
                 closeDrawer = closeDrawer,
-                monthYearKeyList = viewState.monthYearKeys,
+                monthYearKeyList = mainViewState.monthYearKeys,
                 navController = navController
             )
         },
         topBar = {
-            if (viewState.isTopBarVisible) {
+            if (mainViewState.isTopBarVisible) {
                 SearchTopAppBar(
-                    searchedValue = viewState.searchedTitle,
-                    onTrailingIconClick = closeSearchTopAppBar,
+                    searchedValue = mainViewState.searchedTitle,
+                    onTrailingIconClick = { viewModel.onEvent(MainEvent.OnTopBarTrailingIconClick) },
                     onValueChange = { viewModel.onEvent(MainEvent.SearchedTitleChange(it)) })
             }
         },
         bottomBar = {
             BottomBarContent(
                 onMenuButtonClick = { openDrawer() },
-                isClearButtonVisible = viewState.clearButtonVisible,
+                isClearButtonVisible = mainViewState.clearButtonVisible,
                 onClearButtonClick = { viewModel.onEvent(MainEvent.MonthYearKeyChange(null)) },
                 onSearchButtonClick = { viewModel.onEvent(MainEvent.TopBarVisibilityChange(true)) })
         },
@@ -96,13 +90,13 @@ fun MainComposable(
         content = { innerPadding ->
             MainContent(
                 innerPadding = innerPadding,
-                expenseWithItsTypeList = viewState.filteredExpenses,
+                expenseWithItsTypeList = mainViewState.filteredExpenses,
                 navController = navController,
-                isMainExpenseInformationVisible = viewState.mainExpenseInformationVisible,
-                isDeleteDialogVisible = viewState.isDeleteDialogVisible,
+                isMainExpenseInformationVisible = mainViewState.mainExpenseInformationVisible,
+                isDeleteDialogVisible = mainViewState.isDeleteDialogVisible,
                 onDeleteButtonClick = { viewModel.onEvent(MainEvent.DeleteButtonClick(it)) },
-                onDismissDeleteButtonClick = { viewModel.onEvent(MainEvent.DismissDeleteButtonClick()) },
-                onConfirmDeleteButtonClick = { viewModel.onEvent(MainEvent.ConfirmDeleteButtonClick()) })
+                onDismissDeleteButtonClick = { viewModel.onEvent(MainEvent.DismissDeleteButtonClick) },
+                onConfirmDeleteButtonClick = { viewModel.onEvent(MainEvent.ConfirmDeleteButtonClick) })
         }
     )
 }

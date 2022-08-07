@@ -15,6 +15,7 @@ import com.example.expensetrackerv2.use_cases.expense.DeleteExpenseWithItsType
 import com.example.expensetrackerv2.use_cases.expense.GetExpensesWithItsType
 import com.example.expensetrackerv2.use_cases.expense.InsertExpenseWithItsType
 import com.example.expensetrackerv2.utilities.JSONUtils
+import com.example.expensetrackerv2.utilities.MathUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -76,8 +77,11 @@ class MainViewModel @Inject constructor(
             is MainEvent.SearchedTitleChange -> viewState = viewState.copy(
                 searchedTitle = event.value,
             )
-            is MainEvent.TopBarVisibilityChange -> viewState = viewState.copy(
-                isTopBarVisible = event.value,
+            is MainEvent.BottomBar.SearchButtonClick -> viewState = viewState.copy(
+                isTopBarVisible = true,
+            )
+            is MainEvent.BottomBar.ClearButtonClick -> viewState = viewState.copy(
+                currentMonthYearKey = null
             )
             is MainEvent.ExportToJsonButtonClick -> exportToJson(event.value)
             is MainEvent.ImportFromJsonButtonClick -> importFromJsonAndInsert(event.value)
@@ -129,5 +133,8 @@ class MainViewModel @Inject constructor(
             )
 
         val monthYearKeys: List<ExpenseMonthYearKey> get() = filteredExpenses.map { it.getKey() }.distinct()
+        val moneyInWalletAmount: Double get() = MathUtils.sumMoneyInList(
+            expenseWithItsTypeList = filteredExpenses
+        )
     }
 }

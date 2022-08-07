@@ -17,6 +17,7 @@ import androidx.navigation.NavController
 import com.example.expensetrackerv2.database.models.Type
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
 import com.example.expensetrackerv2.database.models.view_models.getKey
+import com.example.expensetrackerv2.ui.main.MainViewModel
 import com.example.expensetrackerv2.ui.main.features.delete_dialog.DeleteExpenseAlertDialog
 import com.example.expensetrackerv2.ui.theme.ExpenseColor
 import com.example.expensetrackerv2.ui.theme.IncomeColor
@@ -26,15 +27,15 @@ import com.example.expensetrackerv2.utilities.MathUtils
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ExpensesList(
-    expenseWithItsTypeList: List<ExpenseWithItsType>,
+    mainViewState: MainViewModel.ViewState,
     navController: NavController,
     onDeleteButtonClick: (ExpenseWithItsType) -> Unit,
     onDismissDeleteButtonClick: () -> Unit,
     onConfirmDeleteButtonClick: () -> Unit,
-    isDeleteDialogVisible: Boolean
 ) {
     LazyColumn(Modifier.padding(3.dp)) {
-        expenseWithItsTypeList.groupBy { it.getKey() }
+        mainViewState.filteredExpenses
+            .groupBy { it.getKey() }
             .forEach { (_, expensesInSpecificDate) ->
                 val filterExpenseListByType =
                     { type: Type -> expensesInSpecificDate.filter { it.type == type } }
@@ -83,7 +84,7 @@ fun ExpensesList(
             }
     }
 
-    if (isDeleteDialogVisible) {
+    if (mainViewState.isDeleteDialogVisible) {
         DeleteExpenseAlertDialog(
             onDismissClick = onDismissDeleteButtonClick,
             onConfirmButtonClick = onConfirmDeleteButtonClick

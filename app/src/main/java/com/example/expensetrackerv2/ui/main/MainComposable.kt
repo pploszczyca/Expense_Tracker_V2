@@ -18,7 +18,6 @@ import com.example.expensetrackerv2.ui.bar.SearchTopAppBar
 import com.example.expensetrackerv2.ui.main.features.drawer.DrawerContent
 import com.example.expensetrackerv2.ui.main.features.bottom_bar.BottomBarContent
 import com.example.expensetrackerv2.ui.main.features.list.ExpensesList
-import com.example.expensetrackerv2.utilities.MathUtils
 import kotlinx.coroutines.launch
 
 @Composable
@@ -75,8 +74,8 @@ fun MainComposable(
             BottomBarContent(
                 onMenuButtonClick = { openDrawer() },
                 isClearButtonVisible = mainViewState.clearButtonVisible,
-                onClearButtonClick = { viewModel.onEvent(MainEvent.MonthYearKeyChange(null)) },
-                onSearchButtonClick = { viewModel.onEvent(MainEvent.TopBarVisibilityChange(true)) })
+                onClearButtonClick = { viewModel.onEvent(MainEvent.BottomBar.ClearButtonClick) },
+                onSearchButtonClick = { viewModel.onEvent(MainEvent.BottomBar.SearchButtonClick) })
         },
         floatingActionButton = {
             FloatingActionButton(onClick = {
@@ -90,10 +89,8 @@ fun MainComposable(
         content = { innerPadding ->
             MainContent(
                 innerPadding = innerPadding,
-                expenseWithItsTypeList = mainViewState.filteredExpenses,
+                mainViewState = mainViewState,
                 navController = navController,
-                isMainExpenseInformationVisible = mainViewState.mainExpenseInformationVisible,
-                isDeleteDialogVisible = mainViewState.isDeleteDialogVisible,
                 onDeleteButtonClick = { viewModel.onEvent(MainEvent.DeleteButtonClick(it)) },
                 onDismissDeleteButtonClick = { viewModel.onEvent(MainEvent.DismissDeleteButtonClick) },
                 onConfirmDeleteButtonClick = { viewModel.onEvent(MainEvent.ConfirmDeleteButtonClick) })
@@ -104,10 +101,8 @@ fun MainComposable(
 @Composable
 private fun MainContent(
     innerPadding: PaddingValues,
-    expenseWithItsTypeList: List<ExpenseWithItsType>,
+    mainViewState: MainViewModel.ViewState,
     navController: NavController,
-    isMainExpenseInformationVisible: Boolean,
-    isDeleteDialogVisible: Boolean,
     onDeleteButtonClick: (ExpenseWithItsType) -> Unit,
     onDismissDeleteButtonClick: () -> Unit,
     onConfirmDeleteButtonClick: () -> Unit,
@@ -118,20 +113,17 @@ private fun MainContent(
                 .fillMaxWidth()
                 .padding(top = 10.dp),
         ) {
-            if (isMainExpenseInformationVisible) {
+            if (mainViewState.mainExpenseInformationVisible) {
                 MainExpensesInformation(
-                    moneyInWalletAmount = MathUtils.sumMoneyInList(
-                        expenseWithItsTypeList
-                    )
+                    moneyInWalletAmount = mainViewState.moneyInWalletAmount
                 )
             }
             ExpensesList(
-                expenseWithItsTypeList = expenseWithItsTypeList,
+                mainViewState = mainViewState,
                 navController = navController,
                 onDeleteButtonClick = onDeleteButtonClick,
                 onDismissDeleteButtonClick = onDismissDeleteButtonClick,
                 onConfirmDeleteButtonClick = onConfirmDeleteButtonClick,
-                isDeleteDialogVisible = isDeleteDialogVisible
             )
         }
     }

@@ -5,8 +5,6 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -32,24 +30,20 @@ fun MainComposable(
     val scaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()
 
-    val searchedTitle by viewModel.searchedTitle
-    val currentMonthYearKey by viewModel.currentMonthYearKey
+    val viewState = viewModel.viewState
 
     fun checkIfHasKeyAndContainsSearchedTitle(expenseWithItsType: ExpenseWithItsType): Boolean =
-        (currentMonthYearKey == null || expenseWithItsType.getKey() == currentMonthYearKey) && expenseWithItsType.title.contains(
-            searchedTitle,
+        (viewState.currentMonthYearKey == null || expenseWithItsType.getKey() == viewState.currentMonthYearKey) && expenseWithItsType.title.contains(
+            viewState.searchedTitle,
             true
         )
 
     val expensesWithItsTypeList =
-        viewModel.expensesWithItsType.collectAsState(initial = emptyList()).value.filter {
+        viewState.expensesWithItsType.filter {
             checkIfHasKeyAndContainsSearchedTitle(
                 it
             )
         }
-
-    val isTopBarVisible by viewModel.isTopBarVisible
-    val isDeleteDialogVisible by viewModel.isDeleteDialogVisible
 
     val openDrawer = { coroutineScope.launch { scaffoldState.drawerState.open() } }
     val closeDrawer = { coroutineScope.launch { scaffoldState.drawerState.close() } }
@@ -89,9 +83,9 @@ fun MainComposable(
             )
         },
         topBar = {
-            if (isTopBarVisible) {
+            if (viewState.isTopBarVisible) {
                 SearchTopAppBar(
-                    searchedValue = searchedTitle,
+                    searchedValue = viewState.searchedTitle,
                     onTrailingIconClick = closeSearchTopAppBar,
                     onValueChange = { viewModel.onEvent(MainEvent.SearchedTitleChange(it)) })
             }
@@ -99,7 +93,7 @@ fun MainComposable(
         bottomBar = {
             BottomBarContent(
                 onMenuButtonClick = { openDrawer() },
-                isClearButtonVisible = viewModel.isClearButtonVisible(),
+                isClearButtonVisible = viewState.clearButtonVisible,
                 onClearButtonClick = { viewModel.onEvent(MainEvent.MonthYearKeyChange(null)) },
                 onSearchButtonClick = { viewModel.onEvent(MainEvent.TopBarVisibilityChange(true)) })
         },
@@ -117,8 +111,8 @@ fun MainComposable(
                 innerPadding = innerPadding,
                 expenseWithItsTypeList = expensesWithItsTypeList,
                 navController = navController,
-                isMainExpenseInformationVisible = viewModel.isMainExpenseInformationVisible(),
-                isDeleteDialogVisible = isDeleteDialogVisible,
+                isMainExpenseInformationVisible = viewState.mainExpenseInformationVisible,
+                isDeleteDialogVisible = viewState.isDeleteDialogVisible,
                 onDeleteButtonClick = { viewModel.onEvent(MainEvent.DeleteButtonClick(it)) },
                 onDismissDeleteButtonClick = { viewModel.onEvent(MainEvent.DismissDeleteButtonClick()) },
                 onConfirmDeleteButtonClick = { viewModel.onEvent(MainEvent.ConfirmDeleteButtonClick()) })

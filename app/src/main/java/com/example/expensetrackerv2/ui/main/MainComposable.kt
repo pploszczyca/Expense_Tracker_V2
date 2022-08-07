@@ -9,6 +9,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.expensetrackerv2.R
 import com.example.expensetrackerv2.Routes
@@ -16,6 +17,8 @@ import com.example.expensetrackerv2.database.models.view_models.ExpenseMonthYear
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
 import com.example.expensetrackerv2.ui.bar.SearchTopAppBar
 import com.example.expensetrackerv2.ui.main.features.bottom_bar.BottomBarContent
+import com.example.expensetrackerv2.ui.main.features.delete_dialog.DeleteExpenseAlertDialog
+import com.example.expensetrackerv2.ui.main.features.delete_dialog.DeleteExpenseDialogViewModel
 import com.example.expensetrackerv2.ui.main.features.drawer.DrawerContent
 import com.example.expensetrackerv2.ui.main.features.list.ExpensesList
 import kotlinx.coroutines.launch
@@ -103,6 +106,13 @@ private fun MainContent(
     onDismissDeleteButtonClick: () -> Unit,
     onConfirmDeleteButtonClick: () -> Unit,
 ) {
+    val deleteExpenseDialogViewModel: DeleteExpenseDialogViewModel = hiltViewModel()
+    mainViewState.expenseToDelete?.let {
+        deleteExpenseDialogViewModel.init(
+            expenseWithItsType = it
+        )
+    }
+
     Box(modifier = Modifier.padding(innerPadding)) {
         Column(
             modifier = Modifier
@@ -118,10 +128,16 @@ private fun MainContent(
                 mainViewState = mainViewState,
                 navController = navController,
                 onDeleteButtonClick = onDeleteButtonClick,
-                onDismissDeleteButtonClick = onDismissDeleteButtonClick,
-                onConfirmDeleteButtonClick = onConfirmDeleteButtonClick,
             )
         }
+    }
+
+    if (mainViewState.isDeleteDialogVisible) {
+        DeleteExpenseAlertDialog(
+            viewModel = deleteExpenseDialogViewModel,
+            onDismissClick = onDismissDeleteButtonClick,
+            onConfirmButtonClick = onConfirmDeleteButtonClick
+        )
     }
 }
 

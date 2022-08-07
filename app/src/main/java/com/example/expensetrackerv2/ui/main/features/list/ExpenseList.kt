@@ -13,12 +13,14 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.expensetrackerv2.database.models.Type
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
 import com.example.expensetrackerv2.database.models.view_models.getKey
 import com.example.expensetrackerv2.ui.main.MainViewModel
 import com.example.expensetrackerv2.ui.main.features.delete_dialog.DeleteExpenseAlertDialog
+import com.example.expensetrackerv2.ui.main.features.delete_dialog.DeleteExpenseDialogViewModel
 import com.example.expensetrackerv2.ui.theme.ExpenseColor
 import com.example.expensetrackerv2.ui.theme.IncomeColor
 import com.example.expensetrackerv2.utilities.DateUtils
@@ -30,8 +32,6 @@ fun ExpensesList(
     mainViewState: MainViewModel.ViewState,
     navController: NavController,
     onDeleteButtonClick: (ExpenseWithItsType) -> Unit,
-    onDismissDeleteButtonClick: () -> Unit,
-    onConfirmDeleteButtonClick: () -> Unit,
 ) {
     LazyColumn(Modifier.padding(3.dp)) {
         mainViewState.filteredExpenses
@@ -83,12 +83,4 @@ fun ExpensesList(
                 }
             }
     }
-
-    if (mainViewState.isDeleteDialogVisible) {
-        DeleteExpenseAlertDialog(
-            onDismissClick = onDismissDeleteButtonClick,
-            onConfirmButtonClick = onConfirmDeleteButtonClick
-        )
-    }
-
 }

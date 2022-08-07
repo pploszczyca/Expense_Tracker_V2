@@ -9,6 +9,7 @@ import com.example.expensetrackerv2.R
 
 @Composable
 fun DeleteExpenseAlertDialog(
+    viewModel: DeleteExpenseDialogViewModel,
     onDismissClick: () -> Unit,
     onConfirmButtonClick: () -> Unit
 ) {
@@ -16,7 +17,10 @@ fun DeleteExpenseAlertDialog(
         title = { Text(stringResource(id = R.string.delete_expense_title)) },
         text = { Text(stringResource(id = R.string.delete_expense_question)) },
         confirmButton = {
-            TextButton(onClick = onConfirmButtonClick) {
+            TextButton(onClick = {
+                viewModel.onEvent(DeleteExpenseDialogEvent.ConfirmButtonClick)
+                onConfirmButtonClick()
+            }) {
                 Text(text = stringResource(id = R.string.yes))
             }
         },

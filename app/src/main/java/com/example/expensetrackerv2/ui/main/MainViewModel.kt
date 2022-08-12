@@ -33,7 +33,7 @@ class MainViewModel @Inject constructor(
         private set
 
     init {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.Main) {
             getExpensesWithItsType()
                 .collect {
                     viewState = viewState.copy(

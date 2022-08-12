@@ -13,74 +13,66 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.expensetrackerv2.database.models.Type
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
-import com.example.expensetrackerv2.database.models.view_models.getKey
-import com.example.expensetrackerv2.ui.main.MainViewModel
-import com.example.expensetrackerv2.ui.main.features.delete_dialog.DeleteExpenseAlertDialog
-import com.example.expensetrackerv2.ui.main.features.delete_dialog.DeleteExpenseDialogViewModel
 import com.example.expensetrackerv2.ui.theme.ExpenseColor
 import com.example.expensetrackerv2.ui.theme.IncomeColor
 import com.example.expensetrackerv2.utilities.DateUtils
-import com.example.expensetrackerv2.utilities.MathUtils
+import java.util.*
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ExpensesList(
-    mainViewState: MainViewModel.ViewState,
+    viewModel: ExpenseListViewModel,
     navController: NavController,
     onDeleteButtonClick: (ExpenseWithItsType) -> Unit,
 ) {
+    val viewState = viewModel.viewState
+
     LazyColumn(Modifier.padding(3.dp)) {
-        mainViewState.filteredExpenses
-            .groupBy { it.getKey() }
-            .forEach { (_, expensesInSpecificDate) ->
-                val filterExpenseListByType =
-                    { type: Type -> expensesInSpecificDate.filter { it.type == type } }
+        viewState.groupedExpensesList.forEach { groupedExpenses ->
+            stickyHeader {
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .background(MaterialTheme.colors.background)
+                        .padding(10.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        DateUtils.dateToStringWithMonthAndYear(
+                            date = Date(
+                                groupedExpenses.key.year,
+                                groupedExpenses.key.month,
+                                1
+                            )
+                        ),
+                        style = MaterialTheme.typography.subtitle1
+                    )
 
-                val incomeValue =
-                    MathUtils.sumMoneyInListToString(filterExpenseListByType(Type.INCOME))
-                val outgoValue =
-                    MathUtils.sumMoneyInListToString(filterExpenseListByType(Type.OUTGO))
-
-                stickyHeader {
-                    Row(
-                        Modifier
-                            .fillMaxWidth()
-                            .background(MaterialTheme.colors.background)
-                            .padding(10.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
+                    Row {
                         Text(
-                            DateUtils.dateToStringWithMonthAndYear(date = expensesInSpecificDate.first().date),
-                            style = MaterialTheme.typography.subtitle1
+                            groupedExpenses.totalOutgo,
+                            style = MaterialTheme.typography.subtitle1,
+                            color = ExpenseColor
                         )
-
-                        Row {
-                            Text(
-                                outgoValue,
-                                style = MaterialTheme.typography.subtitle1,
-                                color = ExpenseColor
-                            )
-                            Text("/", style = MaterialTheme.typography.subtitle1)
-                            Text(
-                                incomeValue,
-                                style = MaterialTheme.typography.subtitle1,
-                                color = IncomeColor
-                            )
-                        }
+                        Text("/", style = MaterialTheme.typography.subtitle1)
+                        Text(
+                            groupedExpenses.totalIncome,
+                            style = MaterialTheme.typography.subtitle1,
+                            color = IncomeColor
+                        )
                     }
                 }
-
-                items(expensesInSpecificDate) { expense ->
-                    ExpenseCard(
-                        expenseWithItsType = expense,
-                        navController = navController,
-                        onDeleteButtonClick = onDeleteButtonClick
-                    )
-                }
             }
+
+            items(groupedExpenses.expenses) { expense ->
+                ExpenseCard(
+                    expenseWithItsType = expense,
+                    navController = navController,
+                    onDeleteButtonClick = onDeleteButtonClick
+                )
+            }
+        }
     }
 }

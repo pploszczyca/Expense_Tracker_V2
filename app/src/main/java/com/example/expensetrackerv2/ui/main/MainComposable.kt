@@ -125,7 +125,7 @@ private fun MainContent(
                 )
             }
             ExpensesList(
-                mainViewState = mainViewState,
+                viewModel = hiltViewModel(),
                 navController = navController,
                 onDeleteButtonClick = onDeleteButtonClick,
             )

@@ -17,3 +17,7 @@ data class Expense(
     @ColumnInfo(name = "type_of_expense_id")
     var typeOfExpenseId: Int = 0
 )
+
+data class MonthYearKey(val year: Int, val month: Int)
+
+fun Expense.getKey() = MonthYearKey(this.date.year, this.date.month)

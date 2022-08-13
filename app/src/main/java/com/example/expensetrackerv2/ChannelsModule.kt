@@ -1,6 +1,7 @@
 package com.example.expensetrackerv2
 
 import com.example.expensetrackerv2.ui.main.features.bottom_bar.MainBottomBarEvent
+import com.example.expensetrackerv2.ui.main.features.filter_dialog.MainFilterDialogEvent
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,4 +15,8 @@ object ChannelsModule {
     @Provides
     @Singleton
     fun provideMainBottomBarChannel(): Channel<MainBottomBarEvent> = Channel()
+
+    @Provides
+    @Singleton
+    fun provideMainFilterDialogChannel(): Channel<MainFilterDialogEvent> = Channel()
 }

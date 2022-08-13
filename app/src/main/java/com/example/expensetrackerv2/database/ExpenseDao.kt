@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 abstract class ExpenseDao {
     //QUERIES
     @Query("SELECT * FROM expense ORDER BY date DESC")
-    abstract fun getAllExpenses(): List<Expense>
+    abstract fun getAllExpenses(): Flow<List<Expense>>
 
     @Query("SELECT * FROM typeofexpense")
     abstract fun getAllTypesOfExpense(): Flow<List<TypeOfExpense>>

@@ -23,26 +23,6 @@ import kotlinx.coroutines.Job
 import java.util.*
 
 @Composable
-private fun ShowMonthButtons(
-    monthYearKeyList: List<ExpenseMonthYearKey>,
-    onClick: (expenseMonthYearKey: ExpenseMonthYearKey) -> Unit
-) {
-    Column {
-        monthYearKeyList.map { key ->
-            TextButton(
-                onClick = { onClick(key) }, modifier = Modifier
-                    .absolutePadding(left = 8.dp, bottom = 3.dp, top = 3.dp)
-            ) {
-                val date = Date()
-                date.month = key.month
-                date.year = key.year
-                Text(text = DateUtils.dateToStringWithMonthAndYear(date))
-            }
-        }
-    }
-}
-
-@Composable
 fun DrawerContent(
     onMonthButtonClick: (expenseMonthYearKey: ExpenseMonthYearKey) -> Unit,
     onExportToJsonClick: (Uri?) -> Unit,
@@ -113,6 +93,26 @@ fun DrawerContent(
                 .padding(8.dp)
         ) {
             Text(text = stringResource(id = R.string.drawer_import_from_json))
+        }
+    }
+}
+
+@Composable
+private fun ShowMonthButtons(
+    monthYearKeyList: List<ExpenseMonthYearKey>,
+    onClick: (expenseMonthYearKey: ExpenseMonthYearKey) -> Unit
+) {
+    Column {
+        monthYearKeyList.map { key ->
+            TextButton(
+                onClick = { onClick(key) }, modifier = Modifier
+                    .absolutePadding(left = 8.dp, bottom = 3.dp, top = 3.dp)
+            ) {
+                val date = Date()
+                date.month = key.month
+                date.year = key.year
+                Text(text = DateUtils.dateToStringWithMonthAndYear(date))
+            }
         }
     }
 }

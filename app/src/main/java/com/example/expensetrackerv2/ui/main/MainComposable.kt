@@ -20,7 +20,10 @@ import com.example.expensetrackerv2.ui.main.features.bottom_bar.BottomBarContent
 import com.example.expensetrackerv2.ui.main.features.delete_dialog.DeleteExpenseAlertDialog
 import com.example.expensetrackerv2.ui.main.features.delete_dialog.DeleteExpenseDialogViewModel
 import com.example.expensetrackerv2.ui.main.features.drawer.DrawerContent
+import com.example.expensetrackerv2.ui.main.features.list.ExpenseListViewModel
 import com.example.expensetrackerv2.ui.main.features.list.ExpensesList
+import com.example.expensetrackerv2.ui.main.features.list.ExpensesListEvent
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 
 @Composable
@@ -36,16 +39,14 @@ fun MainComposable(
     val openDrawer = { coroutineScope.launch { scaffoldState.drawerState.open() } }
     val closeDrawer = { coroutineScope.launch { scaffoldState.drawerState.close() } }
 
-    val onMonthButtonClick = { key: ExpenseMonthYearKey ->
-        closeDrawer()
-        viewModel.onEvent(MainEvent.MonthYearKeyChange(key))
-    }
-
     Scaffold(
         scaffoldState = scaffoldState,
         drawerContent = {
             DrawerContent(
-                onMonthButtonClick = onMonthButtonClick,
+                onMonthButtonClick = { key: ExpenseMonthYearKey ->
+                    closeDrawer()
+                    viewModel.onEvent(MainEvent.MonthYearKeyChange(key))
+                },
                 onExportToJsonClick = { uri ->
                     viewModel.onEvent(
                         MainEvent.ExportToJsonButtonClick(uri)
@@ -83,7 +84,7 @@ fun MainComposable(
                 Icon(Icons.Filled.Add, contentDescription = stringResource(id = R.string.add_icon))
             }
         },
-        floatingActionButtonPosition = FabPosition.Center,
+        floatingActionButtonPosition = FabPosition.End,
         isFloatingActionButtonDocked = true,
         content = { innerPadding ->
             MainContent(
@@ -124,8 +125,10 @@ private fun MainContent(
                     moneyInWalletAmount = mainViewState.moneyInWalletAmount
                 )
             }
+            val expensesListViewModel: ExpenseListViewModel = hiltViewModel()
+            expensesListViewModel.onEvent(ExpensesListEvent.ExpensesChanged(mainViewState.filteredExpenses))
             ExpensesList(
-                viewModel = hiltViewModel(),
+                viewModel = expensesListViewModel,
                 navController = navController,
                 onDeleteButtonClick = onDeleteButtonClick,
             )

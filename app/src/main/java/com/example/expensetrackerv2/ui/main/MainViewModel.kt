@@ -61,9 +61,6 @@ class MainViewModel @Inject constructor(
 
     fun onEvent(event: MainEvent) {
         when (event) {
-            is MainEvent.MonthYearKeyChange -> viewState = viewState.copy(
-                currentMonthYearKey = event.value,
-            )
             is MainEvent.SearchedTitleChange -> viewState = viewState.copy(
                 searchedTitle = event.value,
             )
@@ -176,8 +173,6 @@ class MainViewModel @Inject constructor(
                 true
             )
 
-        val monthYearKeys: List<ExpenseMonthYearKey>
-            get() = filteredExpenses.map { it.getKey() }.distinct()
         val moneyInWalletAmount: Double
             get() = MathUtils.sumMoneyInList(
                 expenseWithItsTypeList = filteredExpenses

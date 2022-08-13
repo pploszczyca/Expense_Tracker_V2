@@ -13,7 +13,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.expensetrackerv2.R
 import com.example.expensetrackerv2.Routes
-import com.example.expensetrackerv2.database.models.view_models.ExpenseMonthYearKey
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
 import com.example.expensetrackerv2.ui.bar.SearchTopAppBar
 import com.example.expensetrackerv2.ui.main.features.bottom_bar.BottomBarContent
@@ -44,10 +43,6 @@ fun MainComposable(
         scaffoldState = scaffoldState,
         drawerContent = {
             DrawerContent(
-                onMonthButtonClick = { key: ExpenseMonthYearKey ->
-                    closeDrawer()
-                    viewModel.onEvent(MainEvent.MonthYearKeyChange(key))
-                },
                 onExportToJsonClick = { uri ->
                     viewModel.onEvent(
                         MainEvent.ExportToJsonButtonClick(uri)
@@ -59,7 +54,6 @@ fun MainComposable(
                     )
                 },
                 closeDrawer = closeDrawer,
-                monthYearKeyList = mainViewState.monthYearKeys,
                 navController = navController
             )
         },

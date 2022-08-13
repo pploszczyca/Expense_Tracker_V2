@@ -24,11 +24,9 @@ import java.util.*
 
 @Composable
 fun DrawerContent(
-    onMonthButtonClick: (expenseMonthYearKey: ExpenseMonthYearKey) -> Unit,
     onExportToJsonClick: (Uri?) -> Unit,
     onImportFromJsonClick: (Uri?) -> Unit,
     closeDrawer: () -> Job,
-    monthYearKeyList: List<ExpenseMonthYearKey>,
     navController: NavController,
 ) {
     val exportJsonFileName = stringResource(id = R.string.drawer_months_title)
@@ -51,15 +49,6 @@ fun DrawerContent(
             .fillMaxHeight()
             .verticalScroll(rememberScrollState())
     ) {
-
-        Text(
-            stringResource(id = R.string.drawer_months_title),
-            style = MaterialTheme.typography.h5,
-            modifier = Modifier.padding(16.dp)
-        )
-
-        ShowMonthButtons(monthYearKeyList, onMonthButtonClick)
-
         Text(
             stringResource(id = R.string.drawer_options_title),
             style = MaterialTheme.typography.h5,
@@ -93,26 +82,6 @@ fun DrawerContent(
                 .padding(8.dp)
         ) {
             Text(text = stringResource(id = R.string.drawer_import_from_json))
-        }
-    }
-}
-
-@Composable
-private fun ShowMonthButtons(
-    monthYearKeyList: List<ExpenseMonthYearKey>,
-    onClick: (expenseMonthYearKey: ExpenseMonthYearKey) -> Unit
-) {
-    Column {
-        monthYearKeyList.map { key ->
-            TextButton(
-                onClick = { onClick(key) }, modifier = Modifier
-                    .absolutePadding(left = 8.dp, bottom = 3.dp, top = 3.dp)
-            ) {
-                val date = Date()
-                date.month = key.month
-                date.year = key.year
-                Text(text = DateUtils.dateToStringWithMonthAndYear(date))
-            }
         }
     }
 }

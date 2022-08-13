@@ -5,7 +5,6 @@ import com.example.expensetrackerv2.database.models.view_models.ExpenseMonthYear
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
 
 sealed interface MainEvent {
-    data class MonthYearKeyChange(val value: ExpenseMonthYearKey?) : MainEvent
     data class SearchedTitleChange(val value: String) : MainEvent
     data class ExportToJsonButtonClick(val value: Uri?) : MainEvent
     data class ImportFromJsonButtonClick(val value: Uri?) : MainEvent

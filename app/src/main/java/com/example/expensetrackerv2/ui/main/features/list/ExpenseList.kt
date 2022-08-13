@@ -58,7 +58,10 @@ fun ExpensesList(
                 }
             }
 
-            items(groupedExpenses.expenses) { expense ->
+            items(items = groupedExpenses.expenses,
+                key = {
+                    it.id
+                }) { expense ->
                 ExpenseCard(
                     expenseWithItsType = expense,
                     navController = navController,

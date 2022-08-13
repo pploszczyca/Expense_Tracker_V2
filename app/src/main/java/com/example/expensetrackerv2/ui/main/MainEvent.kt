@@ -13,9 +13,9 @@ sealed interface MainEvent {
     object DismissDeleteButtonClick : MainEvent
     object ConfirmDeleteButtonClick : MainEvent
     object OnTopBarTrailingIconClick : MainEvent
-    
+
     sealed interface BottomBar {
         object SearchButtonClick : MainEvent
-        object ClearButtonClick: MainEvent
+        object ClearButtonClick : MainEvent
     }
 }

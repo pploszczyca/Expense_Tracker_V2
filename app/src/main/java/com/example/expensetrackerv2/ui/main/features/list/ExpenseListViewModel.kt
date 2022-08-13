@@ -17,7 +17,7 @@ import javax.inject.Inject
 class ExpenseListViewModel @Inject constructor(
     getExpensesWithItsType: GetExpensesWithItsType,
     mapper: ExpensesListGroupedExpensesMapper,
-) : ViewModel(){
+) : ViewModel() {
     var viewState by mutableStateOf(ViewState())
         private set
 
@@ -32,12 +32,12 @@ class ExpenseListViewModel @Inject constructor(
         }
     }
 
-
     data class ViewState(
         val groupedExpensesList: List<GroupedExpenses> = emptyList()
     ) {
         data class GroupedExpenses(
             val key: ExpenseMonthYearKey,
+            val dateText: String,
             val expenses: List<ExpenseWithItsType>,
             val totalIncome: String,
             val totalOutgo: String,

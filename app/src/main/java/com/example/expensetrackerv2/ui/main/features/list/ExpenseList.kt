@@ -17,8 +17,6 @@ import androidx.navigation.NavController
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
 import com.example.expensetrackerv2.ui.theme.ExpenseColor
 import com.example.expensetrackerv2.ui.theme.IncomeColor
-import com.example.expensetrackerv2.utilities.DateUtils
-import java.util.*
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -40,13 +38,7 @@ fun ExpensesList(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        DateUtils.dateToStringWithMonthAndYear(
-                            date = Date(
-                                groupedExpenses.key.year,
-                                groupedExpenses.key.month,
-                                1
-                            )
-                        ),
+                        groupedExpenses.dateText,
                         style = MaterialTheme.typography.subtitle1
                     )
 

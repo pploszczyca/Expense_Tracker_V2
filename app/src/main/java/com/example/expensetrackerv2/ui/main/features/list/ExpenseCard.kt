@@ -78,12 +78,12 @@ private fun ExtraContentExpenseCard(
                 )
             )
         }) {
-            Icon(Icons.Default.Edit, contentDescription = null);
+            Icon(Icons.Default.Edit, contentDescription = null)
             Text(text = stringResource(id = R.string.edit))
         }
 
         TextButton(onClick = { onDeleteButtonClick(expenseWithItsType) }) {
-            Icon(Icons.Default.Delete, contentDescription = null);
+            Icon(Icons.Default.Delete, contentDescription = null)
             Text(text = stringResource(id = R.string.delete))
         }
     }

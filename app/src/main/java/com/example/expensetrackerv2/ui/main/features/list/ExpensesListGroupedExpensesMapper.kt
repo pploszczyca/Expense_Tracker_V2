@@ -4,7 +4,9 @@ import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsTy
 import com.example.expensetrackerv2.database.models.view_models.getKey
 import com.example.expensetrackerv2.extensions.totalIncomeAsString
 import com.example.expensetrackerv2.extensions.totalOutgoAsString
+import com.example.expensetrackerv2.utilities.DateUtils
 import dagger.hilt.android.scopes.ViewModelScoped
+import java.util.*
 import javax.inject.Inject
 
 @ViewModelScoped
@@ -15,6 +17,13 @@ class ExpensesListGroupedExpensesMapper @Inject constructor() {
             .map { (key, expenses) ->
                 ExpenseListViewModel.ViewState.GroupedExpenses(
                     key = key,
+                    dateText = DateUtils.dateToStringWithMonthAndYear(
+                        date = Date(
+                            key.year,
+                            key.month,
+                            1
+                        )
+                    ),
                     expenses = expenses,
                     totalIncome = expenses.totalIncomeAsString(),
                     totalOutgo = expenses.totalOutgoAsString(),

@@ -25,7 +25,7 @@ class DeleteExpenseDialogViewModel @Inject constructor(
     }
 
     fun onEvent(event: DeleteExpenseDialogEvent) {
-        when(event) {
+        when (event) {
             DeleteExpenseDialogEvent.ConfirmButtonClick -> {
                 viewModelScope.launch(Dispatchers.IO) {
                     viewState.expenseWithItsType?.let {

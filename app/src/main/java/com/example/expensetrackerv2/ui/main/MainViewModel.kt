@@ -71,9 +71,9 @@ class MainViewModel @Inject constructor(
                 )
             }
             is MainEvent.DeleteButtonClick -> viewState = viewState.copy(
-                    expenseToDelete = event.value,
-                    isDeleteDialogVisible = true,
-                )
+                expenseToDelete = event.value,
+                isDeleteDialogVisible = true,
+            )
             is MainEvent.DismissDeleteButtonClick -> viewState = viewState.copy(
                 isDeleteDialogVisible = false
             )
@@ -121,20 +121,24 @@ class MainViewModel @Inject constructor(
         val clearButtonVisible: Boolean get() = currentMonthYearKey != null
         val mainExpenseInformationVisible: Boolean get() = isTopBarVisible.not()
 
-        val filteredExpenses: List<ExpenseWithItsType> get() = expensesWithItsType.filter {
-            checkIfHasKeyAndContainsSearchedTitle(
-                it
-            )
-        }
+        val filteredExpenses: List<ExpenseWithItsType>
+            get() = expensesWithItsType.filter {
+                checkIfHasKeyAndContainsSearchedTitle(
+                    it
+                )
+            }
+
         private fun checkIfHasKeyAndContainsSearchedTitle(expenseWithItsType: ExpenseWithItsType): Boolean =
             (currentMonthYearKey == null || expenseWithItsType.getKey() == currentMonthYearKey) && expenseWithItsType.title.contains(
                 searchedTitle,
                 true
             )
 
-        val monthYearKeys: List<ExpenseMonthYearKey> get() = filteredExpenses.map { it.getKey() }.distinct()
-        val moneyInWalletAmount: Double get() = MathUtils.sumMoneyInList(
-            expenseWithItsTypeList = filteredExpenses
-        )
+        val monthYearKeys: List<ExpenseMonthYearKey>
+            get() = filteredExpenses.map { it.getKey() }.distinct()
+        val moneyInWalletAmount: Double
+            get() = MathUtils.sumMoneyInList(
+                expenseWithItsTypeList = filteredExpenses
+            )
     }
 }

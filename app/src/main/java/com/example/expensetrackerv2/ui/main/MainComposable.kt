@@ -20,10 +20,11 @@ import com.example.expensetrackerv2.ui.main.features.bottom_bar.BottomBarContent
 import com.example.expensetrackerv2.ui.main.features.delete_dialog.DeleteExpenseAlertDialog
 import com.example.expensetrackerv2.ui.main.features.delete_dialog.DeleteExpenseDialogViewModel
 import com.example.expensetrackerv2.ui.main.features.drawer.DrawerContent
+import com.example.expensetrackerv2.ui.main.features.filter_dialog.MainFilterDialog
+import com.example.expensetrackerv2.ui.main.features.filter_dialog.MainFilterDialogViewModel
 import com.example.expensetrackerv2.ui.main.features.list.ExpenseListViewModel
 import com.example.expensetrackerv2.ui.main.features.list.ExpensesList
 import com.example.expensetrackerv2.ui.main.features.list.ExpensesListEvent
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 
 @Composable
@@ -63,7 +64,7 @@ fun MainComposable(
             )
         },
         topBar = {
-            if (mainViewState.isTopBarVisible) {
+            if (mainViewState.topBarVisible) {
                 SearchTopAppBar(
                     searchedValue = mainViewState.searchedTitle,
                     onTrailingIconClick = { viewModel.onEvent(MainEvent.OnTopBarTrailingIconClick) },
@@ -107,6 +108,7 @@ private fun MainContent(
     onConfirmDeleteButtonClick: () -> Unit,
 ) {
     val deleteExpenseDialogViewModel: DeleteExpenseDialogViewModel = hiltViewModel()
+    val filterDialogViewModel: MainFilterDialogViewModel = hiltViewModel()
     mainViewState.expenseToDelete?.let {
         deleteExpenseDialogViewModel.init(
             expenseWithItsType = it
@@ -134,12 +136,16 @@ private fun MainContent(
         }
     }
 
-    if (mainViewState.isDeleteDialogVisible) {
+    if (mainViewState.deleteDialogVisible) {
         DeleteExpenseAlertDialog(
             viewModel = deleteExpenseDialogViewModel,
             onDismissClick = onDismissDeleteButtonClick,
             onConfirmButtonClick = onConfirmDeleteButtonClick
         )
+    }
+
+    if (mainViewState.filterDialogVisible) {
+        MainFilterDialog(viewModel = filterDialogViewModel)
     }
 }
 

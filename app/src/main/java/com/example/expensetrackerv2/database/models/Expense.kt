@@ -3,7 +3,8 @@ package com.example.expensetrackerv2.database.models
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.*
+import com.example.expensetrackerv2.database.models.view_models.ExpenseMonthYearKey
+import java.util.Date
 
 @Entity
 data class Expense(
@@ -18,6 +19,4 @@ data class Expense(
     var typeOfExpenseId: Int = 0
 )
 
-data class MonthYearKey(val year: Int, val month: Int)
-
-fun Expense.getKey() = MonthYearKey(this.date.year, this.date.month)
+fun Expense.getKey() = ExpenseMonthYearKey(this.date.year, this.date.month)

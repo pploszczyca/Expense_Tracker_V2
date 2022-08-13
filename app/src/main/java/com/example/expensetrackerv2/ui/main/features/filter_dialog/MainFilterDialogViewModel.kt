@@ -5,17 +5,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.expensetrackerv2.database.models.MonthYearKey
 import com.example.expensetrackerv2.database.models.getKey
+import com.example.expensetrackerv2.database.models.view_models.ExpenseMonthYearKey
 import com.example.expensetrackerv2.use_cases.expense.GetExpenses
 import com.example.expensetrackerv2.utilities.DateUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import java.util.*
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,18 +27,20 @@ class MainFilterDialogViewModel @Inject constructor(
         private set
 
     init {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.Main) {
             getExpenses()
                 .map { expenses ->
                     expenses.map { it.getKey() }
-                }.distinctUntilChanged()
+                }
                 .collect { keys ->
                     viewState = viewState.copy(
-                        options = keys.map {
-                            ViewState.FilterOption(
-                                key = it
-                            )
-                        }
+                        options = keys
+                            .distinct()
+                            .map {
+                                ViewState.FilterOption(
+                                    key = it
+                                )
+                            }
                     )
                 }
         }
@@ -55,7 +56,7 @@ class MainFilterDialogViewModel @Inject constructor(
         val options: List<FilterOption> = emptyList()
     ) {
         data class FilterOption(
-            val key: MonthYearKey
+            val key: ExpenseMonthYearKey
         ) {
             val dateText: String = DateUtils.dateToStringWithMonthAndYear(
                 date = Date(

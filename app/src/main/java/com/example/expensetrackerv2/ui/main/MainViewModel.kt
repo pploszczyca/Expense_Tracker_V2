@@ -2,7 +2,6 @@ package com.example.expensetrackerv2.ui.main
 
 import android.content.ContentResolver
 import android.net.Uri
-import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -12,6 +11,7 @@ import com.example.expensetrackerv2.database.models.view_models.ExpenseMonthYear
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
 import com.example.expensetrackerv2.database.models.view_models.getKey
 import com.example.expensetrackerv2.ui.main.features.bottom_bar.MainBottomBarEvent
+import com.example.expensetrackerv2.ui.main.features.filter_dialog.MainFilterDialogEvent
 import com.example.expensetrackerv2.use_cases.expense.DeleteAllExpensesWithItsType
 import com.example.expensetrackerv2.use_cases.expense.DeleteExpenseWithItsType
 import com.example.expensetrackerv2.use_cases.expense.GetExpensesWithItsType
@@ -32,7 +32,8 @@ class MainViewModel @Inject constructor(
     private val deleteExpenseWithItsType: DeleteExpenseWithItsType,
     private val deleteAllExpensesWithItsType: DeleteAllExpensesWithItsType,
     private val insertExpenseWithItsType: InsertExpenseWithItsType,
-    private val bottomBarChannel: Channel<MainBottomBarEvent>
+    bottomBarChannel: Channel<MainBottomBarEvent>,
+    filterDialogChannel: Channel<MainFilterDialogEvent>
 ) : ViewModel() {
     var viewState by mutableStateOf(ViewState())
         private set
@@ -50,20 +51,11 @@ class MainViewModel @Inject constructor(
         }
 
         viewModelScope.launch(Dispatchers.Main) {
-            bottomBarChannel.consumeEach {
-                when(it) {
-                    MainBottomBarEvent.ClearButtonClick -> viewState = viewState.copy(
-                        currentMonthYearKey = null
-                    )
-                    MainBottomBarEvent.FilterButtonClick -> {
+            bottomBarChannel.consumeEach(::onBottomBarEvent)
+        }
 
-                    }
-                    MainBottomBarEvent.MenuButtonClick -> openDrawer?.invoke()
-                    MainBottomBarEvent.SearchButtonClick -> viewState = viewState.copy(
-                        isTopBarVisible = true,
-                    )
-                }
-            }
+        viewModelScope.launch(Dispatchers.Main) {
+            filterDialogChannel.consumeEach(::onFilterDialogEvent)
         }
     }
 
@@ -85,18 +77,18 @@ class MainViewModel @Inject constructor(
 
                 }
                 viewState = viewState.copy(
-                    isDeleteDialogVisible = false
+                    deleteDialogVisible = false
                 )
             }
             is MainEvent.DeleteButtonClick -> viewState = viewState.copy(
                 expenseToDelete = event.value,
-                isDeleteDialogVisible = true,
+                deleteDialogVisible = true,
             )
             is MainEvent.DismissDeleteButtonClick -> viewState = viewState.copy(
-                isDeleteDialogVisible = false
+                deleteDialogVisible = false
             )
             is MainEvent.OnTopBarTrailingIconClick -> viewState = viewState.copy(
-                isTopBarVisible = false,
+                topBarVisible = false,
                 searchedTitle = "",
             )
         }
@@ -128,16 +120,48 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    private fun onBottomBarEvent(event: MainBottomBarEvent) {
+        when(event) {
+            MainBottomBarEvent.ClearButtonClick -> viewState = viewState.copy(
+                currentMonthYearKey = null
+            )
+            MainBottomBarEvent.FilterButtonClick -> viewState = viewState.copy(
+                filterDialogVisible = true
+            )
+            MainBottomBarEvent.MenuButtonClick -> openDrawer?.invoke()
+            MainBottomBarEvent.SearchButtonClick -> viewState = viewState.copy(
+                topBarVisible = true,
+            )
+        }
+    }
+
+    private fun onFilterDialogEvent(event: MainFilterDialogEvent) {
+        viewState = when(event) {
+            MainFilterDialogEvent.CloseDialog -> viewState.copy(
+                filterDialogVisible = false,
+            )
+            is MainFilterDialogEvent.OptionSelected -> viewState.copy(
+                currentMonthYearKey = event.key,
+                filterDialogVisible = false
+            )
+            MainFilterDialogEvent.ResetSelection -> viewState.copy(
+                currentMonthYearKey = null,
+                filterDialogVisible = false,
+            )
+        }
+    }
+
     data class ViewState(
         val currentMonthYearKey: ExpenseMonthYearKey? = null,
         val searchedTitle: String = "",
         val expenseToDelete: ExpenseWithItsType? = null,
         private val expensesWithItsType: List<ExpenseWithItsType> = emptyList(),
-        val isTopBarVisible: Boolean = false,
-        val isDeleteDialogVisible: Boolean = false,
+        val topBarVisible: Boolean = false,
+        val deleteDialogVisible: Boolean = false,
+        val filterDialogVisible: Boolean = false,
     ) {
         val clearButtonVisible: Boolean get() = currentMonthYearKey != null
-        val mainExpenseInformationVisible: Boolean get() = isTopBarVisible.not()
+        val mainExpenseInformationVisible: Boolean get() = topBarVisible.not()
 
         val filteredExpenses: List<ExpenseWithItsType>
             get() = expensesWithItsType.filter {

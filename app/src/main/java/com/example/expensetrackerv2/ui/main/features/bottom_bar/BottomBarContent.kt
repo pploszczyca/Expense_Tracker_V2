@@ -14,17 +14,15 @@ import com.example.expensetrackerv2.R
 
 @Composable
 fun BottomBarContent(
-    onMenuButtonClick: () -> Unit,
+    viewModel: MainBottomBarViewModel,
     isClearButtonVisible: Boolean,
-    onClearButtonClick: () -> Unit,
-    onSearchButtonClick: () -> Unit
 ) {
     BottomAppBar(cutoutShape = CircleShape) {
-        IconButton(onClick = onMenuButtonClick) {
+        IconButton(onClick = { viewModel.onEvent(MainBottomBarEvent.MenuButtonClick) }) {
             Icon(Icons.Filled.Menu, contentDescription = stringResource(id = R.string.menu_icon))
         }
 
-        IconButton(onClick = onSearchButtonClick) {
+        IconButton(onClick = { viewModel.onEvent(MainBottomBarEvent.SearchButtonClick) }) {
             Icon(
                 Icons.Filled.Search,
                 contentDescription = stringResource(id = R.string.search_icon)
@@ -32,7 +30,7 @@ fun BottomBarContent(
         }
 
         if (isClearButtonVisible) {
-            IconButton(onClick = onClearButtonClick) {
+            IconButton(onClick = { viewModel.onEvent(MainBottomBarEvent.ClearButtonClick) }) {
                 Icon(
                     Icons.Filled.Close,
                     contentDescription = stringResource(id = R.string.reset_icon)

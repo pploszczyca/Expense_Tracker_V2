@@ -36,7 +36,7 @@ fun MainComposable(
 
     val mainViewState = viewModel.viewState
 
-    val openDrawer = { coroutineScope.launch { scaffoldState.drawerState.open() } }
+    viewModel.openDrawer = { coroutineScope.launch { scaffoldState.drawerState.open() } }
     val closeDrawer = { coroutineScope.launch { scaffoldState.drawerState.close() } }
 
     Scaffold(
@@ -72,10 +72,9 @@ fun MainComposable(
         },
         bottomBar = {
             BottomBarContent(
-                onMenuButtonClick = { openDrawer() },
+                viewModel = hiltViewModel(),
                 isClearButtonVisible = mainViewState.clearButtonVisible,
-                onClearButtonClick = { viewModel.onEvent(MainEvent.BottomBar.ClearButtonClick) },
-                onSearchButtonClick = { viewModel.onEvent(MainEvent.BottomBar.SearchButtonClick) })
+            )
         },
         floatingActionButton = {
             FloatingActionButton(onClick = {

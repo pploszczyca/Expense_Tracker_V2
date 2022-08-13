@@ -28,68 +28,6 @@ import com.example.expensetrackerv2.ui.theme.IncomeColor
 import com.example.expensetrackerv2.utilities.DateUtils
 
 @Composable
-private fun ExtraContentRow(contentName: String, contentIcon: ImageVector, contentString: String) {
-    Spacer(modifier = Modifier.height(5.dp))
-    if (contentString.isNotEmpty()) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(2.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(contentIcon, contentDescription = null, modifier = Modifier.size(18.dp))
-                Text(
-                    style = MaterialTheme.typography.subtitle1,
-                    text = contentName,
-                    modifier = Modifier.padding(start = 5.dp)
-                )
-            }
-            Text(style = MaterialTheme.typography.subtitle1, text = contentString)
-        }
-    }
-}
-
-@Composable
-private fun ExtraContentExpenseCard(
-    expenseWithItsType: ExpenseWithItsType,
-    navController: NavController,
-    onDeleteButtonClick: (ExpenseWithItsType) -> Unit
-) {
-    ExtraContentRow(
-        stringResource(id = R.string.place),
-        Icons.Default.Place,
-        expenseWithItsType.place
-    )
-    ExtraContentRow(
-        stringResource(id = R.string.description),
-        Icons.Default.Message,
-        expenseWithItsType.description
-    )
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.End
-    ) {
-        TextButton(onClick = {
-            navController.navigate(
-                Routes.ExpenseForm.route.plus(
-                    "?EXPENSE_ID=${expenseWithItsType.id}"
-                )
-            )
-        }) {
-            Icon(Icons.Default.Edit, contentDescription = null)
-            Text(text = stringResource(id = R.string.edit))
-        }
-
-        TextButton(onClick = { onDeleteButtonClick(expenseWithItsType) }) {
-            Icon(Icons.Default.Delete, contentDescription = null)
-            Text(text = stringResource(id = R.string.delete))
-        }
-    }
-}
-
-@Composable
 fun ExpenseCard(
     expenseWithItsType: ExpenseWithItsType,
     navController: NavController,
@@ -146,6 +84,69 @@ fun ExpenseCard(
             if (isCardExtended) {
                 ExtraContentExpenseCard(expenseWithItsType, navController, onDeleteButtonClick)
             }
+        }
+    }
+}
+
+@Composable
+private fun ExtraContentExpenseCard(
+    expenseWithItsType: ExpenseWithItsType,
+    navController: NavController,
+    onDeleteButtonClick: (ExpenseWithItsType) -> Unit
+) {
+    ExtraContentRow(
+        stringResource(id = R.string.place),
+        Icons.Default.Place,
+        expenseWithItsType.place
+    )
+    ExtraContentRow(
+        stringResource(id = R.string.description),
+        Icons.Default.Message,
+        expenseWithItsType.description
+    )
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.End
+    ) {
+        TextButton(onClick = {
+            navController.navigate(
+                Routes.ExpenseForm.route.plus(
+                    "?EXPENSE_ID=${expenseWithItsType.id}"
+                )
+            )
+        }) {
+            Icon(Icons.Default.Edit, contentDescription = null)
+            Text(text = stringResource(id = R.string.edit))
+        }
+
+        TextButton(onClick = { onDeleteButtonClick(expenseWithItsType) }) {
+            Icon(Icons.Default.Delete, contentDescription = null)
+            Text(text = stringResource(id = R.string.delete))
+        }
+    }
+}
+
+
+@Composable
+private fun ExtraContentRow(contentName: String, contentIcon: ImageVector, contentString: String) {
+    Spacer(modifier = Modifier.height(5.dp))
+    if (contentString.isNotEmpty()) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(2.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(contentIcon, contentDescription = null, modifier = Modifier.size(18.dp))
+                Text(
+                    style = MaterialTheme.typography.subtitle1,
+                    text = contentName,
+                    modifier = Modifier.padding(start = 5.dp)
+                )
+            }
+            Text(style = MaterialTheme.typography.subtitle1, text = contentString)
         }
     }
 }

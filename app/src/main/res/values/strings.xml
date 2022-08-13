@@ -5,6 +5,7 @@
     <string name="menu_icon">Menu</string>
     <string name="reset_icon">Reset</string>
     <string name="search_icon">Search</string>
+    <string name="filter_icon">Filter</string>
     <string name="add_icon">Add</string>
 
     <string name="place">Place:</string>

@@ -5,9 +5,7 @@ import androidx.compose.material.BottomAppBar
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.example.expensetrackerv2.R
@@ -26,6 +24,13 @@ fun BottomBarContent(
             Icon(
                 Icons.Filled.Search,
                 contentDescription = stringResource(id = R.string.search_icon)
+            )
+        }
+
+        IconButton(onClick = { viewModel.onEvent(MainBottomBarEvent.FilterButtonClick) }) {
+            Icon(
+                Icons.Filled.FilterList,
+                contentDescription = stringResource(id = R.string.filter_icon)
             )
         }
 

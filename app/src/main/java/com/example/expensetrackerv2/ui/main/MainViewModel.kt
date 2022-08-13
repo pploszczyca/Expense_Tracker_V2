@@ -55,7 +55,9 @@ class MainViewModel @Inject constructor(
                     MainBottomBarEvent.ClearButtonClick -> viewState = viewState.copy(
                         currentMonthYearKey = null
                     )
-                    MainBottomBarEvent.FilterButtonClick -> TODO()
+                    MainBottomBarEvent.FilterButtonClick -> {
+
+                    }
                     MainBottomBarEvent.MenuButtonClick -> openDrawer?.invoke()
                     MainBottomBarEvent.SearchButtonClick -> viewState = viewState.copy(
                         isTopBarVisible = true,

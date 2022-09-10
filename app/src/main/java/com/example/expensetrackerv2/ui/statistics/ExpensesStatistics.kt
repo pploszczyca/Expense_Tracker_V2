@@ -1,10 +1,8 @@
 package com.example.expensetrackerv2.ui.statistics
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Scaffold
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
@@ -21,6 +19,7 @@ import com.example.expensetrackerv2.ui.theme.IncomeColor
 import com.example.expensetrackerv2.utilities.DateUtils
 import com.example.expensetrackerv2.utilities.MathUtils
 
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun ExpensesStatistics(
     navController: NavController,
@@ -33,59 +32,60 @@ fun ExpensesStatistics(
             emptyList()
         ).value.filter { DateUtils.toOnlyDateString(it.date) in fromDate.value..toDate.value }
 
-    Scaffold(content = {
-        Column(modifier = Modifier.fillMaxSize()) {
-            CalendarDialogField(
-                date = fromDate.value,
-                label = stringResource(id = R.string.from_date),
-                onDatePickerPick = { dateFromDialog ->
-                    expensesStatisticsViewModel.onFromDateChange(
-                        dateFromDialog
-                    )
-                })
-
-            CalendarDialogField(
-                date = toDate.value,
-                label = stringResource(id = R.string.to_date),
-                onDatePickerPick = { dateFromDialog ->
-                    expensesStatisticsViewModel.onToDateChange(
-                        dateFromDialog
-                    )
-                })
-
-            Spacer(modifier = Modifier.padding(4.dp))
-
-            StatisticsCard(
-                title = stringResource(id = R.string.total),
-                number = MathUtils.sumMoneyInListToString(expenseWithItsTypeFilteredList),
-                color = Color.Unspecified
-            )
-
-            StatisticsCard(
-                title = stringResource(id = R.string.total_expenses),
-                number = MathUtils.sumMoneyInListByTypeToString(
-                    expenseWithItsTypeFilteredList,
-                    Type.OUTGO
-                ),
-                color = ExpenseColor
-            )
-
-            StatisticsCard(
-                title = stringResource(id = R.string.total_incomes),
-                number = MathUtils.sumMoneyInListByTypeToString(
-                    expenseWithItsTypeFilteredList,
-                    Type.INCOME
-                ),
-                color = IncomeColor
-            )
-        }
-    },
+    Scaffold(
         topBar = {
             TopAppBarWithBack(
                 title = stringResource(id = R.string.drawer_statistics),
                 navController = navController
             )
-        }
+        },
+        content = {
+            Column(modifier = Modifier.padding(it)) {
+                CalendarDialogField(
+                    date = fromDate.value,
+                    label = stringResource(id = R.string.from_date),
+                    onDatePickerPick = { dateFromDialog ->
+                        expensesStatisticsViewModel.onFromDateChange(
+                            dateFromDialog
+                        )
+                    })
+
+                CalendarDialogField(
+                    date = toDate.value,
+                    label = stringResource(id = R.string.to_date),
+                    onDatePickerPick = { dateFromDialog ->
+                        expensesStatisticsViewModel.onToDateChange(
+                            dateFromDialog
+                        )
+                    })
+
+                Spacer(modifier = Modifier.padding(4.dp))
+
+                StatisticsCard(
+                    title = stringResource(id = R.string.total),
+                    number = MathUtils.sumMoneyInListToString(expenseWithItsTypeFilteredList),
+                    color = Color.Unspecified
+                )
+
+                StatisticsCard(
+                    title = stringResource(id = R.string.total_expenses),
+                    number = MathUtils.sumMoneyInListByTypeToString(
+                        expenseWithItsTypeFilteredList,
+                        Type.OUTGO
+                    ),
+                    color = ExpenseColor
+                )
+
+                StatisticsCard(
+                    title = stringResource(id = R.string.total_incomes),
+                    number = MathUtils.sumMoneyInListByTypeToString(
+                        expenseWithItsTypeFilteredList,
+                        Type.INCOME
+                    ),
+                    color = IncomeColor
+                )
+            }
+        },
     )
 }
 

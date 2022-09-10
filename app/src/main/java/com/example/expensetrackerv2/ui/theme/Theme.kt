@@ -1,22 +1,22 @@
 package com.example.expensetrackerv2.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-private val DarkColorPalette = darkColors(
+private val DarkColorPalette = darkColorScheme(
     primary = Blue200,
-    primaryVariant = Blue700,
+//    primaryVariant = Blue700,
     secondary = DeepOrange200,
-    background = Color.Black
+    background = Color.Black,
 )
 
-private val LightColorPalette = lightColors(
+private val LightColorPalette = lightColorScheme(
     primary = Blue500,
-    primaryVariant = Blue700,
+//    primaryVariant = Blue700,
     secondary = DeepOrange200,
     background = Color.White,
 
@@ -42,9 +42,9 @@ fun ExpenseTrackerV2Theme(
     }
 
     MaterialTheme(
-        colors = colors,
-        typography = Typography,
-        shapes = Shapes,
+        colorScheme = colors,
+        typography = androidx.compose.material3.Typography(),
+        shapes = androidx.compose.material3.Shapes(),
         content = content
     )
 }

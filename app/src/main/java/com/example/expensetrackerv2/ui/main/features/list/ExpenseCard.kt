@@ -5,8 +5,8 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material3.*
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -55,7 +55,7 @@ fun ExpenseCard(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    style = MaterialTheme.typography.caption,
+                    style = MaterialTheme.typography.bodySmall,
                     text = DateUtils.toOnlyDateString(expenseWithItsType.date)
                 )
                 Icon(
@@ -69,13 +69,13 @@ fun ExpenseCard(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    style = MaterialTheme.typography.h5,
+                    style = MaterialTheme.typography.bodyLarge,
                     text = expenseWithItsType.title,
                     fontStyle = FontStyle.Italic,
                     modifier = Modifier.weight(1f)
                 )
                 Text(
-                    style = MaterialTheme.typography.h5,
+                    style = MaterialTheme.typography.bodyLarge,
                     text = (expenseWithItsType.price * expenseWithItsType.type.multiplier).toString(),
                     color = if (expenseWithItsType.type == Type.OUTGO) ExpenseColor else IncomeColor
                 )
@@ -141,12 +141,12 @@ private fun ExtraContentRow(contentName: String, contentIcon: ImageVector, conte
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(contentIcon, contentDescription = null, modifier = Modifier.size(18.dp))
                 Text(
-                    style = MaterialTheme.typography.subtitle1,
+                    style = MaterialTheme.typography.bodySmall,
                     text = contentName,
                     modifier = Modifier.padding(start = 5.dp)
                 )
             }
-            Text(style = MaterialTheme.typography.subtitle1, text = contentString)
+            Text(style = MaterialTheme.typography.bodySmall, text = contentString)
         }
     }
 }

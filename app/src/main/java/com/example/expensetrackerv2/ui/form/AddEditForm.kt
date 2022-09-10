@@ -3,8 +3,8 @@ package com.example.expensetrackerv2.ui.form
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material3.*
 import androidx.compose.material.icons.filled.AttachMoney
 import androidx.compose.material.icons.filled.Message
 import androidx.compose.material.icons.filled.Place
@@ -23,6 +23,7 @@ import com.example.expensetrackerv2.ui.bar.TopAppBarWithBack
 import com.example.expensetrackerv2.utilities.DateUtils
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddEditForm(
     navController: NavController,
@@ -50,7 +51,7 @@ fun AddEditForm(
             navController = navController
         )
     }, content = {
-        Column {
+        Column(modifier = Modifier.padding(it)) {
             AutoCompleteOutlinedTextField(
                 value = title,
                 onValueChange = { viewModel.onEvent(AddEditFormEvent.TitleChange(it)) },
@@ -103,7 +104,7 @@ fun AddEditForm(
                                 )
                             )
                         })
-                        Text(text = expenseType.name, style = MaterialTheme.typography.subtitle1)
+                        Text(text = expenseType.name, style = MaterialTheme.typography.bodyMedium)
                     }
                 }
             }

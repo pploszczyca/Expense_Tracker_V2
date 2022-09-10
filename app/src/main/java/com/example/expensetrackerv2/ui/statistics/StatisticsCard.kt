@@ -4,9 +4,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,13 +25,13 @@ fun StatisticsCard(title: String, number: String, color: Color) {
         ) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.caption,
+                style = MaterialTheme.typography.titleSmall,
                 modifier = Modifier.padding(start = 8.dp)
             )
             Text(
                 text = number,
                 color = color,
-                style = MaterialTheme.typography.h4,
+                style = MaterialTheme.typography.displaySmall,
                 modifier = Modifier.padding(start = 8.dp)
             )
         }

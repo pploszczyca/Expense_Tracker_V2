@@ -4,9 +4,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material.Text
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -55,9 +55,8 @@ fun AutoCompleteOutlinedTextField(
                     onClick = {
                         typedText = suggestedText
                         onValueChange(suggestedText)
-                    }) {
-                    Text(text = suggestedText)
-                }
+                    },
+                text = { Text(text = suggestedText) } )
             }
         }
     }

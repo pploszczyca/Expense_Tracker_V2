@@ -1,9 +1,9 @@
 package com.example.expensetrackerv2.ui.main
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -26,21 +26,28 @@ import com.example.expensetrackerv2.ui.main.features.list.ExpensesList
 import com.example.expensetrackerv2.ui.main.features.list.ExpensesListEvent
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainComposable(
     navController: NavController,
     viewModel: MainViewModel
 ) {
-    val scaffoldState = rememberScaffoldState()
+    val drawerState = rememberDrawerState(DrawerValue.Closed)
     val coroutineScope = rememberCoroutineScope()
 
     val mainViewState = viewModel.viewState
 
-    viewModel.openDrawer = { coroutineScope.launch { scaffoldState.drawerState.open() } }
-    val closeDrawer = { coroutineScope.launch { scaffoldState.drawerState.close() } }
+    viewModel.openDrawer = {
+        coroutineScope.launch { drawerState.open() }
+    }
+    val closeDrawer = {
+        coroutineScope.launch { drawerState.close() }
+    }
 
-    Scaffold(
-        scaffoldState = scaffoldState,
+
+
+    ModalNavigationDrawer(
+        drawerState = drawerState,
         drawerContent = {
             DrawerContent(
                 onExportToJsonClick = { uri ->
@@ -57,39 +64,45 @@ fun MainComposable(
                 navController = navController
             )
         },
-        topBar = {
-            if (mainViewState.topBarVisible) {
-                SearchTopAppBar(
-                    searchedValue = mainViewState.searchedTitle,
-                    onTrailingIconClick = { viewModel.onEvent(MainEvent.OnTopBarTrailingIconClick) },
-                    onValueChange = { viewModel.onEvent(MainEvent.SearchedTitleChange(it)) })
+    ) {
+        Scaffold(
+            topBar = {
+                if (mainViewState.topBarVisible) {
+                    SearchTopAppBar(
+                        searchedValue = mainViewState.searchedTitle,
+                        onTrailingIconClick = { viewModel.onEvent(MainEvent.OnTopBarTrailingIconClick) },
+                        onValueChange = { viewModel.onEvent(MainEvent.SearchedTitleChange(it)) })
+                }
+            },
+            bottomBar = {
+                BottomBarContent(
+                    viewModel = hiltViewModel(),
+                    isClearButtonVisible = mainViewState.clearButtonVisible,
+                )
+            },
+            floatingActionButton = {
+                FloatingActionButton(onClick = {
+                    navController.navigate(Routes.ExpenseForm.route)
+                }) {
+                    Icon(
+                        Icons.Filled.Add,
+                        contentDescription = stringResource(id = R.string.add_icon)
+                    )
+                }
+            },
+            floatingActionButtonPosition = FabPosition.End,
+            content = { innerPadding ->
+                MainContent(
+                    innerPadding = innerPadding,
+                    mainViewState = mainViewState,
+                    navController = navController,
+                    onDeleteButtonClick = { viewModel.onEvent(MainEvent.DeleteButtonClick(it)) },
+                    onDismissDeleteButtonClick = { viewModel.onEvent(MainEvent.DismissDeleteButtonClick) },
+                    onConfirmDeleteButtonClick = { viewModel.onEvent(MainEvent.ConfirmDeleteButtonClick) }
+                )
             }
-        },
-        bottomBar = {
-            BottomBarContent(
-                viewModel = hiltViewModel(),
-                isClearButtonVisible = mainViewState.clearButtonVisible,
-            )
-        },
-        floatingActionButton = {
-            FloatingActionButton(onClick = {
-                navController.navigate(Routes.ExpenseForm.route)
-            }) {
-                Icon(Icons.Filled.Add, contentDescription = stringResource(id = R.string.add_icon))
-            }
-        },
-        floatingActionButtonPosition = FabPosition.End,
-        isFloatingActionButtonDocked = true,
-        content = { innerPadding ->
-            MainContent(
-                innerPadding = innerPadding,
-                mainViewState = mainViewState,
-                navController = navController,
-                onDeleteButtonClick = { viewModel.onEvent(MainEvent.DeleteButtonClick(it)) },
-                onDismissDeleteButtonClick = { viewModel.onEvent(MainEvent.DismissDeleteButtonClick) },
-                onConfirmDeleteButtonClick = { viewModel.onEvent(MainEvent.ConfirmDeleteButtonClick) })
-        }
-    )
+        )
+    }
 }
 
 @Composable
@@ -148,6 +161,6 @@ private fun MainExpensesInformation(moneyInWalletAmount: Double) {
     Text(
         "${stringResource(id = R.string.in_wallet)} $moneyInWalletAmount",
         Modifier.absolutePadding(left = 12.dp, bottom = 16.dp, top = 16.dp),
-        style = MaterialTheme.typography.h4
+        style = MaterialTheme.typography.displayMedium
     )
 }

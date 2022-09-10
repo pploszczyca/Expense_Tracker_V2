@@ -8,8 +8,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -33,25 +33,25 @@ fun ExpensesList(
                 Row(
                     Modifier
                         .fillMaxWidth()
-                        .background(MaterialTheme.colors.background)
+                        .background(MaterialTheme.colorScheme.background)
                         .padding(10.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
                         groupedExpenses.dateText,
-                        style = MaterialTheme.typography.subtitle1
+                        style = MaterialTheme.typography.labelMedium
                     )
 
                     Row {
                         Text(
                             groupedExpenses.totalOutgo,
-                            style = MaterialTheme.typography.subtitle1,
+                            style = MaterialTheme.typography.labelMedium,
                             color = ExpenseColor
                         )
-                        Text("/", style = MaterialTheme.typography.subtitle1)
+                        Text("/", style = MaterialTheme.typography.labelMedium)
                         Text(
                             groupedExpenses.totalIncome,
-                            style = MaterialTheme.typography.subtitle1,
+                            style = MaterialTheme.typography.labelMedium,
                             color = IncomeColor
                         )
                     }

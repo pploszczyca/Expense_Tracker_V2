@@ -2,13 +2,15 @@ package com.example.expensetrackerv2.ui.type_of_expense_settings
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.FloatingActionButton
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material.Scaffold
+import androidx.compose.material3.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -20,15 +22,16 @@ import com.example.expensetrackerv2.R
 import com.example.expensetrackerv2.database.models.TypeOfExpense
 import com.example.expensetrackerv2.ui.bar.TopAppBarWithBack
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TypeOfExpenseSettings(
     navController: NavController,
-    modelView: TypeOfExpenseSettingsModelView
+    viewModel: TypeOfExpenseSettingsViewModel
 ) {
-    val typeOfExpenseList by modelView.typesOfExpense.collectAsState(initial = emptyList())
+    val typeOfExpenseList by viewModel.typesOfExpense.collectAsState(initial = emptyList())
 
-    val isDialogFormVisible by modelView.isDialogFormVisible
-    val isDeleteDialogFormVisible by modelView.isDeleteDialogFormVisible
+    val isDialogFormVisible by viewModel.isDialogFormVisible
+    val isDeleteDialogFormVisible by viewModel.isDeleteDialogFormVisible
 
     Scaffold(
         topBar = {
@@ -39,28 +42,30 @@ fun TypeOfExpenseSettings(
         },
 
         floatingActionButton = {
-            FloatingActionButton(onClick = { modelView.onEvent(TypeOfExpenseSettingsEvent.OpenFormDialog()) }) {
+            FloatingActionButton(onClick = { viewModel.onEvent(TypeOfExpenseSettingsEvent.OpenFormDialog()) }) {
                 Icon(Icons.Filled.Add, contentDescription = stringResource(id = R.string.add_icon))
             }
         },
 
-        content = {
+        content = { paddingValues ->
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(4.dp),
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
             ) {
                 items(typeOfExpenseList) { typeOfExpenseItem: TypeOfExpense ->
                     TypeOfExpenseCard(
                         typeOfExpense = typeOfExpenseItem,
                         onUpdateButtonClick = {
-                            modelView.onEvent(
+                            viewModel.onEvent(
                                 TypeOfExpenseSettingsEvent.OpenFormDialog(
                                     it
                                 )
                             )
                         },
                         onDeleteButtonClick = {
-                            modelView.onEvent(
+                            viewModel.onEvent(
                                 TypeOfExpenseSettingsEvent.OpenDeleteDialog(
                                     it
                                 )
@@ -70,11 +75,11 @@ fun TypeOfExpenseSettings(
             }
 
             if (isDialogFormVisible) {
-                TypeOfExpenseDialogForm(modelView = modelView)
+                TypeOfExpenseDialogForm(modelView = viewModel)
             }
 
             if (isDeleteDialogFormVisible) {
-                TypeOfExpenseDeleteDialog(modelView = modelView)
+                TypeOfExpenseDeleteDialog(modelView = viewModel)
             }
         })
 }

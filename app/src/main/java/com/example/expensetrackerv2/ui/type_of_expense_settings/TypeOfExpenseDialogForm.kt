@@ -3,7 +3,7 @@ package com.example.expensetrackerv2.ui.type_of_expense_settings
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.selection.selectableGroup
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -13,9 +13,10 @@ import com.example.expensetrackerv2.R
 import com.example.expensetrackerv2.database.models.Type
 import com.example.expensetrackerv2.database.models.TypeOfExpense
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TypeOfExpenseDialogForm(
-    modelView: TypeOfExpenseSettingsModelView
+    modelView: TypeOfExpenseSettingsViewModel
 ) {
     val id by modelView.id
     val name by modelView.name
@@ -46,7 +47,7 @@ fun TypeOfExpenseDialogForm(
                                     TypeOfExpenseSettingsEvent.TypeChange(typeValue)
                                 )
                             })
-                        Text(text = typeValue.name, style = MaterialTheme.typography.subtitle1)
+                        Text(text = typeValue.name, style = MaterialTheme.typography.bodyMedium)
                     }
                 }
             }

@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class TypeOfExpenseSettingsModelView @Inject constructor(
+class TypeOfExpenseSettingsViewModel @Inject constructor(
     private val getTypesOfExpense: GetTypesOfExpense,
     private val insertTypeOfExpense: InsertTypeOfExpense,
     private val updateTypeOfExpense: UpdateTypeOfExpense,

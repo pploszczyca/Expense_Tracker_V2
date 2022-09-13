@@ -54,7 +54,7 @@ fun NavHostComposable() {
         composable(Routes.TypeOfExpenseSettings.route) {
             TypeOfExpenseSettings(
                 navController = navController,
-                modelView = hiltViewModel()
+                viewModel = hiltViewModel()
             )
         }
     }

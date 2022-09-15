@@ -6,10 +6,11 @@ import java.util.*
 object DateUtils {
     private const val DATE_STRING_PATTERN: String = "yyyy-MM-dd"
 
-    @JvmStatic
-    fun toOnlyDateString(date: Date): String = SimpleDateFormat(DATE_STRING_PATTERN).format(date)
+    private val simpleDateFormat = SimpleDateFormat(DATE_STRING_PATTERN)
 
     @JvmStatic
-    fun stringToDate(stringDate: String): Date =
-        SimpleDateFormat(DATE_STRING_PATTERN).parse(stringDate)
+    fun toOnlyDateString(date: Date): String = simpleDateFormat.format(date)
+
+    @JvmStatic
+    fun stringToDate(stringDate: String): Date = simpleDateFormat.parse(stringDate)
 }

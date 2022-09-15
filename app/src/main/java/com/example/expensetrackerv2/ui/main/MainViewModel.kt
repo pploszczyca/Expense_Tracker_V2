@@ -161,11 +161,7 @@ class MainViewModel @Inject constructor(
         val mainExpenseInformationVisible: Boolean get() = topBarVisible.not()
 
         val filteredExpenses: List<ExpenseWithItsType>
-            get() = expensesWithItsType.filter {
-                checkIfHasKeyAndContainsSearchedTitle(
-                    it
-                )
-            }
+            get() = expensesWithItsType.filter(::checkIfHasKeyAndContainsSearchedTitle)
 
         private fun checkIfHasKeyAndContainsSearchedTitle(expenseWithItsType: ExpenseWithItsType): Boolean =
             (currentMonthYearKey == null || expenseWithItsType.getKey() == currentMonthYearKey) && expenseWithItsType.title.contains(

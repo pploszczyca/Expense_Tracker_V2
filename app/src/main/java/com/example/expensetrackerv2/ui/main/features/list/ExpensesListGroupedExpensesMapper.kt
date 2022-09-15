@@ -2,6 +2,7 @@ package com.example.expensetrackerv2.ui.main.features.list
 
 import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
 import com.example.expensetrackerv2.database.models.view_models.getKey
+import com.example.expensetrackerv2.extensions.toStringDate
 import com.example.expensetrackerv2.extensions.totalIncomeAsString
 import com.example.expensetrackerv2.extensions.totalOutgoAsString
 import com.example.expensetrackerv2.utilities.DateUtils
@@ -17,13 +18,7 @@ class ExpensesListGroupedExpensesMapper @Inject constructor() {
             .map { (key, expenses) ->
                 ExpenseListViewModel.ViewState.GroupedExpenses(
                     key = key,
-                    dateText = DateUtils.dateToStringWithMonthAndYear(
-                        date = Date(
-                            key.year,
-                            key.month,
-                            1
-                        )
-                    ),
+                    dateText = key.toStringDate(),
                     expenses = expenses,
                     totalIncome = expenses.totalIncomeAsString(),
                     totalOutgo = expenses.totalOutgoAsString(),

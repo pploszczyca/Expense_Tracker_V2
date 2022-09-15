@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.expensetrackerv2.database.models.getKey
 import com.example.expensetrackerv2.database.models.view_models.ExpenseMonthYearKey
+import com.example.expensetrackerv2.extensions.toStringDate
 import com.example.expensetrackerv2.use_cases.expense.GetExpenses
 import com.example.expensetrackerv2.utilities.DateUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -58,13 +59,7 @@ class MainFilterDialogViewModel @Inject constructor(
         data class FilterOption(
             val key: ExpenseMonthYearKey
         ) {
-            val dateText: String = DateUtils.dateToStringWithMonthAndYear(
-                date = Date(
-                    key.year,
-                    key.month,
-                    1
-                )
-            )
+            val dateText: String = key.toStringDate()
         }
     }
 }

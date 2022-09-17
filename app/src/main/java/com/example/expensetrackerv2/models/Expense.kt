@@ -16,7 +16,9 @@ data class Expense(
     val description: String = "",
     val place: String = "",
     @ColumnInfo(name = "category_id")
-    val categoryId: Int = 0
+    val categoryId: Int = 0,
+    @ColumnInfo(name = "wallet_id")
+    val walletId: Int = 0,
 )
 
 fun Expense.getKey() = ExpenseMonthYearKey(this.date.year, this.date.month)

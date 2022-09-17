@@ -1,9 +1,9 @@
-package com.example.expensetrackerv2.database.models.view_models
+package com.example.expensetrackerv2.models.view_models
 
 import androidx.room.DatabaseView
-import com.example.expensetrackerv2.database.models.Expense
-import com.example.expensetrackerv2.database.models.Type
-import com.example.expensetrackerv2.database.models.Category
+import com.example.expensetrackerv2.models.Expense
+import com.example.expensetrackerv2.models.Type
+import com.example.expensetrackerv2.models.Category
 import java.util.*
 
 @DatabaseView("SELECT e.id, e.title, e.price, e.date, e.description, e.place, t.id AS typeID, t.name AS typeName, t.type FROM Expense AS e INNER JOIN Category AS t ON e.category_id = t.id")

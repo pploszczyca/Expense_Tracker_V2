@@ -1,7 +1,7 @@
 package com.example.expensetrackerv2.use_cases.expense
 
-import com.example.expensetrackerv2.database.models.view_models.ExpenseWithCategory
-import com.example.expensetrackerv2.database.repositories.ExpenseWithCategoryRepository
+import com.example.expensetrackerv2.models.view_models.ExpenseWithCategory
+import com.example.expensetrackerv2.repositories.ExpenseWithCategoryRepository
 import javax.inject.Inject
 
 class DeleteExpenseWithCategory @Inject constructor(private val expenseWithCategoryRepository: ExpenseWithCategoryRepository) {

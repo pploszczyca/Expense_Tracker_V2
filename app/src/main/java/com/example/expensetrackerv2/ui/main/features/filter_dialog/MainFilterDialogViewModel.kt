@@ -5,17 +5,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.expensetrackerv2.database.models.getKey
-import com.example.expensetrackerv2.database.models.view_models.ExpenseMonthYearKey
+import com.example.expensetrackerv2.models.getKey
+import com.example.expensetrackerv2.models.view_models.ExpenseMonthYearKey
 import com.example.expensetrackerv2.extensions.toStringDate
 import com.example.expensetrackerv2.use_cases.expense.GetExpenses
-import com.example.expensetrackerv2.utilities.DateUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel

@@ -1,7 +1,7 @@
 package com.example.expensetrackerv2.ui.main
 
 import android.net.Uri
-import com.example.expensetrackerv2.database.models.view_models.ExpenseWithCategory
+import com.example.expensetrackerv2.models.view_models.ExpenseWithCategory
 
 sealed interface MainEvent {
     data class SearchedTitleChange(val value: String) : MainEvent

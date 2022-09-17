@@ -1,6 +1,6 @@
 package com.example.expensetrackerv2.ui.form
 
-import com.example.expensetrackerv2.database.models.Category
+import com.example.expensetrackerv2.models.Category
 
 sealed class AddEditFormEvent {
     data class IdChange(val value: Int) : AddEditFormEvent()

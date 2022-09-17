@@ -1,8 +1,8 @@
-package com.example.expensetrackerv2.database.repositories
+package com.example.expensetrackerv2.repositories
 
 import com.example.expensetrackerv2.database.ExpenseDao
-import com.example.expensetrackerv2.database.models.view_models.ExpenseWithCategory
-import com.example.expensetrackerv2.database.models.view_models.toExpense
+import com.example.expensetrackerv2.models.view_models.ExpenseWithCategory
+import com.example.expensetrackerv2.models.view_models.toExpense
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

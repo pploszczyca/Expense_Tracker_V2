@@ -7,9 +7,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.expensetrackerv2.database.models.view_models.ExpenseMonthYearKey
-import com.example.expensetrackerv2.database.models.view_models.ExpenseWithCategory
-import com.example.expensetrackerv2.database.models.view_models.getKey
+import com.example.expensetrackerv2.models.view_models.ExpenseMonthYearKey
+import com.example.expensetrackerv2.models.view_models.ExpenseWithCategory
+import com.example.expensetrackerv2.models.view_models.getKey
 import com.example.expensetrackerv2.ui.main.features.bottom_bar.MainBottomBarEvent
 import com.example.expensetrackerv2.ui.main.features.filter_dialog.MainFilterDialogEvent
 import com.example.expensetrackerv2.use_cases.expense.DeleteAllExpensesWithItsType

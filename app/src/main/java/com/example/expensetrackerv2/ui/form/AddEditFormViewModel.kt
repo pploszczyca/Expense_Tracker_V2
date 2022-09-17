@@ -5,10 +5,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.expensetrackerv2.R
-import com.example.expensetrackerv2.database.models.ExpenseConstants
-import com.example.expensetrackerv2.database.models.Category
-import com.example.expensetrackerv2.database.models.view_models.ExpenseWithCategory
-import com.example.expensetrackerv2.database.models.view_models.getTypeOfExpense
+import com.example.expensetrackerv2.models.ExpenseConstants
+import com.example.expensetrackerv2.models.Category
+import com.example.expensetrackerv2.models.view_models.ExpenseWithCategory
+import com.example.expensetrackerv2.models.view_models.getTypeOfExpense
 import com.example.expensetrackerv2.use_cases.expense.*
 import com.example.expensetrackerv2.use_cases.category.GetCategory
 import com.example.expensetrackerv2.utilities.DateUtils

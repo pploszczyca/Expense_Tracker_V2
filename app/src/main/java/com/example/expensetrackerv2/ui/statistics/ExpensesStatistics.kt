@@ -11,7 +11,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.expensetrackerv2.R
-import com.example.expensetrackerv2.database.models.Type
+import com.example.expensetrackerv2.models.Type
 import com.example.expensetrackerv2.ui.bar.TopAppBarWithBack
 import com.example.expensetrackerv2.ui.form.CalendarDialogField
 import com.example.expensetrackerv2.ui.theme.ExpenseColor

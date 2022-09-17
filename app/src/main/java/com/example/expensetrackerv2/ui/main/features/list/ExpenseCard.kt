@@ -19,9 +19,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.expensetrackerv2.R
-import com.example.expensetrackerv2.Routes
-import com.example.expensetrackerv2.database.models.Type
-import com.example.expensetrackerv2.database.models.view_models.ExpenseWithCategory
+import com.example.expensetrackerv2.navigation.Routes
+import com.example.expensetrackerv2.models.Type
+import com.example.expensetrackerv2.models.view_models.ExpenseWithCategory
 import com.example.expensetrackerv2.ui.theme.ExpenseColor
 import com.example.expensetrackerv2.ui.theme.ExpenseTrackerV2Theme
 import com.example.expensetrackerv2.ui.theme.IncomeColor

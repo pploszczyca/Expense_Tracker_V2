@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2
+package com.example.expensetrackerv2.di
 
 import com.example.expensetrackerv2.ui.main.features.bottom_bar.MainBottomBarEvent
 import com.example.expensetrackerv2.ui.main.features.filter_dialog.MainFilterDialogEvent

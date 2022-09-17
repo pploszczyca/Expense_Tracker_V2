@@ -10,8 +10,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.example.expensetrackerv2.R
-import com.example.expensetrackerv2.database.models.Type
-import com.example.expensetrackerv2.database.models.Category
+import com.example.expensetrackerv2.models.Type
+import com.example.expensetrackerv2.models.Category
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

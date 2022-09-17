@@ -9,7 +9,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.expensetrackerv2.R
-import com.example.expensetrackerv2.Routes
+import com.example.expensetrackerv2.navigation.Routes
 import com.example.expensetrackerv2.ui.bar.SearchTopAppBar
 import com.example.expensetrackerv2.ui.main.features.bottom_bar.BottomBarContent
 import com.example.expensetrackerv2.ui.main.features.drawer.DrawerContent

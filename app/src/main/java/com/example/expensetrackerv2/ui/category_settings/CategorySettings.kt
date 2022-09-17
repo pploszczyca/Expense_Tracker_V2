@@ -19,7 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.expensetrackerv2.R
-import com.example.expensetrackerv2.database.models.Category
+import com.example.expensetrackerv2.models.Category
 import com.example.expensetrackerv2.ui.bar.TopAppBarWithBack
 
 @OptIn(ExperimentalMaterial3Api::class)

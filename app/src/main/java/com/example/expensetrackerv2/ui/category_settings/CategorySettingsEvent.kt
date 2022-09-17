@@ -1,7 +1,7 @@
 package com.example.expensetrackerv2.ui.category_settings
 
-import com.example.expensetrackerv2.database.models.Type
-import com.example.expensetrackerv2.database.models.Category
+import com.example.expensetrackerv2.models.Type
+import com.example.expensetrackerv2.models.Category
 
 sealed class CategorySettingsEvent {
     data class IdChange(val value: Int) : CategorySettingsEvent()

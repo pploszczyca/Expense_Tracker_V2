@@ -1,6 +1,6 @@
-package com.example.expensetrackerv2.database.repositories
+package com.example.expensetrackerv2.repositories
 
-import com.example.expensetrackerv2.database.models.view_models.ExpenseWithCategory
+import com.example.expensetrackerv2.models.view_models.ExpenseWithCategory
 import kotlinx.coroutines.flow.Flow
 
 interface ExpenseWithCategoryRepository {

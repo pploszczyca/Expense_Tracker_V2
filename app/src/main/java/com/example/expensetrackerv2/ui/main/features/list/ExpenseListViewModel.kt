@@ -4,8 +4,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.expensetrackerv2.database.models.view_models.ExpenseMonthYearKey
-import com.example.expensetrackerv2.database.models.view_models.ExpenseWithCategory
+import com.example.expensetrackerv2.models.view_models.ExpenseMonthYearKey
+import com.example.expensetrackerv2.models.view_models.ExpenseWithCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

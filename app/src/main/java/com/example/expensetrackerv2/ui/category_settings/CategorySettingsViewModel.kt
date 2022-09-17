@@ -5,9 +5,9 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.expensetrackerv2.database.models.Type
-import com.example.expensetrackerv2.database.models.Category
-import com.example.expensetrackerv2.database.models.CategoryConstants
+import com.example.expensetrackerv2.models.Type
+import com.example.expensetrackerv2.models.Category
+import com.example.expensetrackerv2.models.CategoryConstants
 import com.example.expensetrackerv2.use_cases.category.DeleteCategory
 import com.example.expensetrackerv2.use_cases.category.GetCategory
 import com.example.expensetrackerv2.use_cases.category.InsertCategory

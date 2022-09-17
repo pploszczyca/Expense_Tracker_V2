@@ -1,7 +1,7 @@
 package com.example.expensetrackerv2.use_cases.category
 
-import com.example.expensetrackerv2.database.models.Category
-import com.example.expensetrackerv2.database.repositories.CategoryRepository
+import com.example.expensetrackerv2.models.Category
+import com.example.expensetrackerv2.repositories.CategoryRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

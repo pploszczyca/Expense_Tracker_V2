@@ -1,9 +1,9 @@
 package com.example.expensetrackerv2.database
 
 import androidx.room.*
-import com.example.expensetrackerv2.database.models.Expense
-import com.example.expensetrackerv2.database.models.Category
-import com.example.expensetrackerv2.database.models.view_models.ExpenseWithCategory
+import com.example.expensetrackerv2.models.Expense
+import com.example.expensetrackerv2.models.Category
+import com.example.expensetrackerv2.models.view_models.ExpenseWithCategory
 import kotlinx.coroutines.flow.Flow
 
 @Dao

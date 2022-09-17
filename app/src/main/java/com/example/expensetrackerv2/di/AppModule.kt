@@ -1,14 +1,14 @@
-package com.example.expensetrackerv2
+package com.example.expensetrackerv2.di
 
 import android.content.ContentResolver
 import android.content.Context
 import androidx.room.Room
 import com.example.expensetrackerv2.database.AppDatabase
 import com.example.expensetrackerv2.database.ExpenseDao
-import com.example.expensetrackerv2.database.repositories.ExpenseWithCategoryDatabaseRepository
-import com.example.expensetrackerv2.database.repositories.ExpenseWithCategoryRepository
-import com.example.expensetrackerv2.database.repositories.CategoryDatabaseRepository
-import com.example.expensetrackerv2.database.repositories.CategoryRepository
+import com.example.expensetrackerv2.repositories.ExpenseWithCategoryDatabaseRepository
+import com.example.expensetrackerv2.repositories.ExpenseWithCategoryRepository
+import com.example.expensetrackerv2.repositories.CategoryDatabaseRepository
+import com.example.expensetrackerv2.repositories.CategoryRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

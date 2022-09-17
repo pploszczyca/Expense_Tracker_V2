@@ -1,7 +1,7 @@
 package com.example.expensetrackerv2.utilities
 
-import com.example.expensetrackerv2.database.models.Type
-import com.example.expensetrackerv2.database.models.view_models.ExpenseWithCategory
+import com.example.expensetrackerv2.models.Type
+import com.example.expensetrackerv2.models.view_models.ExpenseWithCategory
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import kotlin.math.round

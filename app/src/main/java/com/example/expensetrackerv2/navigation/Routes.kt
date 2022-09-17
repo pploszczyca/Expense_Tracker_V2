@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2
+package com.example.expensetrackerv2.navigation
 
 sealed class Routes(val route: String) {
     object Main : Routes("main/")

@@ -5,9 +5,9 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class GetExpensesTitles @Inject constructor(private val getExpensesWithItsType: GetExpensesWithItsType) {
+class GetExpensesTitles @Inject constructor(private val getAllExpenseWithCategory: GetAllExpenseWithCategory) {
     operator fun invoke(): Flow<List<String>> =
-        getExpensesWithItsType()
+        getAllExpenseWithCategory()
             .map { list -> list.map { it.title }.distinct() }
             .distinctUntilChanged()
 }

@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
-import com.example.expensetrackerv2.use_cases.expense.DeleteExpenseWithItsType
+import com.example.expensetrackerv2.database.models.view_models.ExpenseWithCategory
+import com.example.expensetrackerv2.use_cases.expense.DeleteExpenseWithCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -14,13 +14,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DeleteExpenseDialogViewModel @Inject constructor(
-    private val deleteExpenseWithItsType: DeleteExpenseWithItsType
+    private val deleteExpenseWithCategory: DeleteExpenseWithCategory
 ) : ViewModel() {
     private var viewState by mutableStateOf(ViewState())
 
-    fun init(expenseWithItsType: ExpenseWithItsType) {
+    fun init(expenseWithCategory: ExpenseWithCategory) {
         viewState = viewState.copy(
-            expenseWithItsType = expenseWithItsType
+            expenseWithCategory = expenseWithCategory
         )
     }
 
@@ -28,9 +28,9 @@ class DeleteExpenseDialogViewModel @Inject constructor(
         when (event) {
             DeleteExpenseDialogEvent.ConfirmButtonClick -> {
                 viewModelScope.launch(Dispatchers.IO) {
-                    viewState.expenseWithItsType?.let {
-                        deleteExpenseWithItsType(
-                            expenseWithItsType = it
+                    viewState.expenseWithCategory?.let {
+                        deleteExpenseWithCategory(
+                            expenseWithCategory = it
                         )
                     }
                 }
@@ -39,6 +39,6 @@ class DeleteExpenseDialogViewModel @Inject constructor(
     }
 
     data class ViewState(
-        val expenseWithItsType: ExpenseWithItsType? = null
+        val expenseWithCategory: ExpenseWithCategory? = null
     )
 }

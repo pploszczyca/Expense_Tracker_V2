@@ -31,7 +31,7 @@ fun AddEditForm(
 ) {
     val title by viewModel.title
     val price by viewModel.price
-    val typeOfExpense by viewModel.typeOfExpense
+    val typeOfExpense by viewModel.category
     val date by viewModel.date
     val place by viewModel.place
     val description by viewModel.description

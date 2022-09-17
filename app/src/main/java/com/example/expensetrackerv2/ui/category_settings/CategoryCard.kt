@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.ui.type_of_expense_settings
+package com.example.expensetrackerv2.ui.category_settings
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -15,13 +15,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.expensetrackerv2.database.models.TypeOfExpense
+import com.example.expensetrackerv2.database.models.Category
 
 @Composable
-fun TypeOfExpenseCard(
-    typeOfExpense: TypeOfExpense,
-    onUpdateButtonClick: (TypeOfExpense) -> Unit,
-    onDeleteButtonClick: (TypeOfExpense) -> Unit
+fun CategoryCard(
+    category: Category,
+    onUpdateButtonClick: (Category) -> Unit,
+    onDeleteButtonClick: (Category) -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -33,14 +33,14 @@ fun TypeOfExpenseCard(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = typeOfExpense.name, modifier = Modifier.padding(start = 8.dp))
+            Text(text = category.name, modifier = Modifier.padding(start = 8.dp))
 
             Row {
-                IconButton(onClick = { onUpdateButtonClick(typeOfExpense) }) {
+                IconButton(onClick = { onUpdateButtonClick(category) }) {
                     Icon(Icons.Default.Edit, contentDescription = null)
                 }
 
-                IconButton(onClick = { onDeleteButtonClick(typeOfExpense) }) {
+                IconButton(onClick = { onDeleteButtonClick(category) }) {
                     Icon(Icons.Default.Delete, contentDescription = null)
                 }
             }

@@ -5,10 +5,10 @@ import android.content.Context
 import androidx.room.Room
 import com.example.expensetrackerv2.database.AppDatabase
 import com.example.expensetrackerv2.database.ExpenseDao
-import com.example.expensetrackerv2.database.repositories.ExpenseWithItsTypeDatabaseRepository
-import com.example.expensetrackerv2.database.repositories.ExpenseWithItsTypeRepository
-import com.example.expensetrackerv2.database.repositories.TypeOfExpenseDatabaseRepository
-import com.example.expensetrackerv2.database.repositories.TypeOfExpenseRepository
+import com.example.expensetrackerv2.database.repositories.ExpenseWithCategoryDatabaseRepository
+import com.example.expensetrackerv2.database.repositories.ExpenseWithCategoryRepository
+import com.example.expensetrackerv2.database.repositories.CategoryDatabaseRepository
+import com.example.expensetrackerv2.database.repositories.CategoryRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,13 +33,13 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideExpenseWithItsTypeRepository(expenseDao: ExpenseDao): ExpenseWithItsTypeRepository =
-        ExpenseWithItsTypeDatabaseRepository(expenseDao)
+    fun provideExpenseWithItsTypeRepository(expenseDao: ExpenseDao): ExpenseWithCategoryRepository =
+        ExpenseWithCategoryDatabaseRepository(expenseDao)
 
     @Provides
     @Singleton
-    fun provideTypeOfExpenseRepository(expenseDao: ExpenseDao): TypeOfExpenseRepository =
-        TypeOfExpenseDatabaseRepository(expenseDao)
+    fun provideTypeOfExpenseRepository(expenseDao: ExpenseDao): CategoryRepository =
+        CategoryDatabaseRepository(expenseDao)
 
     @Provides
     @Singleton

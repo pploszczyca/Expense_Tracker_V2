@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.ui.type_of_expense_settings
+package com.example.expensetrackerv2.ui.category_settings
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,16 +19,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.expensetrackerv2.R
-import com.example.expensetrackerv2.database.models.TypeOfExpense
+import com.example.expensetrackerv2.database.models.Category
 import com.example.expensetrackerv2.ui.bar.TopAppBarWithBack
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TypeOfExpenseSettings(
+fun CategorySettings(
     navController: NavController,
-    viewModel: TypeOfExpenseSettingsViewModel
+    viewModel: CategorySettingsViewModel
 ) {
-    val typeOfExpenseList by viewModel.typesOfExpense.collectAsState(initial = emptyList())
+    val categories by viewModel.categories.collectAsState(initial = emptyList())
 
     val isDialogFormVisible by viewModel.isDialogFormVisible
     val isDeleteDialogFormVisible by viewModel.isDeleteDialogFormVisible
@@ -42,7 +42,7 @@ fun TypeOfExpenseSettings(
         },
 
         floatingActionButton = {
-            FloatingActionButton(onClick = { viewModel.onEvent(TypeOfExpenseSettingsEvent.OpenFormDialog()) }) {
+            FloatingActionButton(onClick = { viewModel.onEvent(CategorySettingsEvent.OpenFormDialog()) }) {
                 Icon(Icons.Filled.Add, contentDescription = stringResource(id = R.string.add_icon))
             }
         },
@@ -54,19 +54,19 @@ fun TypeOfExpenseSettings(
                     .fillMaxSize()
                     .padding(paddingValues)
             ) {
-                items(typeOfExpenseList) { typeOfExpenseItem: TypeOfExpense ->
-                    TypeOfExpenseCard(
-                        typeOfExpense = typeOfExpenseItem,
+                items(categories) { categoryItem: Category ->
+                    CategoryCard(
+                        category = categoryItem,
                         onUpdateButtonClick = {
                             viewModel.onEvent(
-                                TypeOfExpenseSettingsEvent.OpenFormDialog(
+                                CategorySettingsEvent.OpenFormDialog(
                                     it
                                 )
                             )
                         },
                         onDeleteButtonClick = {
                             viewModel.onEvent(
-                                TypeOfExpenseSettingsEvent.OpenDeleteDialog(
+                                CategorySettingsEvent.OpenDeleteDialog(
                                     it
                                 )
                             )
@@ -75,11 +75,11 @@ fun TypeOfExpenseSettings(
             }
 
             if (isDialogFormVisible) {
-                TypeOfExpenseDialogForm(modelView = viewModel)
+                CategoryDialogForm(modelView = viewModel)
             }
 
             if (isDeleteDialogFormVisible) {
-                TypeOfExpenseDeleteDialog(modelView = viewModel)
+                CategoryDeleteDialog(modelView = viewModel)
             }
         })
 }

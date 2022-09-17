@@ -13,7 +13,7 @@ import com.example.expensetrackerv2.ui.form.AddEditFormEvent
 import com.example.expensetrackerv2.ui.form.AddEditFormViewModel
 import com.example.expensetrackerv2.ui.main.MainComposable
 import com.example.expensetrackerv2.ui.statistics.ExpensesStatistics
-import com.example.expensetrackerv2.ui.type_of_expense_settings.TypeOfExpenseSettings
+import com.example.expensetrackerv2.ui.category_settings.CategorySettings
 
 @Composable
 fun NavHostComposable() {
@@ -52,7 +52,7 @@ fun NavHostComposable() {
             )
         }
         composable(Routes.TypeOfExpenseSettings.route) {
-            TypeOfExpenseSettings(
+            CategorySettings(
                 navController = navController,
                 viewModel = hiltViewModel()
             )

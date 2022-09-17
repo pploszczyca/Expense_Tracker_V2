@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.ui.type_of_expense_settings
+package com.example.expensetrackerv2.ui.category_settings
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,12 +11,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.example.expensetrackerv2.R
 import com.example.expensetrackerv2.database.models.Type
-import com.example.expensetrackerv2.database.models.TypeOfExpense
+import com.example.expensetrackerv2.database.models.Category
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TypeOfExpenseDialogForm(
-    modelView: TypeOfExpenseSettingsViewModel
+fun CategoryDialogForm(
+    modelView: CategorySettingsViewModel
 ) {
     val id by modelView.id
     val name by modelView.name
@@ -32,7 +32,7 @@ fun TypeOfExpenseDialogForm(
                 OutlinedTextField(
                     value = name,
                     label = { Text(stringResource(id = R.string.name)) },
-                    onValueChange = { modelView.onEvent(TypeOfExpenseSettingsEvent.NameChange(it)) })
+                    onValueChange = { modelView.onEvent(CategorySettingsEvent.NameChange(it)) })
 
                 Row(
                     modifier = Modifier
@@ -44,7 +44,7 @@ fun TypeOfExpenseDialogForm(
                             selected = typeValue == type,
                             onClick = {
                                 modelView.onEvent(
-                                    TypeOfExpenseSettingsEvent.TypeChange(typeValue)
+                                    CategorySettingsEvent.TypeChange(typeValue)
                                 )
                             })
                         Text(text = typeValue.name, style = MaterialTheme.typography.bodyMedium)
@@ -53,15 +53,15 @@ fun TypeOfExpenseDialogForm(
             }
         },
         dismissButton = {
-            TextButton(onClick = { modelView.onEvent(TypeOfExpenseSettingsEvent.CloseFormDialog()) }) {
+            TextButton(onClick = { modelView.onEvent(CategorySettingsEvent.CloseFormDialog()) }) {
                 Text(text = stringResource(id = R.string.cancel))
             }
         },
         confirmButton = {
             TextButton(onClick = {
                 modelView.onEvent(
-                    TypeOfExpenseSettingsEvent.DialogFormSubmit(
-                        TypeOfExpense(
+                    CategorySettingsEvent.DialogFormSubmit(
+                        Category(
                             id = id,
                             name = name,
                             type = type
@@ -72,5 +72,5 @@ fun TypeOfExpenseDialogForm(
                 Text(text = confirmButtonTitle)
             }
         },
-        onDismissRequest = { modelView.onEvent(TypeOfExpenseSettingsEvent.CloseFormDialog()) })
+        onDismissRequest = { modelView.onEvent(CategorySettingsEvent.CloseFormDialog()) })
 }

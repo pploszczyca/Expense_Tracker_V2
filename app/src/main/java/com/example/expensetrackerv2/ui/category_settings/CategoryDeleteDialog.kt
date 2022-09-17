@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.ui.type_of_expense_settings
+package com.example.expensetrackerv2.ui.category_settings
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
@@ -8,11 +8,11 @@ import androidx.compose.ui.res.stringResource
 import com.example.expensetrackerv2.R
 
 @Composable
-fun TypeOfExpenseDeleteDialog(
-    modelView: TypeOfExpenseSettingsViewModel
+fun CategoryDeleteDialog(
+    modelView: CategorySettingsViewModel
 ) {
     fun closeDialog() {
-        modelView.onEvent(TypeOfExpenseSettingsEvent.CloseDeleteDialog())
+        modelView.onEvent(CategorySettingsEvent.CloseDeleteDialog())
     }
 
     AlertDialog(
@@ -21,7 +21,7 @@ fun TypeOfExpenseDeleteDialog(
         text = { Text(text = stringResource(id = R.string.delete_type_of_expense_question)) },
 
         confirmButton = {
-            TextButton(onClick = { modelView.onEvent(TypeOfExpenseSettingsEvent.DeleteDialogSubmit()) }) {
+            TextButton(onClick = { modelView.onEvent(CategorySettingsEvent.DeleteDialogSubmit()) }) {
                 Text(text = stringResource(id = R.string.delete))
             }
         },

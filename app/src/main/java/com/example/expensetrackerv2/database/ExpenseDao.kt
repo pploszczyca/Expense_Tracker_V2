@@ -1,8 +1,8 @@
 package com.example.expensetrackerv2.database
 
 import androidx.room.*
-import com.example.expensetrackerv2.models.Expense
-import com.example.expensetrackerv2.models.Category
+import com.example.expensetrackerv2.models.ExpenseEntity
+import com.example.expensetrackerv2.models.CategoryEntity
 import com.example.expensetrackerv2.models.view_models.ExpenseWithCategory
 import kotlinx.coroutines.flow.Flow
 
@@ -10,33 +10,33 @@ import kotlinx.coroutines.flow.Flow
 abstract class ExpenseDao {
     //QUERIES
     @Query("SELECT * FROM expense ORDER BY date DESC")
-    abstract fun getAllExpenses(): Flow<List<Expense>>
+    abstract fun getAllExpenses(): Flow<List<ExpenseEntity>>
 
     @Query("SELECT * FROM category")
-    abstract fun getAllCategories(): Flow<List<Category>>
+    abstract fun getAllCategories(): Flow<List<CategoryEntity>>
 
     @Query("SELECT * FROM ExpenseWithCategory ORDER BY date DESC")
     abstract fun getAllExpenseWithCategory(): Flow<List<ExpenseWithCategory>>
 
     @Query("SELECT * FROM expense WHERE id = :expenseID")
-    abstract fun getExpense(expenseID: Int): Expense
+    abstract fun getExpense(expenseID: Int): ExpenseEntity
 
     @Query("SELECT * FROM ExpenseWithCategory WHERE id = :expenseID")
     abstract fun getExpenseWithItsType(expenseID: Int): Flow<ExpenseWithCategory?>
 
     // INSERTS
     @Insert
-    abstract suspend fun insertAllExpenses(vararg expenses: Expense)
+    abstract suspend fun insertAllExpenses(vararg expenses: ExpenseEntity)
 
     @Insert
-    abstract suspend fun insertAllCategories(vararg expenses: Category)
+    abstract suspend fun insertAllCategories(vararg expenses: CategoryEntity)
 
     // UPDATE
     @Update
-    abstract suspend fun updateExpense(expense: Expense)
+    abstract suspend fun updateExpense(expense: ExpenseEntity)
 
     @Update
-    abstract suspend fun updateTypeOfExpense(category: Category)
+    abstract suspend fun updateTypeOfExpense(categoryEntity: CategoryEntity)
 
     // DELETES
     @Query("DELETE FROM Expense WHERE id = :id")
@@ -46,11 +46,11 @@ abstract class ExpenseDao {
     abstract suspend fun deleteAllExpenses()
 
     @Delete
-    abstract suspend fun deleteExpense(expense: Expense)
+    abstract suspend fun deleteExpense(expense: ExpenseEntity)
 
     suspend fun deleteExpense(expenseWithCategory: ExpenseWithCategory) =
         deleteExpenseByID(expenseWithCategory.id)
 
     @Delete
-    abstract suspend fun deleteTypeOfExpense(vararg category: Category)
+    abstract suspend fun deleteTypeOfExpense(vararg categoryEntity: CategoryEntity)
 }

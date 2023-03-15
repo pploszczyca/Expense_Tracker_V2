@@ -15,13 +15,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.expensetrackerv2.models.Category
+import com.example.expensetrackerv2.models.CategoryEntity
 
 @Composable
 fun CategoryCard(
-    category: Category,
-    onUpdateButtonClick: (Category) -> Unit,
-    onDeleteButtonClick: (Category) -> Unit
+    categoryEntity: CategoryEntity,
+    onUpdateButtonClick: (CategoryEntity) -> Unit,
+    onDeleteButtonClick: (CategoryEntity) -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -33,14 +33,14 @@ fun CategoryCard(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = category.name, modifier = Modifier.padding(start = 8.dp))
+            Text(text = categoryEntity.name, modifier = Modifier.padding(start = 8.dp))
 
             Row {
-                IconButton(onClick = { onUpdateButtonClick(category) }) {
+                IconButton(onClick = { onUpdateButtonClick(categoryEntity) }) {
                     Icon(Icons.Default.Edit, contentDescription = null)
                 }
 
-                IconButton(onClick = { onDeleteButtonClick(category) }) {
+                IconButton(onClick = { onDeleteButtonClick(categoryEntity) }) {
                     Icon(Icons.Default.Delete, contentDescription = null)
                 }
             }

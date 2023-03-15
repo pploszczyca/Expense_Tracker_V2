@@ -5,8 +5,8 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.expensetrackerv2.models.Type
-import com.example.expensetrackerv2.models.Category
+import com.example.expensetrackerv2.models.CategoryType
+import com.example.expensetrackerv2.models.CategoryEntity
 import com.example.expensetrackerv2.models.CategoryConstants
 import com.example.expensetrackerv2.use_cases.category.DeleteCategory
 import com.example.expensetrackerv2.use_cases.category.GetCategory
@@ -24,7 +24,7 @@ class CategorySettingsViewModel @Inject constructor(
     private val updateCategory: UpdateCategory,
     private val deleteCategory: DeleteCategory
 ) : ViewModel() {
-    val categories: Flow<List<Category>> = getCategory()
+    val categories: Flow<List<CategoryEntity>> = getCategory()
 
     private val _id = mutableStateOf(CategoryConstants.NEW_TYPE_OF_EXPENSE_ID)
     val id: State<Int> = _id
@@ -32,8 +32,8 @@ class CategorySettingsViewModel @Inject constructor(
     private val _name = mutableStateOf("")
     val name: State<String> = _name
 
-    private val _type = mutableStateOf(Type.INCOME)
-    val type: State<Type> = _type
+    private val _Category_type = mutableStateOf(CategoryType.INCOME)
+    val categoryType: State<CategoryType> = _Category_type
 
     private val _isDialogFormVisible = mutableStateOf(false)
     val isDialogFormVisible: State<Boolean> = _isDialogFormVisible
@@ -45,7 +45,7 @@ class CategorySettingsViewModel @Inject constructor(
         when (event) {
             is CategorySettingsEvent.IdChange -> _id.value = event.value
             is CategorySettingsEvent.NameChange -> _name.value = event.value
-            is CategorySettingsEvent.TypeChange -> _type.value = event.value
+            is CategorySettingsEvent.TypeChange -> _Category_type.value = event.value
             is CategorySettingsEvent.CloseDeleteDialog -> closeDialog(
                 _isDeleteDialogFormVisible
             )
@@ -80,28 +80,28 @@ class CategorySettingsViewModel @Inject constructor(
         state.value = false
     }
 
-    private fun setIdNameAndType(category: Category) {
-        _id.value = category.id
-        _name.value = category.name
-        _type.value = category.type
+    private fun setIdNameAndType(categoryEntity: CategoryEntity) {
+        _id.value = categoryEntity.id
+        _name.value = categoryEntity.name
+        _Category_type.value = categoryEntity.categoryType
     }
 
-    private fun insertOrUpdate(category: Category) {
+    private fun insertOrUpdate(categoryEntity: CategoryEntity) {
         viewModelScope.launch {
             if (isThisNewTypeOfExpense()) {
-                insertCategory(category)
+                insertCategory(categoryEntity)
             } else {
-                updateCategory(category)
+                updateCategory(categoryEntity)
             }
         }
     }
 
     private fun makeTypeOfExpenseFromState() =
-        Category(id = id.value, name = name.value, type = type.value)
+        CategoryEntity(id = id.value, name = name.value, categoryType = categoryType.value)
 
-    private fun delete(category: Category) {
+    private fun delete(categoryEntity: CategoryEntity) {
         viewModelScope.launch {
-            deleteCategory(category)
+            deleteCategory(categoryEntity)
         }
     }
 }

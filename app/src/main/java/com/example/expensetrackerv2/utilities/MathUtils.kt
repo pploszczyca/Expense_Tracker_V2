@@ -1,6 +1,6 @@
 package com.example.expensetrackerv2.utilities
 
-import com.example.expensetrackerv2.models.Type
+import com.example.expensetrackerv2.models.CategoryType
 import com.example.expensetrackerv2.models.view_models.ExpenseWithCategory
 import java.math.RoundingMode
 import java.text.DecimalFormat
@@ -17,7 +17,7 @@ object MathUtils {
     private fun roundToMoney(value: Double): Double = round(value * 100) / 100
 
     fun sumMoneyInList(expenseWithCategoryList: List<ExpenseWithCategory>) =
-        roundToMoney(expenseWithCategoryList.map { expense -> expense.price * expense.type.multiplier }
+        roundToMoney(expenseWithCategoryList.map { expense -> expense.price * expense.categoryType.multiplier }
             .sum())
 
     fun sumMoneyInListToString(expenseWithCategoryList: List<ExpenseWithCategory>): String =
@@ -27,6 +27,6 @@ object MathUtils {
 
     fun sumMoneyInListByTypeToString(
         expenseWithCategoryList: List<ExpenseWithCategory>,
-        type: Type
-    ): String = sumMoneyInListToString(expenseWithCategoryList.filter { it.type == type })
+        categoryType: CategoryType
+    ): String = sumMoneyInListToString(expenseWithCategoryList.filter { it.categoryType == categoryType })
 }

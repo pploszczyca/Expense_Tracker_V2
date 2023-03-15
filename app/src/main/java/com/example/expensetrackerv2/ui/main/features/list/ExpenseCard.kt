@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.expensetrackerv2.R
 import com.example.expensetrackerv2.navigation.Routes
-import com.example.expensetrackerv2.models.Type
+import com.example.expensetrackerv2.models.CategoryType
 import com.example.expensetrackerv2.models.view_models.ExpenseWithCategory
 import com.example.expensetrackerv2.ui.theme.ExpenseColor
 import com.example.expensetrackerv2.ui.theme.ExpenseTrackerV2Theme
@@ -76,8 +76,8 @@ fun ExpenseCard(
                 )
                 Text(
                     style = MaterialTheme.typography.bodyLarge,
-                    text = (expenseWithCategory.price * expenseWithCategory.type.multiplier).toString(),
-                    color = if (expenseWithCategory.type == Type.OUTGO) ExpenseColor else IncomeColor
+                    text = (expenseWithCategory.price * expenseWithCategory.categoryType.multiplier).toString(),
+                    color = if (expenseWithCategory.categoryType == CategoryType.OUTGO) ExpenseColor else IncomeColor
                 )
             }
 

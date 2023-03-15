@@ -1,14 +1,14 @@
 package com.example.expensetrackerv2.repositories
 
-import com.example.expensetrackerv2.models.Category
+import com.example.expensetrackerv2.models.CategoryEntity
 import kotlinx.coroutines.flow.Flow
 
 interface CategoryRepository {
-    fun getAllCategories(): Flow<List<Category>>
+    fun getAllCategories(): Flow<List<CategoryEntity>>
 
-    suspend fun insertCategory(category: Category)
+    suspend fun insertCategory(categoryEntity: CategoryEntity)
 
-    suspend fun deleteCategory(category: Category)
+    suspend fun deleteCategory(categoryEntity: CategoryEntity)
 
-    suspend fun updateCategory(category: Category)
+    suspend fun updateCategory(categoryEntity: CategoryEntity)
 }

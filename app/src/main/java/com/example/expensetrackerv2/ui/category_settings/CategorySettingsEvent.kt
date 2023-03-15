@@ -1,18 +1,18 @@
 package com.example.expensetrackerv2.ui.category_settings
 
-import com.example.expensetrackerv2.models.Type
-import com.example.expensetrackerv2.models.Category
+import com.example.expensetrackerv2.models.CategoryType
+import com.example.expensetrackerv2.models.CategoryEntity
 
 sealed class CategorySettingsEvent {
     data class IdChange(val value: Int) : CategorySettingsEvent()
     data class NameChange(val value: String) : CategorySettingsEvent()
-    data class TypeChange(val value: Type) : CategorySettingsEvent()
-    data class OpenFormDialog(val value: Category = Category()) :
+    data class TypeChange(val value: CategoryType) : CategorySettingsEvent()
+    data class OpenFormDialog(val value: CategoryEntity = CategoryEntity()) :
         CategorySettingsEvent()
 
     data class CloseFormDialog(val value: Any? = null) : CategorySettingsEvent()
-    data class DialogFormSubmit(val value: Category) : CategorySettingsEvent()
-    data class OpenDeleteDialog(val value: Category) : CategorySettingsEvent()
+    data class DialogFormSubmit(val value: CategoryEntity) : CategorySettingsEvent()
+    data class OpenDeleteDialog(val value: CategoryEntity) : CategorySettingsEvent()
     data class CloseDeleteDialog(val value: Any? = null) : CategorySettingsEvent()
     data class DeleteDialogSubmit(val value: Any? = null) : CategorySettingsEvent()
 }

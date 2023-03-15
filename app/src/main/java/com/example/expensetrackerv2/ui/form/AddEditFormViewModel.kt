@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.expensetrackerv2.R
 import com.example.expensetrackerv2.models.ExpenseConstants
-import com.example.expensetrackerv2.models.Category
+import com.example.expensetrackerv2.models.CategoryEntity
 import com.example.expensetrackerv2.models.view_models.ExpenseWithCategory
 import com.example.expensetrackerv2.models.view_models.getTypeOfExpense
 import com.example.expensetrackerv2.use_cases.expense.*
@@ -37,8 +37,8 @@ class AddEditFormViewModel @Inject constructor(
     private val _price = mutableStateOf("")
     val price: State<String> = _price
 
-    private val _category = mutableStateOf(Category(id = -1))
-    val category: State<Category> = _category
+    private val _category = mutableStateOf(CategoryEntity(id = -1))
+    val categoryEntity: State<CategoryEntity> = _category
 
     private val _date = mutableStateOf(Date())
     val date: State<Date> = _date
@@ -51,7 +51,7 @@ class AddEditFormViewModel @Inject constructor(
 
     val expensesTitles: Flow<List<String>> = getExpensesTitles()
     val expensesPlaces: Flow<List<String>> = getExpensesPlaces()
-    val typesOfExpense: Flow<List<Category>> = getCategory()
+    val typesOfExpense: Flow<List<CategoryEntity>> = getCategory()
 
     private val isNewExpense get() = id.value == ExpenseConstants.NEW_EXPENSE_ID
     val isFormProper get() = _title.value.isNotEmpty() && _price.value.isNotEmpty() && _price.value.toDouble() >= 0.0 && _category.value.id != -1
@@ -103,9 +103,9 @@ class AddEditFormViewModel @Inject constructor(
         price = price.value.toDouble(),
         place = place.value,
         description = description.value,
-        type = category.value.type,
-        typeID = category.value.id,
-        typeName = category.value.name
+        categoryType = categoryEntity.value.categoryType,
+        typeID = categoryEntity.value.id,
+        typeName = categoryEntity.value.name
     )
 
     private fun insertOrUpdateNewExpense(newExpenseWithCategory: ExpenseWithCategory) {

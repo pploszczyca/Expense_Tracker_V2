@@ -11,7 +11,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.expensetrackerv2.R
-import com.example.expensetrackerv2.models.Type
+import com.example.expensetrackerv2.models.CategoryType
 import com.example.expensetrackerv2.ui.bar.TopAppBarWithBack
 import com.example.expensetrackerv2.ui.form.CalendarDialogField
 import com.example.expensetrackerv2.ui.theme.ExpenseColor
@@ -71,7 +71,7 @@ fun ExpensesStatistics(
                     title = stringResource(id = R.string.total_expenses),
                     number = MathUtils.sumMoneyInListByTypeToString(
                         expenseWithItsTypeFilteredList,
-                        Type.OUTGO
+                        CategoryType.OUTGO
                     ),
                     color = ExpenseColor
                 )
@@ -80,7 +80,7 @@ fun ExpensesStatistics(
                     title = stringResource(id = R.string.total_incomes),
                     number = MathUtils.sumMoneyInListByTypeToString(
                         expenseWithItsTypeFilteredList,
-                        Type.INCOME
+                        CategoryType.INCOME
                     ),
                     color = IncomeColor
                 )

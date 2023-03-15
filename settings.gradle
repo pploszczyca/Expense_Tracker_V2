@@ -8,3 +8,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Expense Tracker V2"
 include ':app'
+include ':app:domain'

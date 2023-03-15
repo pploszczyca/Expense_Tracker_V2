@@ -6,8 +6,8 @@ import androidx.room.PrimaryKey
 import com.example.expensetrackerv2.models.view_models.ExpenseMonthYearKey
 import java.util.Date
 
-@Entity
-data class Expense(
+@Entity(tableName = "expense")
+data class ExpenseEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = ExpenseConstants.NEW_EXPENSE_ID,
     val title: String = "",
@@ -21,4 +21,4 @@ data class Expense(
     val walletId: Int = 0,
 )
 
-fun Expense.getKey() = ExpenseMonthYearKey(this.date.year, this.date.month)
+fun ExpenseEntity.getKey() = ExpenseMonthYearKey(this.date.year, this.date.month)

@@ -10,8 +10,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.example.expensetrackerv2.R
-import com.example.expensetrackerv2.models.Type
-import com.example.expensetrackerv2.models.Category
+import com.example.expensetrackerv2.models.CategoryType
+import com.example.expensetrackerv2.models.CategoryEntity
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -20,7 +20,7 @@ fun CategoryDialogForm(
 ) {
     val id by modelView.id
     val name by modelView.name
-    val type by modelView.type
+    val type by modelView.categoryType
 
     val confirmButtonTitle =
         stringResource(id = if (modelView.isThisNewTypeOfExpense()) R.string.add else R.string.update)
@@ -39,7 +39,7 @@ fun CategoryDialogForm(
                         .selectableGroup(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Type.values().forEach { typeValue ->
+                    CategoryType.values().forEach { typeValue ->
                         RadioButton(
                             selected = typeValue == type,
                             onClick = {
@@ -61,10 +61,10 @@ fun CategoryDialogForm(
             TextButton(onClick = {
                 modelView.onEvent(
                     CategorySettingsEvent.DialogFormSubmit(
-                        Category(
+                        CategoryEntity(
                             id = id,
                             name = name,
-                            type = type
+                            categoryType = type
                         )
                     )
                 )

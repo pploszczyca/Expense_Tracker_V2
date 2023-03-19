@@ -9,9 +9,9 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.expensetrackerv2.models.ExpenseConstants
 import com.example.expensetrackerv2.navigation.Routes
-import com.example.expensetrackerv2.ui.form.AddEditForm
-import com.example.expensetrackerv2.ui.form.AddEditFormEvent
-import com.example.expensetrackerv2.ui.form.AddEditFormViewModel
+import com.example.expensetrackerv2.ui.legacy_form.AddEditForm
+import com.example.expensetrackerv2.ui.legacy_form.LegacyAddEditFormEvent
+import com.example.expensetrackerv2.ui.legacy_form.LegacyAddEditFormViewModel
 import com.example.expensetrackerv2.ui.main.MainComposable
 import com.example.expensetrackerv2.ui.statistics.ExpensesStatistics
 import com.example.expensetrackerv2.ui.category_settings.CategorySettings
@@ -31,10 +31,10 @@ fun NavHostComposable() {
                 defaultValue = 0
             })
         ) { backStackEntry ->
-            val expensesFormViewModel: AddEditFormViewModel = hiltViewModel()
+            val expensesFormViewModel: LegacyAddEditFormViewModel = hiltViewModel()
 
             expensesFormViewModel.onEvent(
-                AddEditFormEvent.IdChange(
+                LegacyAddEditFormEvent.IdChange(
                     backStackEntry.arguments?.getInt(
                         "EXPENSE_ID"
                     ) ?: ExpenseConstants.NEW_EXPENSE_ID

@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.ui.form
+package com.example.expensetrackerv2.ui.legacy_form
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -20,7 +20,7 @@ import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
-class AddEditFormViewModel @Inject constructor(
+class LegacyAddEditFormViewModel @Inject constructor(
     private val getExpenseWithCategory: GetExpenseWithCategory,
     private val insertExpenseWithCategory: InsertExpenseWithCategory,
     private val updateExpenseWithCategory: UpdateExpenseWithCategory,
@@ -63,12 +63,12 @@ class AddEditFormViewModel @Inject constructor(
 
     private fun changeFormStates(expenseWithCategory: ExpenseWithCategory) {
         listOf(
-            AddEditFormEvent.TitleChange(expenseWithCategory.title),
-            AddEditFormEvent.PriceChange(if (expenseWithCategory.price != 0.0) expenseWithCategory.price.toString() else ""),
-            AddEditFormEvent.DateChange(DateUtils.toOnlyDateString(expenseWithCategory.date)),
-            AddEditFormEvent.PlaceChange(expenseWithCategory.place),
-            AddEditFormEvent.DescriptionChange(expenseWithCategory.description),
-            AddEditFormEvent.TypeOfAddEditChange(expenseWithCategory.getTypeOfExpense())
+            LegacyAddEditFormEvent.TitleChange(expenseWithCategory.title),
+            LegacyAddEditFormEvent.PriceChange(if (expenseWithCategory.price != 0.0) expenseWithCategory.price.toString() else ""),
+            LegacyAddEditFormEvent.DateChange(DateUtils.toOnlyDateString(expenseWithCategory.date)),
+            LegacyAddEditFormEvent.PlaceChange(expenseWithCategory.place),
+            LegacyAddEditFormEvent.DescriptionChange(expenseWithCategory.description),
+            LegacyAddEditFormEvent.TypeOfAddEditChange(expenseWithCategory.getTypeOfExpense())
         ).forEach { event -> onEvent(event) }
     }
 
@@ -81,18 +81,18 @@ class AddEditFormViewModel @Inject constructor(
         }
     }
 
-    fun onEvent(event: AddEditFormEvent) {
+    fun onEvent(event: LegacyAddEditFormEvent) {
         when (event) {
-            is AddEditFormEvent.IdChange -> {
+            is LegacyAddEditFormEvent.IdChange -> {
                 _id.value = event.value
                 loadExpenseWithItsType(id.value)
             }
-            is AddEditFormEvent.TitleChange -> _title.value = event.value
-            is AddEditFormEvent.PriceChange -> _price.value = event.value
-            is AddEditFormEvent.DateChange -> _date.value = DateUtils.stringToDate(event.value)
-            is AddEditFormEvent.PlaceChange -> _place.value = event.value
-            is AddEditFormEvent.DescriptionChange -> _description.value = event.value
-            is AddEditFormEvent.TypeOfAddEditChange -> _category.value = event.value
+            is LegacyAddEditFormEvent.TitleChange -> _title.value = event.value
+            is LegacyAddEditFormEvent.PriceChange -> _price.value = event.value
+            is LegacyAddEditFormEvent.DateChange -> _date.value = DateUtils.stringToDate(event.value)
+            is LegacyAddEditFormEvent.PlaceChange -> _place.value = event.value
+            is LegacyAddEditFormEvent.DescriptionChange -> _description.value = event.value
+            is LegacyAddEditFormEvent.TypeOfAddEditChange -> _category.value = event.value
         }
     }
 

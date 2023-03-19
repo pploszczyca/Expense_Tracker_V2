@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.ui.form
+package com.example.expensetrackerv2.ui.legacy_form
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectableGroup
@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun AddEditForm(
     navController: NavController,
-    viewModel: AddEditFormViewModel
+    viewModel: LegacyAddEditFormViewModel
 ) {
     val title by viewModel.title
     val price by viewModel.price
@@ -54,7 +54,7 @@ fun AddEditForm(
         Column(modifier = Modifier.padding(it)) {
             AutoCompleteOutlinedTextField(
                 value = title,
-                onValueChange = { viewModel.onEvent(AddEditFormEvent.TitleChange(it)) },
+                onValueChange = { viewModel.onEvent(LegacyAddEditFormEvent.TitleChange(it)) },
                 icon = Icons.Default.Title,
                 label = stringResource(id = R.string.expense_form_title),
                 suggestionsInput = titleSuggestions
@@ -62,7 +62,7 @@ fun AddEditForm(
 
             AddEditFormTextField(
                 value = price,
-                onValueChange = { viewModel.onEvent(AddEditFormEvent.PriceChange(it)) },
+                onValueChange = { viewModel.onEvent(LegacyAddEditFormEvent.PriceChange(it)) },
                 icon = Icons.Default.AttachMoney,
                 label = stringResource(id = R.string.expense_form_price),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
@@ -72,12 +72,12 @@ fun AddEditForm(
                 date = DateUtils.toOnlyDateString(date),
                 label = stringResource(id = R.string.expense_form_date)
             ) { dateFromDialog ->
-                viewModel.onEvent(AddEditFormEvent.DateChange(dateFromDialog.toString()))
+                viewModel.onEvent(LegacyAddEditFormEvent.DateChange(dateFromDialog.toString()))
             }
 
             AutoCompleteOutlinedTextField(
                 value = place,
-                onValueChange = { viewModel.onEvent(AddEditFormEvent.PlaceChange(it)) },
+                onValueChange = { viewModel.onEvent(LegacyAddEditFormEvent.PlaceChange(it)) },
                 icon = Icons.Default.Place,
                 label = stringResource(id = R.string.expense_form_place),
                 suggestionsInput = placeSuggestions
@@ -85,7 +85,7 @@ fun AddEditForm(
 
             AddEditFormTextField(
                 value = description,
-                onValueChange = { viewModel.onEvent(AddEditFormEvent.DescriptionChange(it)) },
+                onValueChange = { viewModel.onEvent(LegacyAddEditFormEvent.DescriptionChange(it)) },
                 icon = Icons.Default.Message,
                 label = stringResource(id = R.string.expense_form_description),
                 keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences)
@@ -99,7 +99,7 @@ fun AddEditForm(
                     Row(verticalAlignment = CenterVertically) {
                         RadioButton(selected = typeOfExpense == expenseType, onClick = {
                             viewModel.onEvent(
-                                AddEditFormEvent.TypeOfAddEditChange(
+                                LegacyAddEditFormEvent.TypeOfAddEditChange(
                                     expenseType
                                 )
                             )

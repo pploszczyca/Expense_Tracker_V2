@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.ui.form
+package com.example.expensetrackerv2.ui.legacy_form
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth

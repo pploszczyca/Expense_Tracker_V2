@@ -87,6 +87,8 @@ dependencies {
 
     implementation("androidx.compose.material3:material3:1.0.1")
     implementation("androidx.compose.material3:material3-window-size-class:1.0.1")
+
+    implementation 'com.tinder.statemachine:statemachine:0.3.0'
 }
 
 kapt {

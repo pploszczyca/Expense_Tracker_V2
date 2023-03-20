@@ -16,27 +16,25 @@ abstract class ExpenseFormViewModel : ViewModel() {
     abstract fun onDateChanged(date: Date)
     abstract fun onPlaceNameChanged(placeName: String)
     abstract fun onDescriptionChanged(description: String)
+    abstract fun onSubmitButtonClicked()
 
-    sealed interface ViewState {
-        object Loading: ViewState
-        data class Form(
-            val title: String,
-            val price: String,
-            val chosenCategory: Category,
-            val date: Date,
-            val placeName: String,
-            val description: String,
-            val previousTitles: List<String>,
-            val previousPlaceNames: List<String>,
-            val categories: List<Category>,
-            @StringRes
-            val submitButtonText: Int
-        ) : ViewState {
-            data class Category(
-                val id: Int,
-                val name: String
-            )
-        }
+    data class ViewState(
+        val title: String,
+        val price: String,
+        val chosenCategory: Category,
+        val date: Date,
+        val placeName: String,
+        val description: String,
+        val previousTitles: List<String>,
+        val previousPlaceNames: List<String>,
+        val categories: List<Category>,
+        @StringRes
+        val submitButtonText: Int
+    ) {
+        data class Category(
+            val id: Int,
+            val name: String
+        )
     }
 }
 

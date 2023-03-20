@@ -11,6 +11,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import java.util.*
 
 @HiltViewModel
@@ -19,7 +20,7 @@ class ExpenseFormViewModelImpl(
     getExpensesTitles: GetExpensesTitles,
     getExpensesPlaces: GetExpensesPlaces,
     getCategory: GetCategory,
-    private val getExpenseWithCategory: GetExpenseWithCategory,
+    getExpenseWithCategory: GetExpenseWithCategory,
 ) : ExpenseFormViewModel() {
 
     private val _viewState: MutableStateFlow<ViewState?> = MutableStateFlow(null)
@@ -41,10 +42,10 @@ class ExpenseFormViewModelImpl(
             ) { titles, places, categories, expense ->
                 val chosenCategory = when (expense) {
                     null -> categories.first().let { ViewState.Category(it.id, it.name) }
-                    else -> ViewState.Category(expense.typeID, expense.typeName)
+                    else -> ViewState.Category(expense.categoryId, expense.typeName)
                 }
 
-                val submitButtonTextId = when (inputData.expenseId == null) {
+                val submitButtonTextId = when (expense == null) {
                     true -> R.string.add
                     false -> R.string.update
                 }
@@ -53,7 +54,7 @@ class ExpenseFormViewModelImpl(
                     title = expense?.title.orEmpty(),
                     price = expense?.price?.toString().orEmpty(),
                     chosenCategory = chosenCategory,
-                    date = expense?.date ?: Date(),
+                    date = expense?.date.toString(),
                     placeName = expense?.place.orEmpty(),
                     description = expense?.description.orEmpty(),
                     previousTitles = titles,
@@ -86,9 +87,9 @@ class ExpenseFormViewModelImpl(
         }
     }
 
-    override fun onDateChanged(date: Date) {
+    override fun onDateChanged(date: LocalDate) {
         _viewState.update {
-            it?.copy(date = date)
+            it?.copy(date = date.toString())
         }
     }
 

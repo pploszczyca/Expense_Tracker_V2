@@ -14,7 +14,7 @@ data class ExpenseWithCategory(
     val date: Date = Date(),
     val description: String = "",
     val place: String = "",
-    val typeID: Int = 0,
+    val categoryId: Int = 0,
     val typeName: String = "",
     val categoryType: CategoryType = CategoryType.OUTGO
 )
@@ -26,11 +26,11 @@ fun ExpenseWithCategory.toExpense(): ExpenseEntity = ExpenseEntity(
     date = date,
     description = description,
     place = place,
-    categoryId = typeID
+    categoryId = categoryId
 )
 
 fun ExpenseWithCategory.getTypeOfExpense(): CategoryEntity = CategoryEntity(
-    id = typeID,
+    id = categoryId,
     name = typeName,
     categoryType = categoryType
 )

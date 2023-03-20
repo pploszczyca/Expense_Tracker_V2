@@ -104,7 +104,7 @@ class LegacyAddEditFormViewModel @Inject constructor(
         place = place.value,
         description = description.value,
         categoryType = categoryEntity.value.categoryType,
-        typeID = categoryEntity.value.id,
+        categoryId = categoryEntity.value.id,
         typeName = categoryEntity.value.name
     )
 

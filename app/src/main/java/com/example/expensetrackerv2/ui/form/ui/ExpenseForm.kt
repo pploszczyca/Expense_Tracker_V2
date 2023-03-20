@@ -121,7 +121,7 @@ fun ExpenseFormPreview() {
         placeName = "Biedronka",
         description = "Some description",
         previousTitles = emptyList(),
-        previousPlaceNames = emptyList(),
+        previousPlaceNames = listOf("My Biedronka", "Super Biedronka"),
         categories = categories,
         submitButtonText = R.string.add
     )

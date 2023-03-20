@@ -6,7 +6,7 @@ import com.example.expensetrackerv2.models.CategoryType
 import com.example.expensetrackerv2.models.CategoryEntity
 import java.util.*
 
-@DatabaseView("SELECT e.id, e.title, e.price, e.date, e.description, e.place, t.id AS typeID, t.name AS typeName, t.type FROM Expense AS e INNER JOIN Category AS t ON e.category_id = t.id")
+@DatabaseView("SELECT e.id, e.title, e.price, e.date, e.description, e.place, c.id AS categoryId, c.name AS categoryName, c.categoryType FROM Expense AS e INNER JOIN Category AS c ON e.category_id = c.id")
 data class ExpenseWithCategory(
     val id: Int = 0,
     val title: String = "",
@@ -15,7 +15,7 @@ data class ExpenseWithCategory(
     val description: String = "",
     val place: String = "",
     val categoryId: Int = 0,
-    val typeName: String = "",
+    val categoryName: String = "",
     val categoryType: CategoryType = CategoryType.OUTGO
 )
 
@@ -31,7 +31,7 @@ fun ExpenseWithCategory.toExpense(): ExpenseEntity = ExpenseEntity(
 
 fun ExpenseWithCategory.getTypeOfExpense(): CategoryEntity = CategoryEntity(
     id = categoryId,
-    name = typeName,
+    name = categoryName,
     categoryType = categoryType
 )
 

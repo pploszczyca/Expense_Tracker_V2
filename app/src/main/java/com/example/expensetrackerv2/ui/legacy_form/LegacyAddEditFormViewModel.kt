@@ -105,7 +105,7 @@ class LegacyAddEditFormViewModel @Inject constructor(
         description = description.value,
         categoryType = categoryEntity.value.categoryType,
         categoryId = categoryEntity.value.id,
-        typeName = categoryEntity.value.name
+        categoryName = categoryEntity.value.name
     )
 
     private fun insertOrUpdateNewExpense(newExpenseWithCategory: ExpenseWithCategory) {

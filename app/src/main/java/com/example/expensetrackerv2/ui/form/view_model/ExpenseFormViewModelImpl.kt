@@ -12,9 +12,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.time.LocalDate
-import java.util.*
 
-@HiltViewModel
+//@HiltViewModel
 class ExpenseFormViewModelImpl(
     private val inputData: InputData,
     getExpensesTitles: GetExpensesTitles,
@@ -42,7 +41,7 @@ class ExpenseFormViewModelImpl(
             ) { titles, places, categories, expense ->
                 val chosenCategory = when (expense) {
                     null -> categories.first().let { ViewState.Category(it.id, it.name) }
-                    else -> ViewState.Category(expense.categoryId, expense.typeName)
+                    else -> ViewState.Category(expense.categoryId, expense.categoryName)
                 }
 
                 val submitButtonTextId = when (expense == null) {

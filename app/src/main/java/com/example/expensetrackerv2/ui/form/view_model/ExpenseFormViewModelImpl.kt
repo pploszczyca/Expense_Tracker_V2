@@ -22,8 +22,8 @@ class ExpenseFormViewModelImpl(
     getExpenseWithCategory: GetExpenseWithCategory,
 ) : ExpenseFormViewModel() {
 
-    private val _viewState: MutableStateFlow<ViewState?> = MutableStateFlow(null)
-    val viewState: StateFlow<ViewState?> = _viewState
+    private val _viewState: MutableStateFlow<ViewState> = MutableStateFlow(ViewState())
+    val viewState: StateFlow<ViewState> = _viewState
 
     init {
         val getExpenseOrNullFlow: Flow<ExpenseWithCategory?> =
@@ -70,37 +70,37 @@ class ExpenseFormViewModelImpl(
 
     override fun onTitleChanged(title: String) {
         _viewState.update {
-            it?.copy(title = title)
+            it.copy(title = title)
         }
     }
 
     override fun onPriceChanged(price: String) {
         _viewState.update {
-            it?.copy(price = price)
+            it.copy(price = price)
         }
     }
 
     override fun onCategoryChanged(categoryId: Int) {
         _viewState.update {
-            it?.copy(chosenCategory = it.categories.first { category -> category.id == categoryId })
+            it.copy(chosenCategory = it.categories.first { category -> category.id == categoryId })
         }
     }
 
     override fun onDateChanged(date: LocalDate) {
         _viewState.update {
-            it?.copy(date = date.toString())
+            it.copy(date = date.toString())
         }
     }
 
     override fun onPlaceNameChanged(placeName: String) {
         _viewState.update {
-            it?.copy(placeName = placeName)
+            it.copy(placeName = placeName)
         }
     }
 
     override fun onDescriptionChanged(description: String) {
         _viewState.update {
-            it?.copy(description = description)
+            it.copy(description = description)
         }
     }
 

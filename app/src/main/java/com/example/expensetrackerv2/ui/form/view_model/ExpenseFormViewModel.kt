@@ -2,6 +2,7 @@ package com.example.expensetrackerv2.ui.form.view_model
 
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
+import com.example.expensetrackerv2.R
 import java.time.LocalDate
 
 abstract class ExpenseFormViewModel : ViewModel() {
@@ -19,21 +20,21 @@ abstract class ExpenseFormViewModel : ViewModel() {
     abstract fun onSubmitButtonClicked()
 
     data class ViewState(
-        val title: String,
-        val price: String,
-        val chosenCategory: Category,
-        val date: String,
-        val placeName: String,
-        val description: String,
-        val previousTitles: List<String>,
-        val previousPlaceNames: List<String>,
-        val categories: List<Category>,
+        val title: String = "",
+        val price: String = "",
+        val chosenCategory: Category = Category(),
+        val date: String = "",
+        val placeName: String = "",
+        val description: String = "",
+        val previousTitles: List<String> = emptyList(),
+        val previousPlaceNames: List<String> = emptyList(),
+        val categories: List<Category> = emptyList(),
         @StringRes
-        val submitButtonText: Int
+        val submitButtonText: Int = R.string.add,
     ) {
         data class Category(
-            val id: Int,
-            val name: String
+            val id: Int = -1,
+            val name: String = ""
         )
     }
 }

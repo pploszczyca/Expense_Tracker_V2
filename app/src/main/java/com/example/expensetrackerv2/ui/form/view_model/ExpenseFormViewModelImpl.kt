@@ -28,6 +28,9 @@ class ExpenseFormViewModelImpl @Inject constructor(
     private val _viewState: MutableStateFlow<ViewState> = MutableStateFlow(ViewState())
     override val viewState: StateFlow<ViewState> = _viewState
 
+    private val _routeActions: MutableSharedFlow<RouteAction> =  MutableSharedFlow()
+    override val routeActions: SharedFlow<RouteAction> = _routeActions
+
     private val expenseId: Int? = savedStateHandle.get<Int>("EXPENSE_ID")
 
     init {
@@ -125,6 +128,15 @@ class ExpenseFormViewModelImpl @Inject constructor(
     }
 
     override fun onSubmitButtonClicked() {
-        TODO("Not yet implemented")
+        if(viewState.value.isAllDataValidated().not()) {
+            viewModelScope.launch(Dispatchers.IO) {
+                _routeActions.emit(RouteAction.ShowSnackBar)
+            }
+            return
+        }
     }
+
+    private fun ViewState.isAllDataValidated(): Boolean =
+        title != "" && price != "" && placeName != ""
+
 }

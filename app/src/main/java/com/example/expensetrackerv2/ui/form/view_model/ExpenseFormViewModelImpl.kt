@@ -3,6 +3,7 @@ package com.example.expensetrackerv2.ui.form.view_model
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.example.expensetrackerv2.R
+import com.example.expensetrackerv2.models.CategoryEntity
 import com.example.expensetrackerv2.models.view_models.ExpenseWithCategory
 import com.example.expensetrackerv2.use_cases.category.GetCategory
 import com.example.expensetrackerv2.use_cases.expense.GetExpenseWithCategory
@@ -43,9 +44,9 @@ class ExpenseFormViewModelImpl @Inject constructor(
                 getCategory(),
                 getExpenseOrNullFlow,
             ) { titles, places, categories, expense ->
-                val chosenCategory = when (expense) {
-                    null -> categories.first().let { ViewState.Category(it.id, it.name) }
-                    else -> ViewState.Category(expense.categoryId, expense.categoryName)
+                val chosenCategoryId = when (expense) {
+                    null -> categories.first().id
+                    else -> expense.categoryId
                 }
 
                 val submitButtonTextId = when (expense == null) {
@@ -56,13 +57,13 @@ class ExpenseFormViewModelImpl @Inject constructor(
                 return@combine ViewState(
                     title = expense?.title.orEmpty(),
                     price = expense?.price?.toString().orEmpty(),
-                    chosenCategory = chosenCategory,
+                    chosenCategoryId = chosenCategoryId,
                     date = expense?.date.toString(),
                     placeName = expense?.place.orEmpty(),
                     description = expense?.description.orEmpty(),
                     previousTitles = titles,
                     previousPlaceNames = places,
-                    categories = categories.map { ViewState.Category(it.id, it.name) },
+                    categories = mapToViewStateCategories(categories, chosenCategoryId),
                     submitButtonText = submitButtonTextId
                 )
             }.flowOn(Dispatchers.IO)
@@ -71,6 +72,18 @@ class ExpenseFormViewModelImpl @Inject constructor(
                 }
         }
     }
+
+    private fun mapToViewStateCategories(
+        categories: List<CategoryEntity>,
+        chosenCategoryId: Int,
+    ): List<ViewState.Category> =
+        categories.map {
+            ViewState.Category(
+                id = it.id,
+                name = it.name,
+                isSelected = it.id == chosenCategoryId,
+            )
+        }
 
     override fun onTitleChanged(title: String) {
         _viewState.update {
@@ -86,7 +99,10 @@ class ExpenseFormViewModelImpl @Inject constructor(
 
     override fun onCategoryChanged(categoryId: Int) {
         _viewState.update {
-            it.copy(chosenCategory = it.categories.first { category -> category.id == categoryId })
+            it.copy(
+                chosenCategoryId = categoryId,
+                categories = it.categories.map { category -> category.copy(isSelected = category.id == categoryId) }
+            )
         }
     }
 

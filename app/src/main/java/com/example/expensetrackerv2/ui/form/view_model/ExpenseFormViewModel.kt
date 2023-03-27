@@ -21,7 +21,7 @@ abstract class ExpenseFormViewModel : ViewModel() {
     data class ViewState(
         val title: String = "",
         val price: String = "",
-        val chosenCategory: Category = Category(),
+        val chosenCategoryId: Int = -1,
         val date: String = "",
         val placeName: String = "",
         val description: String = "",
@@ -33,7 +33,8 @@ abstract class ExpenseFormViewModel : ViewModel() {
     ) {
         data class Category(
             val id: Int = -1,
-            val name: String = ""
+            val name: String = "",
+            val isSelected: Boolean = false,
         )
     }
 }

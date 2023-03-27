@@ -15,6 +15,9 @@ import com.example.expensetrackerv2.ui.legacy_form.LegacyAddEditFormViewModel
 import com.example.expensetrackerv2.ui.main.MainComposable
 import com.example.expensetrackerv2.ui.statistics.ExpensesStatistics
 import com.example.expensetrackerv2.ui.category_settings.CategorySettings
+import com.example.expensetrackerv2.ui.form.ui.ExpenseFormEntry
+import com.example.expensetrackerv2.ui.form.view_model.ExpenseFormViewModel
+import com.example.expensetrackerv2.ui.form.view_model.ExpenseFormViewModelImpl
 
 @Composable
 fun NavHostComposable() {
@@ -31,20 +34,7 @@ fun NavHostComposable() {
                 defaultValue = 0
             })
         ) { backStackEntry ->
-            val expensesFormViewModel: LegacyAddEditFormViewModel = hiltViewModel()
-
-            expensesFormViewModel.onEvent(
-                LegacyAddEditFormEvent.IdChange(
-                    backStackEntry.arguments?.getInt(
-                        "EXPENSE_ID"
-                    ) ?: ExpenseConstants.NEW_EXPENSE_ID
-                )
-            )
-
-            AddEditForm(
-                navController = navController,
-                viewModel = expensesFormViewModel
-            )
+            ExpenseFormEntry(viewModel = hiltViewModel<ExpenseFormViewModelImpl>(backStackEntry))
         }
         composable(Routes.ExpenseStatistics.route) {
             ExpensesStatistics(

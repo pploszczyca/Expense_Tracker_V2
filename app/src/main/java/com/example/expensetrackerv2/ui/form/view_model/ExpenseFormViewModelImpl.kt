@@ -28,7 +28,7 @@ class ExpenseFormViewModelImpl @Inject constructor(
     private val _viewState: MutableStateFlow<ViewState> = MutableStateFlow(ViewState())
     override val viewState: StateFlow<ViewState> = _viewState
 
-    private val expenseId: Int? = savedStateHandle.get<Int>("expenseId")
+    private val expenseId: Int? = savedStateHandle.get<Int>("EXPENSE_ID")
 
     init {
         val getExpenseOrNullFlow: Flow<ExpenseWithCategory?> =

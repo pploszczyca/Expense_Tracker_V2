@@ -82,7 +82,7 @@ fun ExpenseForm(
             viewState.categories.forEach { category ->
                 Row(verticalAlignment = CenterVertically) {
                     RadioButton(
-                        selected = viewState.chosenCategory == category,
+                        selected = category.isSelected,
                         onClick = { onCategoryChanged(category.id) },
                     )
                     Text(text = category.name, style = MaterialTheme.typography.bodyMedium)
@@ -116,7 +116,7 @@ fun ExpenseFormPreview() {
     val viewState = ExpenseFormViewModel.ViewState(
         title = "Example title",
         price = "7.00",
-        chosenCategory = categories.first(),
+        chosenCategoryId = 1,
         date = "22-03-2023",
         placeName = "Biedronka",
         description = "Some description",

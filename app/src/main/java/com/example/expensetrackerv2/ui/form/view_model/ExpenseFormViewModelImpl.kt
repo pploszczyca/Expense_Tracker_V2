@@ -1,5 +1,6 @@
 package com.example.expensetrackerv2.ui.form.view_model
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.example.expensetrackerv2.R
 import com.example.expensetrackerv2.models.view_models.ExpenseWithCategory
@@ -12,10 +13,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import javax.inject.Inject
 
-//@HiltViewModel
-class ExpenseFormViewModelImpl(
-    private val inputData: InputData,
+@HiltViewModel
+class ExpenseFormViewModelImpl @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     getExpensesTitles: GetExpensesTitles,
     getExpensesPlaces: GetExpensesPlaces,
     getCategory: GetCategory,
@@ -23,13 +25,15 @@ class ExpenseFormViewModelImpl(
 ) : ExpenseFormViewModel() {
 
     private val _viewState: MutableStateFlow<ViewState> = MutableStateFlow(ViewState())
-    val viewState: StateFlow<ViewState> = _viewState
+    override val viewState: StateFlow<ViewState> = _viewState
+
+    private val expenseId: Int? = savedStateHandle.get<Int>("expenseId")
 
     init {
         val getExpenseOrNullFlow: Flow<ExpenseWithCategory?> =
-            when (inputData.expenseId) {
+            when (expenseId) {
                 null -> flowOf(null)
-                else -> getExpenseWithCategory(inputData.expenseId)
+                else -> getExpenseWithCategory(expenseId)
             }
 
         viewModelScope.launch {

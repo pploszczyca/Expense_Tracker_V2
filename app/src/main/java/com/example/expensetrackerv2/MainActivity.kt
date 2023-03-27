@@ -5,6 +5,7 @@ import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import com.example.expensetrackerv2.navigation.NavHostComposable
 import com.example.expensetrackerv2.ui.theme.ExpenseTrackerV2Theme
 import dagger.hilt.android.AndroidEntryPoint
 

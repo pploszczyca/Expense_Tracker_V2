@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2
+package com.example.expensetrackerv2.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel

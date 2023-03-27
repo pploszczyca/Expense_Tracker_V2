@@ -3,13 +3,12 @@ package com.example.expensetrackerv2.ui.form.view_model
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import com.example.expensetrackerv2.R
+import kotlinx.coroutines.flow.StateFlow
 import java.time.LocalDate
 
 abstract class ExpenseFormViewModel : ViewModel() {
 
-    data class InputData(
-        val expenseId: Int?
-    )
+    abstract val viewState: StateFlow<ViewState>
 
     abstract fun onTitleChanged(title: String)
     abstract fun onPriceChanged(price: String)

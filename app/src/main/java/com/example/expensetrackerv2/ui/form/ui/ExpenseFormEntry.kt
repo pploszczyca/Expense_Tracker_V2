@@ -8,7 +8,10 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
+import com.example.expensetrackerv2.R
+import com.example.expensetrackerv2.ui.bar.TopAppBarWithBack
 import com.example.expensetrackerv2.ui.form.view_model.ExpenseFormViewModel
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -29,6 +32,12 @@ fun ExpenseFormEntry(
     )
 
     Scaffold(
+        topBar = {
+            TopAppBarWithBack(
+                title = stringResource(id = R.string.expense_form),
+                navController = navController
+            )
+        },
         snackbarHost = { SnackbarHost(hostState = snackBarHostState) }
     ) {
         Box(modifier = Modifier.padding(it)) {

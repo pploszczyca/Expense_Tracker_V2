@@ -92,13 +92,6 @@ fun ExpenseForm(
     }
 
     Box(modifier = Modifier.fillMaxSize(), Alignment.BottomEnd) {
-//        SnackbarHost(
-//            hostState = snackbarHostState,
-//            modifier = Modifier
-//                .align(Alignment.BottomCenter)
-//                .padding(bottom = 56.dp)
-//        )
-
         Button(onClick = onSubmitButtonClicked, modifier = Modifier.padding(20.dp)) {
             Text(text = stringResource(id = viewState.submitButtonText))
         }

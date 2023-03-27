@@ -8,6 +8,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
 import com.example.expensetrackerv2.ui.form.view_model.ExpenseFormViewModel
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -16,12 +17,16 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun ExpenseFormEntry(
     viewModel: ExpenseFormViewModel,
+    navController: NavController,
 ) {
     val viewState by viewModel.viewState.collectAsState()
-
     val snackBarHostState = remember(::SnackbarHostState)
 
-    HandleRouteActions(viewModel.routeActions, snackBarHostState)
+    HandleRouteActions(
+        routeAction = viewModel.routeActions,
+        snackBarHostState = snackBarHostState,
+        navController = navController,
+    )
 
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackBarHostState) }
@@ -45,12 +50,14 @@ fun ExpenseFormEntry(
 fun HandleRouteActions(
     routeAction: SharedFlow<ExpenseFormViewModel.RouteAction>,
     snackBarHostState: SnackbarHostState,
+    navController: NavController,
 ) {
     LaunchedEffect(Unit) {
         routeAction
             .collectLatest {
                 when(it) {
-                    ExpenseFormViewModel.RouteAction.GoHome -> TODO()
+                    ExpenseFormViewModel.RouteAction.GoBack ->
+                        navController.navigateUp()
                     ExpenseFormViewModel.RouteAction.ShowSnackBar ->
                         snackBarHostState.showSnackbar("Something is wrong :(((")
                 }

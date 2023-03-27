@@ -129,14 +129,19 @@ class ExpenseFormViewModelImpl @Inject constructor(
 
     override fun onSubmitButtonClicked() {
         if(viewState.value.isAllDataValidated().not()) {
-            viewModelScope.launch(Dispatchers.IO) {
-                _routeActions.emit(RouteAction.ShowSnackBar)
-            }
+            onRouteAction(RouteAction.ShowSnackBar)
             return
         }
+
+        onRouteAction(RouteAction.GoBack)
     }
 
     private fun ViewState.isAllDataValidated(): Boolean =
         title != "" && price != "" && placeName != ""
 
+    private fun onRouteAction(action: RouteAction) {
+        viewModelScope.launch {
+            _routeActions.emit(action)
+        }
+    }
 }

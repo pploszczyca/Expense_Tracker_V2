@@ -17,7 +17,7 @@ class UpdateExpense @Inject constructor(
         place: String,
         categoryId: Int,
     ) {
-        expenseRepository.insert(
+        expenseRepository.update(
             expense = ExpenseEntity(
                 id = id,
                 title = title,

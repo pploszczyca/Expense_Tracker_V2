@@ -6,13 +6,13 @@ import com.example.expensetrackerv2.R
 import com.example.expensetrackerv2.models.CategoryEntity
 import com.example.expensetrackerv2.models.view_models.ExpenseWithCategory
 import com.example.expensetrackerv2.use_cases.category.GetCategory
-import com.example.expensetrackerv2.use_cases.expense.GetExpenseWithCategory
-import com.example.expensetrackerv2.use_cases.expense.GetExpensesPlaces
-import com.example.expensetrackerv2.use_cases.expense.GetExpensesTitles
+import com.example.expensetrackerv2.use_cases.expense.*
+import com.example.expensetrackerv2.utilities.DateUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -23,12 +23,14 @@ class ExpenseFormViewModelImpl @Inject constructor(
     getExpensesPlaces: GetExpensesPlaces,
     getCategory: GetCategory,
     getExpenseWithCategory: GetExpenseWithCategory,
+    private val insertExpense: InsertExpense,
+    private val updateExpense: UpdateExpense,
 ) : ExpenseFormViewModel() {
 
     private val _viewState: MutableStateFlow<ViewState> = MutableStateFlow(ViewState())
     override val viewState: StateFlow<ViewState> = _viewState
 
-    private val _routeActions: MutableSharedFlow<RouteAction> =  MutableSharedFlow()
+    private val _routeActions: MutableSharedFlow<RouteAction> = MutableSharedFlow()
     override val routeActions: SharedFlow<RouteAction> = _routeActions
 
     private val expenseId: Int? = savedStateHandle.get<Int>("EXPENSE_ID")
@@ -128,20 +130,53 @@ class ExpenseFormViewModelImpl @Inject constructor(
     }
 
     override fun onSubmitButtonClicked() {
-        if(viewState.value.isAllDataValidated().not()) {
-            onRouteAction(RouteAction.ShowSnackBar)
+        if (viewState.value.isAllDataValidated().not()) {
+            viewModelScope.launch {
+                _routeActions.emit(RouteAction.ShowSnackBar)
+            }
             return
         }
 
-        onRouteAction(RouteAction.GoBack)
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                when (expenseId == null) {
+                    true -> performInsertingExpense()
+                    false -> performUpdatingExpense(expenseId)
+                }
+            }
+
+            _routeActions.emit(RouteAction.GoBack)
+        }
+    }
+
+    private suspend fun performInsertingExpense() {
+        with(viewState.value) {
+            insertExpense(
+                title = title,
+                price = price.toDouble(),
+                date = DateUtils.stringToDate(date),
+                description = description,
+                place = placeName,
+                categoryId = chosenCategoryId,
+            )
+        }
+    }
+
+    private suspend fun performUpdatingExpense(expenseId: Int) {
+        with(viewState.value) {
+            updateExpense(
+                id = expenseId,
+                title = title,
+                price = price.toDouble(),
+                date = DateUtils.stringToDate(date),
+                description = description,
+                place = placeName,
+                categoryId = chosenCategoryId,
+            )
+        }
     }
 
     private fun ViewState.isAllDataValidated(): Boolean =
-        title != "" && price != "" && placeName != ""
+        title != "" && price != ""
 
-    private fun onRouteAction(action: RouteAction) {
-        viewModelScope.launch {
-            _routeActions.emit(action)
-        }
-    }
 }

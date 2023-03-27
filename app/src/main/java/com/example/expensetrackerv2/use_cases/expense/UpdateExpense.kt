@@ -5,10 +5,11 @@ import com.example.expensetrackerv2.repositories.ExpenseRepository
 import java.util.*
 import javax.inject.Inject
 
-class InsertExpense @Inject constructor(
+class UpdateExpense @Inject constructor(
     private val expenseRepository: ExpenseRepository,
 ) {
     suspend operator fun invoke(
+        id: Int,
         title: String,
         price: Double,
         date: Date,
@@ -18,6 +19,7 @@ class InsertExpense @Inject constructor(
     ) {
         expenseRepository.insert(
             expense = ExpenseEntity(
+                id = id,
                 title = title,
                 price = price,
                 date = date,

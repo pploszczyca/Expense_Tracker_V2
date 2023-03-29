@@ -33,7 +33,6 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
-//        useIR = true
     }
     buildFeatures {
         compose true
@@ -48,6 +47,12 @@ android {
         }
     }
     namespace 'com.example.expensetrackerv2'
+
+    android.testOptions {
+        unitTests.all {
+            it.useJUnitPlatform()
+        }
+    }
 }
 
 dependencies {
@@ -87,6 +92,10 @@ dependencies {
 
     implementation("androidx.compose.material3:material3:1.0.1")
     implementation("androidx.compose.material3:material3-window-size-class:1.0.1")
+
+    testImplementation "io.kotest:kotest-runner-junit5:version:$kotest_version"
+    testImplementation "io.kotest:kotest-assertions-core:$kotest_version"
+    testImplementation "io.kotest:kotest-property:$kotest_version"
 }
 
 kapt {

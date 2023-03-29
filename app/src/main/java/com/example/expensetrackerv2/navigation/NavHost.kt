@@ -11,6 +11,7 @@ import com.example.expensetrackerv2.ui.main.MainComposable
 import com.example.expensetrackerv2.ui.statistics.ExpensesStatistics
 import com.example.expensetrackerv2.ui.category_settings.CategorySettings
 import com.example.expensetrackerv2.ui.form.ui.ExpenseFormEntry
+import com.example.expensetrackerv2.ui.form.view_model.ExpenseFormViewModel
 import com.example.expensetrackerv2.ui.form.view_model.ExpenseFormViewModelImpl
 
 @Composable
@@ -25,7 +26,7 @@ fun NavHostComposable() {
             Routes.ExpenseForm.route.plus("?EXPENSE_ID={EXPENSE_ID}"),
             arguments = listOf(navArgument("EXPENSE_ID") {
                 type = NavType.IntType
-                defaultValue = 0
+                defaultValue = ExpenseFormViewModel.NO_EXPENSE_ID
             })
         ) { backStackEntry ->
             ExpenseFormEntry(

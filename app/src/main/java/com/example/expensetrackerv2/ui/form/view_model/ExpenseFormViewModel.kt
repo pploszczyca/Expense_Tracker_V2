@@ -44,6 +44,10 @@ abstract class ExpenseFormViewModel : ViewModel() {
         object GoBack : RouteAction
         object ShowSnackBar : RouteAction
     }
+
+    companion object {
+        const val NO_EXPENSE_ID = -1
+    }
 }
 
 

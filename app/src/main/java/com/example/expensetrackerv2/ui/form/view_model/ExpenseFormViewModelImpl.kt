@@ -5,12 +5,14 @@ import androidx.lifecycle.viewModelScope
 import com.example.expensetrackerv2.R
 import com.example.expensetrackerv2.extensions.toFormattedString
 import com.example.expensetrackerv2.models.CategoryEntity
+import com.example.expensetrackerv2.models.ExpenseConstants
 import com.example.expensetrackerv2.models.view_models.ExpenseWithCategory
 import com.example.expensetrackerv2.use_cases.category.GetCategory
 import com.example.expensetrackerv2.use_cases.expense.*
 import com.example.expensetrackerv2.utilities.DateUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -39,9 +41,9 @@ class ExpenseFormViewModelImpl @Inject constructor(
 
     init {
         val getExpenseOrNullFlow: Flow<ExpenseWithCategory?> =
-            when (expenseId) {
-                null -> flowOf(null)
-                else -> getExpenseWithCategory(expenseId)
+            when (expenseId == null || expenseId == NO_EXPENSE_ID) {
+                true -> flowOf(null)
+                false -> getExpenseWithCategory(expenseId)
             }
 
         viewModelScope.launch {
@@ -141,7 +143,7 @@ class ExpenseFormViewModelImpl @Inject constructor(
 
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                when (expenseId == null) {
+                when (expenseId == null || expenseId == NO_EXPENSE_ID) {
                     true -> performInsertingExpense()
                     false -> performUpdatingExpense(expenseId)
                 }

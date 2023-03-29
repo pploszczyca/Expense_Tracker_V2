@@ -28,7 +28,7 @@ fun ExpenseFormTextField(
 ) {
     OutlinedTextField(
         value = value.toString(),
-        onValueChange = { onValueChange(it) },
+        onValueChange = onValueChange,
         label = { Text(label) },
         keyboardOptions = keyboardOptions,
         leadingIcon = {

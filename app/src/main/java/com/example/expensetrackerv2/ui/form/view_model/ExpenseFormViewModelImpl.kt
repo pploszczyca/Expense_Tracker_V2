@@ -3,6 +3,7 @@ package com.example.expensetrackerv2.ui.form.view_model
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.example.expensetrackerv2.R
+import com.example.expensetrackerv2.extensions.toFormattedString
 import com.example.expensetrackerv2.models.CategoryEntity
 import com.example.expensetrackerv2.models.view_models.ExpenseWithCategory
 import com.example.expensetrackerv2.use_cases.category.GetCategory
@@ -14,6 +15,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -63,7 +65,7 @@ class ExpenseFormViewModelImpl @Inject constructor(
                     title = expense?.title.orEmpty(),
                     price = expense?.price?.toString().orEmpty(),
                     chosenCategoryId = chosenCategoryId,
-                    date = expense?.date.toString(),
+                    date = (expense?.date ?: Date()).toFormattedString(),
                     placeName = expense?.place.orEmpty(),
                     description = expense?.description.orEmpty(),
                     previousTitles = titles,

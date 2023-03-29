@@ -64,7 +64,7 @@ fun HandleRouteActions(
     LaunchedEffect(Unit) {
         routeAction
             .collectLatest {
-                when(it) {
+                when (it) {
                     ExpenseFormViewModel.RouteAction.GoBack ->
                         navController.navigateUp()
                     ExpenseFormViewModel.RouteAction.ShowSnackBar ->

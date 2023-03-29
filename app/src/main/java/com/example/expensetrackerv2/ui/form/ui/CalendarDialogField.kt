@@ -24,7 +24,7 @@ fun CalendarDialogField(
     modifier: Modifier = Modifier
         .fillMaxWidth()
         .padding(5.dp),
-    onDatePickerPick: (dateFromDialog: LocalDate) -> Unit
+    onDatePickerPick: (dateFromDialog: LocalDate) -> Unit,
 ) {
     val dialogState = rememberMaterialDialogState()
 

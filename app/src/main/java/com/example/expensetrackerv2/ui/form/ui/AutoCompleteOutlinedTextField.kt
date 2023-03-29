@@ -56,7 +56,7 @@ fun AutoCompleteOutlinedTextField(
                         typedText = suggestedText
                         onValueChange(suggestedText)
                     },
-                text = { Text(text = suggestedText) } )
+                    text = { Text(text = suggestedText) })
             }
         }
     }

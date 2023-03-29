@@ -24,7 +24,7 @@ abstract class ExpenseFormViewModel : ViewModel() {
         val title: String = "",
         val price: String = "",
         val chosenCategoryId: Int = -1,
-        val date: String = "",      // TODO: Repair null values
+        val date: String = "",
         val placeName: String = "",
         val description: String = "",
         val previousTitles: List<String> = emptyList(),

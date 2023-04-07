@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.ui.form.ui
+package com.example.expensetrackerv2.ui.common_components.auto_complite_text_field
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
+import com.example.expensetrackerv2.ui.form.ui.ExpenseFormTextField
 
 @Composable
 fun AutoCompleteOutlinedTextField(

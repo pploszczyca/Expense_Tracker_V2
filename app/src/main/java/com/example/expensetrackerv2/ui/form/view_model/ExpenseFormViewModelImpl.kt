@@ -141,7 +141,7 @@ class ExpenseFormViewModelImpl @Inject constructor(
         }
 
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
+            withContext(ioDispatcher) {
                 when (expenseId == null || expenseId == NO_EXPENSE_ID) {
                     true -> performInsertingExpense()
                     false -> performUpdatingExpense(expenseId)

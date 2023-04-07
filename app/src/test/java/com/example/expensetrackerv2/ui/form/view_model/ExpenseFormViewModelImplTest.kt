@@ -15,9 +15,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
+import java.time.LocalDate
 import java.util.*
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -73,11 +73,17 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
         val places: List<String> = mockk()
         val categoryId = 78
         val categoryName = "categoryName"
+        val secondCategoryId = 90
+        val secondCategoryName = "secondCategoryName"
         val category = CategoryEntity(
             id = categoryId,
             name = categoryName,
         )
-        val categories: List<CategoryEntity> = listOf(category)
+        val secondCategory = CategoryEntity(
+            id = secondCategoryId,
+            name = secondCategoryName,
+        )
+        val categories: List<CategoryEntity> = listOf(category, secondCategory)
         val viewState = ExpenseFormViewModel.ViewState(
             title = "",
             price = "",
@@ -87,11 +93,18 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
             description = "",
             previousTitles = titles,
             previousPlaceNames = places,
-            categories = listOf(ExpenseFormViewModel.ViewState.Category(
-                id = categoryId,
-                name = categoryName,
-                isSelected = true,
-            )),
+            categories = listOf(
+                ExpenseFormViewModel.ViewState.Category(
+                    id = categoryId,
+                    name = categoryName,
+                    isSelected = true,
+                ),
+                ExpenseFormViewModel.ViewState.Category(
+                    id = secondCategoryId,
+                    name = secondCategoryName,
+                    isSelected = false,
+                ),
+            ),
             submitButtonText = R.string.add,
         )
 
@@ -113,7 +126,7 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
             }
         }
 
-        When("New title occurs") {
+        When("New title will be given") {
             val title = "new title"
 
             val actualViewState = tested(
@@ -126,9 +139,118 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
             }.viewState.value
 
             Then("Title will be changed") {
-                val viewStateWithChangedTitle = viewState.copy(title = title)
+                val expectedViewState = viewState.copy(title = title)
 
-                actualViewState shouldBe viewStateWithChangedTitle
+                actualViewState shouldBe expectedViewState
+            }
+        }
+
+        When("New price will be given") {
+            val price = "2.00"
+
+            val actualViewState = tested(
+                savedStateHandle = savedStateHandle,
+                getExpensesTitles = getExpensesTitles,
+                getExpensesPlaces = getExpensesPlaces,
+                getCategories = getCategories,
+            ).apply {
+                onPriceChanged(price)
+            }.viewState.value
+
+            Then("Price will be changed") {
+                val expectedViewState = viewState.copy(price = price)
+
+                actualViewState shouldBe expectedViewState
+            }
+        }
+
+        When("New date will be given") {
+            val stringDate = "2000-06-12"
+            val date = LocalDate.parse(stringDate)
+
+            val actualViewState = tested(
+                savedStateHandle = savedStateHandle,
+                getExpensesTitles = getExpensesTitles,
+                getExpensesPlaces = getExpensesPlaces,
+                getCategories = getCategories,
+            ).apply {
+                onDateChanged(date)
+            }.viewState.value
+
+            Then("Date will be changed") {
+                val expectedViewState = viewState.copy(date = stringDate)
+
+                actualViewState shouldBe expectedViewState
+            }
+        }
+
+        When("New category was chosen") {
+            val actualViewState = tested(
+                savedStateHandle = savedStateHandle,
+                getExpensesTitles = getExpensesTitles,
+                getExpensesPlaces = getExpensesPlaces,
+                getCategories = getCategories,
+            ).apply {
+                onCategoryChanged(secondCategoryId)
+            }.viewState.value
+
+            Then("Price will be changed") {
+                val newCategories = listOf(
+                    ExpenseFormViewModel.ViewState.Category(
+                        id = categoryId,
+                        name = categoryName,
+                        isSelected = false,
+                    ),
+                    ExpenseFormViewModel.ViewState.Category(
+                        id = secondCategoryId,
+                        name = secondCategoryName,
+                        isSelected = true,
+                    ),
+                )
+                val expectedViewState = viewState.copy(
+                    categories = newCategories,
+                    chosenCategoryId = secondCategoryId
+                )
+
+                actualViewState shouldBe expectedViewState
+            }
+        }
+
+        When("New place name will be given") {
+            val placeName = "new placeName"
+
+            val actualViewState = tested(
+                savedStateHandle = savedStateHandle,
+                getExpensesTitles = getExpensesTitles,
+                getExpensesPlaces = getExpensesPlaces,
+                getCategories = getCategories,
+            ).apply {
+                onPlaceNameChanged(placeName)
+            }.viewState.value
+
+            Then("Place name will be changed") {
+                val expectedViewState = viewState.copy(placeName = placeName)
+
+                actualViewState shouldBe expectedViewState
+            }
+        }
+
+        When("New description will be given") {
+            val description = "new description"
+
+            val actualViewState = tested(
+                savedStateHandle = savedStateHandle,
+                getExpensesTitles = getExpensesTitles,
+                getExpensesPlaces = getExpensesPlaces,
+                getCategories = getCategories,
+            ).apply {
+                onDescriptionChanged(description)
+            }.viewState.value
+
+            Then("Description will be changed") {
+                val expectedViewState = viewState.copy(description = description)
+
+                actualViewState shouldBe expectedViewState
             }
         }
     }

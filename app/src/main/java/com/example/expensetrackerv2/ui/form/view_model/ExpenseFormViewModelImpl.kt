@@ -5,30 +5,28 @@ import androidx.lifecycle.viewModelScope
 import com.example.expensetrackerv2.R
 import com.example.expensetrackerv2.extensions.toFormattedString
 import com.example.expensetrackerv2.models.CategoryEntity
-import com.example.expensetrackerv2.models.ExpenseConstants
 import com.example.expensetrackerv2.models.view_models.ExpenseWithCategory
 import com.example.expensetrackerv2.use_cases.category.GetCategory
 import com.example.expensetrackerv2.use_cases.expense.*
 import com.example.expensetrackerv2.utilities.DateUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.util.Date
 import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
 
 @HiltViewModel
 class ExpenseFormViewModelImpl @Inject constructor(
     savedStateHandle: SavedStateHandle,
     getExpensesTitles: GetExpensesTitles,
     getExpensesPlaces: GetExpensesPlaces,
-    getCategory: GetCategory,
+    getCategories: GetCategory,
     getExpenseWithCategory: GetExpenseWithCategory,
     private val insertExpense: InsertExpense,
     private val updateExpense: UpdateExpense,
+    private val ioDispatcher: CoroutineDispatcher,
 ) : ExpenseFormViewModel() {
 
     private val _viewState: MutableStateFlow<ViewState> = MutableStateFlow(ViewState())
@@ -50,7 +48,7 @@ class ExpenseFormViewModelImpl @Inject constructor(
             combine(
                 getExpensesTitles(),
                 getExpensesPlaces(),
-                getCategory(),
+                getCategories(),
                 getExpenseOrNullFlow,
             ) { titles, places, categories, expense ->
                 val chosenCategoryId = when (expense) {
@@ -75,7 +73,8 @@ class ExpenseFormViewModelImpl @Inject constructor(
                     categories = mapToViewStateCategories(categories, chosenCategoryId),
                     submitButtonText = submitButtonTextId
                 )
-            }.flowOn(Dispatchers.IO)
+            }
+                .flowOn(ioDispatcher)
                 .collect { formViewState ->
                     _viewState.update { formViewState }
                 }

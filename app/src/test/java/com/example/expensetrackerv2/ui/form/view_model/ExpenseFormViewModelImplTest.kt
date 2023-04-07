@@ -6,11 +6,13 @@ import com.example.expensetrackerv2.extensions.toFormattedString
 import com.example.expensetrackerv2.models.CategoryEntity
 import com.example.expensetrackerv2.use_cases.category.GetCategory
 import com.example.expensetrackerv2.use_cases.expense.*
+import com.example.expensetrackerv2.utilities.DateUtils
 import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.BehaviorSpec
+import io.kotest.data.forAll
+import io.kotest.data.row
 import io.kotest.matchers.shouldBe
-import io.mockk.every
-import io.mockk.mockk
+import io.mockk.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
@@ -34,6 +36,11 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
 
     afterAny {
         Dispatchers.resetMain()
+    }
+
+    // Needed to run all UCs for example just after VM initialization
+    fun runAllAsynchronousTasks() {
+        testDispatcher.scheduler.advanceUntilIdle()
     }
 
     val savedStateHandle: SavedStateHandle = mockk()
@@ -63,8 +70,7 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
             updateExpense = updateExpense,
             ioDispatcher = testDispatcher,
         ).apply {
-            // Needed to run all UCs just after VM initialization
-            testDispatcher.scheduler.advanceUntilIdle()
+            runAllAsynchronousTasks()
         }
 
     Given("New expense Id is provided") {
@@ -251,6 +257,77 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
                 val expectedViewState = viewState.copy(description = description)
 
                 actualViewState shouldBe expectedViewState
+            }
+        }
+
+        forAll(
+            row("", ""),
+            row("title", ""),
+            row("", "2.00")
+        ) { title, price ->
+            When("Data are not valid (title: $title, price: $price)") {
+                And("Submit button is clicked") {
+                    val routeActions = tested(
+                        savedStateHandle = savedStateHandle,
+                        getExpensesTitles = getExpensesTitles,
+                        getExpensesPlaces = getExpensesPlaces,
+                        getCategories = getCategories,
+                        insertExpense = insertExpense,
+                    ).apply {
+                        onTitleChanged(title)
+                        onPriceChanged(price)
+                        onSubmitButtonClicked()
+                    }.routeActions.first()
+
+                    Then("SnackBar should be showed") {
+                        routeActions shouldBe ExpenseFormViewModel.RouteAction.ShowSnackBar
+                    }
+
+                    Then("Insert new expense should not be executed") {
+                        verify { insertExpense wasNot Called }
+                    }
+                }
+            }
+        }
+
+        When("Data are valid") {
+            val title = "New title"
+            val price = "50.00"
+            val stringDate = "2000-06-12"
+            val date = LocalDate.parse(stringDate)
+            val placeName = "new placeName"
+            val description = "new description"
+
+            And("Submit button is clicked") {
+                tested(
+                    savedStateHandle = savedStateHandle,
+                    getExpensesTitles = getExpensesTitles,
+                    getExpensesPlaces = getExpensesPlaces,
+                    getCategories = getCategories,
+                    insertExpense = insertExpense,
+                ).apply {
+                    onTitleChanged(title)
+                    onPriceChanged(price)
+                    onDateChanged(date)
+                    onCategoryChanged(secondCategoryId)
+                    onPlaceNameChanged(placeName)
+                    onDescriptionChanged(description)
+                    onSubmitButtonClicked()
+                    runAllAsynchronousTasks()
+                }
+
+                Then("New expense should be inserted") {
+                    coVerify {
+                        insertExpense(
+                            title = title,
+                            price = 50.00,
+                            date = DateUtils.stringToDate(stringDate),
+                            place = placeName,
+                            description = description,
+                            categoryId = secondCategoryId,
+                        )
+                    }
+                }
             }
         }
     }

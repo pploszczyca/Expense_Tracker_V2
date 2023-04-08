@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.expensetrackerv2.R
 import com.example.expensetrackerv2.models.CategoryEntity
-import com.example.expensetrackerv2.ui.bar.TopAppBarWithBack
+import com.example.expensetrackerv2.ui.common_components.bar.TopAppBarWithBack
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

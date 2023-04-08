@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import com.example.expensetrackerv2.R
-import com.example.expensetrackerv2.ui.bar.TopAppBarWithBack
+import com.example.expensetrackerv2.ui.common_components.bar.TopAppBarWithBack
 import com.example.expensetrackerv2.ui.form.view_model.ExpenseFormViewModel
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest

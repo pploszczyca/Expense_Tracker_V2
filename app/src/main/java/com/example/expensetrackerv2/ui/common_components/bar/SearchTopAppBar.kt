@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.ui.bar
+package com.example.expensetrackerv2.ui.common_components.bar
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
@@ -28,9 +28,7 @@ fun SearchTopAppBar(
                 containerColor = Color.Unspecified
             ),
             singleLine = true,
-            onValueChange = {
-                onValueChange(it)
-            },
+            onValueChange = onValueChange,
             modifier = Modifier.fillMaxSize(),
             leadingIcon = {
                 Icon(

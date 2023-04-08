@@ -6,7 +6,7 @@ import java.util.*
 import javax.inject.Inject
 
 class InsertExpense @Inject constructor(
-    private val expenseRepository: ExpenseRepository,
+    private val repository: ExpenseRepository,
 ) {
     suspend operator fun invoke(
         title: String,
@@ -16,7 +16,7 @@ class InsertExpense @Inject constructor(
         place: String,
         categoryId: Int,
     ) {
-        expenseRepository.insert(
+        repository.insert(
             expense = ExpenseEntity(
                 title = title,
                 price = price,

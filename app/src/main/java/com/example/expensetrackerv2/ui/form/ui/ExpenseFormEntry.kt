@@ -35,7 +35,7 @@ fun ExpenseFormEntry(
         topBar = {
             TopAppBarWithBack(
                 title = stringResource(id = R.string.expense_form),
-                onBackClicked = navController::navigateUp,
+                onBackClicked = viewModel::onBackClicked,
             )
         },
         snackbarHost = { SnackbarHost(hostState = snackBarHostState) }

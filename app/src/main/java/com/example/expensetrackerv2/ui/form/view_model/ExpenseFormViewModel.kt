@@ -19,6 +19,7 @@ abstract class ExpenseFormViewModel : ViewModel() {
     abstract fun onPlaceNameChanged(placeName: String)
     abstract fun onDescriptionChanged(description: String)
     abstract fun onSubmitButtonClicked()
+    abstract fun onBackClicked()
 
     data class ViewState(
         val title: String = "",

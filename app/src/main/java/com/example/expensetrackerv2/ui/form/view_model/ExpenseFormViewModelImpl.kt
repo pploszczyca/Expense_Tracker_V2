@@ -182,4 +182,9 @@ class ExpenseFormViewModelImpl @Inject constructor(
     private fun ViewState.isAllDataValidated(): Boolean =
         title != "" && price != ""
 
+    override fun onBackClicked() {
+        viewModelScope.launch {
+            _routeActions.emit(RouteAction.GoBack)
+        }
+    }
 }

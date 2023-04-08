@@ -337,6 +337,21 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
                 }
             }
         }
+
+        When("Back button is clicked") {
+            val routeActions = tested(
+                savedStateHandle = savedStateHandle,
+                getExpensesTitles = getExpensesTitles,
+                getExpensesPlaces = getExpensesPlaces,
+                getCategories = getCategories,
+            ).apply {
+                onBackClicked()
+            }.routeActions.first()
+
+            Then("Go back") {
+                routeActions shouldBe ExpenseFormViewModel.RouteAction.GoBack
+            }
+        }
     }
 
     Given("Expense to update") {

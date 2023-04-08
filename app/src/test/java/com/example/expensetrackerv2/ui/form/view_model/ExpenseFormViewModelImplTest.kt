@@ -2,12 +2,12 @@ package com.example.expensetrackerv2.ui.form.view_model
 
 import androidx.lifecycle.SavedStateHandle
 import com.example.expensetrackerv2.R
+import com.example.expensetrackerv2.extensions.toDate
 import com.example.expensetrackerv2.extensions.toFormattedString
 import com.example.expensetrackerv2.models.CategoryEntity
 import com.example.expensetrackerv2.models.ExpenseEntity
 import com.example.expensetrackerv2.use_cases.category.GetCategory
 import com.example.expensetrackerv2.use_cases.expense.*
-import com.example.expensetrackerv2.utilities.DateUtils
 import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.data.forAll
@@ -323,7 +323,7 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
                             insertExpense(
                                 title = title,
                                 price = 50.00,
-                                date = DateUtils.stringToDate(stringDate),
+                                date = stringDate.toDate(),
                                 place = placeName,
                                 description = description,
                                 categoryId = secondCategoryId,
@@ -466,7 +466,7 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
                                 id = expenseId,
                                 title = newTitle,
                                 price = 50.00,
-                                date = DateUtils.stringToDate(newStringDate),
+                                date = newStringDate.toDate(),
                                 place = newPlaceName,
                                 description = newDescription,
                                 categoryId = secondCategoryId,

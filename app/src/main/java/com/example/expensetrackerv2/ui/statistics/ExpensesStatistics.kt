@@ -11,12 +11,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.expensetrackerv2.R
+import com.example.expensetrackerv2.extensions.toFormattedString
 import com.example.expensetrackerv2.models.CategoryType
 import com.example.expensetrackerv2.ui.common_components.bar.TopAppBarWithBack
 import com.example.expensetrackerv2.ui.common_components.calendar_field.CalendarDialogField
 import com.example.expensetrackerv2.ui.theme.ExpenseColor
 import com.example.expensetrackerv2.ui.theme.IncomeColor
-import com.example.expensetrackerv2.utilities.DateUtils
 import com.example.expensetrackerv2.utilities.MathUtils
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -30,7 +30,7 @@ fun ExpensesStatistics(
     val expenseWithItsTypeFilteredList =
         expensesStatisticsViewModel.expensesWithItsType.collectAsState(
             emptyList()
-        ).value.filter { DateUtils.toOnlyDateString(it.date) in fromDate.value..toDate.value }
+        ).value.filter { it.date.toFormattedString() in fromDate.value..toDate.value }
 
     Scaffold(
         topBar = {

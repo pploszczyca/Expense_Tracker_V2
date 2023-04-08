@@ -3,13 +3,13 @@ package com.example.expensetrackerv2.ui.form.view_model
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.example.expensetrackerv2.R
+import com.example.expensetrackerv2.extensions.toDate
 import com.example.expensetrackerv2.extensions.toFormattedString
 import com.example.expensetrackerv2.models.CategoryEntity
 import com.example.expensetrackerv2.models.ExpenseEntity
 import com.example.expensetrackerv2.models.view_models.ExpenseWithCategory
 import com.example.expensetrackerv2.use_cases.category.GetCategory
 import com.example.expensetrackerv2.use_cases.expense.*
-import com.example.expensetrackerv2.utilities.DateUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
@@ -157,7 +157,7 @@ class ExpenseFormViewModelImpl @Inject constructor(
             insertExpense(
                 title = title,
                 price = price.toDouble(),
-                date = DateUtils.stringToDate(date),
+                date = date.toDate(),
                 description = description,
                 place = placeName,
                 categoryId = chosenCategoryId,
@@ -171,7 +171,7 @@ class ExpenseFormViewModelImpl @Inject constructor(
                 id = expenseId,
                 title = title,
                 price = price.toDouble(),
-                date = DateUtils.stringToDate(date),
+                date = date.toDate(),
                 description = description,
                 place = placeName,
                 categoryId = chosenCategoryId,

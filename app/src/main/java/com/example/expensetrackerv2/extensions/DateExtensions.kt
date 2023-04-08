@@ -9,4 +9,4 @@ private val simpleDateFormat = SimpleDateFormat(DATE_STRING_PATTERN, Locale.ENGL
 
 fun Date.toFormattedString(): String = simpleDateFormat.format(this)
 
-fun String.toDate(): Date? = simpleDateFormat.parse(this)
+fun String.toDate(): Date = simpleDateFormat.parse(this)!!

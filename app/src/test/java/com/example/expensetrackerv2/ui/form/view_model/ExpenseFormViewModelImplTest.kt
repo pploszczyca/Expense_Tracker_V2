@@ -26,7 +26,6 @@ import java.util.*
 class ExpenseFormViewModelImplTest : BehaviorSpec({
     isolationMode = IsolationMode.InstancePerLeaf
     coroutineTestScope = true
-    coroutineDebugProbes = true
 
     val testDispatcher = StandardTestDispatcher()
 
@@ -265,8 +264,8 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
             row("title", ""),
             row("", "2.00")
         ) { title, price ->
-            When("Data are not valid (title: $title, price: $price)") {
-                And("Submit button is clicked") {
+            And("Data are not valid (title: $title, price: $price)") {
+                When("Submit button is clicked") {
                     val routeActions = tested(
                         savedStateHandle = savedStateHandle,
                         getExpensesTitles = getExpensesTitles,
@@ -290,7 +289,7 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
             }
         }
 
-        When("Data are valid") {
+        And("Data for new expense are valid") {
             val title = "New title"
             val price = "50.00"
             val stringDate = "2000-06-12"
@@ -298,34 +297,41 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
             val placeName = "new placeName"
             val description = "new description"
 
-            And("Submit button is clicked") {
-                tested(
-                    savedStateHandle = savedStateHandle,
-                    getExpensesTitles = getExpensesTitles,
-                    getExpensesPlaces = getExpensesPlaces,
-                    getCategories = getCategories,
-                    insertExpense = insertExpense,
-                ).apply {
-                    onTitleChanged(title)
-                    onPriceChanged(price)
-                    onDateChanged(date)
-                    onCategoryChanged(secondCategoryId)
-                    onPlaceNameChanged(placeName)
-                    onDescriptionChanged(description)
-                    onSubmitButtonClicked()
-                    runAllAsynchronousTasks()
-                }
+            coEvery { insertExpense(any(), any(), any(), any(), any(), any()) } returns Unit
 
-                Then("New expense should be inserted") {
-                    coVerify {
-                        insertExpense(
-                            title = title,
-                            price = 50.00,
-                            date = DateUtils.stringToDate(stringDate),
-                            place = placeName,
-                            description = description,
-                            categoryId = secondCategoryId,
-                        )
+            When("Data are valid") {
+                And("Submit button is clicked") {
+                    val routeActions = tested(
+                        savedStateHandle = savedStateHandle,
+                        getExpensesTitles = getExpensesTitles,
+                        getExpensesPlaces = getExpensesPlaces,
+                        getCategories = getCategories,
+                        insertExpense = insertExpense,
+                    ).apply {
+                        onTitleChanged(title)
+                        onPriceChanged(price)
+                        onDateChanged(date)
+                        onCategoryChanged(secondCategoryId)
+                        onPlaceNameChanged(placeName)
+                        onDescriptionChanged(description)
+                        onSubmitButtonClicked()
+                    }.routeActions.first()
+
+                    Then("New expense should be inserted") {
+                        coVerify {
+                            insertExpense(
+                                title = title,
+                                price = 50.00,
+                                date = DateUtils.stringToDate(stringDate),
+                                place = placeName,
+                                description = description,
+                                categoryId = secondCategoryId,
+                            )
+                        }
+                    }
+
+                    Then("Go back") {
+                        routeActions shouldBe ExpenseFormViewModel.RouteAction.GoBack
                     }
                 }
             }

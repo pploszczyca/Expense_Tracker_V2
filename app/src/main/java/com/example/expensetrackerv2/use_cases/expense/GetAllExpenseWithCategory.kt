@@ -5,7 +5,9 @@ import com.example.expensetrackerv2.repositories.ExpenseWithCategoryRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetAllExpenseWithCategory @Inject constructor(private val expenseWithCategoryRepository: ExpenseWithCategoryRepository) {
+class GetAllExpenseWithCategory @Inject constructor(
+    private val repository: ExpenseWithCategoryRepository,
+) {
     operator fun invoke(): Flow<List<ExpenseWithCategory>> =
-        expenseWithCategoryRepository.getExpenses()
+        repository.getExpenses()
 }

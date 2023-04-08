@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.expensetrackerv2.models.getKey
 import com.example.expensetrackerv2.models.view_models.ExpenseMonthYearKey
 import com.example.expensetrackerv2.extensions.toStringDate
-import com.example.expensetrackerv2.use_cases.expense.GetExpenses
+import com.example.expensetrackerv2.use_cases.expense.GetAllExpenses
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
@@ -19,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainFilterDialogViewModel @Inject constructor(
     private val channel: Channel<MainFilterDialogEvent>,
-    getExpenses: GetExpenses,
+    getAllExpenses: GetAllExpenses,
 ) : ViewModel() {
 
     var viewState by mutableStateOf(ViewState())
@@ -27,7 +27,7 @@ class MainFilterDialogViewModel @Inject constructor(
 
     init {
         viewModelScope.launch(Dispatchers.Main) {
-            getExpenses()
+            getAllExpenses()
                 .map { expenses ->
                     expenses.map { it.getKey() }
                 }

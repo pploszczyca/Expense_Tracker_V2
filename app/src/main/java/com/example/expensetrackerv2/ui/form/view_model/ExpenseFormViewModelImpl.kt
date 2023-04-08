@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.expensetrackerv2.R
 import com.example.expensetrackerv2.extensions.toFormattedString
 import com.example.expensetrackerv2.models.CategoryEntity
+import com.example.expensetrackerv2.models.ExpenseEntity
 import com.example.expensetrackerv2.models.view_models.ExpenseWithCategory
 import com.example.expensetrackerv2.use_cases.category.GetCategory
 import com.example.expensetrackerv2.use_cases.expense.*
@@ -23,7 +24,7 @@ class ExpenseFormViewModelImpl @Inject constructor(
     getExpensesTitles: GetExpensesTitles,
     getExpensesPlaces: GetExpensesPlaces,
     getCategories: GetCategory,
-    getExpenseWithCategory: GetExpenseWithCategory,
+    getExpense: GetExpense,
     private val insertExpense: InsertExpense,
     private val updateExpense: UpdateExpense,
     private val ioDispatcher: CoroutineDispatcher,
@@ -38,10 +39,10 @@ class ExpenseFormViewModelImpl @Inject constructor(
     private val expenseId: Int? = savedStateHandle.get<Int>("EXPENSE_ID")
 
     init {
-        val getExpenseOrNullFlow: Flow<ExpenseWithCategory?> =
+        val getExpenseOrNullFlow: Flow<ExpenseEntity?> =
             when (expenseId == null || expenseId == NO_EXPENSE_ID) {
                 true -> flowOf(null)
-                false -> getExpenseWithCategory(expenseId)
+                false -> getExpense(expenseId)
             }
 
         viewModelScope.launch {
@@ -73,8 +74,7 @@ class ExpenseFormViewModelImpl @Inject constructor(
                     categories = mapToViewStateCategories(categories, chosenCategoryId),
                     submitButtonText = submitButtonTextId
                 )
-            }
-                .flowOn(ioDispatcher)
+            }.flowOn(ioDispatcher)
                 .collect { formViewState ->
                     _viewState.update { formViewState }
                 }

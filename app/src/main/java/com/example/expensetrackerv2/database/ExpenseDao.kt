@@ -19,7 +19,7 @@ abstract class ExpenseDao {
     abstract fun getAllExpenseWithCategory(): Flow<List<ExpenseWithCategory>>
 
     @Query("SELECT * FROM expense WHERE id = :expenseID")
-    abstract fun getExpense(expenseID: Int): ExpenseEntity
+    abstract fun getExpense(expenseID: Int): Flow<ExpenseEntity>
 
     @Query("SELECT * FROM ExpenseWithCategory WHERE id = :expenseID")
     abstract fun getExpenseWithItsType(expenseID: Int): Flow<ExpenseWithCategory?>

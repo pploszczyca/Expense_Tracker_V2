@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import com.example.expensetrackerv2.R
 import com.example.expensetrackerv2.extensions.toFormattedString
 import com.example.expensetrackerv2.models.CategoryEntity
+import com.example.expensetrackerv2.models.ExpenseEntity
 import com.example.expensetrackerv2.use_cases.category.GetCategory
 import com.example.expensetrackerv2.use_cases.expense.*
 import com.example.expensetrackerv2.utilities.DateUtils
@@ -46,7 +47,7 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
     val getExpensesTitles: GetExpensesTitles = mockk()
     val getExpensesPlaces: GetExpensesPlaces = mockk()
     val getCategories: GetCategory = mockk()
-    val getExpenseWithCategory: GetExpenseWithCategory = mockk()
+    val getExpense: GetExpense = mockk()
     val insertExpense: InsertExpense = mockk()
     val updateExpense: UpdateExpense = mockk()
 
@@ -55,7 +56,7 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
         getExpensesTitles: GetExpensesTitles = mockk(),
         getExpensesPlaces: GetExpensesPlaces = mockk(),
         getCategories: GetCategory = mockk(),
-        getExpenseWithCategory: GetExpenseWithCategory = mockk(),
+        getExpense: GetExpense = mockk(),
         insertExpense: InsertExpense = mockk(),
         updateExpense: UpdateExpense = mockk(),
     ): ExpenseFormViewModel =
@@ -64,7 +65,7 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
             getExpensesTitles = getExpensesTitles,
             getExpensesPlaces = getExpensesPlaces,
             getCategories = getCategories,
-            getExpenseWithCategory = getExpenseWithCategory,
+            getExpense = getExpense,
             insertExpense = insertExpense,
             updateExpense = updateExpense,
             ioDispatcher = testDispatcher,
@@ -325,6 +326,134 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
                                 date = DateUtils.stringToDate(stringDate),
                                 place = placeName,
                                 description = description,
+                                categoryId = secondCategoryId,
+                            )
+                        }
+                    }
+
+                    Then("Go back") {
+                        routeActions shouldBe ExpenseFormViewModel.RouteAction.GoBack
+                    }
+                }
+            }
+        }
+    }
+
+    Given("Expense to update") {
+        val titles: List<String> = mockk()
+        val places: List<String> = mockk()
+        val categoryId = 78
+        val categoryName = "categoryName"
+        val secondCategoryId = 90
+        val secondCategoryName = "secondCategoryName"
+        val category = CategoryEntity(
+            id = categoryId,
+            name = categoryName,
+        )
+        val secondCategory = CategoryEntity(
+            id = secondCategoryId,
+            name = secondCategoryName,
+        )
+        val categories: List<CategoryEntity> = listOf(category, secondCategory)
+        val expenseId = 9
+        val title = "expenseTitle"
+        val price = 50.00
+        val date = Date()
+        val description = "expenseDescription"
+        val place = "expensePlace"
+        val expense = ExpenseEntity(
+            id = expenseId,
+            title = title,
+            price = price,
+            date = date,
+            description = description,
+            place = place,
+            categoryId = categoryId,
+        )
+        val viewState = ExpenseFormViewModel.ViewState(
+            title = title,
+            price = price.toString(),
+            chosenCategoryId = categoryId,
+            date = Date().toFormattedString(),
+            placeName = place,
+            description = description,
+            previousTitles = titles,
+            previousPlaceNames = places,
+            categories = listOf(
+                ExpenseFormViewModel.ViewState.Category(
+                    id = categoryId,
+                    name = categoryName,
+                    isSelected = true,
+                ),
+                ExpenseFormViewModel.ViewState.Category(
+                    id = secondCategoryId,
+                    name = secondCategoryName,
+                    isSelected = false,
+                ),
+            ),
+            submitButtonText = R.string.update,
+        )
+
+        every { savedStateHandle.get<Int>("EXPENSE_ID") } returns expenseId
+        every { getExpensesTitles() } returns flowOf(titles)
+        every { getExpensesPlaces() } returns flowOf(places)
+        every { getCategories() } returns flowOf(categories)
+        every { getExpense(any()) } returns flowOf(expense)
+
+        When("View model is initialized") {
+            val actualViewState = tested(
+                savedStateHandle = savedStateHandle,
+                getExpensesTitles = getExpensesTitles,
+                getExpensesPlaces = getExpensesPlaces,
+                getCategories = getCategories,
+                getExpense = getExpense,
+            ).viewState.value
+
+            Then("View state will be set up for updating expense") {
+                verify { getExpense(expenseId) }
+
+                actualViewState shouldBe viewState
+            }
+        }
+
+        And("Data for updating expense are valid") {
+            val newTitle = "New title"
+            val newPrice = "50.00"
+            val newStringDate = "2000-06-12"
+            val newDate = LocalDate.parse(newStringDate)
+            val newPlaceName = "new placeName"
+            val newDescription = "new description"
+
+            coEvery { updateExpense(any(), any(), any(), any(), any(), any(), any()) } returns Unit
+
+            When("Data are valid") {
+                And("Submit button is clicked") {
+                    val routeActions = tested(
+                        savedStateHandle = savedStateHandle,
+                        getExpensesTitles = getExpensesTitles,
+                        getExpensesPlaces = getExpensesPlaces,
+                        getCategories = getCategories,
+                        getExpense = getExpense,
+                        updateExpense = updateExpense,
+                    ).apply {
+                        onTitleChanged(newTitle)
+                        onPriceChanged(newPrice)
+                        onDateChanged(newDate)
+                        onCategoryChanged(secondCategoryId)
+                        onPlaceNameChanged(newPlaceName)
+                        onDescriptionChanged(newDescription)
+                        onSubmitButtonClicked()
+                    }.routeActions.first()
+
+                    Then("New expense should be inserted") {
+                        coVerify {
+                            updateExpense(
+                                id = expenseId,
+                                title = newTitle,
+                                price = 50.00,
+                                date = DateUtils.stringToDate(newStringDate),
+                                place = newPlaceName,
+                                description = newDescription,
                                 categoryId = secondCategoryId,
                             )
                         }

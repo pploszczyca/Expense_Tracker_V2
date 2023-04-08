@@ -37,7 +37,7 @@ fun CategorySettings(
         topBar = {
             TopAppBarWithBack(
                 title = stringResource(id = R.string.drawer_type_of_expense_settings),
-                navController = navController
+                onBackClicked = navController::navigateUp,
             )
         },
 

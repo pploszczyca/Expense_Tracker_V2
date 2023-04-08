@@ -36,7 +36,7 @@ fun ExpensesStatistics(
         topBar = {
             TopAppBarWithBack(
                 title = stringResource(id = R.string.drawer_statistics),
-                navController = navController
+                onBackClicked = navController::navigateUp,
             )
         },
         content = {

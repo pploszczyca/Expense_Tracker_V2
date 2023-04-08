@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -44,7 +45,11 @@ fun ExpenseForm(
             onValueChange = onTitleChanged,
             icon = Icons.Default.Title,
             label = stringResource(id = R.string.expense_form_title),
-            suggestionsInput = viewState.previousTitles
+            suggestionsInput = viewState.previousTitles,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Next,
+            )
         )
 
         ExpenseFormTextField(
@@ -52,7 +57,10 @@ fun ExpenseForm(
             onValueChange = onPriceChanged,
             icon = Icons.Default.AttachMoney,
             label = stringResource(id = R.string.expense_form_price),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Next,
+            )
         )
 
         CalendarDialogField(
@@ -66,7 +74,11 @@ fun ExpenseForm(
             onValueChange = onPlaceNameChanged,
             icon = Icons.Default.Place,
             label = stringResource(id = R.string.expense_form_place),
-            suggestionsInput = viewState.previousPlaceNames
+            suggestionsInput = viewState.previousPlaceNames,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Next,
+            )
         )
 
         ExpenseFormTextField(
@@ -74,7 +86,11 @@ fun ExpenseForm(
             onValueChange = onDescriptionChanged,
             icon = Icons.Default.Message,
             label = stringResource(id = R.string.expense_form_description),
-            keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences)
+            keyboardOptions = KeyboardOptions(
+                capitalization = KeyboardCapitalization.Sentences,
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Done,
+            )
         )
 
         Column(

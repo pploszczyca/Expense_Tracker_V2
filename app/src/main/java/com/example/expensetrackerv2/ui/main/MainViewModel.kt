@@ -12,10 +12,10 @@ import com.example.expensetrackerv2.models.view_models.ExpenseWithCategory
 import com.example.expensetrackerv2.models.view_models.getKey
 import com.example.expensetrackerv2.ui.main.features.bottom_bar.MainBottomBarEvent
 import com.example.expensetrackerv2.ui.main.features.filter_dialog.MainFilterDialogEvent
-import com.example.expensetrackerv2.use_cases.expense.DeleteAllExpensesWithItsType
-import com.example.expensetrackerv2.use_cases.expense.DeleteExpenseWithCategory
-import com.example.expensetrackerv2.use_cases.expense.GetAllExpenseWithCategory
-import com.example.expensetrackerv2.use_cases.expense.InsertExpenseWithCategory
+import com.example.expensetrackerv2.use_cases.expense_with_category.DeleteAllExpensesWithCategory
+import com.example.expensetrackerv2.use_cases.expense_with_category.DeleteExpenseWithCategory
+import com.example.expensetrackerv2.use_cases.expense_with_category.GetAllExpenseWithCategory
+import com.example.expensetrackerv2.use_cases.expense_with_category.InsertExpenseWithCategory
 import com.example.expensetrackerv2.utilities.JSONUtils
 import com.example.expensetrackerv2.utilities.MathUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,7 +30,7 @@ class MainViewModel @Inject constructor(
     private val contentResolver: ContentResolver,
     private val getAllExpenseWithCategory: GetAllExpenseWithCategory,
     private val deleteExpenseWithCategory: DeleteExpenseWithCategory,
-    private val deleteAllExpensesWithItsType: DeleteAllExpensesWithItsType,
+    private val deleteAllExpensesWithCategory: DeleteAllExpensesWithCategory,
     private val insertExpenseWithCategory: InsertExpenseWithCategory,
     bottomBarChannel: Channel<MainBottomBarEvent>,
     filterDialogChannel: Channel<MainFilterDialogEvent>
@@ -107,7 +107,7 @@ class MainViewModel @Inject constructor(
     private fun importFromJsonAndInsert(uri: Uri?) {
         uri?.let { uri ->
             viewModelScope.launch(Dispatchers.IO) {
-                deleteAllExpensesWithItsType()
+                deleteAllExpensesWithCategory()
                 JSONUtils.importExpensesListFromJson(
                     contentResolver.openInputStream(
                         uri

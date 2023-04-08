@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.expensetrackerv2.models.view_models.ExpenseWithCategory
-import com.example.expensetrackerv2.use_cases.expense.DeleteExpenseWithCategory
+import com.example.expensetrackerv2.use_cases.expense_with_category.DeleteExpenseWithCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

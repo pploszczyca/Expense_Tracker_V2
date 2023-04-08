@@ -1,13 +1,13 @@
-package com.example.expensetrackerv2.use_cases.expense
+package com.example.expensetrackerv2.use_cases.expense_with_category
 
 import com.example.expensetrackerv2.models.view_models.ExpenseWithCategory
 import com.example.expensetrackerv2.repositories.ExpenseWithCategoryRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetAllExpenseWithCategory @Inject constructor(
+class GetExpenseWithCategory @Inject constructor(
     private val repository: ExpenseWithCategoryRepository,
 ) {
-    operator fun invoke(): Flow<List<ExpenseWithCategory>> =
-        repository.getExpenses()
+    operator fun invoke(expenseID: Int): Flow<ExpenseWithCategory?> =
+        repository.getExpense(expenseID)
 }

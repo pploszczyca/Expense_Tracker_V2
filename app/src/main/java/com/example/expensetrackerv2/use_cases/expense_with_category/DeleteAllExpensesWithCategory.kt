@@ -1,9 +1,9 @@
-package com.example.expensetrackerv2.use_cases.expense
+package com.example.expensetrackerv2.use_cases.expense_with_category
 
 import com.example.expensetrackerv2.repositories.ExpenseWithCategoryRepository
 import javax.inject.Inject
 
-class DeleteAllExpensesWithItsType @Inject constructor(
+class DeleteAllExpensesWithCategory @Inject constructor(
     private val repository: ExpenseWithCategoryRepository,
 ) {
     suspend operator fun invoke() {

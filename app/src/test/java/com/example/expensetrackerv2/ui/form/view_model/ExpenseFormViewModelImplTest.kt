@@ -6,7 +6,7 @@ import com.example.expensetrackerv2.extensions.toDate
 import com.example.expensetrackerv2.extensions.toFormattedString
 import com.example.expensetrackerv2.models.CategoryEntity
 import com.example.expensetrackerv2.models.ExpenseEntity
-import com.example.expensetrackerv2.use_cases.category.GetCategory
+import com.example.expensetrackerv2.use_cases.category.GetCategories
 import com.example.expensetrackerv2.use_cases.expense.*
 import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.BehaviorSpec
@@ -46,7 +46,7 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
     val savedStateHandle: SavedStateHandle = mockk()
     val getExpensesTitles: GetExpensesTitles = mockk()
     val getExpensesPlaces: GetExpensesPlaces = mockk()
-    val getCategories: GetCategory = mockk()
+    val getCategories: GetCategories = mockk()
     val getExpense: GetExpense = mockk()
     val insertExpense: InsertExpense = mockk()
     val updateExpense: UpdateExpense = mockk()
@@ -55,7 +55,7 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
         savedStateHandle: SavedStateHandle = mockk(),
         getExpensesTitles: GetExpensesTitles = mockk(),
         getExpensesPlaces: GetExpensesPlaces = mockk(),
-        getCategories: GetCategory = mockk(),
+        getCategories: GetCategories = mockk(),
         getExpense: GetExpense = mockk(),
         insertExpense: InsertExpense = mockk(),
         updateExpense: UpdateExpense = mockk(),

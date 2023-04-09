@@ -8,6 +8,6 @@ class UpdateCategory @Inject constructor(
     private val repository: CategoryRepository,
 ) {
     suspend operator fun invoke(categoryEntity: CategoryEntity) {
-        repository.updateCategory(categoryEntity)
+        repository.update(categoryEntity)
     }
 }

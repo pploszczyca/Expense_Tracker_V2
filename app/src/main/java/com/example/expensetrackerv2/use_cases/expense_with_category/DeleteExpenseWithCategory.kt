@@ -8,6 +8,6 @@ class DeleteExpenseWithCategory @Inject constructor(
     private val repository: ExpenseWithCategoryRepository,
 ) {
     suspend operator fun invoke(expenseWithCategory: ExpenseWithCategory) {
-        repository.deleteExpense(expenseWithCategory)
+        repository.delete(expenseWithCategory)
     }
 }

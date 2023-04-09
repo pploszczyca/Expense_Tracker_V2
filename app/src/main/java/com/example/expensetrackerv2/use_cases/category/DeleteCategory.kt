@@ -8,6 +8,6 @@ class DeleteCategory @Inject constructor(
     private val repository: CategoryRepository,
 ) {
     suspend operator fun invoke(categoryEntity: CategoryEntity) =
-        repository.deleteCategory(categoryEntity)
+        repository.delete(categoryEntity)
 
 }

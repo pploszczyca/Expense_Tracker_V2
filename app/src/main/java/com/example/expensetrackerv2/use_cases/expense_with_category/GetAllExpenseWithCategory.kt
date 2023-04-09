@@ -9,5 +9,5 @@ class GetAllExpenseWithCategory @Inject constructor(
     private val repository: ExpenseWithCategoryRepository,
 ) {
     operator fun invoke(): Flow<List<ExpenseWithCategory>> =
-        repository.getExpenses()
+        repository.getAll()
 }

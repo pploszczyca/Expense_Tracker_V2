@@ -9,7 +9,7 @@ import com.example.expensetrackerv2.models.CategoryType
 import com.example.expensetrackerv2.models.CategoryEntity
 import com.example.expensetrackerv2.models.CategoryConstants
 import com.example.expensetrackerv2.use_cases.category.DeleteCategory
-import com.example.expensetrackerv2.use_cases.category.GetCategory
+import com.example.expensetrackerv2.use_cases.category.GetCategories
 import com.example.expensetrackerv2.use_cases.category.InsertCategory
 import com.example.expensetrackerv2.use_cases.category.UpdateCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,12 +19,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CategorySettingsViewModel @Inject constructor(
-    getCategory: GetCategory,
+    getCategories: GetCategories,
     private val insertCategory: InsertCategory,
     private val updateCategory: UpdateCategory,
     private val deleteCategory: DeleteCategory
 ) : ViewModel() {
-    val categories: Flow<List<CategoryEntity>> = getCategory()
+    val categories: Flow<List<CategoryEntity>> = getCategories()
 
     private val _id = mutableStateOf(CategoryConstants.NEW_TYPE_OF_EXPENSE_ID)
     val id: State<Int> = _id

@@ -4,15 +4,15 @@ import com.example.expensetrackerv2.models.view_models.ExpenseWithCategory
 import kotlinx.coroutines.flow.Flow
 
 interface ExpenseWithCategoryRepository {
-    fun getExpenses(): Flow<List<ExpenseWithCategory>>
+    fun getAll(): Flow<List<ExpenseWithCategory>>
 
-    fun getExpense(expenseID: Int): Flow<ExpenseWithCategory?>
+    fun get(expenseID: Int): Flow<ExpenseWithCategory?>
 
-    suspend fun insertExpense(expenseWithCategory: ExpenseWithCategory)
+    suspend fun insert(expenseWithCategory: ExpenseWithCategory)
 
-    suspend fun deleteExpense(expenseWithCategory: ExpenseWithCategory)
+    suspend fun delete(expenseWithCategory: ExpenseWithCategory)
 
     suspend fun deleteAll()
 
-    suspend fun updateExpense(expenseWithCategory: ExpenseWithCategory)
+    suspend fun update(expenseWithCategory: ExpenseWithCategory)
 }

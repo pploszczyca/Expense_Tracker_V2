@@ -7,7 +7,7 @@ import com.example.expensetrackerv2.extensions.toDate
 import com.example.expensetrackerv2.extensions.toFormattedString
 import com.example.expensetrackerv2.models.CategoryEntity
 import com.example.expensetrackerv2.models.ExpenseEntity
-import com.example.expensetrackerv2.use_cases.category.GetCategory
+import com.example.expensetrackerv2.use_cases.category.GetCategories
 import com.example.expensetrackerv2.use_cases.expense.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
@@ -21,7 +21,7 @@ class ExpenseFormViewModelImpl @Inject constructor(
     savedStateHandle: SavedStateHandle,
     getExpensesTitles: GetExpensesTitles,
     getExpensesPlaces: GetExpensesPlaces,
-    getCategories: GetCategory,
+    getCategories: GetCategories,
     getExpense: GetExpense,
     private val insertExpense: InsertExpense,
     private val updateExpense: UpdateExpense,

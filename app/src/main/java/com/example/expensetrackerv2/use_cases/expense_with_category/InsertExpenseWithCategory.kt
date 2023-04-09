@@ -8,5 +8,5 @@ class InsertExpenseWithCategory @Inject constructor(
     private val repository: ExpenseWithCategoryRepository,
 ) {
     suspend operator fun invoke(expenseWithCategory: ExpenseWithCategory) =
-        repository.insertExpense(expenseWithCategory)
+        repository.insert(expenseWithCategory)
 }

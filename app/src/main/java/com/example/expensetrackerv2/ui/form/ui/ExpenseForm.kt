@@ -1,5 +1,6 @@
 package com.example.expensetrackerv2.ui.form.ui
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.text.KeyboardOptions
@@ -98,12 +99,20 @@ fun ExpenseForm(
                 .selectableGroup()
         ) {
             viewState.categories.forEach { category ->
-                Row(verticalAlignment = CenterVertically) {
+                Row(verticalAlignment = CenterVertically,
+                    modifier = Modifier.clickable {
+                        onCategoryChanged(category.id)
+                    }
+                ) {
                     RadioButton(
                         selected = category.isSelected,
                         onClick = { onCategoryChanged(category.id) },
                     )
-                    Text(text = category.name, style = MaterialTheme.typography.bodyMedium)
+                    Text(
+                        text = category.name,
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(end = 10.dp)
+                    )
                 }
             }
         }

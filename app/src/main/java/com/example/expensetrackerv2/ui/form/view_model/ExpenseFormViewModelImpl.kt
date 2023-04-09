@@ -7,7 +7,6 @@ import com.example.expensetrackerv2.extensions.toDate
 import com.example.expensetrackerv2.extensions.toFormattedString
 import com.example.expensetrackerv2.models.CategoryEntity
 import com.example.expensetrackerv2.models.ExpenseEntity
-import com.example.expensetrackerv2.models.view_models.ExpenseWithCategory
 import com.example.expensetrackerv2.use_cases.category.GetCategory
 import com.example.expensetrackerv2.use_cases.expense.*
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +15,6 @@ import kotlinx.coroutines.flow.*
 import java.time.LocalDate
 import java.util.Date
 import javax.inject.Inject
-import kotlin.coroutines.CoroutineContext
 
 @HiltViewModel
 class ExpenseFormViewModelImpl @Inject constructor(

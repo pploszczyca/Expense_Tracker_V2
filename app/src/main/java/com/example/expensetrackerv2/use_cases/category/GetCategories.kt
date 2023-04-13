@@ -29,6 +29,7 @@ class GetCategories @Inject constructor(
             categoryType = CategoryType.OUTGO
         )
 
-        repository.insert(baseIncomeCategory, baseOutgoCategory)
+        repository.insert(baseIncomeCategory)
+        repository.insert(baseOutgoCategory)
     }
 }

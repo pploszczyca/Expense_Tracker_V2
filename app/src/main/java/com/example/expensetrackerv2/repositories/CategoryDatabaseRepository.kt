@@ -11,12 +11,15 @@ class CategoryDatabaseRepository @Inject constructor(private val expenseDao: Exp
 
     override fun getAll(): Flow<List<CategoryEntity>> = typeOfExpenseLiveData
 
-    override suspend fun insert(vararg categoryEntity: CategoryEntity) =
-        categoryEntity.forEach { expenseDao.insertAllCategories(it) }
+    override suspend fun insert(categoryEntity: CategoryEntity) {
+        expenseDao.insertAllCategories(categoryEntity)
+    }
 
-    override suspend fun delete(categoryEntity: CategoryEntity) =
+    override suspend fun delete(categoryEntity: CategoryEntity) {
         expenseDao.deleteTypeOfExpense(categoryEntity)
+    }
 
-    override suspend fun update(categoryEntity: CategoryEntity) =
+    override suspend fun update(categoryEntity: CategoryEntity) {
         expenseDao.updateTypeOfExpense(categoryEntity)
+    }
 }

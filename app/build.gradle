@@ -1,3 +1,5 @@
+import buildSrc.src.main.kotlin.Libs
+
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
@@ -56,45 +58,44 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.core:core-ktx:1.10.1'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.9.0'
-    implementation "androidx.compose.ui:ui:$compose_version"
-    implementation "androidx.compose.material:material:$compose_version"
-    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1'
-    implementation 'androidx.activity:activity-compose:1.7.2'
-//    testImplementation 'junit:junit'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
-    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
-    implementation("androidx.navigation:navigation-compose:2.6.0")
-    implementation "androidx.compose.material:material-icons-extended:1.4.3"
+    implementation Libs.androidxCore
+    implementation Libs.appcompat
+    implementation Libs.material
+    implementation Libs.composeUi
+    implementation Libs.composeMaterial
+    implementation Libs.composeUiToolingPreview
+    implementation Libs.lifecycleRuntimeKtx
+    implementation Libs.activityCompose
+    androidTestImplementation Libs.androidTestJUnit
+    androidTestImplementation Libs.espressoCore
+    androidTestImplementation Libs.composeUiTestJUnit4
+    debugImplementation Libs.composeUiTooling
+    implementation Libs.navigationCompose
+    implementation Libs.materialIconsExtended
 
-    implementation("androidx.room:room-runtime:2.5.1")
-    annotationProcessor("androidx.room:room-compiler:2.5.1")
-    kapt("androidx.room:room-compiler:2.5.1")
-    implementation("androidx.room:room-ktx:2.5.1")
+    implementation Libs.roomRuntime
+    annotationProcessor Libs.roomCompiler
+    kapt Libs.roomCompiler
+    implementation Libs.roomKtx
 
-    implementation('org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4')
+    implementation Libs.kotlinxCoroutinesAndroid
 
-    implementation 'com.google.code.gson:gson:2.9.0'
+    implementation Libs.gson
 
-    implementation "io.github.vanpra.compose-material-dialogs:datetime:0.8.1-rc"
+    implementation Libs.materialDialogs
 
-    implementation('com.google.dagger:hilt-android:2.44')
-    kapt('com.google.dagger:hilt-android-compiler:2.44')
+    implementation Libs.hiltAndroid
+    kapt Libs.hiltAndroidCompiler
 
-    implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
+    implementation Libs.hiltNavigationCompose
 
-    implementation("androidx.compose.material3:material3:1.1.0")
-    implementation("androidx.compose.material3:material3-window-size-class:1.1.0")
+    implementation Libs.material3
+    implementation Libs.material3WindowSizeClass
 
-    testImplementation("io.kotest:kotest-runner-junit5:$kotest_version")
-    testImplementation("io.kotest:kotest-assertions-core:$kotest_version")
-    testImplementation("io.kotest:kotest-property:$kotest_version")
-    testImplementation("io.mockk:mockk:$mockk_version")
+    testImplementation Libs.kotestRunnerJUnit5
+    testImplementation Libs.kotestAssertionsCore
+    testImplementation Libs.kotestProperty
+    testImplementation Libs.mockk
 }
 
 kapt {

@@ -17,7 +17,7 @@ class GetExpenseTest : BehaviorSpec({
     val repository: ExpenseRepository = mockk()
 
     fun tested(
-        repository: ExpenseRepository = mockk()
+        repository: ExpenseRepository = mockk(),
     ): GetExpense = GetExpense(
         repository = repository,
     )

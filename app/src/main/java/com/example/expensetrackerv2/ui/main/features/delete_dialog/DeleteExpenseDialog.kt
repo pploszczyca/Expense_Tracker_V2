@@ -11,7 +11,7 @@ import com.example.expensetrackerv2.R
 fun DeleteExpenseAlertDialog(
     viewModel: DeleteExpenseDialogViewModel,
     onDismissClick: () -> Unit,
-    onConfirmButtonClick: () -> Unit
+    onConfirmButtonClick: () -> Unit,
 ) {
     AlertDialog(onDismissRequest = onDismissClick,
         title = { Text(stringResource(id = R.string.delete_expense_title)) },

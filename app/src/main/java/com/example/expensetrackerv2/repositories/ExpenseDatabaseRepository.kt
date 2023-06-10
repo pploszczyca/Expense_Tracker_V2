@@ -5,7 +5,8 @@ import com.example.expensetrackerv2.models.ExpenseEntity
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class ExpenseDatabaseRepository @Inject constructor(private val dao: ExpenseDao) : ExpenseRepository {
+class ExpenseDatabaseRepository @Inject constructor(private val dao: ExpenseDao) :
+    ExpenseRepository {
     override fun getAll(): Flow<List<ExpenseEntity>> =
         dao.getAllExpenses()
 

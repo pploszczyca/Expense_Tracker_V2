@@ -7,12 +7,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.expensetrackerv2.ui.main.MainComposable
-import com.example.expensetrackerv2.ui.statistics.ExpensesStatistics
 import com.example.expensetrackerv2.ui.category_settings.CategorySettings
 import com.example.expensetrackerv2.ui.form.ui.ExpenseFormEntry
 import com.example.expensetrackerv2.ui.form.view_model.ExpenseFormViewModel
 import com.example.expensetrackerv2.ui.form.view_model.ExpenseFormViewModelImpl
+import com.example.expensetrackerv2.ui.main.MainComposable
+import com.example.expensetrackerv2.ui.statistics.ExpensesStatistics
 
 @Composable
 fun NavHostComposable() {

@@ -1,11 +1,14 @@
 package com.example.expensetrackerv2.ui.main.features.bottom_bar
 
 import androidx.compose.foundation.layout.height
-import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.FilterList
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource

@@ -2,7 +2,13 @@ package com.example.expensetrackerv2.ui.main
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.*
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.FabPosition
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.res.stringResource
@@ -15,7 +21,6 @@ import com.example.expensetrackerv2.ui.main.features.bottom_bar.BottomBarContent
 import com.example.expensetrackerv2.ui.main.features.drawer.DrawerContent
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainComposable(
     navController: NavController,

@@ -2,7 +2,7 @@ package com.example.expensetrackerv2.use_cases.expense
 
 import com.example.expensetrackerv2.models.ExpenseEntity
 import com.example.expensetrackerv2.repositories.ExpenseRepository
-import java.util.*
+import java.util.Date
 import javax.inject.Inject
 
 class InsertExpense @Inject constructor(

@@ -1,10 +1,10 @@
 package com.example.expensetrackerv2.ui.main.features.list
 
-import com.example.expensetrackerv2.models.view_models.ExpenseWithCategory
-import com.example.expensetrackerv2.models.view_models.getKey
 import com.example.expensetrackerv2.extensions.toStringDate
 import com.example.expensetrackerv2.extensions.totalIncomeAsString
 import com.example.expensetrackerv2.extensions.totalOutgoAsString
+import com.example.expensetrackerv2.models.view_models.ExpenseWithCategory
+import com.example.expensetrackerv2.models.view_models.getKey
 import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 

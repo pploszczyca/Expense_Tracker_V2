@@ -9,7 +9,7 @@ import com.example.expensetrackerv2.R
 
 @Composable
 fun CategoryDeleteDialog(
-    modelView: CategorySettingsViewModel
+    modelView: CategorySettingsViewModel,
 ) {
     fun closeDialog() {
         modelView.onEvent(CategorySettingsEvent.CloseDeleteDialog())

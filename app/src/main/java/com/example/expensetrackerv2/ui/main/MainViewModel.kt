@@ -33,7 +33,7 @@ class MainViewModel @Inject constructor(
     private val deleteAllExpensesWithCategory: DeleteAllExpensesWithCategory,
     private val insertExpenseWithCategory: InsertExpenseWithCategory,
     bottomBarChannel: Channel<MainBottomBarEvent>,
-    filterDialogChannel: Channel<MainFilterDialogEvent>
+    filterDialogChannel: Channel<MainFilterDialogEvent>,
 ) : ViewModel() {
     var viewState by mutableStateOf(ViewState())
         private set
@@ -64,6 +64,7 @@ class MainViewModel @Inject constructor(
             is MainEvent.SearchedTitleChange -> viewState = viewState.copy(
                 searchedTitle = event.value,
             )
+
             is MainEvent.ExportToJsonButtonClick -> exportToJson(event.value)
             is MainEvent.ImportFromJsonButtonClick -> importFromJsonAndInsert(event.value)
             is MainEvent.ConfirmDeleteButtonClick -> {
@@ -77,13 +78,16 @@ class MainViewModel @Inject constructor(
                     deleteDialogVisible = false
                 )
             }
+
             is MainEvent.DeleteButtonClick -> viewState = viewState.copy(
                 expenseToDelete = event.value,
                 deleteDialogVisible = true,
             )
+
             is MainEvent.DismissDeleteButtonClick -> viewState = viewState.copy(
                 deleteDialogVisible = false
             )
+
             is MainEvent.OnTopBarTrailingIconClick -> viewState = viewState.copy(
                 topBarVisible = false,
                 searchedTitle = "",
@@ -118,13 +122,15 @@ class MainViewModel @Inject constructor(
     }
 
     private fun onBottomBarEvent(event: MainBottomBarEvent) {
-        when(event) {
+        when (event) {
             MainBottomBarEvent.ClearButtonClick -> viewState = viewState.copy(
                 currentMonthYearKey = null
             )
+
             MainBottomBarEvent.FilterButtonClick -> viewState = viewState.copy(
                 filterDialogVisible = true
             )
+
             MainBottomBarEvent.MenuButtonClick -> openDrawer?.invoke()
             MainBottomBarEvent.SearchButtonClick -> viewState = viewState.copy(
                 topBarVisible = true,
@@ -133,14 +139,16 @@ class MainViewModel @Inject constructor(
     }
 
     private fun onFilterDialogEvent(event: MainFilterDialogEvent) {
-        viewState = when(event) {
+        viewState = when (event) {
             MainFilterDialogEvent.CloseDialog -> viewState.copy(
                 filterDialogVisible = false,
             )
+
             is MainFilterDialogEvent.OptionSelected -> viewState.copy(
                 currentMonthYearKey = event.key,
                 filterDialogVisible = false
             )
+
             MainFilterDialogEvent.ResetSelection -> viewState.copy(
                 currentMonthYearKey = null,
                 filterDialogVisible = false,

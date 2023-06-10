@@ -25,7 +25,7 @@ class ExpenseListViewModel @Inject constructor(
     }
 
     data class ViewState(
-        val groupedExpensesList: List<GroupedExpenses> = emptyList()
+        val groupedExpensesList: List<GroupedExpenses> = emptyList(),
     ) {
         data class GroupedExpenses(
             val key: ExpenseMonthYearKey,

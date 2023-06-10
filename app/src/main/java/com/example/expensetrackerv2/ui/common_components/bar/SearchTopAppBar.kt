@@ -15,37 +15,37 @@ import androidx.compose.ui.tooling.preview.Preview
 fun SearchTopAppBar(
     searchedValue: String = "",
     onTrailingIconClick: () -> Unit,
-    onValueChange: (String) -> Unit
+    onValueChange: (String) -> Unit,
 ) {
     TopAppBar(colors = TopAppBarDefaults.mediumTopAppBarColors(
         containerColor = Color.Unspecified,
     ),
-    title = {
-        TextField(
-            value = searchedValue,
-            colors = TextFieldDefaults.textFieldColors(
-                focusedIndicatorColor = Color.Unspecified,
-                containerColor = Color.Unspecified
-            ),
-            singleLine = true,
-            onValueChange = onValueChange,
-            modifier = Modifier.fillMaxSize(),
-            leadingIcon = {
-                Icon(
-                    Icons.Default.Search,
-                    contentDescription = null
-                )
-            },
-            trailingIcon = {
-                IconButton(onClick = { onTrailingIconClick() }) {
+        title = {
+            TextField(
+                value = searchedValue,
+                colors = TextFieldDefaults.textFieldColors(
+                    focusedIndicatorColor = Color.Unspecified,
+                    containerColor = Color.Unspecified
+                ),
+                singleLine = true,
+                onValueChange = onValueChange,
+                modifier = Modifier.fillMaxSize(),
+                leadingIcon = {
                     Icon(
-                        Icons.Default.Close,
+                        Icons.Default.Search,
                         contentDescription = null
                     )
+                },
+                trailingIcon = {
+                    IconButton(onClick = { onTrailingIconClick() }) {
+                        Icon(
+                            Icons.Default.Close,
+                            contentDescription = null
+                        )
+                    }
                 }
-            }
-        )
-    }
+            )
+        }
     )
 }
 

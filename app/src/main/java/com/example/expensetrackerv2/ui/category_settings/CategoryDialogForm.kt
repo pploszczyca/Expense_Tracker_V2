@@ -3,20 +3,24 @@ package com.example.expensetrackerv2.ui.category_settings
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.selection.selectableGroup
-import androidx.compose.material3.*
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.example.expensetrackerv2.R
-import com.example.expensetrackerv2.models.CategoryType
 import com.example.expensetrackerv2.models.CategoryEntity
+import com.example.expensetrackerv2.models.CategoryType
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoryDialogForm(
-    modelView: CategorySettingsViewModel
+    modelView: CategorySettingsViewModel,
 ) {
     val id by modelView.id
     val name by modelView.name

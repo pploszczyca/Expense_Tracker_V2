@@ -4,7 +4,6 @@ import com.example.expensetrackerv2.models.ExpenseEntity
 import com.example.expensetrackerv2.repositories.ExpenseRepository
 import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.BehaviorSpec
-import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -17,7 +16,7 @@ class InsertExpenseTest : BehaviorSpec({
     val repository: ExpenseRepository = mockk()
 
     fun tested(
-        repository: ExpenseRepository = mockk()
+        repository: ExpenseRepository = mockk(),
     ): InsertExpense = InsertExpense(
         repository = repository,
     )
@@ -34,12 +33,12 @@ class InsertExpenseTest : BehaviorSpec({
 
         When("Insert expense is invoked") {
             tested(repository).invoke(
-              title = title,
-              price = price,
-              date = date,
-              description = description,
-              place = place,
-              categoryId = categoryId,
+                title = title,
+                price = price,
+                date = date,
+                description = description,
+                place = place,
+                categoryId = categoryId,
             )
 
             Then("New expense will be inserted") {

@@ -1,7 +1,6 @@
 package com.example.expensetrackerv2.extensions
 
 import io.kotest.core.spec.style.BehaviorSpec
-import io.kotest.data.forAll
 import io.kotest.matchers.shouldBe
 
 class ListExtensionsKtTest : BehaviorSpec({

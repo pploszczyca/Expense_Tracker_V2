@@ -1,7 +1,7 @@
 package com.example.expensetrackerv2.database
 
 import androidx.room.TypeConverter
-import java.util.*
+import java.util.Date
 
 class Converters {
     @TypeConverter

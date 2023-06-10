@@ -1,7 +1,8 @@
 package com.example.expensetrackerv2.ui.statistics
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -19,11 +20,10 @@ import com.example.expensetrackerv2.ui.theme.ExpenseColor
 import com.example.expensetrackerv2.ui.theme.IncomeColor
 import com.example.expensetrackerv2.utilities.MathUtils
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExpensesStatistics(
     navController: NavController,
-    expensesStatisticsViewModel: ExpensesStatisticsViewModel
+    expensesStatisticsViewModel: ExpensesStatisticsViewModel,
 ) {
     val fromDate = expensesStatisticsViewModel.fromDate
     val toDate = expensesStatisticsViewModel.toDate

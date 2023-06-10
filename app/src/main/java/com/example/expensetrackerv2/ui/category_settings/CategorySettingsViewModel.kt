@@ -5,9 +5,9 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.expensetrackerv2.models.CategoryType
-import com.example.expensetrackerv2.models.CategoryEntity
 import com.example.expensetrackerv2.models.CategoryConstants
+import com.example.expensetrackerv2.models.CategoryEntity
+import com.example.expensetrackerv2.models.CategoryType
 import com.example.expensetrackerv2.use_cases.category.DeleteCategory
 import com.example.expensetrackerv2.use_cases.category.GetCategories
 import com.example.expensetrackerv2.use_cases.category.InsertCategory
@@ -22,7 +22,7 @@ class CategorySettingsViewModel @Inject constructor(
     getCategories: GetCategories,
     private val insertCategory: InsertCategory,
     private val updateCategory: UpdateCategory,
-    private val deleteCategory: DeleteCategory
+    private val deleteCategory: DeleteCategory,
 ) : ViewModel() {
     val categories: Flow<List<CategoryEntity>> = getCategories()
 
@@ -49,19 +49,23 @@ class CategorySettingsViewModel @Inject constructor(
             is CategorySettingsEvent.CloseDeleteDialog -> closeDialog(
                 _isDeleteDialogFormVisible
             )
+
             is CategorySettingsEvent.CloseFormDialog -> closeDialog(_isDialogFormVisible)
             is CategorySettingsEvent.OpenDeleteDialog -> {
                 setIdNameAndType(event.value)
                 openDialog(_isDeleteDialogFormVisible)
             }
+
             is CategorySettingsEvent.OpenFormDialog -> {
                 setIdNameAndType(event.value)
                 openDialog(_isDialogFormVisible)
             }
+
             is CategorySettingsEvent.DialogFormSubmit -> {
                 insertOrUpdate(event.value)
                 onEvent(CategorySettingsEvent.CloseFormDialog())
             }
+
             is CategorySettingsEvent.DeleteDialogSubmit -> {
                 delete(makeTypeOfExpenseFromState())
                 onEvent(CategorySettingsEvent.CloseDeleteDialog())

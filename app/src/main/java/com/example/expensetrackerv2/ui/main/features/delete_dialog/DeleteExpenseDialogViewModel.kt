@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DeleteExpenseDialogViewModel @Inject constructor(
-    private val deleteExpenseWithCategory: DeleteExpenseWithCategory
+    private val deleteExpenseWithCategory: DeleteExpenseWithCategory,
 ) : ViewModel() {
     private var viewState by mutableStateOf(ViewState())
 
@@ -39,6 +39,6 @@ class DeleteExpenseDialogViewModel @Inject constructor(
     }
 
     data class ViewState(
-        val expenseWithCategory: ExpenseWithCategory? = null
+        val expenseWithCategory: ExpenseWithCategory? = null,
     )
 }

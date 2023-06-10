@@ -4,11 +4,10 @@ import com.example.expensetrackerv2.models.ExpenseEntity
 import com.example.expensetrackerv2.repositories.ExpenseRepository
 import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.BehaviorSpec
-import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
-import java.util.*
+import java.util.Date
 
 class UpdateExpenseTest : BehaviorSpec({
     isolationMode = IsolationMode.InstancePerLeaf
@@ -17,7 +16,7 @@ class UpdateExpenseTest : BehaviorSpec({
     val repository: ExpenseRepository = mockk()
 
     fun tested(
-        repository: ExpenseRepository = mockk()
+        repository: ExpenseRepository = mockk(),
     ): UpdateExpense = UpdateExpense(
         repository = repository,
     )

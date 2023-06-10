@@ -33,7 +33,7 @@ private val LightColorPalette = lightColorScheme(
 @Composable
 fun ExpenseTrackerV2Theme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable() () -> Unit
+    content: @Composable() () -> Unit,
 ) {
     val colors = if (darkTheme) {
         DarkColorPalette

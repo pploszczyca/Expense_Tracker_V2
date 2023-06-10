@@ -1,7 +1,8 @@
 package com.example.expensetrackerv2.extensions
 
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 private const val DATE_STRING_PATTERN: String = "yyyy-MM-dd"
 

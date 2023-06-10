@@ -5,9 +5,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.expensetrackerv2.extensions.toStringDate
 import com.example.expensetrackerv2.models.getKey
 import com.example.expensetrackerv2.models.view_models.ExpenseMonthYearKey
-import com.example.expensetrackerv2.extensions.toStringDate
 import com.example.expensetrackerv2.use_cases.expense.GetAllExpenses
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -52,10 +52,10 @@ class MainFilterDialogViewModel @Inject constructor(
     }
 
     data class ViewState(
-        val options: List<FilterOption> = emptyList()
+        val options: List<FilterOption> = emptyList(),
     ) {
         data class FilterOption(
-            val key: ExpenseMonthYearKey
+            val key: ExpenseMonthYearKey,
         ) {
             val dateText: String = key.toStringDate()
         }

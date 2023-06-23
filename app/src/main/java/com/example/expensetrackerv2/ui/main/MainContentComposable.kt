@@ -1,6 +1,11 @@
 package com.example.expensetrackerv2.ui.main
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.absolutePadding
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -10,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.expensetrackerv2.R
-import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
+import com.example.expensetrackerv2.models.view_models.ExpenseWithCategory
 import com.example.expensetrackerv2.ui.main.features.delete_dialog.DeleteExpenseAlertDialog
 import com.example.expensetrackerv2.ui.main.features.delete_dialog.DeleteExpenseDialogViewModel
 import com.example.expensetrackerv2.ui.main.features.filter_dialog.MainFilterDialog
@@ -24,7 +29,7 @@ fun MainContent(
     innerPadding: PaddingValues,
     mainViewState: MainViewModel.ViewState,
     navController: NavController,
-    onDeleteButtonClick: (ExpenseWithItsType) -> Unit,
+    onDeleteButtonClick: (ExpenseWithCategory) -> Unit,
     onDismissDeleteButtonClick: () -> Unit,
     onConfirmDeleteButtonClick: () -> Unit,
 ) {
@@ -32,7 +37,7 @@ fun MainContent(
     val filterDialogViewModel: MainFilterDialogViewModel = hiltViewModel()
     mainViewState.expenseToDelete?.let {
         deleteExpenseDialogViewModel.init(
-            expenseWithItsType = it
+            expenseWithCategory = it
         )
     }
 

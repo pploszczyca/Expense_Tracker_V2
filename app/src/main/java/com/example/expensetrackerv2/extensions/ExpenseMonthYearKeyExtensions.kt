@@ -1,6 +1,6 @@
 package com.example.expensetrackerv2.extensions
 
-import com.example.expensetrackerv2.database.models.view_models.ExpenseMonthYearKey
+import com.example.expensetrackerv2.models.view_models.ExpenseMonthYearKey
 import java.text.SimpleDateFormat
 import java.util.Date
 

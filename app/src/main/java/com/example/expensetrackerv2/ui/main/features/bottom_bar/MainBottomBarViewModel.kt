@@ -9,8 +9,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainBottomBarViewModel @Inject constructor(
-    private val channel: Channel<MainBottomBarEvent>
-): ViewModel() {
+    private val channel: Channel<MainBottomBarEvent>,
+) : ViewModel() {
     fun onEvent(event: MainBottomBarEvent) {
         viewModelScope.launch {
             channel.send(event)

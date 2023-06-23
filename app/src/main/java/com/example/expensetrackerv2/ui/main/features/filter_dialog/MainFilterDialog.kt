@@ -1,7 +1,12 @@
 package com.example.expensetrackerv2.ui.main.features.filter_dialog
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
@@ -18,7 +23,7 @@ import com.example.expensetrackerv2.R
 
 @Composable
 fun MainFilterDialog(
-    viewModel: MainFilterDialogViewModel
+    viewModel: MainFilterDialogViewModel,
 ) {
     val viewState = viewModel.viewState
 

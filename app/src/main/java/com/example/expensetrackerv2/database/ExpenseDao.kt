@@ -1,45 +1,42 @@
 package com.example.expensetrackerv2.database
 
 import androidx.room.*
-import com.example.expensetrackerv2.database.models.Expense
-import com.example.expensetrackerv2.database.models.TypeOfExpense
-import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
+import com.example.expensetrackerv2.models.CategoryEntity
+import com.example.expensetrackerv2.models.ExpenseEntity
+import com.example.expensetrackerv2.models.view_models.ExpenseWithCategory
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 abstract class ExpenseDao {
     //QUERIES
     @Query("SELECT * FROM expense ORDER BY date DESC")
-    abstract fun getAllExpenses(): Flow<List<Expense>>
+    abstract fun getAllExpenses(): Flow<List<ExpenseEntity>>
 
-    @Query("SELECT * FROM typeofexpense")
-    abstract fun getAllTypesOfExpense(): Flow<List<TypeOfExpense>>
+    @Query("SELECT * FROM category")
+    abstract fun getAllCategories(): Flow<List<CategoryEntity>>
 
-    @Query("SELECT * FROM ExpenseWithItsType ORDER BY date DESC")
-    abstract fun getAllExpenseWithItsType(): Flow<List<ExpenseWithItsType>>
+    @Query("SELECT * FROM ExpenseWithCategory ORDER BY date DESC")
+    abstract fun getAllExpenseWithCategory(): Flow<List<ExpenseWithCategory>>
 
     @Query("SELECT * FROM expense WHERE id = :expenseID")
-    abstract fun getExpense(expenseID: Int): Expense
+    abstract fun getExpense(expenseID: Int): Flow<ExpenseEntity>
 
-    @Query("SELECT * FROM ExpenseWithItsType WHERE id = :expenseID")
-    abstract fun getExpenseWithItsType(expenseID: Int): Flow<ExpenseWithItsType?>
+    @Query("SELECT * FROM ExpenseWithCategory WHERE id = :expenseID")
+    abstract fun getExpenseWithItsType(expenseID: Int): Flow<ExpenseWithCategory?>
 
     // INSERTS
     @Insert
-    abstract suspend fun insertAllExpenses(vararg expenses: Expense)
-
-    suspend fun insertAllExpenses(expenses: List<Expense>) =
-        expenses.forEach { insertAllExpenses(it) }
+    abstract suspend fun insertAllExpenses(vararg expenses: ExpenseEntity)
 
     @Insert
-    abstract suspend fun insertAllTypesOfExpense(vararg expenses: TypeOfExpense)
+    abstract suspend fun insertAllCategories(vararg expenses: CategoryEntity)
 
     // UPDATE
     @Update
-    abstract suspend fun updateExpense(expense: Expense)
+    abstract suspend fun updateExpense(expense: ExpenseEntity)
 
     @Update
-    abstract suspend fun updateTypeOfExpense(typeOfExpense: TypeOfExpense)
+    abstract suspend fun updateTypeOfExpense(categoryEntity: CategoryEntity)
 
     // DELETES
     @Query("DELETE FROM Expense WHERE id = :id")
@@ -49,11 +46,11 @@ abstract class ExpenseDao {
     abstract suspend fun deleteAllExpenses()
 
     @Delete
-    abstract suspend fun deleteExpense(expense: Expense)
+    abstract suspend fun deleteExpense(expense: ExpenseEntity)
 
-    suspend fun deleteExpense(expenseWithItsType: ExpenseWithItsType) =
-        deleteExpenseByID(expenseWithItsType.id)
+    suspend fun deleteExpense(expenseWithCategory: ExpenseWithCategory) =
+        deleteExpenseByID(expenseWithCategory.id)
 
     @Delete
-    abstract suspend fun deleteTypeOfExpense(vararg typeOfExpense: TypeOfExpense)
+    abstract suspend fun deleteTypeOfExpense(vararg categoryEntity: CategoryEntity)
 }

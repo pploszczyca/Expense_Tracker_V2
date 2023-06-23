@@ -7,15 +7,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.expensetrackerv2.database.models.view_models.ExpenseMonthYearKey
-import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
-import com.example.expensetrackerv2.database.models.view_models.getKey
+import com.example.expensetrackerv2.models.view_models.ExpenseMonthYearKey
+import com.example.expensetrackerv2.models.view_models.ExpenseWithCategory
+import com.example.expensetrackerv2.models.view_models.getKey
 import com.example.expensetrackerv2.ui.main.features.bottom_bar.MainBottomBarEvent
 import com.example.expensetrackerv2.ui.main.features.filter_dialog.MainFilterDialogEvent
-import com.example.expensetrackerv2.use_cases.expense.DeleteAllExpensesWithItsType
-import com.example.expensetrackerv2.use_cases.expense.DeleteExpenseWithItsType
-import com.example.expensetrackerv2.use_cases.expense.GetExpensesWithItsType
-import com.example.expensetrackerv2.use_cases.expense.InsertExpenseWithItsType
+import com.example.expensetrackerv2.use_cases.expense_with_category.DeleteAllExpensesWithCategory
+import com.example.expensetrackerv2.use_cases.expense_with_category.DeleteExpenseWithCategory
+import com.example.expensetrackerv2.use_cases.expense_with_category.GetAllExpenseWithCategory
+import com.example.expensetrackerv2.use_cases.expense_with_category.InsertExpenseWithCategory
 import com.example.expensetrackerv2.utilities.JSONUtils
 import com.example.expensetrackerv2.utilities.MathUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,12 +28,12 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val contentResolver: ContentResolver,
-    private val getExpensesWithItsType: GetExpensesWithItsType,
-    private val deleteExpenseWithItsType: DeleteExpenseWithItsType,
-    private val deleteAllExpensesWithItsType: DeleteAllExpensesWithItsType,
-    private val insertExpenseWithItsType: InsertExpenseWithItsType,
+    private val getAllExpenseWithCategory: GetAllExpenseWithCategory,
+    private val deleteExpenseWithCategory: DeleteExpenseWithCategory,
+    private val deleteAllExpensesWithCategory: DeleteAllExpensesWithCategory,
+    private val insertExpenseWithCategory: InsertExpenseWithCategory,
     bottomBarChannel: Channel<MainBottomBarEvent>,
-    filterDialogChannel: Channel<MainFilterDialogEvent>
+    filterDialogChannel: Channel<MainFilterDialogEvent>,
 ) : ViewModel() {
     var viewState by mutableStateOf(ViewState())
         private set
@@ -42,7 +42,7 @@ class MainViewModel @Inject constructor(
 
     init {
         viewModelScope.launch(Dispatchers.Main) {
-            getExpensesWithItsType()
+            getAllExpenseWithCategory()
                 .collect {
                     viewState = viewState.copy(
                         expensesWithItsType = it
@@ -64,12 +64,13 @@ class MainViewModel @Inject constructor(
             is MainEvent.SearchedTitleChange -> viewState = viewState.copy(
                 searchedTitle = event.value,
             )
+
             is MainEvent.ExportToJsonButtonClick -> exportToJson(event.value)
             is MainEvent.ImportFromJsonButtonClick -> importFromJsonAndInsert(event.value)
             is MainEvent.ConfirmDeleteButtonClick -> {
                 viewModelScope.launch(Dispatchers.IO) {
                     viewState.expenseToDelete?.let {
-                        deleteExpenseWithItsType(expenseWithItsType = it)
+                        deleteExpenseWithCategory(expenseWithCategory = it)
                     }
 
                 }
@@ -77,13 +78,16 @@ class MainViewModel @Inject constructor(
                     deleteDialogVisible = false
                 )
             }
+
             is MainEvent.DeleteButtonClick -> viewState = viewState.copy(
                 expenseToDelete = event.value,
                 deleteDialogVisible = true,
             )
+
             is MainEvent.DismissDeleteButtonClick -> viewState = viewState.copy(
                 deleteDialogVisible = false
             )
+
             is MainEvent.OnTopBarTrailingIconClick -> viewState = viewState.copy(
                 topBarVisible = false,
                 searchedTitle = "",
@@ -107,24 +111,26 @@ class MainViewModel @Inject constructor(
     private fun importFromJsonAndInsert(uri: Uri?) {
         uri?.let { uri ->
             viewModelScope.launch(Dispatchers.IO) {
-                deleteAllExpensesWithItsType()
+                deleteAllExpensesWithCategory()
                 JSONUtils.importExpensesListFromJson(
                     contentResolver.openInputStream(
                         uri
                     )?.bufferedReader()?.use { it.readText() }!!
-                ).forEach { insertExpenseWithItsType(it) }
+                ).forEach { insertExpenseWithCategory(it) }
             }
         }
     }
 
     private fun onBottomBarEvent(event: MainBottomBarEvent) {
-        when(event) {
+        when (event) {
             MainBottomBarEvent.ClearButtonClick -> viewState = viewState.copy(
                 currentMonthYearKey = null
             )
+
             MainBottomBarEvent.FilterButtonClick -> viewState = viewState.copy(
                 filterDialogVisible = true
             )
+
             MainBottomBarEvent.MenuButtonClick -> openDrawer?.invoke()
             MainBottomBarEvent.SearchButtonClick -> viewState = viewState.copy(
                 topBarVisible = true,
@@ -133,14 +139,16 @@ class MainViewModel @Inject constructor(
     }
 
     private fun onFilterDialogEvent(event: MainFilterDialogEvent) {
-        viewState = when(event) {
+        viewState = when (event) {
             MainFilterDialogEvent.CloseDialog -> viewState.copy(
                 filterDialogVisible = false,
             )
+
             is MainFilterDialogEvent.OptionSelected -> viewState.copy(
                 currentMonthYearKey = event.key,
                 filterDialogVisible = false
             )
+
             MainFilterDialogEvent.ResetSelection -> viewState.copy(
                 currentMonthYearKey = null,
                 filterDialogVisible = false,
@@ -151,8 +159,8 @@ class MainViewModel @Inject constructor(
     data class ViewState(
         val currentMonthYearKey: ExpenseMonthYearKey? = null,
         val searchedTitle: String = "",
-        val expenseToDelete: ExpenseWithItsType? = null,
-        private val expensesWithItsType: List<ExpenseWithItsType> = emptyList(),
+        val expenseToDelete: ExpenseWithCategory? = null,
+        private val expensesWithItsType: List<ExpenseWithCategory> = emptyList(),
         val topBarVisible: Boolean = false,
         val deleteDialogVisible: Boolean = false,
         val filterDialogVisible: Boolean = false,
@@ -160,18 +168,18 @@ class MainViewModel @Inject constructor(
         val clearButtonVisible: Boolean get() = currentMonthYearKey != null
         val mainExpenseInformationVisible: Boolean get() = topBarVisible.not()
 
-        val filteredExpenses: List<ExpenseWithItsType>
+        val filteredExpenses: List<ExpenseWithCategory>
             get() = expensesWithItsType.filter(::checkIfHasKeyAndContainsSearchedTitle)
 
-        private fun checkIfHasKeyAndContainsSearchedTitle(expenseWithItsType: ExpenseWithItsType): Boolean =
-            (currentMonthYearKey == null || expenseWithItsType.getKey() == currentMonthYearKey) && expenseWithItsType.title.contains(
+        private fun checkIfHasKeyAndContainsSearchedTitle(expenseWithCategory: ExpenseWithCategory): Boolean =
+            (currentMonthYearKey == null || expenseWithCategory.getKey() == currentMonthYearKey) && expenseWithCategory.title.contains(
                 searchedTitle,
                 true
             )
 
         val moneyInWalletAmount: Double
             get() = MathUtils.sumMoneyInList(
-                expenseWithItsTypeList = filteredExpenses
+                expenseWithCategoryList = filteredExpenses
             )
     }
 }

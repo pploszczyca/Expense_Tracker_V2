@@ -4,8 +4,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.expensetrackerv2.database.models.view_models.ExpenseMonthYearKey
-import com.example.expensetrackerv2.database.models.view_models.ExpenseWithItsType
+import com.example.expensetrackerv2.models.view_models.ExpenseMonthYearKey
+import com.example.expensetrackerv2.models.view_models.ExpenseWithCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -25,12 +25,12 @@ class ExpenseListViewModel @Inject constructor(
     }
 
     data class ViewState(
-        val groupedExpensesList: List<GroupedExpenses> = emptyList()
+        val groupedExpensesList: List<GroupedExpenses> = emptyList(),
     ) {
         data class GroupedExpenses(
             val key: ExpenseMonthYearKey,
             val dateText: String,
-            val expenses: List<ExpenseWithItsType>,
+            val expenses: List<ExpenseWithCategory>,
             val totalIncome: String,
             val totalOutgo: String,
         )

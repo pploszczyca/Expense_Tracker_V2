@@ -29,12 +29,6 @@ fun ExpenseWithCategory.toExpense(): ExpenseEntity = ExpenseEntity(
     categoryId = categoryId
 )
 
-fun ExpenseWithCategory.getTypeOfExpense(): CategoryEntity = CategoryEntity(
-    id = categoryId,
-    name = categoryName,
-    categoryType = categoryType
-)
-
 data class ExpenseMonthYearKey(val year: Int, val month: Int)
 
 fun ExpenseWithCategory.getKey() = ExpenseMonthYearKey(this.date.year, this.date.month)

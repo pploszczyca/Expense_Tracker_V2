@@ -1,6 +1,6 @@
 package com.example.expensetrackerv2.use_cases.category
 
-import com.example.expensetrackerv2.repositories.CategoryRepository
+import com.github.pploszczyca.expensetrackerv2.usecases.repositories.CategoryRepository
 import com.github.pploszczyca.expensetrackerv2.domain.Category
 import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.BehaviorSpec

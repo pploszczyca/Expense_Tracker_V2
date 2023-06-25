@@ -1,6 +1,6 @@
 package com.example.expensetrackerv2.use_cases.expense
 
-import com.example.expensetrackerv2.repositories.ExpenseRepository
+import com.github.pploszczyca.expensetrackerv2.usecases.repositories.ExpenseRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map

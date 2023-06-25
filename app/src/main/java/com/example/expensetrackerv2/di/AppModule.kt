@@ -6,6 +6,8 @@ import androidx.room.Room
 import com.example.expensetrackerv2.database.AppDatabase
 import com.example.expensetrackerv2.database.ExpenseDao
 import com.example.expensetrackerv2.repositories.*
+import com.github.pploszczyca.expensetrackerv2.usecases.repositories.CategoryRepository
+import com.github.pploszczyca.expensetrackerv2.usecases.repositories.ExpenseRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -3,6 +3,7 @@ package com.example.expensetrackerv2.repositories
 import com.example.expensetrackerv2.database.ExpenseDao
 import com.example.expensetrackerv2.repositories.mappers.ExpenseMapper
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
+import com.github.pploszczyca.expensetrackerv2.usecases.repositories.ExpenseRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject

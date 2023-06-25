@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.repositories
+package com.github.pploszczyca.expensetrackerv2.usecases.repositories
 
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
 import kotlinx.coroutines.flow.Flow

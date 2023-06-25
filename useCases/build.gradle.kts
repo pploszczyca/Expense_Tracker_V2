@@ -8,6 +8,7 @@ dependencies {
     implementation(project(":domain"))
 
     implementation(Libs.kotlinxCoroutinesAndroid)
+    implementation(Libs.hiltAndroid)
 
     testImplementation(Libs.kotestRunnerJUnit5)
     testImplementation(Libs.kotestAssertionsCore)

@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.use_cases.category
+package com.github.pploszczyca.expensetrackerv2.use_cases.category
 
 import com.github.pploszczyca.expensetrackerv2.usecases.repositories.CategoryRepository
 import com.github.pploszczyca.expensetrackerv2.domain.Category

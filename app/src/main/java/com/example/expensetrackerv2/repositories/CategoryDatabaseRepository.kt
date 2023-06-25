@@ -10,7 +10,7 @@ import javax.inject.Inject
 internal class CategoryDatabaseRepository @Inject constructor(
     private val expenseDao: ExpenseDao,
     private val categoryMapper: CategoryMapper = CategoryMapper(),
-    ) : CategoryRepository {
+) : CategoryRepository {
     override fun getAll(): Flow<List<Category>> =
         expenseDao.getAllCategories().map { it.map(categoryMapper::toDomainModel) }
 

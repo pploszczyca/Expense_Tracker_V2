@@ -1,7 +1,6 @@
 package com.example.expensetrackerv2.models.view_models
 
 import androidx.room.DatabaseView
-import com.example.expensetrackerv2.models.CategoryEntity
 import com.example.expensetrackerv2.models.CategoryType
 import com.example.expensetrackerv2.models.ExpenseEntity
 import java.util.*

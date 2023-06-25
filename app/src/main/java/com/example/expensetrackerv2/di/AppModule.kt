@@ -32,11 +32,6 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideExpenseWithItsTypeRepository(expenseDao: ExpenseDao): ExpenseWithCategoryRepository =
-        ExpenseWithCategoryDatabaseRepository(expenseDao)
-
-    @Provides
-    @Singleton
     fun provideTypeOfExpenseRepository(expenseDao: ExpenseDao): CategoryRepository =
         CategoryDatabaseRepository(expenseDao)
 

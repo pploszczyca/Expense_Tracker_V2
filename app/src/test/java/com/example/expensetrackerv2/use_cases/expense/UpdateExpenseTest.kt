@@ -1,7 +1,8 @@
 package com.example.expensetrackerv2.use_cases.expense
 
-import com.example.expensetrackerv2.models.ExpenseEntity
 import com.example.expensetrackerv2.repositories.ExpenseRepository
+import com.github.pploszczyca.expensetrackerv2.domain.Category
+import com.github.pploszczyca.expensetrackerv2.domain.Expense
 import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.BehaviorSpec
 import io.mockk.coEvery
@@ -28,7 +29,7 @@ class UpdateExpenseTest : BehaviorSpec({
         val date: Date = mockk()
         val description = "description"
         val place = "place"
-        val categoryId = 59
+        val category: Category = mockk()
 
         coEvery { repository.update(any()) } returns Unit
 
@@ -40,18 +41,18 @@ class UpdateExpenseTest : BehaviorSpec({
                 date = date,
                 description = description,
                 place = place,
-                categoryId = categoryId,
+                category = category,
             )
 
             Then("New expense will be inserted") {
-                val expense = ExpenseEntity(
+                val expense = Expense(
                     id = id,
                     title = title,
                     price = price,
                     date = date,
                     description = description,
                     place = place,
-                    categoryId = categoryId,
+                    category = category,
                 )
 
                 coVerify { repository.update(expense) }

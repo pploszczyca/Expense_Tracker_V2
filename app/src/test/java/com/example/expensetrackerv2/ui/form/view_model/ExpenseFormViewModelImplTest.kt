@@ -8,6 +8,8 @@ import com.example.expensetrackerv2.models.CategoryEntity
 import com.example.expensetrackerv2.models.ExpenseEntity
 import com.example.expensetrackerv2.use_cases.category.GetCategories
 import com.example.expensetrackerv2.use_cases.expense.*
+import com.github.pploszczyca.expensetrackerv2.domain.Category
+import com.github.pploszczyca.expensetrackerv2.domain.Expense
 import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.data.forAll
@@ -81,15 +83,17 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
         val categoryName = "categoryName"
         val secondCategoryId = 90
         val secondCategoryName = "secondCategoryName"
-        val category = CategoryEntity(
+        val category = Category(
             id = categoryId,
             name = categoryName,
+            type = Category.Type.INCOME,
         )
-        val secondCategory = CategoryEntity(
+        val secondCategory = Category(
             id = secondCategoryId,
             name = secondCategoryName,
+            type = Category.Type.INCOME,
         )
-        val categories: List<CategoryEntity> = listOf(category, secondCategory)
+        val categories: List<Category> = listOf(category, secondCategory)
         val viewState = ExpenseFormViewModel.ViewState(
             title = "",
             price = "",
@@ -326,7 +330,7 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
                                 date = stringDate.toDate(),
                                 place = placeName,
                                 description = description,
-                                categoryId = secondCategoryId,
+                                category = secondCategory,
                             )
                         }
                     }
@@ -361,29 +365,31 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
         val categoryName = "categoryName"
         val secondCategoryId = 90
         val secondCategoryName = "secondCategoryName"
-        val category = CategoryEntity(
+        val category = Category(
             id = categoryId,
             name = categoryName,
+            type = Category.Type.INCOME,
         )
-        val secondCategory = CategoryEntity(
+        val secondCategory = Category(
             id = secondCategoryId,
             name = secondCategoryName,
+            type = Category.Type.INCOME,
         )
-        val categories: List<CategoryEntity> = listOf(category, secondCategory)
+        val categories: List<Category> = listOf(category, secondCategory)
         val expenseId = 9
         val title = "expenseTitle"
         val price = 50.00
         val date = Date()
         val description = "expenseDescription"
         val place = "expensePlace"
-        val expense = ExpenseEntity(
+        val expense = Expense(
             id = expenseId,
             title = title,
             price = price,
             date = date,
             description = description,
             place = place,
-            categoryId = categoryId,
+            category = category,
         )
         val viewState = ExpenseFormViewModel.ViewState(
             title = title,
@@ -469,7 +475,7 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
                                 date = newStringDate.toDate(),
                                 place = newPlaceName,
                                 description = newDescription,
-                                categoryId = secondCategoryId,
+                                category = secondCategory,
                             )
                         }
                     }

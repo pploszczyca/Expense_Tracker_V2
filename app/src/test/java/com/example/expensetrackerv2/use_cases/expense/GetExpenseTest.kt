@@ -1,7 +1,7 @@
 package com.example.expensetrackerv2.use_cases.expense
 
-import com.example.expensetrackerv2.models.ExpenseEntity
 import com.example.expensetrackerv2.repositories.ExpenseRepository
+import com.github.pploszczyca.expensetrackerv2.domain.Expense
 import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
@@ -24,7 +24,7 @@ class GetExpenseTest : BehaviorSpec({
 
     Given("Expense Id") {
         val expenseId = 69
-        val expenseFlow: Flow<ExpenseEntity> = mockk()
+        val expenseFlow: Flow<Expense> = mockk()
 
         every { repository.get(any()) } returns expenseFlow
 

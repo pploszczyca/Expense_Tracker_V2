@@ -1,8 +1,8 @@
 package com.example.expensetrackerv2.use_cases.category
 
-import com.example.expensetrackerv2.models.CategoryEntity
 import com.example.expensetrackerv2.models.CategoryType
 import com.example.expensetrackerv2.repositories.CategoryRepository
+import com.github.pploszczyca.expensetrackerv2.domain.Category
 import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
@@ -28,15 +28,15 @@ class GetCategoriesTest : BehaviorSpec({
 
     Given("Non empty categories") {
         val categories = listOf(
-            CategoryEntity(
+            Category(
                 id = 1,
                 name = "My income",
-                categoryType = CategoryType.INCOME
+                type = Category.Type.INCOME
             ),
-            CategoryEntity(
+            Category(
                 id = 2,
                 name = "My outgo",
-                categoryType = CategoryType.OUTGO
+                type = Category.Type.OUTGO
             ),
         )
 
@@ -63,13 +63,13 @@ class GetCategoriesTest : BehaviorSpec({
                 .first()
 
             Then("Insert base categories") {
-                val baseIncomeCategory = CategoryEntity(
+                val baseIncomeCategory = Category(
                     name = "INCOME",
-                    categoryType = CategoryType.INCOME
+                    type = Category.Type.INCOME
                 )
-                val baseOutgoCategory = CategoryEntity(
+                val baseOutgoCategory = Category(
                     name = "OUTGO",
-                    categoryType = CategoryType.OUTGO
+                    type = Category.Type.OUTGO
                 )
 
                 coVerify {

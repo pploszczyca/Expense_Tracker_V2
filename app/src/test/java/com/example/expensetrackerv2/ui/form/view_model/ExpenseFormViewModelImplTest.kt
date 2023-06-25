@@ -4,10 +4,15 @@ import androidx.lifecycle.SavedStateHandle
 import com.example.expensetrackerv2.R
 import com.example.expensetrackerv2.extensions.toDate
 import com.example.expensetrackerv2.extensions.toFormattedString
-import com.example.expensetrackerv2.use_cases.category.GetCategories
+import com.github.pploszczyca.expensetrackerv2.usecases.category.GetCategories
 import com.example.expensetrackerv2.use_cases.expense.*
 import com.github.pploszczyca.expensetrackerv2.domain.Category
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
+import com.github.pploszczyca.expensetrackerv2.usecases.expense.GetExpense
+import com.github.pploszczyca.expensetrackerv2.usecases.expense.GetExpensesPlaces
+import com.github.pploszczyca.expensetrackerv2.usecases.expense.GetExpensesTitles
+import com.github.pploszczyca.expensetrackerv2.usecases.expense.InsertExpense
+import com.github.pploszczyca.expensetrackerv2.usecases.expense.UpdateExpense
 import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.data.forAll

@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.expensetrackerv2.extensions.toStringDate
-import com.example.expensetrackerv2.use_cases.expense.GetAllExpenses
+import com.github.pploszczyca.expensetrackerv2.usecases.expense.GetAllExpenses
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

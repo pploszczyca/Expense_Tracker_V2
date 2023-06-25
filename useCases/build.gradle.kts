@@ -5,6 +5,10 @@ plugins {
 }
 
 dependencies {
+    implementation(project(":domain"))
+
+    implementation(Libs.kotlinxCoroutinesAndroid)
+
     testImplementation(Libs.kotestRunnerJUnit5)
     testImplementation(Libs.kotestAssertionsCore)
     testImplementation(Libs.kotestProperty)

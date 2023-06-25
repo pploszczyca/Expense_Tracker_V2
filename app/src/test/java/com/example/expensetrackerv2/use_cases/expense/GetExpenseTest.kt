@@ -2,6 +2,7 @@ package com.example.expensetrackerv2.use_cases.expense
 
 import com.github.pploszczyca.expensetrackerv2.usecases.repositories.ExpenseRepository
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
+import com.github.pploszczyca.expensetrackerv2.usecases.expense.GetExpense
 import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe

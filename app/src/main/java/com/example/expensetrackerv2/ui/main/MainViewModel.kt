@@ -7,8 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.expensetrackerv2.ui.main.features.bottom_bar.MainBottomBarEvent
 import com.example.expensetrackerv2.ui.main.features.filter_dialog.MainFilterDialogEvent
-import com.example.expensetrackerv2.use_cases.expense.DeleteExpense
-import com.example.expensetrackerv2.use_cases.expense.GetAllExpenses
+import com.github.pploszczyca.expensetrackerv2.usecases.expense.DeleteExpense
+import com.github.pploszczyca.expensetrackerv2.usecases.expense.GetAllExpenses
 import com.example.expensetrackerv2.utilities.MathUtils
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
 import dagger.hilt.android.lifecycle.HiltViewModel

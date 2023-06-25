@@ -6,10 +6,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.expensetrackerv2.models.CategoryConstants
-import com.example.expensetrackerv2.use_cases.category.DeleteCategory
-import com.example.expensetrackerv2.use_cases.category.GetCategories
-import com.example.expensetrackerv2.use_cases.category.InsertCategory
-import com.example.expensetrackerv2.use_cases.category.UpdateCategory
+import com.github.pploszczyca.expensetrackerv2.usecases.category.DeleteCategory
+import com.github.pploszczyca.expensetrackerv2.usecases.category.GetCategories
+import com.github.pploszczyca.expensetrackerv2.usecases.category.InsertCategory
+import com.github.pploszczyca.expensetrackerv2.usecases.category.UpdateCategory
 import com.github.pploszczyca.expensetrackerv2.domain.Category
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow

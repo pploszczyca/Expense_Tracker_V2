@@ -1,13 +1,13 @@
-package com.example.expensetrackerv2.use_cases.expense
+package com.github.pploszczyca.expensetrackerv2.usecases.expense
 
 import com.github.pploszczyca.expensetrackerv2.usecases.repositories.ExpenseRepository
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class DeleteExpense @Inject constructor(
+class GetExpense @Inject constructor(
     private val repository: ExpenseRepository,
 ) {
-    suspend operator fun invoke(expense: Expense) {
-        repository.delete(expense = expense)
-    }
+    operator fun invoke(expenseId: Int): Flow<Expense> =
+        repository.get(expenseId)
 }

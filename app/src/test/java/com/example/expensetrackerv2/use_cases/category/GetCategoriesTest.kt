@@ -2,6 +2,7 @@ package com.example.expensetrackerv2.use_cases.category
 
 import com.github.pploszczyca.expensetrackerv2.usecases.repositories.CategoryRepository
 import com.github.pploszczyca.expensetrackerv2.domain.Category
+import com.github.pploszczyca.expensetrackerv2.usecases.category.GetCategories
 import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe

@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.use_cases.expense
+package com.github.pploszczyca.expensetrackerv2.usecases.expense
 
 import com.github.pploszczyca.expensetrackerv2.usecases.repositories.ExpenseRepository
 import com.github.pploszczyca.expensetrackerv2.domain.Category
@@ -6,10 +6,11 @@ import com.github.pploszczyca.expensetrackerv2.domain.Expense
 import java.util.Date
 import javax.inject.Inject
 
-class InsertExpense @Inject constructor(
+class UpdateExpense @Inject constructor(
     private val repository: ExpenseRepository,
 ) {
     suspend operator fun invoke(
+        id: Int,
         title: String,
         price: Double,
         date: Date,
@@ -17,8 +18,9 @@ class InsertExpense @Inject constructor(
         place: String,
         category: Category,
     ) {
-        repository.insert(
+        repository.update(
             expense = Expense(
+                id = id,
                 title = title,
                 price = price,
                 date = date,

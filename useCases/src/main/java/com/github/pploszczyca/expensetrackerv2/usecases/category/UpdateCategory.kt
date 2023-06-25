@@ -1,13 +1,13 @@
-package com.example.expensetrackerv2.use_cases.category
+package com.github.pploszczyca.expensetrackerv2.usecases.category
 
 import com.github.pploszczyca.expensetrackerv2.usecases.repositories.CategoryRepository
 import com.github.pploszczyca.expensetrackerv2.domain.Category
 import javax.inject.Inject
 
-class DeleteCategory @Inject constructor(
+class UpdateCategory @Inject constructor(
     private val repository: CategoryRepository,
 ) {
-    suspend operator fun invoke(category: Category) =
-        repository.delete(category)
-
+    suspend operator fun invoke(category: Category) {
+        repository.update(category)
+    }
 }

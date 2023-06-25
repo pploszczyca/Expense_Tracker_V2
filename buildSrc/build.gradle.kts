@@ -3,13 +3,9 @@ plugins {
 }
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
     implementation(kotlin("stdlib"))
-}
-
-kotlinDslPluginOptions {
-    experimentalWarning.set(false)
 }

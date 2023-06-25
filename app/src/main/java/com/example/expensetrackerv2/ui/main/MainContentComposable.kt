@@ -15,7 +15,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.expensetrackerv2.R
-import com.example.expensetrackerv2.models.view_models.ExpenseWithCategory
 import com.example.expensetrackerv2.ui.main.features.delete_dialog.DeleteExpenseAlertDialog
 import com.example.expensetrackerv2.ui.main.features.delete_dialog.DeleteExpenseDialogViewModel
 import com.example.expensetrackerv2.ui.main.features.filter_dialog.MainFilterDialog
@@ -23,13 +22,14 @@ import com.example.expensetrackerv2.ui.main.features.filter_dialog.MainFilterDia
 import com.example.expensetrackerv2.ui.main.features.list.ExpenseListViewModel
 import com.example.expensetrackerv2.ui.main.features.list.ExpensesList
 import com.example.expensetrackerv2.ui.main.features.list.ExpensesListEvent
+import com.github.pploszczyca.expensetrackerv2.domain.Expense
 
 @Composable
 fun MainContent(
     innerPadding: PaddingValues,
     mainViewState: MainViewModel.ViewState,
     navController: NavController,
-    onDeleteButtonClick: (ExpenseWithCategory) -> Unit,
+    onDeleteButtonClick: (Expense) -> Unit,
     onDismissDeleteButtonClick: () -> Unit,
     onConfirmDeleteButtonClick: () -> Unit,
 ) {
@@ -37,7 +37,7 @@ fun MainContent(
     val filterDialogViewModel: MainFilterDialogViewModel = hiltViewModel()
     mainViewState.expenseToDelete?.let {
         deleteExpenseDialogViewModel.init(
-            expenseWithCategory = it
+            expense = it
         )
     }
 

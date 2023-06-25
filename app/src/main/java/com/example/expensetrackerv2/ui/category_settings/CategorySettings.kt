@@ -18,8 +18,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.expensetrackerv2.R
-import com.example.expensetrackerv2.models.CategoryEntity
 import com.example.expensetrackerv2.ui.common_components.bar.TopAppBarWithBack
+import com.github.pploszczyca.expensetrackerv2.domain.Category
 
 @Composable
 fun CategorySettings(
@@ -52,22 +52,14 @@ fun CategorySettings(
                     .fillMaxSize()
                     .padding(paddingValues)
             ) {
-                items(categories) { categoryEntityItem: CategoryEntity ->
+                items(categories) { categoryItem: Category ->
                     CategoryCard(
-                        categoryEntity = categoryEntityItem,
+                        category = categoryItem,
                         onUpdateButtonClick = {
-                            viewModel.onEvent(
-                                CategorySettingsEvent.OpenFormDialog(
-                                    it
-                                )
-                            )
+                            it.let(CategorySettingsEvent::OpenFormDialog).let(viewModel::onEvent)
                         },
                         onDeleteButtonClick = {
-                            viewModel.onEvent(
-                                CategorySettingsEvent.OpenDeleteDialog(
-                                    it
-                                )
-                            )
+                            it.let(CategorySettingsEvent::OpenDeleteDialog).let(viewModel::onEvent)
                         })
                 }
             }

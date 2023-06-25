@@ -1,14 +1,16 @@
 package com.example.expensetrackerv2.repositories
 
-import com.example.expensetrackerv2.models.ExpenseEntity
+import com.github.pploszczyca.expensetrackerv2.domain.Expense
 import kotlinx.coroutines.flow.Flow
 
 interface ExpenseRepository {
-    fun getAll(): Flow<List<ExpenseEntity>>
+    fun getAll(): Flow<List<Expense>>
 
-    fun get(expenseId: Int): Flow<ExpenseEntity>
+    fun get(expenseId: Int): Flow<Expense>
 
-    suspend fun insert(expense: ExpenseEntity)
+    suspend fun insert(expense: Expense)
 
-    suspend fun update(expense: ExpenseEntity)
+    suspend fun update(expense: Expense)
+
+    suspend fun delete(expense: Expense)
 }

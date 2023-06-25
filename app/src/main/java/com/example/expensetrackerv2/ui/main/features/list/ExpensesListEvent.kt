@@ -1,7 +1,7 @@
 package com.example.expensetrackerv2.ui.main.features.list
 
-import com.example.expensetrackerv2.models.view_models.ExpenseWithCategory
+import com.github.pploszczyca.expensetrackerv2.domain.Expense
 
 sealed interface ExpensesListEvent {
-    data class ExpensesChanged(val expenses: List<ExpenseWithCategory>) : ExpensesListEvent
+    data class ExpensesChanged(val expenses: List<Expense>) : ExpensesListEvent
 }

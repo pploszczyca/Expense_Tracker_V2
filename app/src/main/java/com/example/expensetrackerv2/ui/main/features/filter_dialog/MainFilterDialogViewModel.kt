@@ -9,6 +9,7 @@ import com.example.expensetrackerv2.extensions.toStringDate
 import com.example.expensetrackerv2.models.getKey
 import com.example.expensetrackerv2.models.view_models.ExpenseMonthYearKey
 import com.example.expensetrackerv2.use_cases.expense.GetAllExpenses
+import com.github.pploszczyca.expensetrackerv2.domain.Expense
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
@@ -29,7 +30,7 @@ class MainFilterDialogViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.Main) {
             getAllExpenses()
                 .map { expenses ->
-                    expenses.map { it.getKey() }
+                    expenses.map { it.monthYearKey }
                 }
                 .collect { keys ->
                     viewState = viewState.copy(
@@ -55,7 +56,7 @@ class MainFilterDialogViewModel @Inject constructor(
         val options: List<FilterOption> = emptyList(),
     ) {
         data class FilterOption(
-            val key: ExpenseMonthYearKey,
+            val key: Expense.MonthYearKey,
         ) {
             val dateText: String = key.toStringDate()
         }

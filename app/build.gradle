@@ -58,6 +58,8 @@ android {
 }
 
 dependencies {
+    implementation project(":domain")
+
     implementation Libs.androidxCore
     implementation Libs.appcompat
     implementation Libs.material

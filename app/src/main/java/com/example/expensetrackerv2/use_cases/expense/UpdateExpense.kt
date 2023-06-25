@@ -2,6 +2,8 @@ package com.example.expensetrackerv2.use_cases.expense
 
 import com.example.expensetrackerv2.models.ExpenseEntity
 import com.example.expensetrackerv2.repositories.ExpenseRepository
+import com.github.pploszczyca.expensetrackerv2.domain.Category
+import com.github.pploszczyca.expensetrackerv2.domain.Expense
 import java.util.Date
 import javax.inject.Inject
 
@@ -15,17 +17,17 @@ class UpdateExpense @Inject constructor(
         date: Date,
         description: String,
         place: String,
-        categoryId: Int,
+        category: Category,
     ) {
         repository.update(
-            expense = ExpenseEntity(
+            expense = Expense(
                 id = id,
                 title = title,
                 price = price,
                 date = date,
                 description = description,
                 place = place,
-                categoryId = categoryId,
+                category = category,
             )
         )
     }

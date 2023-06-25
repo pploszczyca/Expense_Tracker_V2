@@ -1,25 +1,28 @@
 package com.example.expensetrackerv2.repositories
 
 import com.example.expensetrackerv2.database.ExpenseDao
-import com.example.expensetrackerv2.models.CategoryEntity
+import com.example.expensetrackerv2.repositories.mappers.CategoryMapper
+import com.github.pploszczyca.expensetrackerv2.domain.Category
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class CategoryDatabaseRepository @Inject constructor(private val expenseDao: ExpenseDao) :
-    CategoryRepository {
-    private val typeOfExpenseLiveData = expenseDao.getAllCategories()
+internal class CategoryDatabaseRepository @Inject constructor(
+    private val expenseDao: ExpenseDao,
+    private val categoryMapper: CategoryMapper = CategoryMapper(),
+    ) : CategoryRepository {
+    override fun getAll(): Flow<List<Category>> =
+        expenseDao.getAllCategories().map { it.map(categoryMapper::toDomainModel) }
 
-    override fun getAll(): Flow<List<CategoryEntity>> = typeOfExpenseLiveData
-
-    override suspend fun insert(categoryEntity: CategoryEntity) {
-        expenseDao.insertAllCategories(categoryEntity)
+    override suspend fun insert(category: Category) {
+        expenseDao.insertAllCategories(category.let(categoryMapper::toDatabaseModel))
     }
 
-    override suspend fun delete(categoryEntity: CategoryEntity) {
-        expenseDao.deleteTypeOfExpense(categoryEntity)
+    override suspend fun delete(category: Category) {
+        expenseDao.deleteTypeOfExpense(category.let(categoryMapper::toDatabaseModel))
     }
 
-    override suspend fun update(categoryEntity: CategoryEntity) {
-        expenseDao.updateTypeOfExpense(categoryEntity)
+    override suspend fun update(category: Category) {
+        expenseDao.updateTypeOfExpense(category.let(categoryMapper::toDatabaseModel))
     }
 }

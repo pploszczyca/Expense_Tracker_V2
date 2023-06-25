@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.expensetrackerv2.models.view_models.ExpenseMonthYearKey
 import com.example.expensetrackerv2.models.view_models.ExpenseWithCategory
+import com.github.pploszczyca.expensetrackerv2.domain.Expense
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -28,9 +29,9 @@ class ExpenseListViewModel @Inject constructor(
         val groupedExpensesList: List<GroupedExpenses> = emptyList(),
     ) {
         data class GroupedExpenses(
-            val key: ExpenseMonthYearKey,
+            val key: Expense.MonthYearKey,
             val dateText: String,
-            val expenses: List<ExpenseWithCategory>,
+            val expenses: List<Expense>,
             val totalIncome: String,
             val totalOutgo: String,
         )

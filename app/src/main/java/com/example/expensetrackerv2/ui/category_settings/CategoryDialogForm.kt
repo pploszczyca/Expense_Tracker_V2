@@ -15,8 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.example.expensetrackerv2.R
-import com.example.expensetrackerv2.models.CategoryEntity
-import com.example.expensetrackerv2.models.CategoryType
+import com.github.pploszczyca.expensetrackerv2.domain.Category
 
 @Composable
 fun CategoryDialogForm(
@@ -43,7 +42,7 @@ fun CategoryDialogForm(
                         .selectableGroup(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    CategoryType.values().forEach { typeValue ->
+                    Category.Type.values().forEach { typeValue ->
                         RadioButton(
                             selected = typeValue == type,
                             onClick = {
@@ -65,10 +64,10 @@ fun CategoryDialogForm(
             TextButton(onClick = {
                 modelView.onEvent(
                     CategorySettingsEvent.DialogFormSubmit(
-                        CategoryEntity(
+                        Category(
                             id = id,
                             name = name,
-                            categoryType = type
+                            type = type
                         )
                     )
                 )

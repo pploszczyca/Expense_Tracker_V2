@@ -42,16 +42,6 @@ fun MainComposable(
         drawerState = drawerState,
         drawerContent = {
             DrawerContent(
-                onExportToJsonClick = { uri ->
-                    viewModel.onEvent(
-                        MainEvent.ExportToJsonButtonClick(uri)
-                    )
-                },
-                onImportFromJsonClick = { uri ->
-                    viewModel.onEvent(
-                        MainEvent.ImportFromJsonButtonClick(uri)
-                    )
-                },
                 closeDrawer = closeDrawer,
                 navController = navController
             )

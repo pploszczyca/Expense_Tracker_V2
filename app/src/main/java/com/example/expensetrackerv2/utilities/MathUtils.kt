@@ -1,7 +1,7 @@
 package com.example.expensetrackerv2.utilities
 
-import com.example.expensetrackerv2.models.CategoryType
-import com.example.expensetrackerv2.models.view_models.ExpenseWithCategory
+import com.github.pploszczyca.expensetrackerv2.domain.Category
+import com.github.pploszczyca.expensetrackerv2.domain.Expense
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import kotlin.math.round
@@ -16,17 +16,17 @@ object MathUtils {
 
     private fun roundToMoney(value: Double): Double = round(value * 100) / 100
 
-    fun sumMoneyInList(expenseWithCategoryList: List<ExpenseWithCategory>): Double =
-        roundToMoney(expenseWithCategoryList.sumOf { expense -> expense.price * expense.categoryType.multiplier })
+    fun sumMoneyInList(expenses: List<Expense>): Double =
+        roundToMoney(expenses.sumOf { expense -> expense.price * expense.category.type.multiplier })
 
-    fun sumMoneyInListToString(expenseWithCategoryList: List<ExpenseWithCategory>): String =
+    fun sumMoneyInListToString(expenseWithCategoryList: List<Expense>): String =
         decimalFormat.format(
             sumMoneyInList(expenseWithCategoryList)
         )
 
     fun sumMoneyInListByTypeToString(
-        expenseWithCategoryList: List<ExpenseWithCategory>,
-        categoryType: CategoryType,
+        expenses: List<Expense>,
+        categoryType: Category.Type,
     ): String =
-        sumMoneyInListToString(expenseWithCategoryList.filter { it.categoryType == categoryType })
+        sumMoneyInListToString(expenses.filter { it.category.type == categoryType })
 }

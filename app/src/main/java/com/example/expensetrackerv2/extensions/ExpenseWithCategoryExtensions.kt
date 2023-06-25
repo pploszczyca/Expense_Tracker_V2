@@ -1,16 +1,16 @@
 package com.example.expensetrackerv2.extensions
 
-import com.example.expensetrackerv2.models.CategoryType
-import com.example.expensetrackerv2.models.view_models.ExpenseWithCategory
 import com.example.expensetrackerv2.utilities.MathUtils
+import com.github.pploszczyca.expensetrackerv2.domain.Category
+import com.github.pploszczyca.expensetrackerv2.domain.Expense
 
-fun List<ExpenseWithCategory>.totalIncomeAsString(): String =
-    this.totalSumByTypeAsString(categoryType = CategoryType.INCOME)
+fun List<Expense>.totalIncomeAsString(): String =
+    this.totalSumByTypeAsString(categoryType = Category.Type.INCOME)
 
-fun List<ExpenseWithCategory>.totalOutgoAsString(): String =
-    this.totalSumByTypeAsString(categoryType = CategoryType.OUTGO)
+fun List<Expense>.totalOutgoAsString(): String =
+    this.totalSumByTypeAsString(categoryType = Category.Type.OUTGO)
 
-private fun List<ExpenseWithCategory>.totalSumByTypeAsString(categoryType: CategoryType): String =
+private fun List<Expense>.totalSumByTypeAsString(categoryType: Category.Type): String =
     MathUtils.sumMoneyInListToString(
-        expenseWithCategoryList = this.filter { it.categoryType == categoryType }
+        expenseWithCategoryList = this.filter { it.category.type == categoryType }
     )

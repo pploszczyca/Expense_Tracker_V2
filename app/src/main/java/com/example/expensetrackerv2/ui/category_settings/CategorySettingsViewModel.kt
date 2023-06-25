@@ -6,12 +6,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.expensetrackerv2.models.CategoryConstants
-import com.example.expensetrackerv2.models.CategoryEntity
-import com.example.expensetrackerv2.models.CategoryType
 import com.example.expensetrackerv2.use_cases.category.DeleteCategory
 import com.example.expensetrackerv2.use_cases.category.GetCategories
 import com.example.expensetrackerv2.use_cases.category.InsertCategory
 import com.example.expensetrackerv2.use_cases.category.UpdateCategory
+import com.github.pploszczyca.expensetrackerv2.domain.Category
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -24,7 +23,7 @@ class CategorySettingsViewModel @Inject constructor(
     private val updateCategory: UpdateCategory,
     private val deleteCategory: DeleteCategory,
 ) : ViewModel() {
-    val categories: Flow<List<CategoryEntity>> = getCategories()
+    val categories: Flow<List<Category>> = getCategories()
 
     private val _id = mutableStateOf(CategoryConstants.NEW_TYPE_OF_EXPENSE_ID)
     val id: State<Int> = _id
@@ -32,8 +31,8 @@ class CategorySettingsViewModel @Inject constructor(
     private val _name = mutableStateOf("")
     val name: State<String> = _name
 
-    private val _Category_type = mutableStateOf(CategoryType.INCOME)
-    val categoryType: State<CategoryType> = _Category_type
+    private val _categoryType = mutableStateOf(Category.Type.INCOME)
+    val categoryType: State<Category.Type> = _categoryType
 
     private val _isDialogFormVisible = mutableStateOf(false)
     val isDialogFormVisible: State<Boolean> = _isDialogFormVisible
@@ -45,7 +44,7 @@ class CategorySettingsViewModel @Inject constructor(
         when (event) {
             is CategorySettingsEvent.IdChange -> _id.value = event.value
             is CategorySettingsEvent.NameChange -> _name.value = event.value
-            is CategorySettingsEvent.TypeChange -> _Category_type.value = event.value
+            is CategorySettingsEvent.TypeChange -> _categoryType.value = event.value
             is CategorySettingsEvent.CloseDeleteDialog -> closeDialog(
                 _isDeleteDialogFormVisible
             )
@@ -67,7 +66,7 @@ class CategorySettingsViewModel @Inject constructor(
             }
 
             is CategorySettingsEvent.DeleteDialogSubmit -> {
-                delete(makeTypeOfExpenseFromState())
+                delete(makeCategoryFromState())
                 onEvent(CategorySettingsEvent.CloseDeleteDialog())
             }
         }
@@ -84,28 +83,32 @@ class CategorySettingsViewModel @Inject constructor(
         state.value = false
     }
 
-    private fun setIdNameAndType(categoryEntity: CategoryEntity) {
-        _id.value = categoryEntity.id
-        _name.value = categoryEntity.name
-        _Category_type.value = categoryEntity.categoryType
+    private fun setIdNameAndType(category: Category) {
+        _id.value = category.id
+        _name.value = category.name
+        _categoryType.value = category.type
     }
 
-    private fun insertOrUpdate(categoryEntity: CategoryEntity) {
+    private fun insertOrUpdate(category: Category) {
         viewModelScope.launch {
             if (isThisNewTypeOfExpense()) {
-                insertCategory(categoryEntity)
+                insertCategory(category)
             } else {
-                updateCategory(categoryEntity)
+                updateCategory(category)
             }
         }
     }
 
-    private fun makeTypeOfExpenseFromState() =
-        CategoryEntity(id = id.value, name = name.value, categoryType = categoryType.value)
+    private fun makeCategoryFromState(): Category =
+        Category(
+            id = id.value,
+            name = name.value,
+            type = categoryType.value,
+        )
 
-    private fun delete(categoryEntity: CategoryEntity) {
+    private fun delete(category: Category) {
         viewModelScope.launch {
-            deleteCategory(categoryEntity)
+            deleteCategory(category)
         }
     }
 }

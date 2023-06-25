@@ -1,23 +1,16 @@
 package com.example.expensetrackerv2.ui.main
 
-import android.content.ContentResolver
-import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.expensetrackerv2.models.view_models.ExpenseMonthYearKey
-import com.example.expensetrackerv2.models.view_models.ExpenseWithCategory
-import com.example.expensetrackerv2.models.view_models.getKey
 import com.example.expensetrackerv2.ui.main.features.bottom_bar.MainBottomBarEvent
 import com.example.expensetrackerv2.ui.main.features.filter_dialog.MainFilterDialogEvent
-import com.example.expensetrackerv2.use_cases.expense_with_category.DeleteAllExpensesWithCategory
-import com.example.expensetrackerv2.use_cases.expense_with_category.DeleteExpenseWithCategory
-import com.example.expensetrackerv2.use_cases.expense_with_category.GetAllExpenseWithCategory
-import com.example.expensetrackerv2.use_cases.expense_with_category.InsertExpenseWithCategory
-import com.example.expensetrackerv2.utilities.JSONUtils
+import com.example.expensetrackerv2.use_cases.expense.DeleteExpense
+import com.example.expensetrackerv2.use_cases.expense.GetAllExpenses
 import com.example.expensetrackerv2.utilities.MathUtils
+import com.github.pploszczyca.expensetrackerv2.domain.Expense
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
@@ -27,11 +20,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val contentResolver: ContentResolver,
-    private val getAllExpenseWithCategory: GetAllExpenseWithCategory,
-    private val deleteExpenseWithCategory: DeleteExpenseWithCategory,
-    private val deleteAllExpensesWithCategory: DeleteAllExpensesWithCategory,
-    private val insertExpenseWithCategory: InsertExpenseWithCategory,
+    private val getAllExpenses: GetAllExpenses,
+    private val deleteExpense: DeleteExpense,
     bottomBarChannel: Channel<MainBottomBarEvent>,
     filterDialogChannel: Channel<MainFilterDialogEvent>,
 ) : ViewModel() {
@@ -42,11 +32,9 @@ class MainViewModel @Inject constructor(
 
     init {
         viewModelScope.launch(Dispatchers.Main) {
-            getAllExpenseWithCategory()
-                .collect {
-                    viewState = viewState.copy(
-                        expensesWithItsType = it
-                    )
+            getAllExpenses()
+                .collect { expenses ->
+                    viewState = viewState.copy(expenses = expenses)
                 }
         }
 
@@ -65,14 +53,11 @@ class MainViewModel @Inject constructor(
                 searchedTitle = event.value,
             )
 
-            is MainEvent.ExportToJsonButtonClick -> exportToJson(event.value)
-            is MainEvent.ImportFromJsonButtonClick -> importFromJsonAndInsert(event.value)
             is MainEvent.ConfirmDeleteButtonClick -> {
                 viewModelScope.launch(Dispatchers.IO) {
                     viewState.expenseToDelete?.let {
-                        deleteExpenseWithCategory(expenseWithCategory = it)
+                        deleteExpense(expense = it)
                     }
-
                 }
                 viewState = viewState.copy(
                     deleteDialogVisible = false
@@ -92,32 +77,6 @@ class MainViewModel @Inject constructor(
                 topBarVisible = false,
                 searchedTitle = "",
             )
-        }
-    }
-
-    private fun exportToJson(uri: Uri?) {
-        uri?.let { uri ->
-            viewModelScope.launch(Dispatchers.IO) {
-                contentResolver.openOutputStream(uri)
-                    ?.write(
-                        JSONUtils
-                            .exportExpensesListToJson(viewState.filteredExpenses)
-                            .toByteArray()
-                    )
-            }
-        }
-    }
-
-    private fun importFromJsonAndInsert(uri: Uri?) {
-        uri?.let { uri ->
-            viewModelScope.launch(Dispatchers.IO) {
-                deleteAllExpensesWithCategory()
-                JSONUtils.importExpensesListFromJson(
-                    contentResolver.openInputStream(
-                        uri
-                    )?.bufferedReader()?.use { it.readText() }!!
-                ).forEach { insertExpenseWithCategory(it) }
-            }
         }
     }
 
@@ -157,10 +116,10 @@ class MainViewModel @Inject constructor(
     }
 
     data class ViewState(
-        val currentMonthYearKey: ExpenseMonthYearKey? = null,
+        val currentMonthYearKey: Expense.MonthYearKey? = null,
         val searchedTitle: String = "",
-        val expenseToDelete: ExpenseWithCategory? = null,
-        private val expensesWithItsType: List<ExpenseWithCategory> = emptyList(),
+        val expenseToDelete: Expense? = null,
+        private val expenses: List<Expense> = emptyList(),
         val topBarVisible: Boolean = false,
         val deleteDialogVisible: Boolean = false,
         val filterDialogVisible: Boolean = false,
@@ -168,18 +127,18 @@ class MainViewModel @Inject constructor(
         val clearButtonVisible: Boolean get() = currentMonthYearKey != null
         val mainExpenseInformationVisible: Boolean get() = topBarVisible.not()
 
-        val filteredExpenses: List<ExpenseWithCategory>
-            get() = expensesWithItsType.filter(::checkIfHasKeyAndContainsSearchedTitle)
+        val filteredExpenses: List<Expense>
+            get() = expenses.filter(::checkIfHasKeyAndContainsSearchedTitle)
 
-        private fun checkIfHasKeyAndContainsSearchedTitle(expenseWithCategory: ExpenseWithCategory): Boolean =
-            (currentMonthYearKey == null || expenseWithCategory.getKey() == currentMonthYearKey) && expenseWithCategory.title.contains(
+        private fun checkIfHasKeyAndContainsSearchedTitle(expense: Expense): Boolean =
+            (currentMonthYearKey == null || expense.monthYearKey == currentMonthYearKey) && expense.title.contains(
                 searchedTitle,
                 true
             )
 
         val moneyInWalletAmount: Double
             get() = MathUtils.sumMoneyInList(
-                expenseWithCategoryList = filteredExpenses
+                expenses = filteredExpenses
             )
     }
 }

@@ -5,14 +5,14 @@ import androidx.lifecycle.viewModelScope
 import com.example.expensetrackerv2.R
 import com.example.expensetrackerv2.extensions.toDate
 import com.example.expensetrackerv2.extensions.toFormattedString
-import com.example.expensetrackerv2.models.CategoryEntity
-import com.example.expensetrackerv2.models.ExpenseEntity
 import com.example.expensetrackerv2.use_cases.category.GetCategories
 import com.example.expensetrackerv2.use_cases.expense.GetExpense
 import com.example.expensetrackerv2.use_cases.expense.GetExpensesPlaces
 import com.example.expensetrackerv2.use_cases.expense.GetExpensesTitles
 import com.example.expensetrackerv2.use_cases.expense.InsertExpense
 import com.example.expensetrackerv2.use_cases.expense.UpdateExpense
+import com.github.pploszczyca.expensetrackerv2.domain.Category
+import com.github.pploszczyca.expensetrackerv2.domain.Expense
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -42,6 +42,8 @@ class ExpenseFormViewModelImpl @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher,
 ) : ExpenseFormViewModel() {
 
+    private lateinit var _categories: List<Category>
+
     private val _viewState: MutableStateFlow<ViewState> = MutableStateFlow(ViewState())
     override val viewState: StateFlow<ViewState> = _viewState
 
@@ -51,7 +53,7 @@ class ExpenseFormViewModelImpl @Inject constructor(
     private val expenseId: Int? = savedStateHandle.get<Int>("EXPENSE_ID")
 
     init {
-        val getExpenseOrNullFlow: Flow<ExpenseEntity?> =
+        val getExpenseOrNullFlow: Flow<Expense?> =
             when (expenseId == null || expenseId == NO_EXPENSE_ID) {
                 true -> flowOf(null)
                 false -> getExpense(expenseId)
@@ -64,9 +66,11 @@ class ExpenseFormViewModelImpl @Inject constructor(
                 getCategories(),
                 getExpenseOrNullFlow,
             ) { titles, places, categories, expense ->
+                _categories = categories
+
                 val chosenCategoryId = when (expense) {
                     null -> categories.first().id
-                    else -> expense.categoryId
+                    else -> expense.category.id
                 }
 
                 val submitButtonTextId = when (expense == null) {
@@ -94,7 +98,7 @@ class ExpenseFormViewModelImpl @Inject constructor(
     }
 
     private fun mapToViewStateCategories(
-        categories: List<CategoryEntity>,
+        categories: List<Category>,
         chosenCategoryId: Int,
     ): List<ViewState.Category> =
         categories.map {
@@ -164,6 +168,9 @@ class ExpenseFormViewModelImpl @Inject constructor(
         }
     }
 
+    private fun ViewState.isAllDataValidated(): Boolean =
+        title != "" && price != ""
+
     private suspend fun performInsertingExpense() {
         with(viewState.value) {
             insertExpense(
@@ -172,7 +179,7 @@ class ExpenseFormViewModelImpl @Inject constructor(
                 date = date.toDate(),
                 description = description,
                 place = placeName,
-                categoryId = chosenCategoryId,
+                category = chosenCategory(),
             )
         }
     }
@@ -186,13 +193,13 @@ class ExpenseFormViewModelImpl @Inject constructor(
                 date = date.toDate(),
                 description = description,
                 place = placeName,
-                categoryId = chosenCategoryId,
+                category = chosenCategory(),
             )
         }
     }
 
-    private fun ViewState.isAllDataValidated(): Boolean =
-        title != "" && price != ""
+    private fun ViewState.chosenCategory(): Category =
+        _categories.first { it.id == chosenCategoryId }
 
     override fun onBackClicked() {
         viewModelScope.launch {

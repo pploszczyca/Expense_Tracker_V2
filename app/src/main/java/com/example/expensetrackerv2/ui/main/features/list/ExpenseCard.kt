@@ -39,18 +39,18 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.expensetrackerv2.R
 import com.example.expensetrackerv2.extensions.toFormattedString
-import com.example.expensetrackerv2.models.CategoryType
-import com.example.expensetrackerv2.models.view_models.ExpenseWithCategory
 import com.example.expensetrackerv2.navigation.Routes
 import com.example.expensetrackerv2.ui.theme.ExpenseColor
 import com.example.expensetrackerv2.ui.theme.ExpenseTrackerV2Theme
 import com.example.expensetrackerv2.ui.theme.IncomeColor
+import com.github.pploszczyca.expensetrackerv2.domain.Category
+import com.github.pploszczyca.expensetrackerv2.domain.Expense
 
 @Composable
 fun ExpenseCard(
-    expenseWithCategory: ExpenseWithCategory,
+    expense: Expense,
     navController: NavController,
-    onDeleteButtonClick: (ExpenseWithCategory) -> Unit,
+    onDeleteButtonClick: (Expense) -> Unit,
 ) {
     var isCardExtended by remember { mutableStateOf(false) }
 
@@ -75,7 +75,7 @@ fun ExpenseCard(
             ) {
                 Text(
                     style = MaterialTheme.typography.bodySmall,
-                    text = expenseWithCategory.date.toFormattedString()
+                    text = expense.date.toFormattedString()
                 )
                 Icon(
                     Icons.Default.ArrowDropUp,
@@ -89,19 +89,19 @@ fun ExpenseCard(
             ) {
                 Text(
                     style = MaterialTheme.typography.bodyLarge,
-                    text = expenseWithCategory.title,
+                    text = expense.title,
                     fontStyle = FontStyle.Italic,
                     modifier = Modifier.weight(1f)
                 )
                 Text(
                     style = MaterialTheme.typography.bodyLarge,
-                    text = (expenseWithCategory.price * expenseWithCategory.categoryType.multiplier).toString(),
-                    color = if (expenseWithCategory.categoryType == CategoryType.OUTGO) ExpenseColor else IncomeColor
+                    text = (expense.price * expense.category.type.multiplier).toString(),
+                    color = if (expense.category.type == Category.Type.OUTGO) ExpenseColor else IncomeColor
                 )
             }
 
             if (isCardExtended) {
-                ExtraContentExpenseCard(expenseWithCategory, navController, onDeleteButtonClick)
+                ExtraContentExpenseCard(expense, navController, onDeleteButtonClick)
             }
         }
     }
@@ -109,19 +109,19 @@ fun ExpenseCard(
 
 @Composable
 private fun ExtraContentExpenseCard(
-    expenseWithCategory: ExpenseWithCategory,
+    expense: Expense,
     navController: NavController,
-    onDeleteButtonClick: (ExpenseWithCategory) -> Unit,
+    onDeleteButtonClick: (Expense) -> Unit,
 ) {
     ExtraContentRow(
         stringResource(id = R.string.place),
         Icons.Default.Place,
-        expenseWithCategory.place
+        expense.place
     )
     ExtraContentRow(
         stringResource(id = R.string.description),
         Icons.Default.Message,
-        expenseWithCategory.description
+        expense.description
     )
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -130,7 +130,7 @@ private fun ExtraContentExpenseCard(
         TextButton(onClick = {
             navController.navigate(
                 Routes.ExpenseForm.route.plus(
-                    "?EXPENSE_ID=${expenseWithCategory.id}"
+                    "?EXPENSE_ID=${expense.id}"
                 )
             )
         }) {
@@ -138,7 +138,7 @@ private fun ExtraContentExpenseCard(
             Text(text = stringResource(id = R.string.edit))
         }
 
-        TextButton(onClick = { onDeleteButtonClick(expenseWithCategory) }) {
+        TextButton(onClick = { onDeleteButtonClick(expense) }) {
             Icon(Icons.Default.Delete, contentDescription = null)
             Text(text = stringResource(id = R.string.delete))
         }

@@ -22,7 +22,7 @@ abstract class ExpenseDao {
     abstract fun getExpense(expenseID: Int): Flow<ExpenseEntity>
 
     @Query("SELECT * FROM ExpenseWithCategory WHERE id = :expenseID")
-    abstract fun getExpenseWithItsType(expenseID: Int): Flow<ExpenseWithCategory?>
+    abstract fun getExpenseWithItsType(expenseID: Int): Flow<ExpenseWithCategory>
 
     // INSERTS
     @Insert

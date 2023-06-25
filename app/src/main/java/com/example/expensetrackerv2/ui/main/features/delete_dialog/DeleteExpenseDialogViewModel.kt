@@ -5,8 +5,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.expensetrackerv2.models.view_models.ExpenseWithCategory
+import com.example.expensetrackerv2.use_cases.expense.DeleteExpense
 import com.example.expensetrackerv2.use_cases.expense_with_category.DeleteExpenseWithCategory
+import com.github.pploszczyca.expensetrackerv2.domain.Expense
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -14,13 +15,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DeleteExpenseDialogViewModel @Inject constructor(
-    private val deleteExpenseWithCategory: DeleteExpenseWithCategory,
+    private val deleteExpense: DeleteExpense,
 ) : ViewModel() {
     private var viewState by mutableStateOf(ViewState())
 
-    fun init(expenseWithCategory: ExpenseWithCategory) {
+    fun init(expense: Expense) {
         viewState = viewState.copy(
-            expenseWithCategory = expenseWithCategory
+            expense = expense
         )
     }
 
@@ -28,10 +29,8 @@ class DeleteExpenseDialogViewModel @Inject constructor(
         when (event) {
             DeleteExpenseDialogEvent.ConfirmButtonClick -> {
                 viewModelScope.launch(Dispatchers.IO) {
-                    viewState.expenseWithCategory?.let {
-                        deleteExpenseWithCategory(
-                            expenseWithCategory = it
-                        )
+                    viewState.expense?.let {
+                        deleteExpense(expense = it)
                     }
                 }
             }
@@ -39,6 +38,6 @@ class DeleteExpenseDialogViewModel @Inject constructor(
     }
 
     data class ViewState(
-        val expenseWithCategory: ExpenseWithCategory? = null,
+        val expense: Expense? = null,
     )
 }

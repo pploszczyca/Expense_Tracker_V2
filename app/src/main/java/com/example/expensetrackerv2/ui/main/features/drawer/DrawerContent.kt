@@ -20,8 +20,8 @@ import kotlinx.coroutines.Job
 
 @Composable
 fun DrawerContent(
-    onExportToJsonClick: (Uri?) -> Unit,
-    onImportFromJsonClick: (Uri?) -> Unit,
+    onExportToJsonClick: (Uri?) -> Unit = {}, // TODO: Remove JSON exporting from code. Should be implemented once again from scratch
+    onImportFromJsonClick: (Uri?) -> Unit = {},
     closeDrawer: () -> Job,
     navController: NavController,
 ) {

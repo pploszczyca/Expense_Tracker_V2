@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.repositories.mappers
+package com.github.pploszczyca.expensetrackerv2.database.repositories.mappers
 
 import com.github.pploszczyca.expensetrackerv2.database.models.CategoryEntity
 import com.github.pploszczyca.expensetrackerv2.database.models.CategoryType

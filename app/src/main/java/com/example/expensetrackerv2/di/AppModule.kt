@@ -2,10 +2,12 @@ package com.example.expensetrackerv2.di
 
 import android.content.ContentResolver
 import android.content.Context
-import androidx.room.Room
 import com.github.pploszczyca.expensetrackerv2.database.database.AppDatabase
 import com.github.pploszczyca.expensetrackerv2.database.database.ExpenseDao
 import com.example.expensetrackerv2.repositories.*
+import com.github.pploszczyca.expensetrackerv2.database.di.DatabaseDI
+import com.github.pploszczyca.expensetrackerv2.database.repositories.CategoryDatabaseRepository
+import com.github.pploszczyca.expensetrackerv2.database.repositories.ExpenseDatabaseRepository
 import com.github.pploszczyca.expensetrackerv2.usecases.repositories.CategoryRepository
 import com.github.pploszczyca.expensetrackerv2.usecases.repositories.ExpenseRepository
 import dagger.Module
@@ -23,10 +25,7 @@ object AppModule {
     @Provides
     @Singleton
     fun provideAppDatabase(@ApplicationContext appContext: Context): AppDatabase =
-        Room.databaseBuilder(
-            appContext,
-            AppDatabase::class.java, "expense-tracker-db"
-        ).build()
+        DatabaseDI.appDatabase(appContext = appContext)
 
     @Provides
     fun provideExpenseDao(appDatabase: AppDatabase): ExpenseDao = appDatabase.expenseDao()

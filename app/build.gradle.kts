@@ -83,10 +83,6 @@ dependencies {
     implementation(Libs.navigationCompose)
     implementation(Libs.materialIconsExtended)
 
-    implementation(Libs.roomRuntime)
-    kapt(Libs.roomCompiler)
-    implementation(Libs.roomKtx)
-
     implementation(Libs.kotlinxCoroutinesAndroid)
 
     implementation(Libs.gson)

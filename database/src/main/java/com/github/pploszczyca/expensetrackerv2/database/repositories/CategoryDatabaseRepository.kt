@@ -1,7 +1,7 @@
-package com.example.expensetrackerv2.repositories
+package com.github.pploszczyca.expensetrackerv2.database.repositories
 
 import com.github.pploszczyca.expensetrackerv2.database.database.ExpenseDao
-import com.example.expensetrackerv2.repositories.mappers.CategoryMapper
+import com.github.pploszczyca.expensetrackerv2.database.repositories.mappers.CategoryMapper
 import com.github.pploszczyca.expensetrackerv2.domain.Category
 import com.github.pploszczyca.expensetrackerv2.usecases.repositories.CategoryRepository
 import kotlinx.coroutines.flow.Flow

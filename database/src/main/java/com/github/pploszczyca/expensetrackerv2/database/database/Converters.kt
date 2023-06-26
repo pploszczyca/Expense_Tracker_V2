@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.database
+package com.github.pploszczyca.expensetrackerv2.database.database
 
 import androidx.room.TypeConverter
 import java.util.Date

@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.database
+package com.github.pploszczyca.expensetrackerv2.database.database
 
 import androidx.room.*
 import com.github.pploszczyca.expensetrackerv2.database.models.CategoryEntity

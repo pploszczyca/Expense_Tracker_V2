@@ -1,6 +1,6 @@
 package com.example.expensetrackerv2.repositories
 
-import com.example.expensetrackerv2.database.ExpenseDao
+import com.github.pploszczyca.expensetrackerv2.database.database.ExpenseDao
 import com.example.expensetrackerv2.repositories.mappers.CategoryMapper
 import com.github.pploszczyca.expensetrackerv2.domain.Category
 import com.github.pploszczyca.expensetrackerv2.usecases.repositories.CategoryRepository

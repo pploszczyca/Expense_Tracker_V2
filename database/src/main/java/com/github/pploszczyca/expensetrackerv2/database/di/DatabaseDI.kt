@@ -3,14 +3,19 @@ package com.github.pploszczyca.expensetrackerv2.database.di
 import android.content.Context
 import androidx.room.Room
 import com.github.pploszczyca.expensetrackerv2.database.database.AppDatabase
+import com.github.pploszczyca.expensetrackerv2.database.database.ExpenseDao
+import com.github.pploszczyca.expensetrackerv2.database.repositories.CategoryDatabaseRepository
+import com.github.pploszczyca.expensetrackerv2.database.repositories.ExpenseDatabaseRepository
+import com.github.pploszczyca.expensetrackerv2.usecases.repositories.CategoryRepository
+import com.github.pploszczyca.expensetrackerv2.usecases.repositories.ExpenseRepository
 
 object DatabaseDI {
     private const val DATABASE_NAME = "expense-tracker-db"
 
     private lateinit var appDatabaseField: AppDatabase
 
-    fun appDatabase(appContext: Context): AppDatabase {
-        if(::appDatabaseField.isInitialized.not()) {
+    private fun appDatabase(appContext: Context): AppDatabase {
+        if (::appDatabaseField.isInitialized.not()) {
             appDatabaseField = Room.databaseBuilder(
                 appContext,
                 AppDatabase::class.java, DATABASE_NAME
@@ -20,5 +25,16 @@ object DatabaseDI {
         return appDatabaseField
     }
 
+    private fun expenseDao(appContext: Context): ExpenseDao =
+        appDatabase(appContext = appContext).expenseDao()
 
+    fun categoryRepository(appContext: Context): CategoryRepository =
+        CategoryDatabaseRepository(
+            expenseDao = expenseDao(appContext)
+        )
+
+    fun expenseRepository(appContext: Context): ExpenseRepository =
+        ExpenseDatabaseRepository(
+            dao = expenseDao(appContext)
+        )
 }

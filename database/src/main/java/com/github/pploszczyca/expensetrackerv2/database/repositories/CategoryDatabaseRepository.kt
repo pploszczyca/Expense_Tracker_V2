@@ -6,9 +6,8 @@ import com.github.pploszczyca.expensetrackerv2.domain.Category
 import com.github.pploszczyca.expensetrackerv2.usecases.repositories.CategoryRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
-internal class CategoryDatabaseRepository @Inject constructor(
+internal class CategoryDatabaseRepository(
     private val expenseDao: ExpenseDao,
     private val categoryMapper: CategoryMapper = CategoryMapper(),
 ) : CategoryRepository {

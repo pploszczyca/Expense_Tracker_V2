@@ -2,12 +2,7 @@ package com.example.expensetrackerv2.di
 
 import android.content.ContentResolver
 import android.content.Context
-import com.github.pploszczyca.expensetrackerv2.database.database.AppDatabase
-import com.github.pploszczyca.expensetrackerv2.database.database.ExpenseDao
-import com.example.expensetrackerv2.repositories.*
 import com.github.pploszczyca.expensetrackerv2.database.di.DatabaseDI
-import com.github.pploszczyca.expensetrackerv2.database.repositories.CategoryDatabaseRepository
-import com.github.pploszczyca.expensetrackerv2.database.repositories.ExpenseDatabaseRepository
 import com.github.pploszczyca.expensetrackerv2.usecases.repositories.CategoryRepository
 import com.github.pploszczyca.expensetrackerv2.usecases.repositories.ExpenseRepository
 import dagger.Module
@@ -17,26 +12,18 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
-    @Provides
-    @Singleton
-    fun provideAppDatabase(@ApplicationContext appContext: Context): AppDatabase =
-        DatabaseDI.appDatabase(appContext = appContext)
 
     @Provides
-    fun provideExpenseDao(appDatabase: AppDatabase): ExpenseDao = appDatabase.expenseDao()
+    fun provideCategoryRepository(@ApplicationContext appContext: Context): CategoryRepository =
+        DatabaseDI.categoryRepository(appContext = appContext)
 
     @Provides
-    fun provideTypeOfExpenseRepository(expenseDao: ExpenseDao): CategoryRepository =
-        CategoryDatabaseRepository(expenseDao)
-
-    @Provides
-    fun provideExpenseRepository(expenseDao: ExpenseDao): ExpenseRepository =
-        ExpenseDatabaseRepository(expenseDao)
+    fun provideExpenseRepository(@ApplicationContext appContext: Context): ExpenseRepository =
+        DatabaseDI.expenseRepository(appContext = appContext)
 
     @Provides
     fun provideContentResolver(@ApplicationContext appContext: Context): ContentResolver =

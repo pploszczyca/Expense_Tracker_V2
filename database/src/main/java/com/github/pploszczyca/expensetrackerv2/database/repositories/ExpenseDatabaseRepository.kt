@@ -6,9 +6,8 @@ import com.github.pploszczyca.expensetrackerv2.domain.Expense
 import com.github.pploszczyca.expensetrackerv2.usecases.repositories.ExpenseRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
-internal class ExpenseDatabaseRepository @Inject constructor(
+internal class ExpenseDatabaseRepository(
     private val dao: ExpenseDao,
     private val expenseMapper: ExpenseMapper = ExpenseMapper(),
 ) : ExpenseRepository {

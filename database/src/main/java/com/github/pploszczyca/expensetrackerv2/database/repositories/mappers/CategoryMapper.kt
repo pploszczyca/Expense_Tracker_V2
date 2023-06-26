@@ -4,7 +4,7 @@ import com.github.pploszczyca.expensetrackerv2.database.models.CategoryEntity
 import com.github.pploszczyca.expensetrackerv2.database.models.CategoryType
 import com.github.pploszczyca.expensetrackerv2.domain.Category
 
-class CategoryMapper {
+internal class CategoryMapper {
     fun toDomainModel(categoryEntity: CategoryEntity): Category =
         Category(
             id = categoryEntity.id,

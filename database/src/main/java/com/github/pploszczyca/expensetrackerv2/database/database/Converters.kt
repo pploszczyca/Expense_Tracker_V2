@@ -3,7 +3,7 @@ package com.github.pploszczyca.expensetrackerv2.database.database
 import androidx.room.TypeConverter
 import java.util.Date
 
-class Converters {
+internal class Converters {
     @TypeConverter
     fun fromTimestamp(value: Long?): Date? {
         return value?.let { Date(it) }

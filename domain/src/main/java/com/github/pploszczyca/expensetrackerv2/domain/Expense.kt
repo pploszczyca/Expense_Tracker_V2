@@ -16,7 +16,7 @@ data class Expense(
 
     data class MonthYearKey(val year: Int, val month: Int)
 
-    private companion object {
+    companion object {
         const val NEW_EXPENSE_ID = 0
     }
 }

@@ -26,7 +26,7 @@ fun CategoryDialogForm(
     val type by modelView.categoryType
 
     val confirmButtonTitle =
-        stringResource(id = if (modelView.isThisNewTypeOfExpense()) R.string.add else R.string.update)
+        stringResource(id = if (modelView.isThisNewCategory()) R.string.add else R.string.update)
 
     AlertDialog(
         title = { Text(text = stringResource(id = R.string.type_of_expense_form_title)) },

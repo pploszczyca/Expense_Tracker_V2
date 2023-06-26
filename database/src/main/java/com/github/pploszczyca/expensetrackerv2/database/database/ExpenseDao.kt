@@ -7,7 +7,7 @@ import com.github.pploszczyca.expensetrackerv2.database.models.view_models.Expen
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-abstract class ExpenseDao {
+internal abstract class ExpenseDao {
     //QUERIES
     @Query("SELECT * FROM expense ORDER BY date DESC")
     abstract fun getAllExpenses(): Flow<List<ExpenseEntity>>

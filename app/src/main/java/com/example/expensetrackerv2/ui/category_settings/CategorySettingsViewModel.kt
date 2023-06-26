@@ -5,7 +5,6 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.pploszczyca.expensetrackerv2.database.models.CategoryConstants
 import com.github.pploszczyca.expensetrackerv2.usecases.category.DeleteCategory
 import com.github.pploszczyca.expensetrackerv2.usecases.category.GetCategories
 import com.github.pploszczyca.expensetrackerv2.usecases.category.InsertCategory
@@ -25,7 +24,7 @@ class CategorySettingsViewModel @Inject constructor(
 ) : ViewModel() {
     val categories: Flow<List<Category>> = getCategories()
 
-    private val _id = mutableStateOf(CategoryConstants.NEW_TYPE_OF_EXPENSE_ID)
+    private val _id = mutableStateOf(Category.NEW_CATEGORY_ID)
     val id: State<Int> = _id
 
     private val _name = mutableStateOf("")
@@ -72,8 +71,8 @@ class CategorySettingsViewModel @Inject constructor(
         }
     }
 
-    fun isThisNewTypeOfExpense(): Boolean =
-        id.value == CategoryConstants.NEW_TYPE_OF_EXPENSE_ID
+    fun isThisNewCategory(): Boolean =
+        id.value == Category.NEW_CATEGORY_ID
 
     private fun openDialog(state: MutableState<Boolean>) {
         state.value = true
@@ -91,7 +90,7 @@ class CategorySettingsViewModel @Inject constructor(
 
     private fun insertOrUpdate(category: Category) {
         viewModelScope.launch {
-            if (isThisNewTypeOfExpense()) {
+            if (isThisNewCategory()) {
                 insertCategory(category)
             } else {
                 updateCategory(category)

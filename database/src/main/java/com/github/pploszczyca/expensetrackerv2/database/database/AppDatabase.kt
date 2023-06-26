@@ -15,6 +15,6 @@ import com.github.pploszczyca.expensetrackerv2.database.models.view_models.Expen
     exportSchema = false
 )
 @TypeConverters(Converters::class)
-abstract class AppDatabase : RoomDatabase() {
+internal abstract class AppDatabase : RoomDatabase() {
     abstract fun expenseDao(): ExpenseDao
 }

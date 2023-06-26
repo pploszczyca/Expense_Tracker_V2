@@ -10,7 +10,7 @@ data class Category(
         OUTGO(-1)
     }
 
-    private companion object {
+    companion object {
         const val NEW_CATEGORY_ID = 0
     }
 }

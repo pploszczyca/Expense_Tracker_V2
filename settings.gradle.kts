@@ -7,8 +7,10 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
+
 rootProject.name = "Expense Tracker V2"
-include ':app'
-include ':domain'
-include ':useCases'
-include ':database'
+
+include(":app")
+include(":domain")
+include(":useCases")
+include(":database")

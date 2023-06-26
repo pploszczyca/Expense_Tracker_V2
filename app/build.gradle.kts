@@ -85,8 +85,6 @@ dependencies {
 
     implementation(Libs.kotlinxCoroutinesAndroid)
 
-    implementation(Libs.gson)
-
     implementation(Libs.materialDialogs)
 
     implementation(Libs.hiltAndroid)

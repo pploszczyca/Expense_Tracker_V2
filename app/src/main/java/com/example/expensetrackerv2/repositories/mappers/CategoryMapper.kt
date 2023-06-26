@@ -1,7 +1,7 @@
 package com.example.expensetrackerv2.repositories.mappers
 
-import com.example.expensetrackerv2.models.CategoryEntity
-import com.example.expensetrackerv2.models.CategoryType
+import com.github.pploszczyca.expensetrackerv2.database.models.CategoryEntity
+import com.github.pploszczyca.expensetrackerv2.database.models.CategoryType
 import com.github.pploszczyca.expensetrackerv2.domain.Category
 
 class CategoryMapper {

@@ -1,6 +1,6 @@
 package com.example.expensetrackerv2.utilities
 
-import com.example.expensetrackerv2.models.view_models.ExpenseWithCategory
+import com.github.pploszczyca.expensetrackerv2.database.models.view_models.ExpenseWithCategory
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 

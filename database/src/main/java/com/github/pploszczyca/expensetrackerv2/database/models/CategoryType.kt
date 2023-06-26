@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.models
+package com.github.pploszczyca.expensetrackerv2.database.models
 
 enum class CategoryType(val multiplier: Int) {
     INCOME(1),

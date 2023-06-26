@@ -1,8 +1,8 @@
 package com.example.expensetrackerv2.repositories.mappers
 
-import com.example.expensetrackerv2.models.CategoryType
-import com.example.expensetrackerv2.models.ExpenseEntity
-import com.example.expensetrackerv2.models.view_models.ExpenseWithCategory
+import com.github.pploszczyca.expensetrackerv2.database.models.CategoryType
+import com.github.pploszczyca.expensetrackerv2.database.models.ExpenseEntity
+import com.github.pploszczyca.expensetrackerv2.database.models.view_models.ExpenseWithCategory
 import com.github.pploszczyca.expensetrackerv2.domain.Category
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
 

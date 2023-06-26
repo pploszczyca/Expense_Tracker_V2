@@ -1,9 +1,9 @@
-package com.example.expensetrackerv2.models
+package com.github.pploszczyca.expensetrackerv2.database.models
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.expensetrackerv2.models.view_models.ExpenseMonthYearKey
+import com.github.pploszczyca.expensetrackerv2.database.models.view_models.ExpenseMonthYearKey
 import java.util.Date
 
 @Entity(tableName = "expense")

@@ -1,6 +1,5 @@
 package com.example.expensetrackerv2.di
 
-import android.content.ContentResolver
 import android.content.Context
 import com.github.pploszczyca.expensetrackerv2.database.di.DatabaseDI
 import com.github.pploszczyca.expensetrackerv2.usecases.repositories.CategoryRepository
@@ -8,20 +7,17 @@ import com.github.pploszczyca.expensetrackerv2.usecases.repositories.ExpenseRepo
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityRetainedComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 
 @Module
-@InstallIn(SingletonComponent::class)
-object AppModule {
+@InstallIn(ActivityRetainedComponent::class)
+object RepositoriesModule {
+    @Provides
+    fun provideCategoryRepository(@ApplicationContext appContext: Context): CategoryRepository =
+        DatabaseDI.categoryRepository(appContext = appContext)
 
     @Provides
-    fun provideContentResolver(@ApplicationContext appContext: Context): ContentResolver =
-        appContext.contentResolver
-
-    @Provides
-    fun ioDispatcher(): CoroutineDispatcher =
-        Dispatchers.IO
+    fun provideExpenseRepository(@ApplicationContext appContext: Context): ExpenseRepository =
+        DatabaseDI.expenseRepository(appContext = appContext)
 }

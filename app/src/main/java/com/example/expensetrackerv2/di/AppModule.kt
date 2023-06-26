@@ -29,11 +29,9 @@ object AppModule {
         ).build()
 
     @Provides
-    @Singleton
     fun provideExpenseDao(appDatabase: AppDatabase): ExpenseDao = appDatabase.expenseDao()
 
     @Provides
-    @Singleton
     fun provideTypeOfExpenseRepository(expenseDao: ExpenseDao): CategoryRepository =
         CategoryDatabaseRepository(expenseDao)
 
@@ -42,7 +40,6 @@ object AppModule {
         ExpenseDatabaseRepository(expenseDao)
 
     @Provides
-    @Singleton
     fun provideContentResolver(@ApplicationContext appContext: Context): ContentResolver =
         appContext.contentResolver
 

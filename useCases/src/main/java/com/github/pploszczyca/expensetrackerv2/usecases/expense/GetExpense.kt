@@ -1,11 +1,10 @@
 package com.github.pploszczyca.expensetrackerv2.usecases.expense
 
-import com.github.pploszczyca.expensetrackerv2.usecases.repositories.ExpenseRepository
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
+import com.github.pploszczyca.expensetrackerv2.usecases.repositories.ExpenseRepository
 import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
 
-class GetExpense @Inject constructor(
+class GetExpense(
     private val repository: ExpenseRepository,
 ) {
     operator fun invoke(expenseId: Int): Flow<Expense> =

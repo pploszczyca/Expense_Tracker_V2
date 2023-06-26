@@ -1,12 +1,11 @@
 package com.github.pploszczyca.expensetrackerv2.usecases.expense
 
-import com.github.pploszczyca.expensetrackerv2.usecases.repositories.ExpenseRepository
 import com.github.pploszczyca.expensetrackerv2.domain.Category
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
+import com.github.pploszczyca.expensetrackerv2.usecases.repositories.ExpenseRepository
 import java.util.Date
-import javax.inject.Inject
 
-class InsertExpense @Inject constructor(
+class InsertExpense(
     private val repository: ExpenseRepository,
 ) {
     suspend operator fun invoke(

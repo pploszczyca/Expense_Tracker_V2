@@ -4,9 +4,8 @@ import com.github.pploszczyca.expensetrackerv2.usecases.repositories.ExpenseRepo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
-class GetExpensesTitles @Inject constructor(
+class GetExpensesTitles(
     private val repository: ExpenseRepository,
 ) {
     operator fun invoke(): Flow<List<String>> =

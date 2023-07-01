@@ -1,0 +1,8 @@
+<resources>
+    <string name="expense_statistics_app_bar_title">Statistics</string>
+    <string name="total">Total</string>
+    <string name="total_expenses">Total Expenses</string>
+    <string name="total_incomes">Total Incomes</string>
+    <string name="from_date">From Date:</string>
+    <string name="to_date">To Date:</string>
+</resources>

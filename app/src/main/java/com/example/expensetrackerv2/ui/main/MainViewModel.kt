@@ -9,7 +9,6 @@ import com.example.expensetrackerv2.ui.main.features.bottom_bar.MainBottomBarEve
 import com.example.expensetrackerv2.ui.main.features.filter_dialog.MainFilterDialogEvent
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.DeleteExpense
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.GetAllExpenses
-import com.example.expensetrackerv2.utilities.MathUtils
 import com.github.pploszczyca.expensetrackerv2.navigation.contract.NavigationRouter
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,6 +17,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.math.round
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
@@ -143,8 +143,8 @@ class MainViewModel @Inject constructor(
             )
 
         val moneyInWalletAmount: Double
-            get() = MathUtils.sumMoneyInList(
-                expenses = filteredExpenses
-            )
+            get() = filteredExpenses
+                .sumOf { expense -> expense.price * expense.category.type.multiplier }
+                .let { value -> round(value * 100) / 100 }
     }
 }

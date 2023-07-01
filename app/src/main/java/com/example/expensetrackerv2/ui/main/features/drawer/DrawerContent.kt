@@ -26,7 +26,7 @@ fun DrawerContent(
         NavigationDrawerItem(
             onClick = onStatisticsItemClicked,
             modifier = Modifier.padding(horizontal = 12.dp),
-            label = { Text(text = stringResource(id = R.string.drawer_statistics)) },
+            label = { Text(text = stringResource(id = R.string.expense_statistics_app_bar_title)) },
             selected = false
         )
 

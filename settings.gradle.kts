@@ -1,5 +1,8 @@
 import org.gradle.api.initialization.resolve.RepositoriesMode
 
+include(":features:expense-statistics")
+
+
 include(":features:expense-form")
 
 

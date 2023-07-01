@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.utilities
+package com.github.pploszczyca.expensetrackerv2.expense_statistics.utilities
 
 import com.github.pploszczyca.expensetrackerv2.domain.Category
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
@@ -6,7 +6,7 @@ import java.math.RoundingMode
 import java.text.DecimalFormat
 import kotlin.math.round
 
-object MathUtils {
+internal object MathUtils {
     private const val DECIMAL_PATTERN: String = "#.##"
     private val decimalFormat = DecimalFormat(DECIMAL_PATTERN)
 

@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.ui.statistics
+package com.github.pploszczyca.expensetrackerv2.expense_statistics.view_model
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State

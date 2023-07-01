@@ -72,6 +72,7 @@ dependencies {
     implementation(project(":common:common-kotlin"))
 
     implementation(project(":features:expense-form"))
+    implementation(project(":features:expense-statistics"))
 
     implementation(Libs.androidxCore)
     implementation(Libs.appcompat)

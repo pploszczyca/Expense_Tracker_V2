@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.ui.statistics
+package com.github.pploszczyca.expensetrackerv2.expense_statistics.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

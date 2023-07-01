@@ -55,7 +55,7 @@ fun ExpenseFormEntry(
 }
 
 @Composable
-fun HandleRouteActions(
+private fun HandleRouteActions(
     routeAction: SharedFlow<ExpenseFormViewModel.RouteAction>,
     snackBarHostState: SnackbarHostState,
 ) {

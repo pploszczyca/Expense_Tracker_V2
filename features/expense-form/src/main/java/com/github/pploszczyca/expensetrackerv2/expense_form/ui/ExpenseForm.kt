@@ -34,7 +34,7 @@ import com.github.pploszczyca.expensetrackerv2.features.expense_form.R
 import java.time.LocalDate
 
 @Composable
-fun ExpenseForm(
+internal fun ExpenseForm(
     viewState: ExpenseFormViewModel.ViewState,
     onTitleChanged: (title: String) -> Unit,
     onPriceChanged: (price: String) -> Unit,

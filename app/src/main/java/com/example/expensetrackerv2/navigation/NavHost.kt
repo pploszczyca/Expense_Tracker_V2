@@ -10,9 +10,8 @@ import androidx.navigation.navArgument
 import com.example.expensetrackerv2.ui.category_settings.CategorySettings
 import com.github.pploszczyca.expensetrackerv2.expense_form.ui.ExpenseFormEntry
 import com.github.pploszczyca.expensetrackerv2.expense_form.view_model.ExpenseFormViewModel
-import com.github.pploszczyca.expensetrackerv2.expense_form.view_model.ExpenseFormViewModelImpl
 import com.example.expensetrackerv2.ui.main.MainComposable
-import com.example.expensetrackerv2.ui.statistics.ExpensesStatistics
+import com.github.pploszczyca.expensetrackerv2.expense_statistics.ui.ExpensesStatistics
 
 @Composable
 fun NavHostComposable(
@@ -29,7 +28,7 @@ fun NavHostComposable(
                 defaultValue = ExpenseFormViewModel.NO_EXPENSE_ID
             })
         ) { backStackEntry ->
-            ExpenseFormEntry(viewModel = hiltViewModel<ExpenseFormViewModelImpl>(backStackEntry))
+            ExpenseFormEntry(viewModel = hiltViewModel(backStackEntry))
         }
         composable(Routes.ExpenseStatistics.route) {
             ExpensesStatistics(viewModel = hiltViewModel())

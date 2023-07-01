@@ -36,10 +36,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.example.expensetrackerv2.R
-import com.example.expensetrackerv2.extensions.toFormattedString
-import com.example.expensetrackerv2.navigation.Routes
+import com.github.pploszczyca.expensetrackerv2.common_kotlin.extensions.toFormattedString
 import com.example.expensetrackerv2.ui.theme.ExpenseColor
 import com.example.expensetrackerv2.ui.theme.ExpenseTrackerV2Theme
 import com.example.expensetrackerv2.ui.theme.IncomeColor

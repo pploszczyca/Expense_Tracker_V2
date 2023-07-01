@@ -4,7 +4,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.example.expensetrackerv2.extensions.toFormattedString
+import com.github.pploszczyca.expensetrackerv2.common_kotlin.extensions.toFormattedString
 import com.github.pploszczyca.expensetrackerb2.navigation.contract.NavigationRouter
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.GetAllExpenses
 import com.github.pploszczyca.expensetrackerv2.domain.Expense

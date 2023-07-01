@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.ui.form.ui
+package com.github.pploszczyca.expensetrackerv2.expense_form.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -27,10 +27,10 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.expensetrackerv2.R
 import com.github.pploszczyca.expensetrackerv2.common_ui.calendar_field.CalendarDialogField
-import com.example.expensetrackerv2.ui.form.view_model.ExpenseFormViewModel
 import com.github.pploszczyca.expensetrackerv2.common_ui.expense_form_text_field.ExpenseFormTextField
+import com.github.pploszczyca.expensetrackerv2.expense_form.view_model.ExpenseFormViewModel
+import com.github.pploszczyca.expensetrackerv2.features.expense_form.R
 import java.time.LocalDate
 
 @Composable

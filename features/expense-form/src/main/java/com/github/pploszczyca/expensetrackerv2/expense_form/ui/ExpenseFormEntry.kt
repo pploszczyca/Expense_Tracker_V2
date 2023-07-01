@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.ui.form.ui
+package com.github.pploszczyca.expensetrackerv2.expense_form.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
@@ -12,10 +12,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavController
-import com.example.expensetrackerv2.R
 import com.github.pploszczyca.expensetrackerv2.common_ui.bar.TopAppBarWithBack
-import com.example.expensetrackerv2.ui.form.view_model.ExpenseFormViewModel
+import com.github.pploszczyca.expensetrackerv2.expense_form.view_model.ExpenseFormViewModel
+import com.github.pploszczyca.expensetrackerv2.features.expense_form.R
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
 

@@ -26,16 +26,6 @@
     <string name="drawer_statistics">Statistics</string>
     <string name="drawer_type_of_expense_settings">Categories Settings</string>
 
-    <string name="expense_form">Form</string>
-    <string name="expense_form_title">Title</string>
-    <string name="expense_form_price">Price</string>
-    <string name="expense_form_date">Date</string>
-    <string name="expense_form_place">Place</string>
-    <string name="expense_form_description">Description</string>
-    <string name="expense_form_data_incorrect">Data is incorrect</string>
-    <string name="add">Add</string>
-    <string name="update">Update</string>
-
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="reset">Reset</string>

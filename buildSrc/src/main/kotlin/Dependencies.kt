@@ -3,6 +3,7 @@ package buildSrc.src.main.kotlin
 private object Versions {
     const val androidxCoreVersion = "1.10.1"
     const val appcompatVersion = "1.6.1"
+    const val lifecycleViewModelKtxVersion = "2.6.1"
     const val materialVersion = "1.9.0"
     const val composeVersion = "1.4.3"
     const val lifecycleVersion = "2.6.1"
@@ -25,6 +26,7 @@ private object Versions {
 object Libs {
     const val androidxCore = "androidx.core:core-ktx:${Versions.androidxCoreVersion}"
     const val appcompat = "androidx.appcompat:appcompat:${Versions.appcompatVersion}"
+    const val lifecycleViewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycleViewModelKtxVersion}"
     const val material = "com.google.android.material:material:${Versions.materialVersion}"
     const val composeUi = "androidx.compose.ui:ui:${Versions.composeVersion}"
     const val composeMaterial = "androidx.compose.material:material:${Versions.composeVersion}"

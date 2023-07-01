@@ -1,8 +1,8 @@
-package com.example.expensetrackerv2.ui.form.view_model
+package com.github.pploszczyca.expensetrackerv2.expense_form.view_model
 
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
-import com.example.expensetrackerv2.R
+import com.github.pploszczyca.expensetrackerv2.features.expense_form.R
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import java.time.LocalDate

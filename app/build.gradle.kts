@@ -71,6 +71,8 @@ dependencies {
     implementation(project(":common:common-ui"))
     implementation(project(":common:common-kotlin"))
 
+    implementation(project(":features:expense-form"))
+
     implementation(Libs.androidxCore)
     implementation(Libs.appcompat)
     implementation(Libs.material)
@@ -87,8 +89,6 @@ dependencies {
     implementation(Libs.materialIconsExtended)
 
     implementation(Libs.kotlinxCoroutinesAndroid)
-
-    implementation(Libs.materialDialogs)
 
     implementation(Libs.hiltAndroid)
     kapt(Libs.hiltAndroidCompiler)

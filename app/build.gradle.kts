@@ -67,6 +67,7 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":useCases"))
     implementation(project(":database"))
+    implementation(project(":navigation:navigation-contract"))
 
     implementation(Libs.androidxCore)
     implementation(Libs.appcompat)

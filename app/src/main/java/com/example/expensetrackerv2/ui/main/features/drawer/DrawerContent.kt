@@ -58,7 +58,7 @@ fun DrawerContent(
 
         NavigationDrawerItem(
             onClick = {
-                navController.navigate(Routes.TypeOfExpenseSettings.route)
+                navController.navigate(Routes.CategorySettings.route)
                 closeDrawer()
             },
             modifier = Modifier.padding(horizontal = 12.dp),

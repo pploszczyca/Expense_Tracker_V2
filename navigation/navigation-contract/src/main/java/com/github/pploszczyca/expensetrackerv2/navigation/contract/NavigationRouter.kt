@@ -1,4 +1,4 @@
-package com.github.pploszczyca.expensetrackerb2.navigation.contract
+package com.github.pploszczyca.expensetrackerv2.navigation.contract
 
 interface NavigationRouter {
     fun goBack()

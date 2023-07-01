@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import com.github.pploszczyca.expensetrackerv2.features.expense_form.R
 import com.github.pploszczyca.expensetrackerv2.common_kotlin.extensions.toDate
 import com.github.pploszczyca.expensetrackerv2.common_kotlin.extensions.toFormattedString
-import com.github.pploszczyca.expensetrackerb2.navigation.contract.NavigationRouter
+import com.github.pploszczyca.expensetrackerv2.navigation.contract.NavigationRouter
 import com.github.pploszczyca.expensetrackerv2.usecases.category.GetCategories
 import com.github.pploszczyca.expensetrackerv2.domain.Category
 import com.github.pploszczyca.expensetrackerv2.domain.Expense

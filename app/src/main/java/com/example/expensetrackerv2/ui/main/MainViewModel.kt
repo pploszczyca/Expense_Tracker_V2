@@ -10,7 +10,7 @@ import com.example.expensetrackerv2.ui.main.features.filter_dialog.MainFilterDia
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.DeleteExpense
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.GetAllExpenses
 import com.example.expensetrackerv2.utilities.MathUtils
-import com.github.pploszczyca.expensetrackerb2.navigation.contract.NavigationRouter
+import com.github.pploszczyca.expensetrackerv2.navigation.contract.NavigationRouter
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

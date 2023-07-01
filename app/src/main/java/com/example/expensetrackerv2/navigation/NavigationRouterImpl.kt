@@ -1,7 +1,7 @@
 package com.example.expensetrackerv2.navigation
 
 import androidx.navigation.NavHostController
-import com.github.pploszczyca.expensetrackerb2.navigation.contract.NavigationRouter
+import com.github.pploszczyca.expensetrackerv2.navigation.contract.NavigationRouter
 
 internal class NavigationRouterImpl(
     private val navController: NavHostController,

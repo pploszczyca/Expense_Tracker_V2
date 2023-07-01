@@ -1,15 +1,13 @@
-package com.example.expensetrackerv2.ui.form.view_model
+package com.github.pploszczyca.expensetrackerv2.expense_form.view_model
 
 import androidx.lifecycle.SavedStateHandle
-import com.example.expensetrackerv2.R
+import com.github.pploszczyca.expensetrackerv2.features.expense_form.R
 import com.github.pploszczyca.expensetrackerv2.common_kotlin.extensions.toDate
 import com.github.pploszczyca.expensetrackerv2.common_kotlin.extensions.toFormattedString
 import com.github.pploszczyca.expensetrackerb2.navigation.contract.NavigationRouter
 import com.github.pploszczyca.expensetrackerv2.usecases.category.GetCategories
 import com.github.pploszczyca.expensetrackerv2.domain.Category
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
-import com.github.pploszczyca.expensetrackerv2.expense_form.view_model.ExpenseFormViewModel
-import com.github.pploszczyca.expensetrackerv2.expense_form.view_model.ExpenseFormViewModelImpl
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.GetExpense
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.GetExpensesPlaces
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.GetExpensesTitles

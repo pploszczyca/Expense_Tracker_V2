@@ -62,4 +62,9 @@ dependencies {
 
     implementation(Libs.hiltAndroid)
     kapt(Libs.hiltAndroidCompiler)
+
+    testImplementation(Libs.kotestRunnerJUnit5)
+    testImplementation(Libs.kotestAssertionsCore)
+    testImplementation(Libs.kotestProperty)
+    testImplementation(Libs.mockk)
 }

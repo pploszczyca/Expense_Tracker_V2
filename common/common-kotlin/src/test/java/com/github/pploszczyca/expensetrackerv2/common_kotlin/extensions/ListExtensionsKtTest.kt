@@ -1,6 +1,5 @@
-package com.example.expensetrackerv2.extensions
+package com.github.pploszczyca.expensetrackerv2.common_kotlin.extensions
 
-import com.github.pploszczyca.expensetrackerv2.common_kotlin.extensions.filterIf
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 

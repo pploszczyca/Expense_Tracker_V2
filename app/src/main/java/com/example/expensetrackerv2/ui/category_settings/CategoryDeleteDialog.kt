@@ -12,7 +12,7 @@ fun CategoryDeleteDialog(
     modelView: CategorySettingsViewModel,
 ) {
     fun closeDialog() {
-        modelView.onEvent(CategorySettingsEvent.CloseDeleteDialog())
+        modelView.onEvent(CategorySettingsEvent.CloseDeleteDialog)
     }
 
     AlertDialog(
@@ -21,7 +21,7 @@ fun CategoryDeleteDialog(
         text = { Text(text = stringResource(id = R.string.delete_type_of_expense_question)) },
 
         confirmButton = {
-            TextButton(onClick = { modelView.onEvent(CategorySettingsEvent.DeleteDialogSubmit()) }) {
+            TextButton(onClick = { modelView.onEvent(CategorySettingsEvent.DeleteDialogSubmit) }) {
                 Text(text = stringResource(id = R.string.delete))
             }
         },

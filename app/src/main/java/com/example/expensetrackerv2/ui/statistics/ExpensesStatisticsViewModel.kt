@@ -5,6 +5,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.expensetrackerv2.extensions.toFormattedString
+import com.github.pploszczyca.expensetrackerb2.navigation.contract.NavigationRouter
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.GetAllExpenses
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +15,10 @@ import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
-class ExpensesStatisticsViewModel @Inject constructor(getAllExpenses: GetAllExpenses) :
+class ExpensesStatisticsViewModel @Inject constructor(
+    getAllExpenses: GetAllExpenses,
+    private val navigationRouter: NavigationRouter,
+) :
     ViewModel() {
     private val _fromDate = mutableStateOf(Date().toFormattedString())
     val fromDate: State<String> = _fromDate
@@ -37,4 +41,7 @@ class ExpensesStatisticsViewModel @Inject constructor(getAllExpenses: GetAllExpe
         changeDate(_toDate, localDate)
     }
 
+    fun onBackButtonClicked() {
+        navigationRouter.goBack()
+    }
 }

@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.example.expensetrackerv2.R
 import com.example.expensetrackerv2.extensions.toFormattedString
 import com.example.expensetrackerv2.ui.common_components.bar.TopAppBarWithBack
@@ -22,13 +21,12 @@ import com.github.pploszczyca.expensetrackerv2.domain.Category
 
 @Composable
 fun ExpensesStatistics(
-    navController: NavController,
-    expensesStatisticsViewModel: ExpensesStatisticsViewModel,
+    viewModel: ExpensesStatisticsViewModel,
 ) {
-    val fromDate = expensesStatisticsViewModel.fromDate
-    val toDate = expensesStatisticsViewModel.toDate
+    val fromDate = viewModel.fromDate
+    val toDate = viewModel.toDate
     val expenseWithItsTypeFilteredList =
-        expensesStatisticsViewModel.expensesWithItsType.collectAsState(
+        viewModel.expensesWithItsType.collectAsState(
             emptyList()
         ).value.filter { it.date.toFormattedString() in fromDate.value..toDate.value }
 
@@ -36,7 +34,7 @@ fun ExpensesStatistics(
         topBar = {
             TopAppBarWithBack(
                 title = stringResource(id = R.string.drawer_statistics),
-                onBackClicked = navController::navigateUp,
+                onBackClicked = viewModel::onBackButtonClicked,
             )
         },
         content = {
@@ -45,7 +43,7 @@ fun ExpensesStatistics(
                     date = fromDate.value,
                     label = stringResource(id = R.string.from_date),
                     onDatePickerPick = { dateFromDialog ->
-                        expensesStatisticsViewModel.onFromDateChange(
+                        viewModel.onFromDateChange(
                             dateFromDialog
                         )
                     })
@@ -54,7 +52,7 @@ fun ExpensesStatistics(
                     date = toDate.value,
                     label = stringResource(id = R.string.to_date),
                     onDatePickerPick = { dateFromDialog ->
-                        expensesStatisticsViewModel.onToDateChange(
+                        viewModel.onToDateChange(
                             dateFromDialog
                         )
                     })

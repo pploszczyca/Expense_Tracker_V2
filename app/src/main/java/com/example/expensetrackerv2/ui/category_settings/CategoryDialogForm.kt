@@ -56,7 +56,7 @@ fun CategoryDialogForm(
             }
         },
         dismissButton = {
-            TextButton(onClick = { modelView.onEvent(CategorySettingsEvent.CloseFormDialog()) }) {
+            TextButton(onClick = { modelView.onEvent(CategorySettingsEvent.CloseFormDialog) }) {
                 Text(text = stringResource(id = R.string.cancel))
             }
         },
@@ -75,5 +75,5 @@ fun CategoryDialogForm(
                 Text(text = confirmButtonTitle)
             }
         },
-        onDismissRequest = { modelView.onEvent(CategorySettingsEvent.CloseFormDialog()) })
+        onDismissRequest = { modelView.onEvent(CategorySettingsEvent.CloseFormDialog) })
 }

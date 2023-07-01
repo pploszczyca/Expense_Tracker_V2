@@ -32,16 +32,10 @@ fun NavHostComposable(
             ExpenseFormEntry(viewModel = hiltViewModel<ExpenseFormViewModelImpl>(backStackEntry))
         }
         composable(Routes.ExpenseStatistics.route) {
-            ExpensesStatistics(
-                navController = navController,
-                expensesStatisticsViewModel = hiltViewModel()
-            )
+            ExpensesStatistics(viewModel = hiltViewModel())
         }
         composable(Routes.CategorySettings.route) {
-            CategorySettings(
-                navController = navController,
-                viewModel = hiltViewModel()
-            )
+            CategorySettings(viewModel = hiltViewModel())
         }
     }
 }

@@ -16,16 +16,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.example.expensetrackerv2.R
 import com.example.expensetrackerv2.ui.common_components.bar.TopAppBarWithBack
 import com.github.pploszczyca.expensetrackerv2.domain.Category
 
 @Composable
-fun CategorySettings(
-    navController: NavController,
-    viewModel: CategorySettingsViewModel,
-) {
+fun CategorySettings(viewModel: CategorySettingsViewModel) {
     val categories by viewModel.categories.collectAsState(initial = emptyList())
 
     val isDialogFormVisible by viewModel.isDialogFormVisible
@@ -35,7 +31,9 @@ fun CategorySettings(
         topBar = {
             TopAppBarWithBack(
                 title = stringResource(id = R.string.drawer_type_of_expense_settings),
-                onBackClicked = navController::navigateUp,
+                onBackClicked = {
+                    viewModel.onEvent(CategorySettingsEvent.OnBackButtonClicked)
+                },
             )
         },
 

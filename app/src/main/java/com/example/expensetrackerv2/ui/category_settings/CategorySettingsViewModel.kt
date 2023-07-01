@@ -5,6 +5,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.github.pploszczyca.expensetrackerb2.navigation.contract.NavigationRouter
 import com.github.pploszczyca.expensetrackerv2.usecases.category.DeleteCategory
 import com.github.pploszczyca.expensetrackerv2.usecases.category.GetCategories
 import com.github.pploszczyca.expensetrackerv2.usecases.category.InsertCategory
@@ -21,6 +22,7 @@ class CategorySettingsViewModel @Inject constructor(
     private val insertCategory: InsertCategory,
     private val updateCategory: UpdateCategory,
     private val deleteCategory: DeleteCategory,
+    private val navigationRouter: NavigationRouter,
 ) : ViewModel() {
     val categories: Flow<List<Category>> = getCategories()
 
@@ -61,13 +63,15 @@ class CategorySettingsViewModel @Inject constructor(
 
             is CategorySettingsEvent.DialogFormSubmit -> {
                 insertOrUpdate(event.value)
-                onEvent(CategorySettingsEvent.CloseFormDialog())
+                onEvent(CategorySettingsEvent.CloseFormDialog)
             }
 
             is CategorySettingsEvent.DeleteDialogSubmit -> {
                 delete(makeCategoryFromState())
-                onEvent(CategorySettingsEvent.CloseDeleteDialog())
+                onEvent(CategorySettingsEvent.CloseDeleteDialog)
             }
+
+            CategorySettingsEvent.OnBackButtonClicked -> navigationRouter.goBack()
         }
     }
 

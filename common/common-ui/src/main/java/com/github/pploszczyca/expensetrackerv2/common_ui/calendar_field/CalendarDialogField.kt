@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.ui.common_components.calendar_field
+package com.github.pploszczyca.expensetrackerv2.common_ui.calendar_field
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,8 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.example.expensetrackerv2.R
-import com.example.expensetrackerv2.ui.form.ui.ExpenseFormTextField
+import com.github.pploszczyca.expensetrackerv2.common.common_ui.R
+import com.github.pploszczyca.expensetrackerv2.common_ui.expense_form_text_field.ExpenseFormTextField
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.datetime.date.datepicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState

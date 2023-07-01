@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.expensetrackerv2.R
-import com.example.expensetrackerv2.ui.common_components.bar.TopAppBarWithBack
+import com.github.pploszczyca.expensetrackerv2.common_ui.bar.TopAppBarWithBack
 import com.github.pploszczyca.expensetrackerv2.domain.Category
 
 @Composable

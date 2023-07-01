@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.ui.common_components.bar
+package com.github.pploszczyca.expensetrackerv2.common_ui.bar
 
 import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons

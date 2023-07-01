@@ -28,9 +28,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.expensetrackerv2.R
-import com.example.expensetrackerv2.ui.common_components.auto_complite_text_field.AutoCompleteOutlinedTextField
-import com.example.expensetrackerv2.ui.common_components.calendar_field.CalendarDialogField
+import com.github.pploszczyca.expensetrackerv2.common_ui.calendar_field.CalendarDialogField
 import com.example.expensetrackerv2.ui.form.view_model.ExpenseFormViewModel
+import com.github.pploszczyca.expensetrackerv2.common_ui.expense_form_text_field.ExpenseFormTextField
 import java.time.LocalDate
 
 @Composable
@@ -45,7 +45,7 @@ fun ExpenseForm(
     onSubmitButtonClicked: () -> Unit,
 ) {
     Column {
-        AutoCompleteOutlinedTextField(
+        com.github.pploszczyca.expensetrackerv2.common_ui.auto_complite_text_field.AutoCompleteOutlinedTextField(
             value = viewState.title,
             onValueChange = onTitleChanged,
             icon = Icons.Default.Title,
@@ -74,7 +74,7 @@ fun ExpenseForm(
             onDatePickerPick = onDateChanged
         )
 
-        AutoCompleteOutlinedTextField(
+        com.github.pploszczyca.expensetrackerv2.common_ui.auto_complite_text_field.AutoCompleteOutlinedTextField(
             value = viewState.placeName,
             onValueChange = onPlaceNameChanged,
             icon = Icons.Default.Place,

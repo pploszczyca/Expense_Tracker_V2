@@ -16,7 +16,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.expensetrackerv2.R
 import com.example.expensetrackerv2.navigation.Routes
-import com.example.expensetrackerv2.ui.common_components.bar.SearchTopAppBar
+import com.github.pploszczyca.expensetrackerv2.common_ui.bar.SearchTopAppBar
 import com.example.expensetrackerv2.ui.main.features.bottom_bar.BottomBarContent
 import com.example.expensetrackerv2.ui.main.features.drawer.DrawerContent
 import kotlinx.coroutines.launch

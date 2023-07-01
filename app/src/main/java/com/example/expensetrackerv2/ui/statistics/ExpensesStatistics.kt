@@ -12,8 +12,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.expensetrackerv2.R
 import com.example.expensetrackerv2.extensions.toFormattedString
-import com.example.expensetrackerv2.ui.common_components.bar.TopAppBarWithBack
-import com.example.expensetrackerv2.ui.common_components.calendar_field.CalendarDialogField
+import com.github.pploszczyca.expensetrackerv2.common_ui.bar.TopAppBarWithBack
+import com.github.pploszczyca.expensetrackerv2.common_ui.calendar_field.CalendarDialogField
 import com.example.expensetrackerv2.ui.theme.ExpenseColor
 import com.example.expensetrackerv2.ui.theme.IncomeColor
 import com.example.expensetrackerv2.utilities.MathUtils

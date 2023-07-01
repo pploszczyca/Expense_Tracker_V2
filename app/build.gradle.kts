@@ -68,6 +68,8 @@ dependencies {
     implementation(project(":useCases"))
     implementation(project(":database"))
     implementation(project(":navigation:navigation-contract"))
+    implementation(project(":common:common-ui"))
+    implementation(project(":common:common-kotlin"))
 
     implementation(Libs.androidxCore)
     implementation(Libs.appcompat)

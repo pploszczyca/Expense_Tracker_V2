@@ -1,5 +1,11 @@
 import org.gradle.api.initialization.resolve.RepositoriesMode
 
+include(":common:common-kotlin")
+
+
+include(":common:common-ui")
+
+
 include(":navigation:navigation-contract")
 
 

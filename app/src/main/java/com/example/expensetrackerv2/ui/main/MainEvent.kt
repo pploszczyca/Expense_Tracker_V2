@@ -8,4 +8,7 @@ sealed interface MainEvent {
     object DismissDeleteButtonClick : MainEvent
     object ConfirmDeleteButtonClick : MainEvent
     object OnTopBarTrailingIconClick : MainEvent
+    object OnStatisticsItemClicked : MainEvent
+    object OnCategorySettingsItemClicked : MainEvent
+    object OnAddNewExpenseButtonClicked : MainEvent
 }

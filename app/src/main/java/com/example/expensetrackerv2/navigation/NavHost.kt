@@ -20,7 +20,7 @@ fun NavHostComposable(
 ) {
     NavHost(navController = navController, startDestination = Routes.Main.route) {
         composable(Routes.Main.route) {
-            MainComposable(navController = navController, viewModel = hiltViewModel())
+            MainComposable(viewModel = hiltViewModel())
         }
         composable(
             Routes.ExpenseForm.route.plus("?EXPENSE_ID={EXPENSE_ID}"),
@@ -29,10 +29,7 @@ fun NavHostComposable(
                 defaultValue = ExpenseFormViewModel.NO_EXPENSE_ID
             })
         ) { backStackEntry ->
-            ExpenseFormEntry(
-                navController = navController,
-                viewModel = hiltViewModel<ExpenseFormViewModelImpl>(backStackEntry),
-            )
+            ExpenseFormEntry(viewModel = hiltViewModel<ExpenseFormViewModelImpl>(backStackEntry))
         }
         composable(Routes.ExpenseStatistics.route) {
             ExpensesStatistics(

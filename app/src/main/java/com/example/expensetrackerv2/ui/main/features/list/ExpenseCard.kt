@@ -49,8 +49,8 @@ import com.github.pploszczyca.expensetrackerv2.domain.Expense
 @Composable
 fun ExpenseCard(
     expense: Expense,
-    navController: NavController,
     onDeleteButtonClick: (Expense) -> Unit,
+    onEditExpenseButtonClicked: (Expense) -> Unit,
 ) {
     var isCardExtended by remember { mutableStateOf(false) }
 
@@ -101,7 +101,11 @@ fun ExpenseCard(
             }
 
             if (isCardExtended) {
-                ExtraContentExpenseCard(expense, navController, onDeleteButtonClick)
+                ExtraContentExpenseCard(
+                    expense = expense,
+                    onDeleteButtonClick = onDeleteButtonClick,
+                    onEditExpenseButtonClicked = onEditExpenseButtonClicked,
+                )
             }
         }
     }
@@ -110,8 +114,8 @@ fun ExpenseCard(
 @Composable
 private fun ExtraContentExpenseCard(
     expense: Expense,
-    navController: NavController,
     onDeleteButtonClick: (Expense) -> Unit,
+    onEditExpenseButtonClicked: (Expense) -> Unit
 ) {
     ExtraContentRow(
         stringResource(id = R.string.place),
@@ -128,11 +132,7 @@ private fun ExtraContentExpenseCard(
         horizontalArrangement = Arrangement.End
     ) {
         TextButton(onClick = {
-            navController.navigate(
-                Routes.ExpenseForm.route.plus(
-                    "?EXPENSE_ID=${expense.id}"
-                )
-            )
+            onEditExpenseButtonClicked(expense)
         }) {
             Icon(Icons.Default.Edit, contentDescription = null)
             Text(text = stringResource(id = R.string.edit))

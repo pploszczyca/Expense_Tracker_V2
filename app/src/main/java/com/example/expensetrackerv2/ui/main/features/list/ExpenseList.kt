@@ -13,7 +13,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.example.expensetrackerv2.ui.theme.ExpenseColor
 import com.example.expensetrackerv2.ui.theme.IncomeColor
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
@@ -22,7 +21,6 @@ import com.github.pploszczyca.expensetrackerv2.domain.Expense
 @Composable
 fun ExpensesList(
     viewModel: ExpenseListViewModel,
-    navController: NavController,
     onDeleteButtonClick: (Expense) -> Unit,
 ) {
     val viewState = viewModel.viewState
@@ -64,8 +62,10 @@ fun ExpensesList(
                 }) { expense ->
                 ExpenseCard(
                     expense = expense,
-                    navController = navController,
-                    onDeleteButtonClick = onDeleteButtonClick
+                    onDeleteButtonClick = onDeleteButtonClick,
+                    onEditExpenseButtonClicked = {
+                        viewModel.onEvent(ExpensesListEvent.OnEditExpenseButtonClicked(it))
+                    },
                 )
             }
         }

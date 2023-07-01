@@ -14,10 +14,12 @@ internal class NavigationRouterImpl(
         navController.navigate(Routes.Main.route)
     }
 
-    override fun goToExpenseForm(expenseId: Int?) {
-        val route = Routes.ExpenseForm.route + (expenseId?.let { "?EXPENSE_ID=$it" }.orEmpty())
+    override fun goToExpenseForm(expenseId: Int) {
+        navController.navigate(Routes.ExpenseForm.route + "?EXPENSE_ID=$expenseId")
+    }
 
-        navController.navigate(route)
+    override fun goToExpenseForm() {
+        navController.navigate(Routes.ExpenseForm.route)
     }
 
     override fun goToExpenseStatistics() {

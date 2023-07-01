@@ -23,7 +23,6 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun MainComposable(
-    navController: NavController,
     viewModel: MainViewModel,
 ) {
     val drawerState = rememberDrawerState(DrawerValue.Closed)
@@ -42,8 +41,14 @@ fun MainComposable(
         drawerState = drawerState,
         drawerContent = {
             DrawerContent(
-                closeDrawer = closeDrawer,
-                navController = navController
+                onStatisticsItemClicked = {
+                    closeDrawer()
+                    viewModel.onEvent(MainEvent.OnStatisticsItemClicked)
+                },
+                onCategorySettingsItemClicked = {
+                    closeDrawer()
+                    viewModel.onEvent(MainEvent.OnCategorySettingsItemClicked)
+                },
             )
         },
     ) {
@@ -64,7 +69,7 @@ fun MainComposable(
             },
             floatingActionButton = {
                 FloatingActionButton(onClick = {
-                    navController.navigate(Routes.ExpenseForm.route)
+                    viewModel.onEvent(MainEvent.OnAddNewExpenseButtonClicked)
                 }) {
                     Icon(
                         Icons.Filled.Add,
@@ -77,7 +82,6 @@ fun MainComposable(
                 MainContent(
                     innerPadding = innerPadding,
                     mainViewState = mainViewState,
-                    navController = navController,
                     onDeleteButtonClick = { viewModel.onEvent(MainEvent.DeleteButtonClick(it)) },
                     onDismissDeleteButtonClick = { viewModel.onEvent(MainEvent.DismissDeleteButtonClick) },
                     onConfirmDeleteButtonClick = { viewModel.onEvent(MainEvent.ConfirmDeleteButtonClick) }

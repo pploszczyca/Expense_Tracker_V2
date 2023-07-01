@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.expensetrackerv2.R
 import com.example.expensetrackerv2.extensions.toDate
 import com.example.expensetrackerv2.extensions.toFormattedString
+import com.github.pploszczyca.expensetrackerb2.navigation.contract.NavigationRouter
 import com.github.pploszczyca.expensetrackerv2.usecases.category.GetCategories
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.GetExpense
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.GetExpensesPlaces
@@ -40,6 +41,7 @@ class ExpenseFormViewModelImpl @Inject constructor(
     private val insertExpense: InsertExpense,
     private val updateExpense: UpdateExpense,
     private val ioDispatcher: CoroutineDispatcher,
+    private val navigationRouter: NavigationRouter,
 ) : ExpenseFormViewModel() {
 
     private lateinit var _categories: List<Category>
@@ -164,7 +166,7 @@ class ExpenseFormViewModelImpl @Inject constructor(
                 }
             }
 
-            _routeActions.emit(RouteAction.GoBack)
+            navigationRouter.goBack()
         }
     }
 
@@ -202,8 +204,6 @@ class ExpenseFormViewModelImpl @Inject constructor(
         _categories.first { it.id == chosenCategoryId }
 
     override fun onBackClicked() {
-        viewModelScope.launch {
-            _routeActions.emit(RouteAction.GoBack)
-        }
+        navigationRouter.goBack()
     }
 }

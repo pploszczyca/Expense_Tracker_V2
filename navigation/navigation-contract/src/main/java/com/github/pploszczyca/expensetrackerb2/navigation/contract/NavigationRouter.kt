@@ -5,7 +5,9 @@ interface NavigationRouter {
 
     fun goToMain()
 
-    fun goToExpenseForm(expenseId: Int?)
+    fun goToExpenseForm(expenseId: Int)
+
+    fun goToExpenseForm()
 
     fun goToExpenseStatistics()
 

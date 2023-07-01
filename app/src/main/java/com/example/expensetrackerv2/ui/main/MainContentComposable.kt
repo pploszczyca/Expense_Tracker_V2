@@ -28,7 +28,6 @@ import com.github.pploszczyca.expensetrackerv2.domain.Expense
 fun MainContent(
     innerPadding: PaddingValues,
     mainViewState: MainViewModel.ViewState,
-    navController: NavController,
     onDeleteButtonClick: (Expense) -> Unit,
     onDismissDeleteButtonClick: () -> Unit,
     onConfirmDeleteButtonClick: () -> Unit,
@@ -56,7 +55,6 @@ fun MainContent(
             expensesListViewModel.onEvent(ExpensesListEvent.ExpensesChanged(mainViewState.filteredExpenses))
             ExpensesList(
                 viewModel = expensesListViewModel,
-                navController = navController,
                 onDeleteButtonClick = onDeleteButtonClick,
             )
         }

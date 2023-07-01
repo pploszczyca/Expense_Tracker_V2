@@ -42,7 +42,6 @@ abstract class ExpenseFormViewModel : ViewModel() {
     }
 
     sealed interface RouteAction {
-        object GoBack : RouteAction
         object ShowSnackBar : RouteAction
     }
 

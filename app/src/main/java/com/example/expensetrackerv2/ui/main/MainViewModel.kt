@@ -10,6 +10,7 @@ import com.example.expensetrackerv2.ui.main.features.filter_dialog.MainFilterDia
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.DeleteExpense
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.GetAllExpenses
 import com.example.expensetrackerv2.utilities.MathUtils
+import com.github.pploszczyca.expensetrackerb2.navigation.contract.NavigationRouter
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -24,6 +25,7 @@ class MainViewModel @Inject constructor(
     private val deleteExpense: DeleteExpense,
     bottomBarChannel: Channel<MainBottomBarEvent>,
     filterDialogChannel: Channel<MainFilterDialogEvent>,
+    private val navigationRouter: NavigationRouter,
 ) : ViewModel() {
     var viewState by mutableStateOf(ViewState())
         private set
@@ -77,6 +79,10 @@ class MainViewModel @Inject constructor(
                 topBarVisible = false,
                 searchedTitle = "",
             )
+
+            MainEvent.OnAddNewExpenseButtonClicked -> navigationRouter.goToExpenseForm()
+            MainEvent.OnCategorySettingsItemClicked -> navigationRouter.goToCategorySettings()
+            MainEvent.OnStatisticsItemClicked -> navigationRouter.goToExpenseStatistics()
         }
     }
 

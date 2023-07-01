@@ -22,7 +22,6 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun ExpenseFormEntry(
     viewModel: ExpenseFormViewModel,
-    navController: NavController,
 ) {
     val viewState by viewModel.viewState.collectAsState()
     val snackBarHostState = remember(::SnackbarHostState)
@@ -30,7 +29,6 @@ fun ExpenseFormEntry(
     HandleRouteActions(
         routeAction = viewModel.routeActions,
         snackBarHostState = snackBarHostState,
-        navController = navController,
     )
 
     Scaffold(
@@ -61,15 +59,11 @@ fun ExpenseFormEntry(
 fun HandleRouteActions(
     routeAction: SharedFlow<ExpenseFormViewModel.RouteAction>,
     snackBarHostState: SnackbarHostState,
-    navController: NavController,
 ) {
     LaunchedEffect(Unit) {
         routeAction
             .collectLatest {
                 when (it) {
-                    ExpenseFormViewModel.RouteAction.GoBack ->
-                        navController.navigateUp()
-
                     ExpenseFormViewModel.RouteAction.ShowSnackBar ->
                         snackBarHostState.showSnackbar("Something is wrong :(((")
                 }

@@ -4,8 +4,8 @@ import androidx.lifecycle.SavedStateHandle
 import com.example.expensetrackerv2.R
 import com.example.expensetrackerv2.extensions.toDate
 import com.example.expensetrackerv2.extensions.toFormattedString
+import com.github.pploszczyca.expensetrackerb2.navigation.contract.NavigationRouter
 import com.github.pploszczyca.expensetrackerv2.usecases.category.GetCategories
-import com.example.expensetrackerv2.use_cases.expense.*
 import com.github.pploszczyca.expensetrackerv2.domain.Category
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.GetExpense
@@ -55,6 +55,9 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
     val getExpense: GetExpense = mockk()
     val insertExpense: InsertExpense = mockk()
     val updateExpense: UpdateExpense = mockk()
+    val navigationRouter: NavigationRouter = mockk {
+        every { goBack() } returns Unit
+    }
 
     fun tested(
         savedStateHandle: SavedStateHandle = mockk(),
@@ -64,6 +67,7 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
         getExpense: GetExpense = mockk(),
         insertExpense: InsertExpense = mockk(),
         updateExpense: UpdateExpense = mockk(),
+        navigationRouter: NavigationRouter = mockk(),
     ): ExpenseFormViewModel =
         ExpenseFormViewModelImpl(
             savedStateHandle = savedStateHandle,
@@ -74,6 +78,7 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
             insertExpense = insertExpense,
             updateExpense = updateExpense,
             ioDispatcher = testDispatcher,
+            navigationRouter = navigationRouter,
         ).apply {
             runAllAsynchronousTasks()
         }
@@ -309,12 +314,13 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
 
             When("Data are valid") {
                 And("Submit button is clicked") {
-                    val routeActions = tested(
+                    tested(
                         savedStateHandle = savedStateHandle,
                         getExpensesTitles = getExpensesTitles,
                         getExpensesPlaces = getExpensesPlaces,
                         getCategories = getCategories,
                         insertExpense = insertExpense,
+                        navigationRouter = navigationRouter,
                     ).apply {
                         onTitleChanged(title)
                         onPriceChanged(price)
@@ -323,7 +329,8 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
                         onPlaceNameChanged(placeName)
                         onDescriptionChanged(description)
                         onSubmitButtonClicked()
-                    }.routeActions.first()
+                        runAllAsynchronousTasks()
+                    }
 
                     Then("New expense should be inserted") {
                         coVerify {
@@ -339,24 +346,25 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
                     }
 
                     Then("Go back") {
-                        routeActions shouldBe ExpenseFormViewModel.RouteAction.GoBack
+                        coVerify { navigationRouter.goBack() }
                     }
                 }
             }
         }
 
         When("Back button is clicked") {
-            val routeActions = tested(
+            tested(
                 savedStateHandle = savedStateHandle,
                 getExpensesTitles = getExpensesTitles,
                 getExpensesPlaces = getExpensesPlaces,
                 getCategories = getCategories,
+                navigationRouter = navigationRouter,
             ).apply {
                 onBackClicked()
-            }.routeActions.first()
+            }
 
             Then("Go back") {
-                routeActions shouldBe ExpenseFormViewModel.RouteAction.GoBack
+                coVerify { navigationRouter.goBack() }
             }
         }
     }
@@ -452,13 +460,14 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
 
             When("Data are valid") {
                 And("Submit button is clicked") {
-                    val routeActions = tested(
+                    tested(
                         savedStateHandle = savedStateHandle,
                         getExpensesTitles = getExpensesTitles,
                         getExpensesPlaces = getExpensesPlaces,
                         getCategories = getCategories,
                         getExpense = getExpense,
                         updateExpense = updateExpense,
+                        navigationRouter = navigationRouter,
                     ).apply {
                         onTitleChanged(newTitle)
                         onPriceChanged(newPrice)
@@ -467,7 +476,8 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
                         onPlaceNameChanged(newPlaceName)
                         onDescriptionChanged(newDescription)
                         onSubmitButtonClicked()
-                    }.routeActions.first()
+                        runAllAsynchronousTasks()
+                    }
 
                     Then("New expense should be inserted") {
                         coVerify {
@@ -484,7 +494,7 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
                     }
 
                     Then("Go back") {
-                        routeActions shouldBe ExpenseFormViewModel.RouteAction.GoBack
+                        coVerify { navigationRouter.goBack() }
                     }
                 }
             }

@@ -14,7 +14,7 @@ android {
         minSdk = 24
     }
 
-    namespace = "com.github.pploszczyca.expensetrackerv2.features.expense_statistics"
+    namespace = "com.github.pploszczyca.expensetrackerv2.features.category_settings"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17

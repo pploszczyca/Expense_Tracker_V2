@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.extensions
+package com.github.pploszczyca.expensetrackerv2.features.main.extensions
 
 import com.github.pploszczyca.expensetrackerv2.domain.Category
 import com.github.pploszczyca.expensetrackerv2.domain.Expense

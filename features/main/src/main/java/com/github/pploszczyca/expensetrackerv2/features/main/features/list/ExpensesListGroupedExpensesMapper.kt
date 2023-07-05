@@ -1,9 +1,9 @@
 package com.github.pploszczyca.expensetrackerv2.features.main.features.list
 
-import com.example.expensetrackerv2.extensions.toStringDate
-import com.example.expensetrackerv2.extensions.totalIncomeAsString
-import com.example.expensetrackerv2.extensions.totalOutgoAsString
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
+import com.github.pploszczyca.expensetrackerv2.features.main.extensions.toStringDate
+import com.github.pploszczyca.expensetrackerv2.features.main.extensions.totalIncomeAsString
+import com.github.pploszczyca.expensetrackerv2.features.main.extensions.totalOutgoAsString
 import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 

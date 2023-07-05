@@ -31,16 +31,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.expensetrackerv2.R
+import com.github.pploszczyca.expensetrackerv2.features.main.R
 import com.github.pploszczyca.expensetrackerv2.common_kotlin.extensions.toFormattedString
-import com.example.expensetrackerv2.ui.theme.ExpenseColor
-import com.example.expensetrackerv2.ui.theme.ExpenseTrackerV2Theme
-import com.example.expensetrackerv2.ui.theme.IncomeColor
 import com.github.pploszczyca.expensetrackerv2.domain.Category
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
 
@@ -50,6 +47,8 @@ fun ExpenseCard(
     onDeleteButtonClick: (Expense) -> Unit,
     onEditExpenseButtonClicked: (Expense) -> Unit,
 ) {
+    val expenseColor = Color(0xffff1744)
+    val incomeColor = Color(0xff76ff03)
     var isCardExtended by remember { mutableStateOf(false) }
 
     val dropDownIconRotation by animateFloatAsState(
@@ -94,7 +93,7 @@ fun ExpenseCard(
                 Text(
                     style = MaterialTheme.typography.bodyLarge,
                     text = (expense.price * expense.category.type.multiplier).toString(),
-                    color = if (expense.category.type == Category.Type.OUTGO) ExpenseColor else IncomeColor
+                    color = if (expense.category.type == Category.Type.OUTGO) expenseColor else incomeColor
                 )
             }
 
@@ -165,13 +164,5 @@ private fun ExtraContentRow(contentName: String, contentIcon: ImageVector, conte
             }
             Text(style = MaterialTheme.typography.bodySmall, text = contentString)
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ExpenseCardPreview() {
-    ExpenseTrackerV2Theme {
-//        ExpenseCard(expense = Expense(title = "Zakupy w Biedronce", price = 50.0, description = "Opis", place = "Wadowice"), typeOfExpense = TypeOfExpense(name = "Zakupy", type = Type.OUTGO))
     }
 }

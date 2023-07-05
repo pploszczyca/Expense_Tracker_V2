@@ -19,7 +19,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.example.expensetrackerv2.R
+import com.github.pploszczyca.expensetrackerv2.features.main.R
 
 @Composable
 fun MainFilterDialog(

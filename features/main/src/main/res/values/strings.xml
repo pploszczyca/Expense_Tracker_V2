@@ -1,0 +1,33 @@
+<resources>
+    <string name="in_wallet">Wallet:</string>
+
+    <string name="menu_icon">Menu</string>
+    <string name="reset_icon">Reset</string>
+    <string name="search_icon">Search</string>
+    <string name="filter_icon">Filter</string>
+    <string name="add_icon">Add</string>
+
+    <string name="place">Place:</string>
+    <string name="description">Description:</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+
+    <string name="delete_expense_title">Delete expense</string>
+    <string name="delete_expense_question">Do you want to delete it?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+    <string name="drawer_months_title">Months</string>
+    <string name="drawer_options_title">Options</string>
+    <string name="json_export_file_name">backup_expenses.json</string>
+    <string name="drawer_export_to_json">Export to JSON</string>
+    <string name="drawer_import_from_json">Import from JSON</string>
+    <string name="expense_statistics_app_bar_title">Statistics</string>
+    <string name="drawer_type_of_expense_settings">Categories Settings</string>
+
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="reset">Reset</string>
+
+    <string name="main_filter_dialog_tile">Choose filter</string>
+</resources>

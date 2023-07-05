@@ -19,7 +19,7 @@ fun NavHostComposable(
 ) {
     NavHost(navController = navController, startDestination = Routes.Main.route) {
         composable(Routes.Main.route) {
-            com.github.pploszczyca.expensetrackerv2.features.main.MainComposable(viewModel = hiltViewModel())
+            MainComposable(viewModel = hiltViewModel())
         }
         composable(
             Routes.ExpenseForm.route.plus("?EXPENSE_ID={EXPENSE_ID}"),

@@ -64,12 +64,9 @@ android {
 }
 
 dependencies {
-    implementation(project(":domain"))
     implementation(project(":useCases"))
     implementation(project(":database"))
     implementation(project(":navigation:navigation-contract"))
-    implementation(project(":common:common-ui"))
-    implementation(project(":common:common-kotlin"))
 
     implementation(project(":features:main"))
     implementation(project(":features:expense-form"))
@@ -81,7 +78,6 @@ dependencies {
     implementation(Libs.material)
     implementation(Libs.composeUi)
     implementation(Libs.composeMaterial)
-    implementation(Libs.composeUiToolingPreview)
     implementation(Libs.lifecycleRuntimeKtx)
     implementation(Libs.activityCompose)
     androidTestImplementation(Libs.androidTestJUnit)
@@ -89,7 +85,6 @@ dependencies {
     androidTestImplementation(Libs.composeUiTestJUnit4)
     debugImplementation(Libs.composeUiTooling)
     implementation(Libs.navigationCompose)
-    implementation(Libs.materialIconsExtended)
 
     implementation(Libs.kotlinxCoroutinesAndroid)
 
@@ -100,11 +95,6 @@ dependencies {
 
     implementation(Libs.material3)
     implementation(Libs.material3WindowSizeClass)
-
-    testImplementation(Libs.kotestRunnerJUnit5)
-    testImplementation(Libs.kotestAssertionsCore)
-    testImplementation(Libs.kotestProperty)
-    testImplementation(Libs.mockk)
 }
 
 kapt {

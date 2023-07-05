@@ -44,6 +44,7 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":useCases"))
     implementation(project(":common:common-ui"))
+    implementation(project(":common:common-kotlin"))
     implementation(project(":navigation:navigation-contract"))
 
     implementation(Libs.androidxCore)

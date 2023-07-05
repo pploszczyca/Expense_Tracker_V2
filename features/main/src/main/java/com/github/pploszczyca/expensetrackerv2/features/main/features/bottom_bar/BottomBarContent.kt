@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.ui.main.features.bottom_bar
+package com.github.pploszczyca.expensetrackerv2.features.main.features.bottom_bar
 
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.IconButton

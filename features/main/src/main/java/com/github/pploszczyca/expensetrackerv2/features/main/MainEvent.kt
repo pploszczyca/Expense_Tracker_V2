@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.ui.main
+package com.github.pploszczyca.expensetrackerv2.features.main
 
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
 

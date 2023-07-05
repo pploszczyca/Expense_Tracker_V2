@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.ui.main.features.bottom_bar
+package com.github.pploszczyca.expensetrackerv2.features.main.features.bottom_bar
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

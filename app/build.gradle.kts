@@ -71,6 +71,7 @@ dependencies {
     implementation(project(":common:common-ui"))
     implementation(project(":common:common-kotlin"))
 
+    implementation(project(":features:main"))
     implementation(project(":features:expense-form"))
     implementation(project(":features:expense-statistics"))
     implementation(project(":features:category-settings"))

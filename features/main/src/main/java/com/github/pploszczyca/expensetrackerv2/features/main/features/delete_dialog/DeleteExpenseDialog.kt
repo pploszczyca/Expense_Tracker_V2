@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.ui.main.features.delete_dialog
+package com.github.pploszczyca.expensetrackerv2.features.main.features.delete_dialog
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text

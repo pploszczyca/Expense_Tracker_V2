@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.ui.main
+package com.github.pploszczyca.expensetrackerv2.features.main
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -13,12 +13,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import com.example.expensetrackerv2.R
-import com.example.expensetrackerv2.navigation.Routes
 import com.github.pploszczyca.expensetrackerv2.common_ui.bar.SearchTopAppBar
-import com.example.expensetrackerv2.ui.main.features.bottom_bar.BottomBarContent
-import com.example.expensetrackerv2.ui.main.features.drawer.DrawerContent
+import com.github.pploszczyca.expensetrackerv2.features.main.features.bottom_bar.BottomBarContent
+import com.github.pploszczyca.expensetrackerv2.features.main.features.drawer.DrawerContent
 import kotlinx.coroutines.launch
 
 @Composable

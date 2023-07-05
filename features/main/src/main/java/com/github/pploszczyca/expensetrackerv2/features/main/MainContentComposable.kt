@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.ui.main
+package com.github.pploszczyca.expensetrackerv2.features.main
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,15 +13,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import com.example.expensetrackerv2.R
-import com.example.expensetrackerv2.ui.main.features.delete_dialog.DeleteExpenseAlertDialog
-import com.example.expensetrackerv2.ui.main.features.delete_dialog.DeleteExpenseDialogViewModel
-import com.example.expensetrackerv2.ui.main.features.filter_dialog.MainFilterDialog
-import com.example.expensetrackerv2.ui.main.features.filter_dialog.MainFilterDialogViewModel
-import com.example.expensetrackerv2.ui.main.features.list.ExpenseListViewModel
-import com.example.expensetrackerv2.ui.main.features.list.ExpensesList
-import com.example.expensetrackerv2.ui.main.features.list.ExpensesListEvent
+import com.github.pploszczyca.expensetrackerv2.features.main.features.delete_dialog.DeleteExpenseAlertDialog
+import com.github.pploszczyca.expensetrackerv2.features.main.features.delete_dialog.DeleteExpenseDialogViewModel
+import com.github.pploszczyca.expensetrackerv2.features.main.features.filter_dialog.MainFilterDialog
+import com.github.pploszczyca.expensetrackerv2.features.main.features.filter_dialog.MainFilterDialogViewModel
+import com.github.pploszczyca.expensetrackerv2.features.main.features.list.ExpenseListViewModel
+import com.github.pploszczyca.expensetrackerv2.features.main.features.list.ExpensesList
+import com.github.pploszczyca.expensetrackerv2.features.main.features.list.ExpensesListEvent
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
 
 @Composable

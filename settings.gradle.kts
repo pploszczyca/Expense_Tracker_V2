@@ -1,5 +1,8 @@
 import org.gradle.api.initialization.resolve.RepositoriesMode
 
+include(":features:main")
+
+
 include(":features:category-settings")
 
 

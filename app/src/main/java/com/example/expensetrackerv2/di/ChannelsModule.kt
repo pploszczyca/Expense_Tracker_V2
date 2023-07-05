@@ -1,7 +1,7 @@
 package com.example.expensetrackerv2.di
 
-import com.example.expensetrackerv2.ui.main.features.bottom_bar.MainBottomBarEvent
-import com.example.expensetrackerv2.ui.main.features.filter_dialog.MainFilterDialogEvent
+import com.github.pploszczyca.expensetrackerv2.features.main.features.bottom_bar.MainBottomBarEvent
+import com.github.pploszczyca.expensetrackerv2.features.main.features.filter_dialog.MainFilterDialogEvent
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,9 +14,9 @@ import javax.inject.Singleton
 object ChannelsModule {
     @Provides
     @Singleton
-    fun provideMainBottomBarChannel(): Channel<MainBottomBarEvent> = Channel()
+    fun provideMainBottomBarChannel(): Channel<com.github.pploszczyca.expensetrackerv2.features.main.features.bottom_bar.MainBottomBarEvent> = Channel()
 
     @Provides
     @Singleton
-    fun provideMainFilterDialogChannel(): Channel<MainFilterDialogEvent> = Channel()
+    fun provideMainFilterDialogChannel(): Channel<com.github.pploszczyca.expensetrackerv2.features.main.features.filter_dialog.MainFilterDialogEvent> = Channel()
 }

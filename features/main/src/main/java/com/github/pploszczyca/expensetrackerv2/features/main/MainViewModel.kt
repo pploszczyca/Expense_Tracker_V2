@@ -1,12 +1,12 @@
-package com.example.expensetrackerv2.ui.main
+package com.github.pploszczyca.expensetrackerv2.features.main
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.expensetrackerv2.ui.main.features.bottom_bar.MainBottomBarEvent
-import com.example.expensetrackerv2.ui.main.features.filter_dialog.MainFilterDialogEvent
+import com.github.pploszczyca.expensetrackerv2.features.main.features.bottom_bar.MainBottomBarEvent
+import com.github.pploszczyca.expensetrackerv2.features.main.features.filter_dialog.MainFilterDialogEvent
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.DeleteExpense
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.GetAllExpenses
 import com.github.pploszczyca.expensetrackerv2.navigation.contract.NavigationRouter

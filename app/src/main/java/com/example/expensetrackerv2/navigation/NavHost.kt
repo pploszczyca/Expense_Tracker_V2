@@ -10,7 +10,7 @@ import androidx.navigation.navArgument
 import com.github.pploszczyca.expensetrackerv2.features.category_settings.CategorySettings
 import com.github.pploszczyca.expensetrackerv2.expense_form.ui.ExpenseFormEntry
 import com.github.pploszczyca.expensetrackerv2.expense_form.view_model.ExpenseFormViewModel
-import com.example.expensetrackerv2.ui.main.MainComposable
+import com.github.pploszczyca.expensetrackerv2.features.main.MainComposable
 import com.github.pploszczyca.expensetrackerv2.expense_statistics.ui.ExpensesStatistics
 
 @Composable
@@ -19,7 +19,7 @@ fun NavHostComposable(
 ) {
     NavHost(navController = navController, startDestination = Routes.Main.route) {
         composable(Routes.Main.route) {
-            MainComposable(viewModel = hiltViewModel())
+            com.github.pploszczyca.expensetrackerv2.features.main.MainComposable(viewModel = hiltViewModel())
         }
         composable(
             Routes.ExpenseForm.route.plus("?EXPENSE_ID={EXPENSE_ID}"),

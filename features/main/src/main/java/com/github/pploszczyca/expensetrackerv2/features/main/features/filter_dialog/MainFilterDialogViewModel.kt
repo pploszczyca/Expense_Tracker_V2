@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.ui.main.features.filter_dialog
+package com.github.pploszczyca.expensetrackerv2.features.main.features.filter_dialog
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

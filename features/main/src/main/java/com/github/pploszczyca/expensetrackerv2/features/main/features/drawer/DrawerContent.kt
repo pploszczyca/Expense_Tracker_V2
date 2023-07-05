@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.ui.main.features.drawer
+package com.github.pploszczyca.expensetrackerv2.features.main.features.drawer
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme

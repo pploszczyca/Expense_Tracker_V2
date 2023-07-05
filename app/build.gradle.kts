@@ -73,6 +73,7 @@ dependencies {
 
     implementation(project(":features:expense-form"))
     implementation(project(":features:expense-statistics"))
+    implementation(project(":features:category-settings"))
 
     implementation(Libs.androidxCore)
     implementation(Libs.appcompat)

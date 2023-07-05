@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.ui.category_settings
+package com.github.pploszczyca.expensetrackerv2.features.category_settings
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text

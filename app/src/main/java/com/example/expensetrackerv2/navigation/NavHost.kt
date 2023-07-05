@@ -7,7 +7,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.example.expensetrackerv2.ui.category_settings.CategorySettings
+import com.github.pploszczyca.expensetrackerv2.features.category_settings.CategorySettings
 import com.github.pploszczyca.expensetrackerv2.expense_form.ui.ExpenseFormEntry
 import com.github.pploszczyca.expensetrackerv2.expense_form.view_model.ExpenseFormViewModel
 import com.example.expensetrackerv2.ui.main.MainComposable

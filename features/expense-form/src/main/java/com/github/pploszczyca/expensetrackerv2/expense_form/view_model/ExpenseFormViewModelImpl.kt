@@ -32,7 +32,7 @@ import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
-internal class ExpenseFormViewModelImpl @Inject constructor(
+class ExpenseFormViewModelImpl @Inject constructor(
     savedStateHandle: SavedStateHandle,
     getExpensesTitles: GetExpensesTitles,
     getExpensesPlaces: GetExpensesPlaces,

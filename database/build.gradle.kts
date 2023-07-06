@@ -13,7 +13,7 @@ android {
         minSdk = 24
     }
 
-    namespace = "com.example.expensetrackerv2"
+    namespace = "com.github.pploszczyca.expensetrackerv2.database"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17

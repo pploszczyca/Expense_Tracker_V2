@@ -5,9 +5,10 @@ Simple Expense Tracker app for managing your expenses/incomes.
 * Kotlin
 * Jetpack Compose
 * Room Database
-* Gson
 * Hilt
 * MVVM architectural pattern
+* Kotest
+* Mockk
 * [Compose Material Dialogs](https://github.com/vanpra/compose-material-dialogs) - for date dialog picker
 
 ## Installation
@@ -21,7 +22,6 @@ And import Project by Android Studio Menu > File > Import project
 - [X] Saving expenses/incomes,
 - [X] See current money status in wallet,
 - [X] See how much money you spend/gain in month,
-- [X] Export/Import data to/from JSON,
 - [X] Filter data in main list menu by months,
 - [X] Statistics in specific period of time
 - [X] Search specific expense,

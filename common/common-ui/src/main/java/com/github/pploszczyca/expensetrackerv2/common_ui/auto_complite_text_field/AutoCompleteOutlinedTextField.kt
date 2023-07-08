@@ -47,8 +47,6 @@ fun AutoCompleteOutlinedTextField(
             label = label,
             keyboardOptions = keyboardOptions,
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(5.dp)
                 .onFocusChanged {
                     shouldShowDropdown = it.isFocused
                 }

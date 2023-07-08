@@ -1,15 +1,16 @@
 package com.github.pploszczyca.expensetrackerv2.common_ui.calendar_field
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Today
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
 import com.github.pploszczyca.expensetrackerv2.common.common_ui.R
 import com.github.pploszczyca.expensetrackerv2.common_ui.expense_form_text_field.ExpenseFormTextField
 import com.vanpra.composematerialdialogs.MaterialDialog
@@ -20,12 +21,10 @@ import java.time.LocalDate
 @Composable
 fun CalendarDialogField(
     date: String,
+    modifier: Modifier = Modifier,
     label: String = "",
     icon: ImageVector = Icons.Default.Today,
-    modifier: Modifier = Modifier
-        .fillMaxWidth()
-        .padding(5.dp),
-    onDatePickerPick: (dateFromDialog: LocalDate) -> Unit,
+    onDatePickerPick: (dateFromDialog: LocalDate) -> Unit = {},
 ) {
     val dialogState = rememberMaterialDialogState()
 
@@ -35,7 +34,15 @@ fun CalendarDialogField(
         label = label,
         enabled = false,
         modifier = modifier
-            .clickable { dialogState.show() }
+            .clickable { dialogState.show() },
+        colors = OutlinedTextFieldDefaults.colors(
+            disabledTextColor = MaterialTheme.colorScheme.onSurface,
+            disabledBorderColor = MaterialTheme.colorScheme.outline,
+            disabledPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            disabledLeadingIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            disabledTrailingIconColor = MaterialTheme.colorScheme.onSurfaceVariant
+        ),
     )
 
     MaterialDialog(dialogState = dialogState, buttons = {
@@ -44,4 +51,12 @@ fun CalendarDialogField(
     }) {
         datepicker { onDatePickerPick(it) }
     }
+}
+
+@Preview
+@Composable
+fun CalendarDialogFieldPreview() {
+    CalendarDialogField(
+        date = "08.07.2023",
+    )
 }

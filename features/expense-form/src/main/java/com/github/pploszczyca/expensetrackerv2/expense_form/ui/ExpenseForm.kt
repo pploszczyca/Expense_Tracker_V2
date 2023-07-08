@@ -27,6 +27,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.github.pploszczyca.expensetrackerv2.common_ui.auto_complite_text_field.AutoCompleteOutlinedTextField
 import com.github.pploszczyca.expensetrackerv2.common_ui.calendar_field.CalendarDialogField
 import com.github.pploszczyca.expensetrackerv2.common_ui.expense_form_text_field.ExpenseFormTextField
 import com.github.pploszczyca.expensetrackerv2.expense_form.view_model.ExpenseFormViewModel
@@ -36,16 +37,16 @@ import java.time.LocalDate
 @Composable
 internal fun ExpenseForm(
     viewState: ExpenseFormViewModel.ViewState,
-    onTitleChanged: (title: String) -> Unit,
-    onPriceChanged: (price: String) -> Unit,
-    onCategoryChanged: (categoryId: Int) -> Unit,
-    onDateChanged: (date: LocalDate) -> Unit,
-    onPlaceNameChanged: (placeName: String) -> Unit,
-    onDescriptionChanged: (description: String) -> Unit,
-    onSubmitButtonClicked: () -> Unit,
+    onTitleChanged: (title: String) -> Unit = {},
+    onPriceChanged: (price: String) -> Unit = {},
+    onCategoryChanged: (categoryId: Int) -> Unit = {},
+    onDateChanged: (date: LocalDate) -> Unit = {},
+    onPlaceNameChanged: (placeName: String) -> Unit = {},
+    onDescriptionChanged: (description: String) -> Unit = {},
+    onSubmitButtonClicked: () -> Unit = {},
 ) {
     Column {
-        com.github.pploszczyca.expensetrackerv2.common_ui.auto_complite_text_field.AutoCompleteOutlinedTextField(
+        AutoCompleteOutlinedTextField(
             value = viewState.title,
             onValueChange = onTitleChanged,
             icon = Icons.Default.Title,
@@ -74,7 +75,7 @@ internal fun ExpenseForm(
             onDatePickerPick = onDateChanged
         )
 
-        com.github.pploszczyca.expensetrackerv2.common_ui.auto_complite_text_field.AutoCompleteOutlinedTextField(
+        AutoCompleteOutlinedTextField(
             value = viewState.placeName,
             onValueChange = onPlaceNameChanged,
             icon = Icons.Default.Place,
@@ -152,12 +153,5 @@ fun ExpenseFormPreview() {
 
     ExpenseForm(
         viewState = viewState,
-        onTitleChanged = {},
-        onPriceChanged = {},
-        onCategoryChanged = {},
-        onDateChanged = {},
-        onPlaceNameChanged = {},
-        onDescriptionChanged = {},
-        onSubmitButtonClicked = {},
     )
 }

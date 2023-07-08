@@ -55,6 +55,7 @@ internal fun ExpenseForm(
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Next,
+                capitalization = KeyboardCapitalization.Words,
             )
         )
 
@@ -84,6 +85,7 @@ internal fun ExpenseForm(
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Next,
+                capitalization = KeyboardCapitalization.Words,
             )
         )
 

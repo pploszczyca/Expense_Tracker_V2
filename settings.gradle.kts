@@ -1,5 +1,8 @@
 import org.gradle.api.initialization.resolve.RepositoriesMode
 
+include(":common:common-test")
+
+
 include(":features:main")
 
 

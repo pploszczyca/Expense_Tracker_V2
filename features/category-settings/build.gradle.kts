@@ -11,7 +11,7 @@ android {
     compileSdk = 33
 
     defaultConfig {
-        minSdk = 24
+        minSdk = 26
     }
 
     namespace = "com.github.pploszczyca.expensetrackerv2.features.category_settings"

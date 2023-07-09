@@ -6,11 +6,9 @@ plugins {
 
 dependencies {
     implementation(project(":domain"))
+    implementation(project(":common:common-kotlin"))
 
     implementation(Libs.kotlinxCoroutinesAndroid)
 
-    testImplementation(Libs.kotestRunnerJUnit5)
-    testImplementation(Libs.kotestAssertionsCore)
-    testImplementation(Libs.kotestProperty)
-    testImplementation(Libs.mockk)
+    testImplementation(project(":common:common-test"))
 }

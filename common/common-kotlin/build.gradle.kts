@@ -5,7 +5,5 @@ plugins {
 }
 
 dependencies {
-    testImplementation(Libs.kotestRunnerJUnit5)
-    testImplementation(Libs.kotestAssertionsCore)
-    testImplementation(Libs.kotestProperty)
+    testImplementation(project(":common:common-test"))
 }

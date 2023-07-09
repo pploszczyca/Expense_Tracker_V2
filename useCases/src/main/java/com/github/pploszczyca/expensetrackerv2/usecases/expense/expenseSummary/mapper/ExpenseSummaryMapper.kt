@@ -6,10 +6,10 @@ import com.github.pploszczyca.expensetrackerv2.domain.ExpenseSummary
 class ExpenseSummaryMapper {
     fun toExpenseSummary(expenses: List<Expense>): ExpenseSummary =
         ExpenseSummary(
-            yearlyExpenses = expenses.groupBy { it.date.year }.map { (year, expensesForYear) ->
+            yearlyExpenses = expenses.groupBy { it.date.year + 1900 }.map { (year, expensesForYear) ->
                 ExpenseSummary.YearlyExpense(
                     year = year,
-                    monthlyExpenses = expensesForYear.groupBy { it.date.month }
+                    monthlyExpenses = expensesForYear.groupBy { it.date.month + 1 }
                         .map { (month, expenseForMonth) ->
                             ExpenseSummary.YearlyExpense.MonthlyExpense(
                                 month = month,

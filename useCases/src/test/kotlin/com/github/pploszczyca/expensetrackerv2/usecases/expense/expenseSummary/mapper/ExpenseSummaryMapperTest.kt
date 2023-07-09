@@ -1,6 +1,7 @@
 package com.github.pploszczyca.expensetrackerv2.usecases.expense.expenseSummary.mapper
 
 import com.github.pploszczyca.expensetrackerv2.common_kotlin.extensions.toDate
+import com.github.pploszczyca.expensetrackerv2.domain.Category
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
 import com.github.pploszczyca.expensetrackerv2.domain.ExpenseSummary
 import io.kotest.core.spec.style.BehaviorSpec
@@ -80,7 +81,18 @@ class ExpenseSummaryMapperTest : BehaviorSpec({
     }
 })
 
-private fun fakeExpense(date: Date): Expense =
+private fun fakeExpense(
+    date: Date = Date(),
+    price: Double = 42.0,
+    categoryType: Category.Type = Category.Type.INCOME,
+): Expense =
     mockk {
         every { this@mockk.date } returns date
+        every { this@mockk.price } returns price
+        every { this@mockk.category } returns fakeCategory(categoryType = categoryType)
+    }
+
+private fun fakeCategory(categoryType: Category.Type) =
+    mockk<Category> {
+        every { this@mockk.type } returns categoryType
     }

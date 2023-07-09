@@ -6,14 +6,14 @@ import com.github.pploszczyca.expensetrackerv2.domain.ExpenseSummary
 class ExpenseSummaryMapper {
     fun toExpenseSummary(expenses: List<Expense>): ExpenseSummary =
         ExpenseSummary(
-            yearlyExpenses = getYearlyExpenses(expenses = expenses)
+            yearlyExpenses = getYearlyExpenses(expenses = expenses),
         )
 
     private fun getYearlyExpenses(expenses: List<Expense>) =
         expenses.groupByYear().map { (year, expensesForYear) ->
             ExpenseSummary.YearlyExpense(
                 year = year,
-                monthlyExpenses = getMonthlyExpenses(expensesForYear = expensesForYear)
+                monthlyExpenses = getMonthlyExpenses(expensesForYear = expensesForYear),
             )
         }
 
@@ -25,7 +25,7 @@ class ExpenseSummaryMapper {
             .map { (month, expenseForMonth) ->
                 ExpenseSummary.YearlyExpense.MonthlyExpense(
                     month = month,
-                    dailyExpenses = getDailyExpenses(expenseForMonth = expenseForMonth)
+                    dailyExpenses = getDailyExpenses(expenseForMonth = expenseForMonth),
                 )
             }
 

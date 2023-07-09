@@ -19,9 +19,21 @@ class ExpenseSummaryMapperTest : BehaviorSpec({
         val firstDate = LocalDate.of(2023, 7, 9).toDate()
         val secondDate = LocalDate.of(2023, 8, 11).toDate()
         val thirdDate = LocalDate.of(2022, 6, 11).toDate()
-        val firstExpense: Expense = fakeExpense(date = firstDate)
-        val secondExpense: Expense = fakeExpense(date = secondDate)
-        val thirdExpense: Expense = fakeExpense(date = thirdDate)
+        val firstExpense: Expense = fakeExpense(
+            date = firstDate,
+            price = 30.0,
+            categoryType = Category.Type.INCOME
+        )
+        val secondExpense: Expense = fakeExpense(
+            date = secondDate,
+            price = 40.0,
+            categoryType = Category.Type.OUTGO
+        )
+        val thirdExpense: Expense = fakeExpense(
+            date = thirdDate,
+            price = 50.0,
+            categoryType = Category.Type.OUTGO
+        )
         val expenses = listOf(
             firstExpense,
             secondExpense,
@@ -35,20 +47,20 @@ class ExpenseSummaryMapperTest : BehaviorSpec({
                     dailyExpenses = listOf(
                         ExpenseSummary.YearlyExpense.MonthlyExpense.DailyExpense(
                             day = 9,
-                            expenses = listOf(firstExpense)
+                            expenses = listOf(firstExpense),
                         ),
-                    )
+                    ),
                 ),
                 ExpenseSummary.YearlyExpense.MonthlyExpense(
                     month = 8,
                     dailyExpenses = listOf(
                         ExpenseSummary.YearlyExpense.MonthlyExpense.DailyExpense(
                             day = 11,
-                            expenses = listOf(secondExpense)
+                            expenses = listOf(secondExpense),
                         ),
-                    )
+                    ),
                 )
-            )
+            ),
         )
         val secondYearlyExpenses = ExpenseSummary.YearlyExpense(
             year = 2022,
@@ -58,17 +70,17 @@ class ExpenseSummaryMapperTest : BehaviorSpec({
                     dailyExpenses = listOf(
                         ExpenseSummary.YearlyExpense.MonthlyExpense.DailyExpense(
                             day = 11,
-                            expenses = listOf(thirdExpense)
+                            expenses = listOf(thirdExpense),
                         ),
-                    )
+                    ),
                 )
-            )
+            ),
         )
         val expenseSummary = ExpenseSummary(
             yearlyExpenses = listOf(
                 firstYearlyExpenses,
                 secondYearlyExpenses,
-            )
+            ),
         )
 
         When("Expenses are mapped") {

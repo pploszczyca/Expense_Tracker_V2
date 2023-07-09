@@ -5,5 +5,7 @@ plugins {
 }
 
 dependencies {
+    implementation(Libs.kotlinxCoroutinesAndroid)
+
     testImplementation(project(":common:common-test"))
 }

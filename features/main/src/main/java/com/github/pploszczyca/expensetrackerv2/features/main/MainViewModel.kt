@@ -1,20 +1,20 @@
 package com.github.pploszczyca.expensetrackerv2.features.main
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.github.pploszczyca.expensetrackerv2.common_kotlin.extensions.updateTransform
+import com.github.pploszczyca.expensetrackerv2.domain.Expense
 import com.github.pploszczyca.expensetrackerv2.features.main.features.bottom_bar.MainBottomBarEvent
 import com.github.pploszczyca.expensetrackerv2.features.main.features.filter_dialog.MainFilterDialogEvent
+import com.github.pploszczyca.expensetrackerv2.navigation.contract.NavigationRouter
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.DeleteExpense
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.GetAllExpenses
-import com.github.pploszczyca.expensetrackerv2.navigation.contract.NavigationRouter
-import com.github.pploszczyca.expensetrackerv2.domain.Expense
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.consumeEach
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.math.round
@@ -27,8 +27,9 @@ class MainViewModel @Inject constructor(
     filterDialogChannel: Channel<MainFilterDialogEvent>,
     private val navigationRouter: NavigationRouter,
 ) : ViewModel() {
-    var viewState by mutableStateOf(ViewState())
-        private set
+
+    private val _viewState: MutableStateFlow<ViewState> = MutableStateFlow(ViewState())
+    val viewState: StateFlow<ViewState> get() = _viewState
 
     var openDrawer: (() -> Unit)? = null    // TODO: Think how to change it
 
@@ -36,7 +37,9 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.Main) {
             getAllExpenses()
                 .collect { expenses ->
-                    viewState = viewState.copy(expenses = expenses)
+                    _viewState.updateTransform {
+                        copy(expenses = expenses)
+                    }
                 }
         }
 
@@ -51,34 +54,38 @@ class MainViewModel @Inject constructor(
 
     fun onEvent(event: MainEvent) {
         when (event) {
-            is MainEvent.SearchedTitleChange -> viewState = viewState.copy(
-                searchedTitle = event.value,
-            )
+            is MainEvent.SearchedTitleChange -> _viewState.updateTransform {
+                copy(searchedTitle = event.value)
+            }
 
             is MainEvent.ConfirmDeleteButtonClick -> {
                 viewModelScope.launch(Dispatchers.IO) {
-                    viewState.expenseToDelete?.let {
+                    _viewState.value.expenseToDelete?.let {
                         deleteExpense(expense = it)
                     }
                 }
-                viewState = viewState.copy(
-                    deleteDialogVisible = false
+                _viewState.updateTransform {
+                    copy(deleteDialogVisible = false)
+                }
+            }
+
+            is MainEvent.DeleteButtonClick -> _viewState.updateTransform {
+                copy(
+                    expenseToDelete = event.value,
+                    deleteDialogVisible = true,
                 )
             }
 
-            is MainEvent.DeleteButtonClick -> viewState = viewState.copy(
-                expenseToDelete = event.value,
-                deleteDialogVisible = true,
-            )
+            is MainEvent.DismissDeleteButtonClick -> _viewState.updateTransform {
+                copy(deleteDialogVisible = false)
+            }
 
-            is MainEvent.DismissDeleteButtonClick -> viewState = viewState.copy(
-                deleteDialogVisible = false
-            )
-
-            is MainEvent.OnTopBarTrailingIconClick -> viewState = viewState.copy(
-                topBarVisible = false,
-                searchedTitle = "",
-            )
+            is MainEvent.OnTopBarTrailingIconClick -> _viewState.updateTransform {
+                copy(
+                    topBarVisible = false,
+                    searchedTitle = "",
+                )
+            }
 
             MainEvent.OnAddNewExpenseButtonClicked -> navigationRouter.goToExpenseForm()
             MainEvent.OnCategorySettingsItemClicked -> navigationRouter.goToCategorySettings()
@@ -88,36 +95,38 @@ class MainViewModel @Inject constructor(
 
     private fun onBottomBarEvent(event: MainBottomBarEvent) {
         when (event) {
-            MainBottomBarEvent.ClearButtonClick -> viewState = viewState.copy(
-                currentMonthYearKey = null
-            )
+            MainBottomBarEvent.ClearButtonClick -> _viewState.updateTransform {
+                copy(currentMonthYearKey = null)
+            }
 
-            MainBottomBarEvent.FilterButtonClick -> viewState = viewState.copy(
-                filterDialogVisible = true
-            )
+            MainBottomBarEvent.FilterButtonClick -> _viewState.updateTransform {
+                copy(filterDialogVisible = true)
+            }
 
             MainBottomBarEvent.MenuButtonClick -> openDrawer?.invoke()
-            MainBottomBarEvent.SearchButtonClick -> viewState = viewState.copy(
-                topBarVisible = true,
-            )
+            MainBottomBarEvent.SearchButtonClick -> _viewState.updateTransform {
+                copy(topBarVisible = true)
+            }
         }
     }
 
     private fun onFilterDialogEvent(event: MainFilterDialogEvent) {
-        viewState = when (event) {
-            MainFilterDialogEvent.CloseDialog -> viewState.copy(
-                filterDialogVisible = false,
-            )
+        _viewState.updateTransform {
+            when (event) {
+                MainFilterDialogEvent.CloseDialog -> copy(
+                    filterDialogVisible = false,
+                )
 
-            is MainFilterDialogEvent.OptionSelected -> viewState.copy(
-                currentMonthYearKey = event.key,
-                filterDialogVisible = false
-            )
+                is MainFilterDialogEvent.OptionSelected -> copy(
+                    currentMonthYearKey = event.key,
+                    filterDialogVisible = false
+                )
 
-            MainFilterDialogEvent.ResetSelection -> viewState.copy(
-                currentMonthYearKey = null,
-                filterDialogVisible = false,
-            )
+                MainFilterDialogEvent.ResetSelection -> copy(
+                    currentMonthYearKey = null,
+                    filterDialogVisible = false,
+                )
+            }
         }
     }
 

@@ -77,7 +77,7 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
             getExpense = getExpense,
             insertExpense = insertExpense,
             updateExpense = updateExpense,
-            ioDispatcher = testDispatcher,
+            defaultDispatcher = testDispatcher,
             navigationRouter = navigationRouter,
         ).apply {
             runAllAsynchronousTasks()

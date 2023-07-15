@@ -40,7 +40,7 @@ class ExpenseFormViewModelImpl @Inject constructor(
     getExpense: GetExpense,
     private val insertExpense: InsertExpense,
     private val updateExpense: UpdateExpense,
-    private val ioDispatcher: CoroutineDispatcher,
+    private val defaultDispatcher: CoroutineDispatcher,
     private val navigationRouter: NavigationRouter,
 ) : ExpenseFormViewModel() {
 
@@ -92,7 +92,7 @@ class ExpenseFormViewModelImpl @Inject constructor(
                     categories = mapToViewStateCategories(categories, chosenCategoryId),
                     submitButtonText = submitButtonTextId
                 )
-            }.flowOn(ioDispatcher)
+            }.flowOn(defaultDispatcher)
                 .collect { formViewState ->
                     _viewState.update { formViewState }
                 }
@@ -159,7 +159,7 @@ class ExpenseFormViewModelImpl @Inject constructor(
         }
 
         viewModelScope.launch {
-            withContext(ioDispatcher) {
+            withContext(defaultDispatcher) {
                 when (expenseId == null || expenseId == NO_EXPENSE_ID) {
                     true -> performInsertingExpense()
                     false -> performUpdatingExpense(expenseId)

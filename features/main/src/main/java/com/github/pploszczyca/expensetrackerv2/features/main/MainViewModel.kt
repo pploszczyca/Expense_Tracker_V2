@@ -34,7 +34,7 @@ class MainViewModel @Inject constructor(
     var openDrawer: (() -> Unit)? = null    // TODO: Think how to change it
 
     init {
-        viewModelScope.launch(Dispatchers.Main) {
+        viewModelScope.launch(Dispatchers.Default) {
             getAllExpenses()
                 .collect { expenses ->
                     _viewState.updateTransform {
@@ -43,20 +43,21 @@ class MainViewModel @Inject constructor(
                 }
         }
 
-        viewModelScope.launch(Dispatchers.Main) {
+        viewModelScope.launch(Dispatchers.Default) {
             bottomBarChannel.consumeEach(::onBottomBarEvent)
         }
 
-        viewModelScope.launch(Dispatchers.Main) {
+        viewModelScope.launch(Dispatchers.Default) {
             filterDialogChannel.consumeEach(::onFilterDialogEvent)
         }
     }
 
     fun onEvent(event: MainEvent) {
         when (event) {
-            is MainEvent.SearchedTitleChange -> _viewState.updateTransform {
-                copy(searchedTitle = event.value)
-            }
+            is MainEvent.SearchedTitleChange ->
+                _viewState.updateTransform {
+                    copy(searchedTitle = event.value)
+                }
 
             is MainEvent.ConfirmDeleteButtonClick -> {
                 viewModelScope.launch(Dispatchers.IO) {

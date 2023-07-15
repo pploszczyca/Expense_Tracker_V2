@@ -22,6 +22,6 @@ object AppModule {
         appContext.contentResolver
 
     @Provides
-    fun ioDispatcher(): CoroutineDispatcher =
-        Dispatchers.IO
+    fun defaultDispatcher(): CoroutineDispatcher =
+        Dispatchers.Default
 }

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -21,6 +22,7 @@ import androidx.compose.material.icons.filled.Place
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -35,17 +37,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.github.pploszczyca.expensetrackerv2.features.main.R
-import com.github.pploszczyca.expensetrackerv2.common_kotlin.extensions.toFormattedString
 import com.github.pploszczyca.expensetrackerv2.domain.Category
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
+import com.github.pploszczyca.expensetrackerv2.features.main.R
+import java.util.Date
 
 @Composable
 fun ExpenseCard(
     expense: Expense,
-    onDeleteButtonClick: (Expense) -> Unit,
-    onEditExpenseButtonClicked: (Expense) -> Unit,
+    modifier: Modifier = Modifier,
+    onDeleteButtonClick: (Expense) -> Unit = {},
+    onEditExpenseButtonClicked: (Expense) -> Unit = {},
 ) {
     val expenseColor = Color(0xffff1744)
     val incomeColor = Color(0xff76ff03)
@@ -57,9 +61,9 @@ fun ExpenseCard(
     )
 
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .padding(3.dp)
+            .padding(4.dp)
             .animateContentSize()
             .clickable {
                 isCardExtended = !isCardExtended
@@ -68,33 +72,37 @@ fun ExpenseCard(
         Column(modifier = Modifier.padding(10.dp)) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    style = MaterialTheme.typography.bodySmall,
-                    text = expense.date.toFormattedString()
-                )
-                Icon(
-                    Icons.Default.ArrowDropUp,
-                    contentDescription = null,
-                    modifier = Modifier.rotate(dropDownIconRotation)
-                )
-            }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    style = MaterialTheme.typography.bodyLarge,
+                    style = MaterialTheme.typography.titleLarge,
                     text = expense.title,
                     fontStyle = FontStyle.Italic,
                     modifier = Modifier.weight(1f)
                 )
-                Text(
-                    style = MaterialTheme.typography.bodyLarge,
-                    text = (expense.price * expense.category.type.multiplier).toString(),
-                    color = if (expense.category.type == Category.Type.OUTGO) expenseColor else incomeColor
-                )
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                ) {
+                    Text(
+                        style = MaterialTheme.typography.titleLarge,
+                        text = (expense.price * expense.category.type.multiplier).toString(),
+                        color = if (expense.category.type == Category.Type.OUTGO) expenseColor else incomeColor
+                    )
+
+                    Spacer(modifier = Modifier.padding(2.dp))
+
+                    Icon(
+                        Icons.Default.ArrowDropUp,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .rotate(dropDownIconRotation)
+                            .size(22.dp)
+                    )
+                }
+
             }
 
             if (isCardExtended) {
@@ -111,8 +119,8 @@ fun ExpenseCard(
 @Composable
 private fun ExtraContentExpenseCard(
     expense: Expense,
-    onDeleteButtonClick: (Expense) -> Unit,
-    onEditExpenseButtonClicked: (Expense) -> Unit
+    onDeleteButtonClick: (Expense) -> Unit = {},
+    onEditExpenseButtonClicked: (Expense) -> Unit = {},
 ) {
     ExtraContentRow(
         stringResource(id = R.string.place),
@@ -144,7 +152,11 @@ private fun ExtraContentExpenseCard(
 
 
 @Composable
-private fun ExtraContentRow(contentName: String, contentIcon: ImageVector, contentString: String) {
+private fun ExtraContentRow(
+    contentName: String,
+    contentIcon: ImageVector,
+    contentString: String,
+) {
     Spacer(modifier = Modifier.height(5.dp))
     if (contentString.isNotEmpty()) {
         Row(
@@ -157,12 +169,63 @@ private fun ExtraContentRow(contentName: String, contentIcon: ImageVector, conte
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(contentIcon, contentDescription = null, modifier = Modifier.size(18.dp))
                 Text(
-                    style = MaterialTheme.typography.bodySmall,
+                    style = MaterialTheme.typography.bodyMedium,
                     text = contentName,
-                    modifier = Modifier.padding(start = 5.dp)
+                    modifier = Modifier.padding(start = 4.dp, end = 2.dp)
                 )
             }
-            Text(style = MaterialTheme.typography.bodySmall, text = contentString)
+            Text(style = MaterialTheme.typography.bodyMedium, text = contentString)
         }
+    }
+}
+
+@Preview
+@Composable
+fun ExpenseCardPreview() {
+    val category = Category(
+        name = "Category name",
+        type = Category.Type.INCOME,
+    )
+    val expense = Expense(
+        title = "Expense title",
+        price = 50.0,
+        date = Date(),
+        description = "Some description",
+        place = "Place",
+        category = category
+    )
+
+    ExpenseCard(expense = expense)
+}
+
+@Preview
+@Composable
+fun ExpenseCardWithLongTitlePreview() {
+    val category = Category(
+        name = "Category name",
+        type = Category.Type.INCOME,
+    )
+    val expense = Expense(
+        title = "Long long long long long long long long title",
+        price = 50.0,
+        date = Date(),
+        description = "Some description",
+        place = "Place",
+        category = category
+    )
+
+    ExpenseCard(expense = expense)
+}
+
+
+@Preview
+@Composable
+fun ExtraContentRowPreview() {
+    Surface {
+        ExtraContentRow(
+            contentName = "Place",
+            contentIcon = Icons.Default.Place,
+            contentString = "Biedronka",
+        )
     }
 }

@@ -51,6 +51,7 @@ dependencies {
     implementation(Libs.lifecycleViewModelKtx)
     implementation(Libs.material)
     implementation(Libs.composeMaterial)
+    implementation(Libs.composeUiTooling)
     implementation(Libs.composeUiToolingPreview)
     implementation(Libs.materialDialogs)
     implementation(Libs.materialIconsExtended)

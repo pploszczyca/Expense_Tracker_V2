@@ -1,5 +1,6 @@
 package com.github.pploszczyca.expensetrackerv2.features.main.features.list
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -41,19 +42,19 @@ fun ExpensesList(
                 ) {
                     Text(
                         dailyExpense.date,
-                        style = MaterialTheme.typography.labelMedium
+                        style = MaterialTheme.typography.titleMedium
                     )
 
                     Row {
                         Text(
                             dailyExpense.totalOutgo,
-                            style = MaterialTheme.typography.labelMedium,
+                            style = MaterialTheme.typography.titleMedium,
                             color = expenseColor
                         )
-                        Text("/", style = MaterialTheme.typography.labelMedium)
+                        Text("/", style = MaterialTheme.typography.titleMedium)
                         Text(
                             dailyExpense.totalIncome,
-                            style = MaterialTheme.typography.labelMedium,
+                            style = MaterialTheme.typography.titleMedium,
                             color = incomeColor,
                         )
                     }
@@ -65,6 +66,7 @@ fun ExpensesList(
                 key = Expense::id,
             ) { expense ->
                 ExpenseCard(
+                    modifier = Modifier.animateContentSize(),
                     expense = expense,
                     onDeleteButtonClick = onDeleteButtonClick,
                     onEditExpenseButtonClicked = {

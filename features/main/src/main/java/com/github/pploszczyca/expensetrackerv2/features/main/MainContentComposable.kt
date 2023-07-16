@@ -1,5 +1,6 @@
 package com.github.pploszczyca.expensetrackerv2.features.main
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -49,7 +50,7 @@ fun MainContent(
                 .fillMaxWidth()
                 .padding(top = 10.dp),
         ) {
-            if (mainViewState.mainExpenseInformationVisible) {
+            AnimatedVisibility(visible = mainViewState.mainExpenseInformationVisible) {
                 MainExpensesInformation(
                     moneyInWalletAmount = mainViewState.moneyInWalletAmount
                 )

@@ -1,5 +1,6 @@
 package com.github.pploszczyca.expensetrackerv2.features.main
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.DrawerValue
@@ -53,7 +54,7 @@ fun MainComposable(
     ) {
         Scaffold(
             topBar = {
-                if (mainViewState.topBarVisible) {
+                AnimatedVisibility (visible = mainViewState.topBarVisible) {
                     SearchTopAppBar(
                         searchedValue = mainViewState.searchedTitle,
                         onTrailingIconClick = { viewModel.onEvent(MainEvent.OnTopBarTrailingIconClick) },

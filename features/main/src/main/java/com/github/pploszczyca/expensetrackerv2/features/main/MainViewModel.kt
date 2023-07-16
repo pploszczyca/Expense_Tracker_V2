@@ -145,15 +145,6 @@ class MainViewModel @Inject constructor(
         val clearButtonVisible: Boolean get() = currentMonthYearKey != null
         val mainExpenseInformationVisible: Boolean get() = topBarVisible.not()
 
-//        val filteredExpenses: List<Expense>
-//            get() = expenses.filter(::checkIfHasKeyAndContainsSearchedTitle)
-
-//        private fun checkIfHasKeyAndContainsSearchedTitle(expense: Expense): Boolean =
-//            (currentMonthYearKey == null || expense.monthYearKey == currentMonthYearKey) && expense.title.contains(
-//                searchedTitle,
-//                true
-//            )
-
         val moneyInWalletAmount: Double
             get() = expenseSummary?.let { it.totalIncome - it.totalOutgo } ?: 0.0
     }

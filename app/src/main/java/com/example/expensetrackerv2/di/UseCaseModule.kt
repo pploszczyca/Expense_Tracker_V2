@@ -11,6 +11,7 @@ import com.github.pploszczyca.expensetrackerv2.usecases.expense.GetExpensesPlace
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.GetExpensesTitles
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.InsertExpense
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.UpdateExpense
+import com.github.pploszczyca.expensetrackerv2.usecases.expense.expenseSummary.GetExpenseSummary
 import com.github.pploszczyca.expensetrackerv2.usecases.repositories.CategoryRepository
 import com.github.pploszczyca.expensetrackerv2.usecases.repositories.ExpenseRepository
 import dagger.Module
@@ -65,4 +66,8 @@ object UseCaseModule {
     @Provides
     fun provideUpdateExpense(repository: ExpenseRepository): UpdateExpense =
         UpdateExpense(repository = repository)
+
+    @Provides
+    fun provideGetExpenseSummary(repository: ExpenseRepository): GetExpenseSummary =
+        GetExpenseSummary(repository = repository)
 }

@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.map
 
 class GetExpenseSummary(
     private val repository: ExpenseRepository,
-    private val expenseSummaryMapper: ExpenseSummaryMapper,
+    private val expenseSummaryMapper: ExpenseSummaryMapper = ExpenseSummaryMapper(),
 ) {
     operator fun invoke(): Flow<ExpenseSummary> =
         repository

@@ -30,7 +30,7 @@ fun ExpensesList(
     val viewState by viewModel.viewState.collectAsState()
 
     LazyColumn(Modifier.padding(3.dp)) {
-        viewState.groupedExpensesList.forEach { groupedExpenses ->
+        viewState.dailyExpenses.forEach { dailyExpense ->
             stickyHeader {
                 Row(
                     Modifier
@@ -40,19 +40,19 @@ fun ExpensesList(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        groupedExpenses.dateText,
+                        dailyExpense.date,
                         style = MaterialTheme.typography.labelMedium
                     )
 
                     Row {
                         Text(
-                            groupedExpenses.totalOutgo,
+                            dailyExpense.totalOutgo,
                             style = MaterialTheme.typography.labelMedium,
                             color = expenseColor
                         )
                         Text("/", style = MaterialTheme.typography.labelMedium)
                         Text(
-                            groupedExpenses.totalIncome,
+                            dailyExpense.totalIncome,
                             style = MaterialTheme.typography.labelMedium,
                             color = incomeColor,
                         )
@@ -60,10 +60,10 @@ fun ExpensesList(
                 }
             }
 
-            items(items = groupedExpenses.expenses,
-                key = {
-                    it.id
-                }) { expense ->
+            items(
+                items = dailyExpense.expenses,
+                key = Expense::id,
+            ) { expense ->
                 ExpenseCard(
                     expense = expense,
                     onDeleteButtonClick = onDeleteButtonClick,

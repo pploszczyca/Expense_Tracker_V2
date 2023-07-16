@@ -54,7 +54,7 @@ fun MainComposable(
     ) {
         Scaffold(
             topBar = {
-                AnimatedVisibility (visible = mainViewState.topBarVisible) {
+                AnimatedVisibility(visible = mainViewState.topBarVisible) {
                     SearchTopAppBar(
                         searchedValue = mainViewState.searchedTitle,
                         onTrailingIconClick = { viewModel.onEvent(MainEvent.OnTopBarTrailingIconClick) },

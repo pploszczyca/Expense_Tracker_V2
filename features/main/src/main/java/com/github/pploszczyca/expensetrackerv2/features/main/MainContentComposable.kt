@@ -9,10 +9,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.github.pploszczyca.expensetrackerv2.domain.Expense
 import com.github.pploszczyca.expensetrackerv2.features.main.features.delete_dialog.DeleteExpenseAlertDialog
 import com.github.pploszczyca.expensetrackerv2.features.main.features.delete_dialog.DeleteExpenseDialogViewModel
 import com.github.pploszczyca.expensetrackerv2.features.main.features.filter_dialog.MainFilterDialog
@@ -20,18 +23,20 @@ import com.github.pploszczyca.expensetrackerv2.features.main.features.filter_dia
 import com.github.pploszczyca.expensetrackerv2.features.main.features.list.ExpenseListViewModel
 import com.github.pploszczyca.expensetrackerv2.features.main.features.list.ExpensesList
 import com.github.pploszczyca.expensetrackerv2.features.main.features.list.ExpensesListEvent
-import com.github.pploszczyca.expensetrackerv2.domain.Expense
+import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun MainContent(
     innerPadding: PaddingValues,
-    mainViewState: MainViewModel.ViewState,
+    mainViewStateFlow: StateFlow<MainViewModel.ViewState>,
     onDeleteButtonClick: (Expense) -> Unit,
     onDismissDeleteButtonClick: () -> Unit,
     onConfirmDeleteButtonClick: () -> Unit,
 ) {
     val deleteExpenseDialogViewModel: DeleteExpenseDialogViewModel = hiltViewModel()
     val filterDialogViewModel: MainFilterDialogViewModel = hiltViewModel()
+    val mainViewState by mainViewStateFlow.collectAsState()
+
     mainViewState.expenseToDelete?.let {
         deleteExpenseDialogViewModel.init(
             expense = it
@@ -50,7 +55,7 @@ fun MainContent(
                 )
             }
             val expensesListViewModel: ExpenseListViewModel = hiltViewModel()
-            expensesListViewModel.onEvent(ExpensesListEvent.ExpensesChanged(mainViewState.filteredExpenses))
+            expensesListViewModel.onEvent(ExpensesListEvent.OnInit(mainViewStateFlow))
             ExpensesList(
                 viewModel = expensesListViewModel,
                 onDeleteButtonClick = onDeleteButtonClick,

@@ -4,11 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.pploszczyca.expensetrackerv2.common_kotlin.extensions.updateTransform
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
+import com.github.pploszczyca.expensetrackerv2.domain.ExpenseSummary
 import com.github.pploszczyca.expensetrackerv2.features.main.features.bottom_bar.MainBottomBarEvent
 import com.github.pploszczyca.expensetrackerv2.features.main.features.filter_dialog.MainFilterDialogEvent
 import com.github.pploszczyca.expensetrackerv2.navigation.contract.NavigationRouter
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.DeleteExpense
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.GetAllExpenses
+import com.github.pploszczyca.expensetrackerv2.usecases.expense.expenseSummary.GetExpenseSummary
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
@@ -21,7 +23,7 @@ import kotlin.math.round
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val getAllExpenses: GetAllExpenses,
+    private val getExpenseSummary: GetExpenseSummary,
     private val deleteExpense: DeleteExpense,
     bottomBarChannel: Channel<MainBottomBarEvent>,
     filterDialogChannel: Channel<MainFilterDialogEvent>,
@@ -35,10 +37,10 @@ class MainViewModel @Inject constructor(
 
     init {
         viewModelScope.launch(Dispatchers.Default) {
-            getAllExpenses()
-                .collect { expenses ->
+            getExpenseSummary()
+                .collect { expenseSummary ->
                     _viewState.updateTransform {
-                        copy(expenses = expenses)
+                        copy(expenseSummary = expenseSummary)
                     }
                 }
         }
@@ -135,7 +137,7 @@ class MainViewModel @Inject constructor(
         val currentMonthYearKey: Expense.MonthYearKey? = null,
         val searchedTitle: String = "",
         val expenseToDelete: Expense? = null,
-        private val expenses: List<Expense> = emptyList(),
+        val expenseSummary: ExpenseSummary? = null,
         val topBarVisible: Boolean = false,
         val deleteDialogVisible: Boolean = false,
         val filterDialogVisible: Boolean = false,
@@ -143,18 +145,16 @@ class MainViewModel @Inject constructor(
         val clearButtonVisible: Boolean get() = currentMonthYearKey != null
         val mainExpenseInformationVisible: Boolean get() = topBarVisible.not()
 
-        val filteredExpenses: List<Expense>
-            get() = expenses.filter(::checkIfHasKeyAndContainsSearchedTitle)
+//        val filteredExpenses: List<Expense>
+//            get() = expenses.filter(::checkIfHasKeyAndContainsSearchedTitle)
 
-        private fun checkIfHasKeyAndContainsSearchedTitle(expense: Expense): Boolean =
-            (currentMonthYearKey == null || expense.monthYearKey == currentMonthYearKey) && expense.title.contains(
-                searchedTitle,
-                true
-            )
+//        private fun checkIfHasKeyAndContainsSearchedTitle(expense: Expense): Boolean =
+//            (currentMonthYearKey == null || expense.monthYearKey == currentMonthYearKey) && expense.title.contains(
+//                searchedTitle,
+//                true
+//            )
 
         val moneyInWalletAmount: Double
-            get() = filteredExpenses
-                .sumOf { expense -> expense.price * expense.category.type.multiplier }
-                .let { value -> round(value * 100) / 100 }
+            get() = expenseSummary?.let { it.totalIncome - it.totalOutgo } ?: 0.0
     }
 }

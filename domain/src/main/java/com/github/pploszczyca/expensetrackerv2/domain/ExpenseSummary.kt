@@ -36,10 +36,10 @@ data class ExpenseSummary(
                 val expenses: List<Expense>,
             ) {
                 val totalIncome: Double get() =
-                    expenses.filter { it.category.type == Category.Type.INCOME }.sumOf { it.price }
+                    expenses.totalIncome
 
                 val totalOutgo: Double get() =
-                    expenses.filter { it.category.type == Category.Type.OUTGO }.sumOf { it.price }
+                    expenses.totalOutgo
             }
         }
     }

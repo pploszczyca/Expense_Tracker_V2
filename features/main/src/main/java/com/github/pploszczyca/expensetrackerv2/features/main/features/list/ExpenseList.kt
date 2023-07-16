@@ -30,7 +30,7 @@ fun ExpensesList(
     val viewState by viewModel.viewState.collectAsState()
 
     LazyColumn(Modifier.padding(3.dp)) {
-        viewState.dailyExpenses.forEach { dailyExpense ->
+        viewState.filteredDailyExpenses.forEach { dailyExpense ->
             stickyHeader {
                 Row(
                     Modifier

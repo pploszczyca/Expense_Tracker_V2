@@ -20,3 +20,7 @@ data class Expense(
         const val NEW_EXPENSE_ID = 0
     }
 }
+
+val List<Expense>.totalIncome get() = this.filter { it.category.type == Category.Type.INCOME }.sumOf { it.price }
+
+val List<Expense>.totalOutgo get() = this.filter { it.category.type == Category.Type.OUTGO }.sumOf { it.price }

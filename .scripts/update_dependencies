@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+# Czytaj plik wyjściowy pluginu Gradle Versions
+dependencies_file_path="/home/pepe/Projekty/AndroidApps/ExpenseTrackerV2/buildSrc/src/main/kotlin/Dependencies.kt"
+versions=$(jq -r '.current.dependencies[] | "\(.group):\(.name)=\(.available.release)"' report.json)
+
+# Iteruj przez wszystkie znalezione zależności i aktualizuj wersje w pliku Dependencies.kt
+for version in $versions; do
+    group=$(echo $version | cut -d= -f1)
+    new_version=$(echo $version | cut -d= -f2)
+
+    # Zamień starą wersję na nową w pliku Dependencies.kt
+    # Uwaga: poniższa komenda wymaga GNU sed
+    sed -i "/${group//\//\\/}/s/\"[0-9a-zA-Z.-]*\"/\"${new_version}\"/" dependencies_file_path
+done

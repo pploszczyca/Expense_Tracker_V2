@@ -13,6 +13,8 @@ import androidx.compose.ui.unit.dp
 import com.github.pploszczyca.expensetrackerv2.common_kotlin.extensions.toFormattedString
 import com.github.pploszczyca.expensetrackerv2.common_ui.bar.TopAppBarWithBack
 import com.github.pploszczyca.expensetrackerv2.common_ui.calendar_field.CalendarDialogField
+import com.github.pploszczyca.expensetrackerv2.common_ui.theme.ExpenseColor
+import com.github.pploszczyca.expensetrackerv2.common_ui.theme.IncomeColor
 import com.github.pploszczyca.expensetrackerv2.domain.Category
 import com.github.pploszczyca.expensetrackerv2.expense_statistics.utilities.MathUtils
 import com.github.pploszczyca.expensetrackerv2.expense_statistics.view_model.ExpensesStatisticsViewModel
@@ -22,10 +24,6 @@ import com.github.pploszczyca.expensetrackerv2.features.expense_statistics.R
 fun ExpensesStatistics(
     viewModel: ExpensesStatisticsViewModel,
 ) {
-    // TODO: Move theme to another module?
-    val expenseColor = Color(0xffff1744)
-    val incomeColor = Color(0xff76ff03)
-
     val fromDate = viewModel.fromDate
     val toDate = viewModel.toDate
     val expenseWithItsTypeFilteredList =
@@ -74,7 +72,7 @@ fun ExpensesStatistics(
                         expenseWithItsTypeFilteredList,
                         Category.Type.OUTGO
                     ),
-                    color = expenseColor
+                    color = ExpenseColor
                 )
 
                 StatisticsCard(
@@ -83,7 +81,7 @@ fun ExpensesStatistics(
                         expenseWithItsTypeFilteredList,
                         Category.Type.INCOME
                     ),
-                    color = incomeColor
+                    color = IncomeColor
                 )
             }
         },

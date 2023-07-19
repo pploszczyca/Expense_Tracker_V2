@@ -17,6 +17,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.github.pploszczyca.expensetrackerv2.common_ui.theme.ExpenseColor
+import com.github.pploszczyca.expensetrackerv2.common_ui.theme.IncomeColor
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -25,9 +27,6 @@ fun ExpensesList(
     viewModel: ExpenseListViewModel,
     onDeleteButtonClick: (Expense) -> Unit,
 ) {
-    val expenseColor = Color(0xffff1744)
-    val incomeColor = Color(0xff76ff03)
-
     val viewState by viewModel.viewState.collectAsState()
 
     LazyColumn(Modifier.padding(3.dp)) {
@@ -49,13 +48,13 @@ fun ExpensesList(
                         Text(
                             dailyExpense.totalOutgo,
                             style = MaterialTheme.typography.titleMedium,
-                            color = expenseColor
+                            color = ExpenseColor
                         )
                         Text("/", style = MaterialTheme.typography.titleMedium)
                         Text(
                             dailyExpense.totalIncome,
                             style = MaterialTheme.typography.titleMedium,
-                            color = incomeColor,
+                            color = IncomeColor,
                         )
                     }
                 }

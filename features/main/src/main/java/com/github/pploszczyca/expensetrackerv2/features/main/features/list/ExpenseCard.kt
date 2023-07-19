@@ -32,12 +32,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.github.pploszczyca.expensetrackerv2.common_ui.theme.ExpenseColor
+import com.github.pploszczyca.expensetrackerv2.common_ui.theme.IncomeColor
 import com.github.pploszczyca.expensetrackerv2.domain.Category
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
 import com.github.pploszczyca.expensetrackerv2.features.main.R
@@ -50,13 +51,11 @@ fun ExpenseCard(
     onDeleteButtonClick: (Expense) -> Unit = {},
     onEditExpenseButtonClicked: (Expense) -> Unit = {},
 ) {
-    val expenseColor = Color(0xffff1744)
-    val incomeColor = Color(0xff76ff03)
     var isCardExtended by remember { mutableStateOf(false) }
 
     val dropDownIconRotation by animateFloatAsState(
         targetValue = if (isCardExtended) 0f else -180f,
-        animationSpec = tween(250)
+        animationSpec = tween(250),
     )
 
     Card(
@@ -88,7 +87,7 @@ fun ExpenseCard(
                     Text(
                         style = MaterialTheme.typography.titleLarge,
                         text = (expense.price * expense.category.type.multiplier).toString(),
-                        color = if (expense.category.type == Category.Type.OUTGO) expenseColor else incomeColor
+                        color = if (expense.category.type == Category.Type.OUTGO) ExpenseColor else IncomeColor
                     )
 
                     Spacer(modifier = Modifier.padding(2.dp))

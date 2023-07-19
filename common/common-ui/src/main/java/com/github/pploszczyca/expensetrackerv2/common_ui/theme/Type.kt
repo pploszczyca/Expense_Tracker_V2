@@ -1,4 +1,4 @@
-package com.example.expensetrackerv2.ui.theme
+package com.github.pploszczyca.expensetrackerv2.common_ui.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle
@@ -7,7 +7,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.example.expensetrackerv2.R
+import com.github.pploszczyca.expensetrackerv2.common.common_ui.R
 
 // Set of Material typography styles to start with
 val robotoFamilyFont = FontFamily(

@@ -67,6 +67,7 @@ dependencies {
     implementation(project(":useCases"))
     implementation(project(":database"))
     implementation(project(":navigation:navigation-contract"))
+    implementation(project(":common:common-ui"))
 
     implementation(project(":features:main"))
     implementation(project(":features:expense-form"))

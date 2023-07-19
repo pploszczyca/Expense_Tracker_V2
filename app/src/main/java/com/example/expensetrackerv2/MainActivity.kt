@@ -9,7 +9,7 @@ import androidx.compose.runtime.MutableState
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.expensetrackerv2.navigation.NavHostComposable
-import com.example.expensetrackerv2.ui.theme.ExpenseTrackerV2Theme
+import com.github.pploszczyca.expensetrackerv2.common_ui.theme.ExpenseTrackerV2Theme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

@@ -24,6 +24,7 @@ plugins {
     id("org.jetbrains.kotlin.jvm") version "2.0.21" apply false
     id("com.github.ben-manes.versions") version "0.47.0"
     alias(libs.plugins.compose.compiler) apply false
+    id("com.google.devtools.ksp") version "2.0.21-1.0.26" apply false
 }
 
 tasks.register("clean", Delete::class) {

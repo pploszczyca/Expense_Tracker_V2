@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    id("kotlin-kapt")
+    id("com.google.devtools.ksp")
     id("dagger.hilt.android.plugin")
     alias(libs.plugins.compose.compiler)
 }
@@ -86,13 +86,9 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
 
     implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
+    ksp(libs.hilt.android.compiler)
 
     implementation(libs.hilt.navigation.compose)
 
     implementation(libs.material3)
-}
-
-kapt {
-    correctErrorTypes = true
 }

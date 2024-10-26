@@ -1,5 +1,3 @@
-import buildSrc.src.main.kotlin.Libs
-
 plugins {
     id("kotlin")
 }
@@ -8,7 +6,7 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":common:common-kotlin"))
 
-    implementation(Libs.kotlinxCoroutinesAndroid)
+    implementation(libs.kotlinx.coroutines.android)
 
     testImplementation(project(":common:common-test"))
 }

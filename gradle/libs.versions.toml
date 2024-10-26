@@ -1,0 +1,52 @@
+[versions]
+androidx-core = "1.10.1"
+appcompat = "1.6.1"
+lifecycle-viewmodel-ktx = "2.6.1"
+material = "1.9.0"
+compose = "1.4.3"
+lifecycle = "2.6.1"
+activity-compose = "1.7.2"
+android-junit = "1.1.5"
+espresso-core = "3.5.1"
+navigation-compose = "2.6.0"
+material-icons-extended = "1.4.3"
+room-runtime = "2.5.1"
+kotlinx-coroutines-android = "1.6.4"
+gson = "2.9.0"
+material-dialogs = "0.8.1-rc"
+hilt-android = "2.44"
+hilt-navigation-compose = "1.0.0"
+material3 = "1.1.0"
+kotest = "5.5.5"
+mockk = "1.13.4"
+
+[libraries]
+androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle-viewmodel-ktx" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "compose" }
+compose-material = { group = "androidx.compose.material", name = "material", version.ref = "compose" }
+compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "compose" }
+lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }
+activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
+android-test-junit = { group = "androidx.test.ext", name = "junit", version.ref = "android-junit" }
+espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
+compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "compose" }
+compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "compose" }
+navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose" }
+material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "material-icons-extended" }
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room-runtime" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room-runtime" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room-runtime" }
+kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinx-coroutines-android" }
+gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+material-dialogs = { group = "io.github.vanpra.compose-material-dialogs", name = "datetime", version.ref = "material-dialogs" }
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt-android" }
+hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt-android" }
+hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hilt-navigation-compose" }
+material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
+kotest-runner-junit5 = { group = "io.kotest", name = "kotest-runner-junit5", version.ref = "kotest" }
+kotest-assertions-core = { group = "io.kotest", name = "kotest-assertions-core", version.ref = "kotest" }
+kotest-property = { group = "io.kotest", name = "kotest-property", version.ref = "kotest" }
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }

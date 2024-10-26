@@ -1,5 +1,3 @@
-import buildSrc.src.main.kotlin.Libs
-
 plugins {
     id("com.android.library")
     id("kotlin-android")
@@ -41,12 +39,12 @@ android {
 dependencies {
     implementation(project(":common:common-kotlin"))
 
-    implementation(Libs.material)
-    implementation(Libs.composeMaterial)
-    implementation(Libs.composeUiToolingPreview)
-    implementation(Libs.materialDialogs)
-    implementation(Libs.materialIconsExtended)
+    implementation(libs.material)
+    implementation(libs.compose.material)
+    implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.material.dialogs)
+    implementation(libs.material.icons.extended)
 
-    implementation(Libs.material3)
-    implementation(Libs.material3WindowSizeClass)
+    implementation(libs.material3)
+    implementation(libs.material3)
 }

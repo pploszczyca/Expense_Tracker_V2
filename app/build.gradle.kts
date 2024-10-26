@@ -1,5 +1,3 @@
-import buildSrc.src.main.kotlin.Libs
-
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -74,28 +72,27 @@ dependencies {
     implementation(project(":features:expense-statistics"))
     implementation(project(":features:category-settings"))
 
-    implementation(Libs.androidxCore)
-    implementation(Libs.appcompat)
-    implementation(Libs.material)
-    implementation(Libs.composeUi)
-    implementation(Libs.composeMaterial)
-    implementation(Libs.lifecycleRuntimeKtx)
-    implementation(Libs.activityCompose)
-    androidTestImplementation(Libs.androidTestJUnit)
-    androidTestImplementation(Libs.espressoCore)
-    androidTestImplementation(Libs.composeUiTestJUnit4)
-    debugImplementation(Libs.composeUiTooling)
-    implementation(Libs.navigationCompose)
+    implementation(libs.androidx.core)
+    implementation(libs.appcompat)
+    implementation(libs.material)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.material)
+    implementation(libs.lifecycle.runtime.ktx)
+    implementation(libs.activity.compose)
+    androidTestImplementation(libs.android.test.junit)
+    androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(libs.compose.ui.test.junit4)
+    debugImplementation(libs.compose.ui.tooling)
+    implementation(libs.navigation.compose)
 
-    implementation(Libs.kotlinxCoroutinesAndroid)
+    implementation(libs.kotlinx.coroutines.android)
 
-    implementation(Libs.hiltAndroid)
-    kapt(Libs.hiltAndroidCompiler)
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
 
-    implementation(Libs.hiltNavigationCompose)
+    implementation(libs.hilt.navigation.compose)
 
-    implementation(Libs.material3)
-    implementation(Libs.material3WindowSizeClass)
+    implementation(libs.material3)
 }
 
 kapt {

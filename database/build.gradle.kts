@@ -1,5 +1,3 @@
-import buildSrc.src.main.kotlin.Libs
-
 plugins {
     id("com.android.library")
     id("kotlin-android")
@@ -35,11 +33,11 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":useCases"))
 
-    implementation(Libs.kotlinxCoroutinesAndroid)
-    implementation(Libs.roomRuntime)
-    annotationProcessor(Libs.roomCompiler)
-    kapt(Libs.roomCompiler)
-    implementation(Libs.roomKtx)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.room.runtime)
+    annotationProcessor(libs.room.compiler)
+    kapt(libs.room.compiler)
+    implementation(libs.room.ktx)
 }
 
 kapt.correctErrorTypes = true

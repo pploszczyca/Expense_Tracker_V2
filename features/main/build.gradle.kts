@@ -1,5 +1,3 @@
-import buildSrc.src.main.kotlin.Libs
-
 plugins {
     id("com.android.library")
     id("kotlin-android")
@@ -47,21 +45,21 @@ dependencies {
     implementation(project(":common:common-kotlin"))
     implementation(project(":navigation:navigation-contract"))
 
-    implementation(Libs.androidxCore)
-    implementation(Libs.lifecycleViewModelKtx)
-    implementation(Libs.material)
-    implementation(Libs.composeMaterial)
-    implementation(Libs.composeUiTooling)
-    implementation(Libs.composeUiToolingPreview)
-    implementation(Libs.materialDialogs)
-    implementation(Libs.materialIconsExtended)
 
-    implementation(Libs.material3)
-    implementation(Libs.material3WindowSizeClass)
+    implementation(libs.androidx.core)
+    implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.material)
+    implementation(libs.compose.material)
+    implementation(libs.compose.ui.tooling)
+    implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.material.dialogs)
+    implementation(libs.material.icons.extended)
 
-    implementation(Libs.kotlinxCoroutinesAndroid)
+    implementation(libs.material3)
 
-    implementation(Libs.hiltAndroid)
-    kapt(Libs.hiltAndroidCompiler)
-    implementation(Libs.hiltNavigationCompose)
+    implementation(libs.kotlinx.coroutines.android)
+
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+    implementation(libs.hilt.navigation.compose)
 }

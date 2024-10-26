@@ -20,8 +20,9 @@ buildscript {
 
 plugins {
     id("com.google.dagger.hilt.android") version "2.44" apply false
-    id("org.jetbrains.kotlin.jvm") version "1.8.10" apply false
+    id("org.jetbrains.kotlin.jvm") version "2.0.21" apply false
     id("com.github.ben-manes.versions") version "0.47.0"
+    alias(libs.plugins.compose.compiler) apply false
 }
 
 tasks.register("clean", Delete::class) {

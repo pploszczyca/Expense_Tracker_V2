@@ -2,7 +2,7 @@
 androidx-core = "1.10.1"
 appcompat = "1.6.1"
 gradle = "8.7.1"
-kotlin-gradle-plugin = "1.8.10"
+kotlin = "2.0.21"
 lifecycle-viewmodel-ktx = "2.6.1"
 material = "1.9.0"
 compose = "1.4.3"
@@ -22,11 +22,14 @@ material3 = "1.1.0"
 kotest = "5.5.5"
 mockk = "1.13.4"
 
+[plugins]
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+
 [libraries]
 androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
-kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin-gradle-plugin" }
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle-viewmodel-ktx" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "compose" }

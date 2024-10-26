@@ -23,9 +23,8 @@ fun SearchTopAppBar(
         title = {
             TextField(
                 value = searchedValue,
-                colors = TextFieldDefaults.textFieldColors(
+                colors = TextFieldDefaults.colors(
                     focusedIndicatorColor = Color.Unspecified,
-                    containerColor = Color.Unspecified
                 ),
                 singleLine = true,
                 onValueChange = onValueChange,

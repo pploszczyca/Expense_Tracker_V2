@@ -7,6 +7,7 @@ buildscript {
     dependencies {
         classpath(libs.gradle)
         classpath(libs.kotlin.gradle.plugin)
+        classpath(libs.hilt.android.gradle.plugin)
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle.kts files
     }
@@ -19,7 +20,7 @@ buildscript {
 }
 
 plugins {
-    id("com.google.dagger.hilt.android") version "2.44" apply false
+    id("com.google.dagger.hilt.android") version "2.52" apply false
     id("org.jetbrains.kotlin.jvm") version "2.0.21" apply false
     id("com.github.ben-manes.versions") version "0.47.0"
     alias(libs.plugins.compose.compiler) apply false

@@ -73,9 +73,7 @@ dependencies {
 
     implementation(libs.androidx.core)
     implementation(libs.appcompat)
-    implementation(libs.material)
     implementation(libs.compose.ui)
-    implementation(libs.compose.material)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.activity.compose)
     androidTestImplementation(libs.android.test.junit)

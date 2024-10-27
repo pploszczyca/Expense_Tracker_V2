@@ -1,6 +1,5 @@
 package com.github.pploszczyca.expensetrackerv2.common_ui.bar
 
-import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*

@@ -37,11 +37,7 @@ android {
 dependencies {
     implementation(project(":common:common-kotlin"))
 
-    implementation(libs.material)
-    implementation(libs.compose.material)
+    implementation(libs.material3)
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.material.icons.extended)
-
-    implementation(libs.material3)
-    implementation(libs.material3)
 }

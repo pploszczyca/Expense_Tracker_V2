@@ -1,0 +1,11 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.ExpenseTrackerV2" parent="Theme.AppCompat" />
+
+    <style name="Theme.ExpenseTrackerV2.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.ExpenseTrackerV2.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+</resources>

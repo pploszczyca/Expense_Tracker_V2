@@ -1,6 +1,6 @@
 package com.github.pploszczyca.expensetrackerv2.common_ui.theme
 
-import androidx.compose.material.Typography
+import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -19,13 +19,13 @@ val robotoFamilyFont = FontFamily(
 )
 
 val Typography = Typography(
-    defaultFontFamily = robotoFamilyFont,
-
-    body1 = TextStyle(
-        fontFamily = robotoFamilyFont,
-        fontWeight = FontWeight.Normal,
-        fontSize = 16.sp
-    )
+//    defaultFontFamily = robotoFamilyFont,
+//
+//    body1 = TextStyle(
+//        fontFamily = robotoFamilyFont,
+//        fontWeight = FontWeight.Normal,
+//        fontSize = 16.sp
+//    )
     /* Other default text styles to override
     button = TextStyle(
         fontFamily = FontFamily.Default,

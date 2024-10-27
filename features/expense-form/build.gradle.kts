@@ -45,8 +45,6 @@ dependencies {
 
     implementation(libs.androidx.core)
     implementation(libs.lifecycle.viewmodel.ktx)
-    implementation(libs.material)
-    implementation(libs.compose.material)
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.material.icons.extended)
 

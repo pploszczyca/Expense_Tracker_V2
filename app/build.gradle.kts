@@ -64,6 +64,7 @@ dependencies {
     implementation(project(":database"))
     implementation(project(":navigation:navigation-contract"))
     implementation(project(":common:common-ui"))
+    implementation(project(":common:common-kotlin"))
 
     implementation(project(":features:main"))
     implementation(project(":features:expense-form"))

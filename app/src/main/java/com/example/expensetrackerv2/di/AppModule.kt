@@ -2,6 +2,7 @@ package com.example.expensetrackerv2.di
 
 import android.content.ContentResolver
 import android.content.Context
+import com.github.pploszczyca.expensetrackerv2.common_kotlin.coroutines.DispatcherProvider
 import com.github.pploszczyca.expensetrackerv2.database.di.DatabaseDI
 import com.github.pploszczyca.expensetrackerv2.usecases.repositories.CategoryRepository
 import com.github.pploszczyca.expensetrackerv2.usecases.repositories.ExpenseRepository
@@ -24,4 +25,7 @@ object AppModule {
     @Provides
     fun defaultDispatcher(): CoroutineDispatcher =
         Dispatchers.Default
+
+    @Provides
+    fun dispatcherProvider(): DispatcherProvider = DispatcherProvider()
 }

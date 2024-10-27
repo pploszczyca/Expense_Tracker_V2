@@ -2,6 +2,7 @@ package com.github.pploszczyca.expensetrackerv2.expense_form.view_model
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.github.pploszczyca.expensetrackerv2.common_kotlin.coroutines.DispatcherProvider
 import com.github.pploszczyca.expensetrackerv2.navigation.contract.NavigationRouter
 import com.github.pploszczyca.expensetrackerv2.common_kotlin.extensions.toDate
 import com.github.pploszczyca.expensetrackerv2.common_kotlin.extensions.toFormattedString
@@ -40,7 +41,7 @@ class ExpenseFormViewModelImpl @Inject constructor(
     getExpense: GetExpense,
     private val insertExpense: InsertExpense,
     private val updateExpense: UpdateExpense,
-    private val defaultDispatcher: CoroutineDispatcher,
+    private val dispatcherProvider: DispatcherProvider,
     private val navigationRouter: NavigationRouter,
 ) : ExpenseFormViewModel() {
 
@@ -55,13 +56,13 @@ class ExpenseFormViewModelImpl @Inject constructor(
     private val expenseId: Int? = savedStateHandle.get<Int>("EXPENSE_ID")
 
     init {
-        val getExpenseOrNullFlow: Flow<Expense?> =
-            when (expenseId == null || expenseId == NO_EXPENSE_ID) {
-                true -> flowOf(null)
-                false -> getExpense(expenseId)
-            }
+        viewModelScope.launch(dispatcherProvider.default) {
+            val getExpenseOrNullFlow: Flow<Expense?> =
+                when (expenseId == null || expenseId == NO_EXPENSE_ID) {
+                    true -> flowOf(null)
+                    false -> getExpense(expenseId)
+                }
 
-        viewModelScope.launch {
             combine(
                 getExpensesTitles(),
                 getExpensesPlaces(),
@@ -92,10 +93,9 @@ class ExpenseFormViewModelImpl @Inject constructor(
                     categories = mapToViewStateCategories(categories, chosenCategoryId),
                     submitButtonText = submitButtonTextId
                 )
-            }.flowOn(defaultDispatcher)
-                .collect { formViewState ->
-                    _viewState.update { formViewState }
-                }
+            }.collect { formViewState ->
+                _viewState.update { formViewState }
+            }
         }
     }
 
@@ -151,22 +151,20 @@ class ExpenseFormViewModelImpl @Inject constructor(
     }
 
     override fun onSubmitButtonClicked() {
-        if (viewState.value.isAllDataValidated().not()) {
-            viewModelScope.launch {
+        viewModelScope.launch(dispatcherProvider.default) {
+            if (viewState.value.isAllDataValidated().not()) {
                 _routeActions.emit(RouteAction.ShowSnackBar)
-            }
-            return
-        }
-
-        viewModelScope.launch {
-            withContext(defaultDispatcher) {
-                when (expenseId == null || expenseId == NO_EXPENSE_ID) {
-                    true -> performInsertingExpense()
-                    false -> performUpdatingExpense(expenseId)
-                }
+                return@launch
             }
 
-            navigationRouter.goBack()
+            when (expenseId == null || expenseId == NO_EXPENSE_ID) {
+                true -> performInsertingExpense()
+                false -> performUpdatingExpense(expenseId)
+            }
+
+            withContext(dispatcherProvider.main) {
+                navigationRouter.goBack()
+            }
         }
     }
 

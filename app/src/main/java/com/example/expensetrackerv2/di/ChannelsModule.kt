@@ -14,9 +14,9 @@ import javax.inject.Singleton
 object ChannelsModule {
     @Provides
     @Singleton
-    fun provideMainBottomBarChannel(): Channel<com.github.pploszczyca.expensetrackerv2.features.main.features.bottom_bar.MainBottomBarEvent> = Channel()
+    fun provideMainBottomBarChannel(): Channel<MainBottomBarEvent> = Channel()
 
     @Provides
     @Singleton
-    fun provideMainFilterDialogChannel(): Channel<com.github.pploszczyca.expensetrackerv2.features.main.features.filter_dialog.MainFilterDialogEvent> = Channel()
+    fun provideMainFilterDialogChannel(): Channel<MainFilterDialogEvent> = Channel()
 }

@@ -2,9 +2,11 @@ package com.github.pploszczyca.expensetrackerv2.features.category_settings
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.github.pploszczyca.expensetrackerv2.common_kotlin.coroutines.DispatcherProvider
 import com.github.pploszczyca.expensetrackerv2.navigation.contract.NavigationRouter
 import com.github.pploszczyca.expensetrackerv2.usecases.category.DeleteCategory
 import com.github.pploszczyca.expensetrackerv2.usecases.category.GetCategories
@@ -23,10 +25,11 @@ class CategorySettingsViewModel @Inject constructor(
     private val updateCategory: UpdateCategory,
     private val deleteCategory: DeleteCategory,
     private val navigationRouter: NavigationRouter,
+    private val dispatcherProvider: DispatcherProvider,
 ) : ViewModel() {
     val categories: Flow<List<Category>> = getCategories()
 
-    private val _id = mutableStateOf(Category.NEW_CATEGORY_ID)
+    private val _id = mutableIntStateOf(Category.NEW_CATEGORY_ID)
     val id: State<Int> = _id
 
     private val _name = mutableStateOf("")
@@ -42,36 +45,38 @@ class CategorySettingsViewModel @Inject constructor(
     val isDeleteDialogFormVisible: State<Boolean> = _isDeleteDialogFormVisible
 
     fun onEvent(event: CategorySettingsEvent) {
-        when (event) {
-            is CategorySettingsEvent.IdChange -> _id.value = event.value
-            is CategorySettingsEvent.NameChange -> _name.value = event.value
-            is CategorySettingsEvent.TypeChange -> _categoryType.value = event.value
-            is CategorySettingsEvent.CloseDeleteDialog -> closeDialog(
-                _isDeleteDialogFormVisible
-            )
+        viewModelScope.launch(dispatcherProvider.default) {
+            when (event) {
+                is CategorySettingsEvent.IdChange -> _id.value = event.value
+                is CategorySettingsEvent.NameChange -> _name.value = event.value
+                is CategorySettingsEvent.TypeChange -> _categoryType.value = event.value
+                is CategorySettingsEvent.CloseDeleteDialog -> closeDialog(
+                    _isDeleteDialogFormVisible
+                )
 
-            is CategorySettingsEvent.CloseFormDialog -> closeDialog(_isDialogFormVisible)
-            is CategorySettingsEvent.OpenDeleteDialog -> {
-                setIdNameAndType(event.value)
-                openDialog(_isDeleteDialogFormVisible)
+                is CategorySettingsEvent.CloseFormDialog -> closeDialog(_isDialogFormVisible)
+                is CategorySettingsEvent.OpenDeleteDialog -> {
+                    setIdNameAndType(event.value)
+                    openDialog(_isDeleteDialogFormVisible)
+                }
+
+                is CategorySettingsEvent.OpenFormDialog -> {
+                    setIdNameAndType(event.value)
+                    openDialog(_isDialogFormVisible)
+                }
+
+                is CategorySettingsEvent.DialogFormSubmit -> {
+                    insertOrUpdate(event.value)
+                    onEvent(CategorySettingsEvent.CloseFormDialog)
+                }
+
+                is CategorySettingsEvent.DeleteDialogSubmit -> {
+                    deleteCategory(makeCategoryFromState())
+                    onEvent(CategorySettingsEvent.CloseDeleteDialog)
+                }
+
+                CategorySettingsEvent.OnBackButtonClicked -> navigationRouter.goBack()
             }
-
-            is CategorySettingsEvent.OpenFormDialog -> {
-                setIdNameAndType(event.value)
-                openDialog(_isDialogFormVisible)
-            }
-
-            is CategorySettingsEvent.DialogFormSubmit -> {
-                insertOrUpdate(event.value)
-                onEvent(CategorySettingsEvent.CloseFormDialog)
-            }
-
-            is CategorySettingsEvent.DeleteDialogSubmit -> {
-                delete(makeCategoryFromState())
-                onEvent(CategorySettingsEvent.CloseDeleteDialog)
-            }
-
-            CategorySettingsEvent.OnBackButtonClicked -> navigationRouter.goBack()
         }
     }
 
@@ -87,18 +92,16 @@ class CategorySettingsViewModel @Inject constructor(
     }
 
     private fun setIdNameAndType(category: Category) {
-        _id.value = category.id
+        _id.intValue = category.id
         _name.value = category.name
         _categoryType.value = category.type
     }
 
-    private fun insertOrUpdate(category: Category) {
-        viewModelScope.launch {
-            if (isThisNewCategory()) {
-                insertCategory(category)
-            } else {
-                updateCategory(category)
-            }
+    private suspend fun insertOrUpdate(category: Category) {
+        if (isThisNewCategory()) {
+            insertCategory(category)
+        } else {
+            updateCategory(category)
         }
     }
 
@@ -108,10 +111,4 @@ class CategorySettingsViewModel @Inject constructor(
             name = name.value,
             type = categoryType.value,
         )
-
-    private fun delete(category: Category) {
-        viewModelScope.launch {
-            deleteCategory(category)
-        }
-    }
 }

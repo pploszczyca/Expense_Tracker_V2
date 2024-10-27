@@ -4,12 +4,15 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.github.pploszczyca.expensetrackerv2.common_kotlin.coroutines.DispatcherProvider
 import com.github.pploszczyca.expensetrackerv2.common_kotlin.extensions.toFormattedString
 import com.github.pploszczyca.expensetrackerv2.navigation.contract.NavigationRouter
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.GetAllExpenses
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.util.Date
 import javax.inject.Inject
@@ -18,6 +21,7 @@ import javax.inject.Inject
 class ExpensesStatisticsViewModel @Inject constructor(
     getAllExpenses: GetAllExpenses,
     private val navigationRouter: NavigationRouter,
+    private val dispatcherProvider: DispatcherProvider,
 ) :
     ViewModel() {
     private val _fromDate = mutableStateOf(Date().toFormattedString())
@@ -42,6 +46,8 @@ class ExpensesStatisticsViewModel @Inject constructor(
     }
 
     fun onBackButtonClicked() {
-        navigationRouter.goBack()
+        viewModelScope.launch(dispatcherProvider.default) {
+            navigationRouter.goBack()
+        }
     }
 }

@@ -41,6 +41,7 @@ dependencies {
     implementation(project(":useCases"))
     implementation(project(":common:common-ui"))
     implementation(project(":navigation:navigation-contract"))
+    implementation(project(":common:common-kotlin"))
 
     implementation(libs.androidx.core)
     implementation(libs.lifecycle.viewmodel.ktx)

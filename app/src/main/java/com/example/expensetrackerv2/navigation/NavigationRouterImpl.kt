@@ -1,32 +1,35 @@
 package com.example.expensetrackerv2.navigation
 
 import androidx.navigation.NavHostController
+import com.github.pploszczyca.expensetrackerv2.common_kotlin.coroutines.DispatcherProvider
 import com.github.pploszczyca.expensetrackerv2.navigation.contract.NavigationRouter
+import kotlinx.coroutines.withContext
 
 internal class NavigationRouterImpl(
     private val navController: NavHostController,
+    private val dispatcherProvider: DispatcherProvider,
 ) : NavigationRouter {
-    override fun goBack() {
+    override suspend fun goBack(): Unit = withContext(dispatcherProvider.main) {
         navController.navigateUp()
     }
 
-    override fun goToMain() {
+    override suspend fun goToMain() = withContext(dispatcherProvider.main) {
         navController.navigate(Routes.Main.route)
     }
 
-    override fun goToExpenseForm(expenseId: Int) {
+    override suspend fun goToExpenseForm(expenseId: Int) = withContext(dispatcherProvider.main) {
         navController.navigate(Routes.ExpenseForm.route + "?EXPENSE_ID=$expenseId")
     }
 
-    override fun goToExpenseForm() {
+    override suspend fun goToExpenseForm() = withContext(dispatcherProvider.main) {
         navController.navigate(Routes.ExpenseForm.route)
     }
 
-    override fun goToExpenseStatistics() {
+    override suspend fun goToExpenseStatistics() = withContext(dispatcherProvider.main) {
         navController.navigate(Routes.ExpenseStatistics.route)
     }
 
-    override fun goToCategorySettings() {
+    override suspend fun goToCategorySettings() = withContext(dispatcherProvider.main) {
         navController.navigate(Routes.CategorySettings.route)
     }
 }

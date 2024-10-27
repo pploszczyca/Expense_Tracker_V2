@@ -4,6 +4,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.navigation.NavHostController
 import com.example.expensetrackerv2.navigation.NavigationRouterImpl
+import com.github.pploszczyca.expensetrackerv2.common_kotlin.coroutines.DispatcherProvider
 import com.github.pploszczyca.expensetrackerv2.navigation.contract.NavigationRouter
 import dagger.Module
 import dagger.Provides
@@ -21,9 +22,17 @@ object NavigationModule {
         mutableStateOf(null)
 
     @Provides
-    fun provideNavigationRouter(navHostController: MutableState<NavHostController?>): NavigationRouter =
+    fun provideNavigationRouter(
+        navHostController: MutableState<NavHostController?>,
+        dispatcherProvider: DispatcherProvider,
+    ): NavigationRouter =
         navHostController.value
             .let(::requireNotNull)
-            .let(::NavigationRouterImpl)
+            .let {
+                NavigationRouterImpl(
+                    navController = it,
+                    dispatcherProvider = dispatcherProvider,
+                )
+            }
 }
 

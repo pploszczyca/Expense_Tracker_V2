@@ -2,6 +2,7 @@ package com.github.pploszczyca.expensetrackerv2.features.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.github.pploszczyca.expensetrackerv2.common_kotlin.coroutines.DispatcherProvider
 import com.github.pploszczyca.expensetrackerv2.common_kotlin.extensions.updateTransform
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
 import com.github.pploszczyca.expensetrackerv2.domain.ExpenseSummary
@@ -26,6 +27,7 @@ class MainViewModel @Inject constructor(
     bottomBarChannel: Channel<MainBottomBarEvent>,
     filterDialogChannel: Channel<MainFilterDialogEvent>,
     private val navigationRouter: NavigationRouter,
+    private val dispatcherProvider: DispatcherProvider,
 ) : ViewModel() {
 
     private val _viewState: MutableStateFlow<ViewState> = MutableStateFlow(ViewState())
@@ -34,7 +36,7 @@ class MainViewModel @Inject constructor(
     var openDrawer: (() -> Unit)? = null    // TODO: Think how to change it
 
     init {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch(dispatcherProvider.default) {
             getExpenseSummary()
                 .collect { expenseSummary ->
                     _viewState.updateTransform {
@@ -43,54 +45,54 @@ class MainViewModel @Inject constructor(
                 }
         }
 
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch(dispatcherProvider.default) {
             bottomBarChannel.consumeEach(::onBottomBarEvent)
         }
 
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch(dispatcherProvider.default) {
             filterDialogChannel.consumeEach(::onFilterDialogEvent)
         }
     }
 
     fun onEvent(event: MainEvent) {
-        when (event) {
-            is MainEvent.SearchedTitleChange ->
-                _viewState.updateTransform {
-                    copy(searchedTitle = event.value)
-                }
+        viewModelScope.launch(dispatcherProvider.default) {
+            when (event) {
+                is MainEvent.SearchedTitleChange ->
+                    _viewState.updateTransform {
+                        copy(searchedTitle = event.value)
+                    }
 
-            is MainEvent.ConfirmDeleteButtonClick -> {
-                viewModelScope.launch(Dispatchers.IO) {
+                is MainEvent.ConfirmDeleteButtonClick -> {
                     _viewState.value.expenseToDelete?.let {
                         deleteExpense(expense = it)
                     }
+                    _viewState.updateTransform {
+                        copy(deleteDialogVisible = false)
+                    }
                 }
-                _viewState.updateTransform {
+
+                is MainEvent.DeleteButtonClick -> _viewState.updateTransform {
+                    copy(
+                        expenseToDelete = event.value,
+                        deleteDialogVisible = true,
+                    )
+                }
+
+                is MainEvent.DismissDeleteButtonClick -> _viewState.updateTransform {
                     copy(deleteDialogVisible = false)
                 }
-            }
 
-            is MainEvent.DeleteButtonClick -> _viewState.updateTransform {
-                copy(
-                    expenseToDelete = event.value,
-                    deleteDialogVisible = true,
-                )
-            }
+                is MainEvent.OnTopBarTrailingIconClick -> _viewState.updateTransform {
+                    copy(
+                        topBarVisible = false,
+                        searchedTitle = "",
+                    )
+                }
 
-            is MainEvent.DismissDeleteButtonClick -> _viewState.updateTransform {
-                copy(deleteDialogVisible = false)
+                MainEvent.OnAddNewExpenseButtonClicked -> navigationRouter.goToExpenseForm()
+                MainEvent.OnCategorySettingsItemClicked -> navigationRouter.goToCategorySettings()
+                MainEvent.OnStatisticsItemClicked -> navigationRouter.goToExpenseStatistics()
             }
-
-            is MainEvent.OnTopBarTrailingIconClick -> _viewState.updateTransform {
-                copy(
-                    topBarVisible = false,
-                    searchedTitle = "",
-                )
-            }
-
-            MainEvent.OnAddNewExpenseButtonClicked -> navigationRouter.goToExpenseForm()
-            MainEvent.OnCategorySettingsItemClicked -> navigationRouter.goToCategorySettings()
-            MainEvent.OnStatisticsItemClicked -> navigationRouter.goToExpenseStatistics()
         }
     }
 

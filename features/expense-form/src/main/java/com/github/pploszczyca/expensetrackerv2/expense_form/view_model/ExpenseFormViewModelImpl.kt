@@ -202,6 +202,8 @@ class ExpenseFormViewModelImpl @Inject constructor(
         _categories.first { it.id == chosenCategoryId }
 
     override fun onBackClicked() {
-        navigationRouter.goBack()
+        viewModelScope.launch(dispatcherProvider.default) {
+            navigationRouter.goBack()
+        }
     }
 }

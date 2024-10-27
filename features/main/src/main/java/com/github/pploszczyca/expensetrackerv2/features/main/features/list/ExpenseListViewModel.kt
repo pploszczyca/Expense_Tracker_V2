@@ -2,6 +2,7 @@ package com.github.pploszczyca.expensetrackerv2.features.main.features.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.github.pploszczyca.expensetrackerv2.common_kotlin.coroutines.DispatcherProvider
 import com.github.pploszczyca.expensetrackerv2.common_kotlin.extensions.updateTransform
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
 import com.github.pploszczyca.expensetrackerv2.domain.totalIncome
@@ -23,18 +24,21 @@ import javax.inject.Inject
 class ExpenseListViewModel @Inject constructor(
     private val navigationRouter: NavigationRouter,
     private val viewStateMapper: ExpenseListViewStateMapper,
+    private val dispatcherProvider: DispatcherProvider,
 ) : ViewModel() {
 
     private val _viewState: MutableStateFlow<ViewState> = MutableStateFlow(ViewState())
     val viewState: StateFlow<ViewState> get() = _viewState
 
     fun onEvent(event: ExpensesListEvent) {
-        when (event) {
-            is ExpensesListEvent.OnInit ->
-                onInit(mainViewState = event.mainViewState)
+        viewModelScope.launch(dispatcherProvider.default) {
+            when (event) {
+                is ExpensesListEvent.OnInit ->
+                    onInit(mainViewState = event.mainViewState)
 
-            is ExpensesListEvent.OnEditExpenseButtonClicked ->
-                navigationRouter.goToExpenseForm(expenseId = event.expense.id)
+                is ExpensesListEvent.OnEditExpenseButtonClicked ->
+                    navigationRouter.goToExpenseForm(expenseId = event.expense.id)
+            }
         }
     }
 

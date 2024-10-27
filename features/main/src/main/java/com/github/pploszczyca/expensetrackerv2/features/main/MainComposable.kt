@@ -6,6 +6,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
@@ -65,17 +66,18 @@ fun MainComposable(
                 BottomBarContent(
                     viewModel = hiltViewModel(),
                     isClearButtonVisible = mainViewState.clearButtonVisible,
+                    floatingActionButton = {
+                        FloatingActionButton(
+                            onClick = { viewModel.onEvent(MainEvent.OnAddNewExpenseButtonClicked) },
+                            elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation(),
+                        ) {
+                            Icon(
+                                Icons.Filled.Add,
+                                contentDescription = stringResource(id = R.string.add_icon)
+                            )
+                        }
+                    }
                 )
-            },
-            floatingActionButton = {
-                FloatingActionButton(onClick = {
-                    viewModel.onEvent(MainEvent.OnAddNewExpenseButtonClicked)
-                }) {
-                    Icon(
-                        Icons.Filled.Add,
-                        contentDescription = stringResource(id = R.string.add_icon)
-                    )
-                }
             },
             floatingActionButtonPosition = FabPosition.End,
             content = { innerPadding ->

@@ -50,7 +50,6 @@ dependencies {
     implementation(libs.compose.material)
     implementation(libs.compose.ui.tooling)
     implementation(libs.compose.ui.tooling.preview)
-    implementation(libs.material.dialogs)
     implementation(libs.material.icons.extended)
 
     implementation(libs.material3)

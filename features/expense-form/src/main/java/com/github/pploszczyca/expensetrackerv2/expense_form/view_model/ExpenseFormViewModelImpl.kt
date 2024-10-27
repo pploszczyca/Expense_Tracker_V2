@@ -82,6 +82,7 @@ class ExpenseFormViewModelImpl @Inject constructor(
                 }
 
                 return@combine ViewState(
+                    isLoading = false,
                     title = expense?.title.orEmpty(),
                     price = expense?.price?.toString().orEmpty(),
                     chosenCategoryId = chosenCategoryId,

@@ -22,6 +22,7 @@ abstract class ExpenseFormViewModel : ViewModel() {
     abstract fun onBackClicked()
 
     data class ViewState(
+        val isLoading: Boolean = true,
         val title: String = "",
         val price: String = "",
         val chosenCategoryId: Int = -1,

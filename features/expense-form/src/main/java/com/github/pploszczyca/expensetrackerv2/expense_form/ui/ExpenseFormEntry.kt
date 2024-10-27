@@ -13,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.github.pploszczyca.expensetrackerv2.common_ui.bar.TopAppBarWithBack
+import com.github.pploszczyca.expensetrackerv2.common_ui.progress_indicator.ProgressIndicator
 import com.github.pploszczyca.expensetrackerv2.expense_form.view_model.ExpenseFormViewModel
 import com.github.pploszczyca.expensetrackerv2.features.expense_form.R
 import kotlinx.coroutines.flow.SharedFlow
@@ -40,16 +41,19 @@ fun ExpenseFormEntry(
         snackbarHost = { SnackbarHost(hostState = snackBarHostState) }
     ) {
         Box(modifier = Modifier.padding(it)) {
-            ExpenseForm(
-                viewState = viewState,
-                onTitleChanged = viewModel::onTitleChanged,
-                onPriceChanged = viewModel::onPriceChanged,
-                onCategoryChanged = viewModel::onCategoryChanged,
-                onDateChanged = viewModel::onDateChanged,
-                onPlaceNameChanged = viewModel::onPlaceNameChanged,
-                onDescriptionChanged = viewModel::onDescriptionChanged,
-                onSubmitButtonClicked = viewModel::onSubmitButtonClicked,
-            )
+            when(viewState.isLoading) {
+                true -> ProgressIndicator()
+                false -> ExpenseForm(
+                    viewState = viewState,
+                    onTitleChanged = viewModel::onTitleChanged,
+                    onPriceChanged = viewModel::onPriceChanged,
+                    onCategoryChanged = viewModel::onCategoryChanged,
+                    onDateChanged = viewModel::onDateChanged,
+                    onPlaceNameChanged = viewModel::onPlaceNameChanged,
+                    onDescriptionChanged = viewModel::onDescriptionChanged,
+                    onSubmitButtonClicked = viewModel::onSubmitButtonClicked,
+                )
+            }
         }
     }
 }

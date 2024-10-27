@@ -7,3 +7,6 @@ import java.util.Date
 
 fun LocalDate.toDate(): Date =
     Date.from(this.atStartOfDay().atZone(ZoneOffset.UTC).toInstant())
+
+fun Long?.toLocalDate(): LocalDate? =
+    this?.let { Date(it).toInstant().atZone(ZoneId.systemDefault()).toLocalDate() }

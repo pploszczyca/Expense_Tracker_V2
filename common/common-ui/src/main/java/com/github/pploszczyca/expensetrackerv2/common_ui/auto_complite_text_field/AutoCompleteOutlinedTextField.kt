@@ -3,7 +3,6 @@ package com.github.pploszczyca.expensetrackerv2.common_ui.auto_complite_text_fie
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Title
@@ -11,14 +10,11 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -36,18 +32,11 @@ fun AutoCompleteOutlinedTextField(
     label: String = "",
     suggestionsInput: List<String> = emptyList(),
     keyboardOptions: KeyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words),
-    focusOnLoad: Boolean = false
+    focusOnLoad: Boolean = false,
 ) {
-    val focusRequester = remember { FocusRequester() }
     var shouldShowDropdown by remember { mutableStateOf(false) }
     val suggestions = suggestionsInput.filterIf(shouldShowDropdown && value.isNotEmpty()) {
         it.contains(value)
-    }
-
-    LaunchedEffect(Unit) {
-        if (focusOnLoad) {
-            focusRequester.requestFocus()
-        }
     }
 
     Column(modifier = Modifier.fillMaxWidth()) {
@@ -57,8 +46,8 @@ fun AutoCompleteOutlinedTextField(
             icon = icon,
             label = label,
             keyboardOptions = keyboardOptions,
+            focusOnLoad = focusOnLoad,
             modifier = Modifier
-                .focusRequester(focusRequester)
                 .onFocusChanged {
                     shouldShowDropdown = it.isFocused
                 }
@@ -78,7 +67,8 @@ fun AutoCompleteOutlinedTextField(
                         onValueChange(suggestedText)
                         shouldShowDropdown = false
                     },
-                    text = { Text(text = suggestedText) })
+                    text = { Text(text = suggestedText) }
+                )
             }
         }
     }

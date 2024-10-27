@@ -9,7 +9,11 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
@@ -25,7 +29,16 @@ fun ExpenseFormTextField(
     enabled: Boolean = true,
     readOnly: Boolean = false,
     colors: TextFieldColors = OutlinedTextFieldDefaults.colors(),
+    focusOnLoad: Boolean = false,
 ) {
+    val focusRequester = remember { FocusRequester() }
+
+    LaunchedEffect(Unit) {
+        if (focusOnLoad) {
+            focusRequester.requestFocus()
+        }
+    }
+
     OutlinedTextField(
         value = value.toString(),
         onValueChange = onValueChange,
@@ -41,7 +54,8 @@ fun ExpenseFormTextField(
         readOnly = readOnly,
         modifier = modifier
             .fillMaxWidth()
-            .padding(5.dp),
+            .padding(5.dp)
+            .focusRequester(focusRequester),
         colors = colors,
     )
 }

@@ -92,7 +92,8 @@ class ExpenseFormViewModelImpl @Inject constructor(
                     previousTitles = titles,
                     previousPlaceNames = places,
                     categories = mapToViewStateCategories(categories, chosenCategoryId),
-                    submitButtonText = submitButtonTextId
+                    submitButtonText = submitButtonTextId,
+                    shouldOpenKeyboard = expense == null,
                 )
             }.collect { formViewState ->
                 _viewState.update { formViewState }

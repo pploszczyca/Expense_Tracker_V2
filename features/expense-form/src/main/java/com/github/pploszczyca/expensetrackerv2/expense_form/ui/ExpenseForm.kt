@@ -9,8 +9,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Message
 import androidx.compose.material.icons.filled.AttachMoney
-import androidx.compose.material.icons.filled.Message
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.filled.Title
 import androidx.compose.material3.Button
@@ -56,7 +56,10 @@ internal fun ExpenseForm(
                 keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Next,
                 capitalization = KeyboardCapitalization.Words,
-            )
+                autoCorrectEnabled = true,
+                showKeyboardOnFocus = true,
+            ),
+            focusOnLoad = viewState.shouldOpenKeyboard,
         )
 
         ExpenseFormTextField(
@@ -86,18 +89,20 @@ internal fun ExpenseForm(
                 keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Next,
                 capitalization = KeyboardCapitalization.Words,
+                autoCorrect = true,
             )
         )
 
         ExpenseFormTextField(
             value = viewState.description,
             onValueChange = onDescriptionChanged,
-            icon = Icons.Default.Message,
+            icon = Icons.AutoMirrored.Default.Message,
             label = stringResource(id = R.string.expense_form_description),
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.Sentences,
                 keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Done,
+                autoCorrect = true,
             )
         )
 

@@ -34,6 +34,7 @@ abstract class ExpenseFormViewModel : ViewModel() {
         val categories: List<Category> = emptyList(),
         @StringRes
         val submitButtonText: Int = R.string.add,
+        val shouldOpenKeyboard: Boolean = false,
     ) {
         data class Category(
             val id: Int = -1,

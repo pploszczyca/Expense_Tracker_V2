@@ -1,6 +1,5 @@
 package com.github.pploszczyca.expensetrackerv2.common_ui.expense_form_text_field
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions

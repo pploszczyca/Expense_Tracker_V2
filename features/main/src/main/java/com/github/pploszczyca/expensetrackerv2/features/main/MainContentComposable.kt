@@ -4,7 +4,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.absolutePadding
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -12,8 +11,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
@@ -79,9 +80,23 @@ fun MainContent(
 
 @Composable
 private fun MainExpensesInformation(moneyInWalletAmount: Double) {
-    Text(
-        "${stringResource(id = R.string.in_wallet)} $moneyInWalletAmount",
-        Modifier.absolutePadding(left = 12.dp, bottom = 16.dp, top = 16.dp),
-        style = MaterialTheme.typography.displayMedium
-    )
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(32.dp),
+        contentAlignment = Alignment.Center,
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(
+                stringResource(id = R.string.in_wallet),
+                style = MaterialTheme.typography.displaySmall,
+                textAlign = TextAlign.Center,
+            )
+            Text(
+                moneyInWalletAmount.toString(),
+                style = MaterialTheme.typography.displayLarge,
+                textAlign = TextAlign.Center,
+            )
+        }
+    }
 }

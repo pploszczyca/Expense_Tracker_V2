@@ -17,14 +17,14 @@ fun SearchTopAppBar(
     onTrailingIconClick: () -> Unit,
     onValueChange: (String) -> Unit,
 ) {
-    TopAppBar(colors = TopAppBarDefaults.mediumTopAppBarColors(
+    TopAppBar(colors = TopAppBarDefaults.topAppBarColors(
         containerColor = Color.Unspecified,
     ),
         title = {
             TextField(
                 value = searchedValue,
                 colors = TextFieldDefaults.colors(
-                    focusedIndicatorColor = Color.Unspecified,
+                    focusedTextColor = Color.Unspecified,
                 ),
                 singleLine = true,
                 onValueChange = onValueChange,

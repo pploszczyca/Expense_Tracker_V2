@@ -1,5 +1,6 @@
 package com.github.pploszczyca.expensetrackerv2.features.main.features.list
 
+import android.content.res.Configuration
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -177,7 +178,8 @@ private fun ExtraContentRow(
     }
 }
 
-@Preview
+@Preview(name = "Light Mode", uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun ExpenseCardPreview() {
     val category = Category(
@@ -196,7 +198,8 @@ fun ExpenseCardPreview() {
     ExpenseCard(expense = expense)
 }
 
-@Preview
+@Preview(name = "Light Mode", uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun ExpenseCardWithLongTitlePreview() {
     val category = Category(
@@ -216,7 +219,8 @@ fun ExpenseCardWithLongTitlePreview() {
 }
 
 
-@Preview
+@Preview(name = "Light Mode", uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun ExtraContentRowPreview() {
     Surface {

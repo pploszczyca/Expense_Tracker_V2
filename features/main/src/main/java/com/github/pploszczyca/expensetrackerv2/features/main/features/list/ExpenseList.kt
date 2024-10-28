@@ -23,11 +23,10 @@ import com.github.pploszczyca.expensetrackerv2.domain.Expense
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ExpensesList(
-    viewModel: ExpenseListViewModel,
+    viewState: ExpenseListViewModel.ViewState,
     onDeleteButtonClick: (Expense) -> Unit,
+    onEditExpenseButtonClicked: (Expense) -> Unit,
 ) {
-    val viewState by viewModel.viewState.collectAsState()
-
     LazyColumn(Modifier.padding(3.dp)) {
         viewState.filteredDailyExpenses.forEach { dailyExpense ->
             stickyHeader {
@@ -67,9 +66,7 @@ fun ExpensesList(
                     modifier = Modifier.animateContentSize(),
                     expense = expense,
                     onDeleteButtonClick = onDeleteButtonClick,
-                    onEditExpenseButtonClicked = {
-                        viewModel.onEvent(ExpensesListEvent.OnEditExpenseButtonClicked(it))
-                    },
+                    onEditExpenseButtonClicked = onEditExpenseButtonClicked,
                 )
             }
         }

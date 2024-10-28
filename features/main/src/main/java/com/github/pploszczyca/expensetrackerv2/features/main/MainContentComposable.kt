@@ -58,9 +58,17 @@ fun MainContent(
             }
             val expensesListViewModel: ExpenseListViewModel = hiltViewModel()
             expensesListViewModel.onEvent(ExpensesListEvent.OnInit(mainViewStateFlow))
+
+            val expensesListViewState by expensesListViewModel.viewState.collectAsState()
+
             ExpensesList(
-                viewModel = expensesListViewModel,
+                viewState = expensesListViewState,
                 onDeleteButtonClick = onDeleteButtonClick,
+                onEditExpenseButtonClicked = { expense ->
+                    expense
+                        .let(ExpensesListEvent::OnEditExpenseButtonClicked)
+                        .let(expensesListViewModel::onEvent)
+                }
             )
         }
     }

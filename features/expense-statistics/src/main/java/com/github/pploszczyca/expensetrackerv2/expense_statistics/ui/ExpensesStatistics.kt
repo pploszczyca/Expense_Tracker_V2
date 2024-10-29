@@ -10,13 +10,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.github.pploszczyca.expensetrackerv2.common_kotlin.extensions.toFormattedString
 import com.github.pploszczyca.expensetrackerv2.common_ui.bar.TopAppBarWithBack
 import com.github.pploszczyca.expensetrackerv2.common_ui.calendar_field.CalendarDialogField
 import com.github.pploszczyca.expensetrackerv2.common_ui.theme.ExpenseColor
 import com.github.pploszczyca.expensetrackerv2.common_ui.theme.IncomeColor
-import com.github.pploszczyca.expensetrackerv2.domain.Category
-import com.github.pploszczyca.expensetrackerv2.expense_statistics.utilities.MathUtils
+import com.github.pploszczyca.expensetrackerv2.domain.total
+import com.github.pploszczyca.expensetrackerv2.domain.totalIncome
+import com.github.pploszczyca.expensetrackerv2.domain.totalOutgo
 import com.github.pploszczyca.expensetrackerv2.expense_statistics.view_model.ExpensesStatisticsViewModel
 import com.github.pploszczyca.expensetrackerv2.features.expense_statistics.R
 
@@ -29,7 +29,7 @@ fun ExpensesStatistics(
     val expenseWithItsTypeFilteredList =
         viewModel.expensesWithItsType.collectAsState(
             emptyList()
-        ).value.filter { it.date.toFormattedString() in fromDate.value..toDate.value }
+        ).value.filter { it.date.toString() in fromDate.value..toDate.value }
 
     Scaffold(
         topBar = {
@@ -62,25 +62,19 @@ fun ExpensesStatistics(
 
                 StatisticsCard(
                     title = stringResource(id = R.string.total),
-                    number = MathUtils.sumMoneyInListToString(expenseWithItsTypeFilteredList),
+                    number = expenseWithItsTypeFilteredList.total.toString(),
                     color = Color.Unspecified
                 )
 
                 StatisticsCard(
                     title = stringResource(id = R.string.total_expenses),
-                    number = MathUtils.sumMoneyInListByTypeToString(
-                        expenseWithItsTypeFilteredList,
-                        Category.Type.OUTGO
-                    ),
+                    number = expenseWithItsTypeFilteredList.totalOutgo.toString(),
                     color = ExpenseColor
                 )
 
                 StatisticsCard(
                     title = stringResource(id = R.string.total_incomes),
-                    number = MathUtils.sumMoneyInListByTypeToString(
-                        expenseWithItsTypeFilteredList,
-                        Category.Type.INCOME
-                    ),
+                    number = expenseWithItsTypeFilteredList.totalIncome.toString(),
                     color = IncomeColor
                 )
             }

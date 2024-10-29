@@ -43,6 +43,9 @@ data class Expense(
     }
 }
 
+val List<Expense>.total get(): Price = this
+    .sumOf { it.signedAmount }
+
 val List<Expense>.totalIncome get(): Price = this
     .filter { it.type == Expense.Type.Income }
     .sumOf { it.signedAmount }

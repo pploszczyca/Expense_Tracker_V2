@@ -42,7 +42,7 @@ class ExpenseSummaryMapper {
             }
 
     private fun List<Expense>.groupByDay(): Map<Int, List<Expense>> =
-        this.groupBy { it.date.date }
+        this.groupBy { it.date.day }
 
     private companion object {
         const val YEAR_INDEX_ADJUSTMENT = 1900

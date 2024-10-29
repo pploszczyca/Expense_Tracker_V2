@@ -13,6 +13,7 @@ import com.github.pploszczyca.expensetrackerv2.usecases.category.GetCategories
 import com.github.pploszczyca.expensetrackerv2.usecases.category.InsertCategory
 import com.github.pploszczyca.expensetrackerv2.usecases.category.UpdateCategory
 import com.github.pploszczyca.expensetrackerv2.domain.Category
+import com.github.pploszczyca.expensetrackerv2.domain.Id
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -29,14 +30,11 @@ class CategorySettingsViewModel @Inject constructor(
 ) : ViewModel() {
     val categories: Flow<List<Category>> = getCategories()
 
-    private val _id = mutableIntStateOf(Category.NEW_CATEGORY_ID)
-    val id: State<Int> = _id
+    private val _id: MutableState<Id?> = mutableStateOf(null)
+    val id: State<Id?> = _id
 
     private val _name = mutableStateOf("")
     val name: State<String> = _name
-
-    private val _categoryType = mutableStateOf(Category.Type.INCOME)
-    val categoryType: State<Category.Type> = _categoryType
 
     private val _isDialogFormVisible = mutableStateOf(false)
     val isDialogFormVisible: State<Boolean> = _isDialogFormVisible
@@ -49,7 +47,6 @@ class CategorySettingsViewModel @Inject constructor(
             when (event) {
                 is CategorySettingsEvent.IdChange -> _id.value = event.value
                 is CategorySettingsEvent.NameChange -> _name.value = event.value
-                is CategorySettingsEvent.TypeChange -> _categoryType.value = event.value
                 is CategorySettingsEvent.CloseDeleteDialog -> closeDialog(
                     _isDeleteDialogFormVisible
                 )
@@ -66,7 +63,8 @@ class CategorySettingsViewModel @Inject constructor(
                 }
 
                 is CategorySettingsEvent.DialogFormSubmit -> {
-                    insertOrUpdate(event.value)
+                    _name.value = event.name
+                    insertOrUpdate(makeCategoryFromState())
                     onEvent(CategorySettingsEvent.CloseFormDialog)
                 }
 
@@ -81,7 +79,7 @@ class CategorySettingsViewModel @Inject constructor(
     }
 
     fun isThisNewCategory(): Boolean =
-        id.value == Category.NEW_CATEGORY_ID
+        id.value == null
 
     private fun openDialog(state: MutableState<Boolean>) {
         state.value = true
@@ -92,9 +90,8 @@ class CategorySettingsViewModel @Inject constructor(
     }
 
     private fun setIdNameAndType(category: Category) {
-        _id.intValue = category.id
+        _id.value = category.id
         _name.value = category.name
-        _categoryType.value = category.type
     }
 
     private suspend fun insertOrUpdate(category: Category) {
@@ -106,9 +103,8 @@ class CategorySettingsViewModel @Inject constructor(
     }
 
     private fun makeCategoryFromState(): Category =
-        Category(
-            id = id.value,
-            name = name.value,
-            type = categoryType.value,
-        )
+        when (val id = id.value) {
+            null -> Category.new(name = name.value)
+            else -> Category(id = id, name = name.value)
+        }
 }

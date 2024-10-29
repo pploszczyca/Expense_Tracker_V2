@@ -20,9 +20,7 @@ import com.github.pploszczyca.expensetrackerv2.domain.Category
 fun CategoryDialogForm(
     modelView: CategorySettingsViewModel,
 ) {
-    val id by modelView.id
     val name by modelView.name
-    val type by modelView.categoryType
 
     val confirmButtonTitle =
         stringResource(id = if (modelView.isThisNewCategory()) R.string.add else R.string.update)
@@ -35,23 +33,6 @@ fun CategoryDialogForm(
                     value = name,
                     label = { Text(stringResource(id = R.string.name)) },
                     onValueChange = { modelView.onEvent(CategorySettingsEvent.NameChange(it)) })
-
-                Row(
-                    modifier = Modifier
-                        .selectableGroup(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Category.Type.values().forEach { typeValue ->
-                        RadioButton(
-                            selected = typeValue == type,
-                            onClick = {
-                                modelView.onEvent(
-                                    CategorySettingsEvent.TypeChange(typeValue)
-                                )
-                            })
-                        Text(text = typeValue.name, style = MaterialTheme.typography.bodyMedium)
-                    }
-                }
             }
         },
         dismissButton = {
@@ -62,13 +43,7 @@ fun CategoryDialogForm(
         confirmButton = {
             TextButton(onClick = {
                 modelView.onEvent(
-                    CategorySettingsEvent.DialogFormSubmit(
-                        Category(
-                            id = id,
-                            name = name,
-                            type = type
-                        )
-                    )
+                    CategorySettingsEvent.DialogFormSubmit(name = name)
                 )
             }) {
                 Text(text = confirmButtonTitle)

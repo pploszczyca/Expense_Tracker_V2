@@ -1,47 +1,57 @@
 package com.github.pploszczyca.expensetrackerv2.database.repositories.mappers
 
-import com.github.pploszczyca.expensetrackerv2.database.models.CategoryType
 import com.github.pploszczyca.expensetrackerv2.database.models.ExpenseEntity
 import com.github.pploszczyca.expensetrackerv2.database.models.view_models.ExpenseWithCategory
 import com.github.pploszczyca.expensetrackerv2.domain.Category
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
+import com.github.pploszczyca.expensetrackerv2.domain.Id
+import com.github.pploszczyca.expensetrackerv2.domain.Price
+import com.github.pploszczyca.expensetrackerv2.domain.ExpenseDate
 
 internal class ExpenseMapper {
     fun toDomainModel(
         expenseWithCategory: ExpenseWithCategory,
     ): Expense =
         Expense(
-            id = expenseWithCategory.id,
+            id = expenseWithCategory.id.let(Id::from),
             title = expenseWithCategory.title,
-            price = expenseWithCategory.price,
-            date = expenseWithCategory.date,
+            price = expenseWithCategory.price.let(Price::of),
+            date = expenseWithCategory.date.let(ExpenseDate::of),
             description = expenseWithCategory.description,
             place = expenseWithCategory.place,
+            type = when(expenseWithCategory.type) {
+                ExpenseEntity.Type.Income -> Expense.Type.Income
+                ExpenseEntity.Type.Outgo -> Expense.Type.Outgo
+            },
             category = getCategory(expenseWithCategory = expenseWithCategory),
         )
 
     private fun getCategory(
         expenseWithCategory: ExpenseWithCategory,
-    ): Category =
-        Category(
-            id = expenseWithCategory.categoryId,
-            name = expenseWithCategory.categoryName,
-            type = when (expenseWithCategory.categoryType) {
-                CategoryType.INCOME -> Category.Type.INCOME
-                CategoryType.OUTGO -> Category.Type.OUTGO
-            }
+    ): Category? {
+        val categoryId = expenseWithCategory.categoryId ?: return null
+        val categoryName = expenseWithCategory.categoryName ?: return null
+
+        return Category(
+            id = Id.from(categoryId),
+            name = categoryName,
         )
+    }
 
     fun toDatabaseModel(
         expense: Expense,
     ): ExpenseEntity =
         ExpenseEntity(
-            id = expense.id,
+            id = expense.id.toString(),
             title = expense.title,
-            price = expense.price,
-            date = expense.date,
+            price = expense.price.amount,
+            date = expense.date.date,
             description = expense.description,
             place = expense.place,
-            categoryId = expense.category.id,
+            type = when(expense.type) {
+                Expense.Type.Income -> ExpenseEntity.Type.Income
+                Expense.Type.Outgo -> ExpenseEntity.Type.Outgo
+            },
+            categoryId = expense.category?.id?.toString(),
         )
 }

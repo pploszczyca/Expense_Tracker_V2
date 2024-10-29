@@ -1,12 +1,13 @@
 package com.github.pploszczyca.expensetrackerv2.usecases.repositories
 
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
+import com.github.pploszczyca.expensetrackerv2.domain.Id
 import kotlinx.coroutines.flow.Flow
 
 interface ExpenseRepository {
     fun getAll(): Flow<List<Expense>>
 
-    fun get(expenseId: Int): Flow<Expense>
+    fun get(expenseId: Id): Flow<Expense>
 
     suspend fun insert(expense: Expense)
 

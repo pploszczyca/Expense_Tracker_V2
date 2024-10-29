@@ -4,7 +4,7 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 
 @JvmInline
-value class Price private constructor(private val amount: BigDecimal) {
+value class Price private constructor(val amount: BigDecimal) {
     companion object {
         fun of(amount: BigDecimal): Price =
             amount

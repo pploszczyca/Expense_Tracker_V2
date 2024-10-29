@@ -3,6 +3,7 @@ package com.github.pploszczyca.expensetrackerv2.database.repositories
 import com.github.pploszczyca.expensetrackerv2.database.database.ExpenseDao
 import com.github.pploszczyca.expensetrackerv2.database.repositories.mappers.ExpenseMapper
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
+import com.github.pploszczyca.expensetrackerv2.domain.Id
 import com.github.pploszczyca.expensetrackerv2.usecases.repositories.ExpenseRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -14,8 +15,8 @@ internal class ExpenseDatabaseRepository(
     override fun getAll(): Flow<List<Expense>> =
         dao.getAllExpenseWithCategory().map { it.map(expenseMapper::toDomainModel) }
 
-    override fun get(expenseId: Int): Flow<Expense> =
-        dao.getExpenseWithItsType(expenseID = expenseId).map(expenseMapper::toDomainModel)
+    override fun get(expenseId: Id): Flow<Expense> =
+        dao.getExpenseWithItsType(expenseID = expenseId.toString()).map(expenseMapper::toDomainModel)
 
     override suspend fun insert(expense: Expense) {
         dao.insertAllExpenses(expense.let(expenseMapper::toDatabaseModel))

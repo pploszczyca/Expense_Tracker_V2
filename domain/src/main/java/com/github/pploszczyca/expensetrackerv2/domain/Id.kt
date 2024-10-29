@@ -12,6 +12,6 @@ value class Id private constructor(private val value: Uuid) {
     companion object {
         fun new(): Id = Id(Uuid.random())
 
-        fun fromString(value: String): Id = Id(Uuid.parse(value))
+        fun from(value: String): Id = Id(Uuid.parse(value))
     }
 }

@@ -19,10 +19,10 @@ internal abstract class ExpenseDao {
     abstract fun getAllExpenseWithCategory(): Flow<List<ExpenseWithCategory>>
 
     @Query("SELECT * FROM expense WHERE id = :expenseID")
-    abstract fun getExpense(expenseID: Int): Flow<ExpenseEntity>
+    abstract fun getExpense(expenseID: String): Flow<ExpenseEntity>
 
     @Query("SELECT * FROM ExpenseWithCategory WHERE id = :expenseID")
-    abstract fun getExpenseWithItsType(expenseID: Int): Flow<ExpenseWithCategory>
+    abstract fun getExpenseWithItsType(expenseID: String): Flow<ExpenseWithCategory>
 
     // INSERTS
     @Insert
@@ -40,7 +40,7 @@ internal abstract class ExpenseDao {
 
     // DELETES
     @Query("DELETE FROM Expense WHERE id = :id")
-    abstract suspend fun deleteExpenseByID(id: Int)
+    abstract suspend fun deleteExpenseByID(id: String)
 
     @Query("DELETE FROM EXPENSE")
     abstract suspend fun deleteAllExpenses()
@@ -49,7 +49,7 @@ internal abstract class ExpenseDao {
     abstract suspend fun deleteExpense(expense: ExpenseEntity)
 
     suspend fun deleteExpense(expenseWithCategory: ExpenseWithCategory) =
-        deleteExpenseByID(expenseWithCategory.id)
+        deleteExpenseByID(expenseWithCategory.id.toString())
 
     @Delete
     abstract suspend fun deleteTypeOfExpense(vararg categoryEntity: CategoryEntity)

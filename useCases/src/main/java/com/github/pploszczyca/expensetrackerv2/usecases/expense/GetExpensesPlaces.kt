@@ -3,6 +3,7 @@ package com.github.pploszczyca.expensetrackerv2.usecases.expense
 import com.github.pploszczyca.expensetrackerv2.usecases.repositories.ExpenseRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 
 class GetExpensesPlaces(
@@ -11,6 +12,6 @@ class GetExpensesPlaces(
     operator fun invoke(): Flow<List<String>> =
         repository
             .getAll()
-            .map { list -> list.map { it.place }.distinct() }
+            .map { list -> list.map { it.place }.filterNotNull().distinct() }
             .distinctUntilChanged()
 }

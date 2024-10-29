@@ -14,10 +14,10 @@ class InsertExpense(
         title: String,
         price: Price,
         date: ExpenseDate,
-        description: String,
-        place: String,
+        description: String?,
+        place: String?,
         type: Expense.Type,
-        category: Category,
+        category: Category?,
     ) {
         repository.insert(
             expense = Expense.new(

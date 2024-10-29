@@ -11,6 +11,8 @@ value class Price private constructor(val amount: BigDecimal) {
                 .setScale(2, RoundingMode.HALF_UP)
                 .let(::Price)
 
+        fun of(amount: String): Price = of(BigDecimal(amount))
+
         val ZERO: Price get() = of(BigDecimal.ZERO)
         val ONE: Price get() = of(BigDecimal.ONE)
         val MINUS_ONE: Price get() = of(BigDecimal.ONE.negate())

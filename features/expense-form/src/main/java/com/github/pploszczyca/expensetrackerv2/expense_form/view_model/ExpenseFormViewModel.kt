@@ -2,6 +2,10 @@ package com.github.pploszczyca.expensetrackerv2.expense_form.view_model
 
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
+import com.github.pploszczyca.expensetrackerv2.domain.Expense
+import com.github.pploszczyca.expensetrackerv2.domain.ExpenseDate
+import com.github.pploszczyca.expensetrackerv2.domain.Id
+import com.github.pploszczyca.expensetrackerv2.domain.Price
 import com.github.pploszczyca.expensetrackerv2.features.expense_form.R
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,8 +18,8 @@ abstract class ExpenseFormViewModel : ViewModel() {
 
     abstract fun onTitleChanged(title: String)
     abstract fun onPriceChanged(price: String)
-    abstract fun onCategoryChanged(categoryId: Int)
-    abstract fun onDateChanged(date: LocalDate)
+    abstract fun onCategoryChanged(categoryId: Id?)
+    abstract fun onDateChanged(date: ExpenseDate)
     abstract fun onPlaceNameChanged(placeName: String)
     abstract fun onDescriptionChanged(description: String)
     abstract fun onSubmitButtonClicked()
@@ -24,20 +28,21 @@ abstract class ExpenseFormViewModel : ViewModel() {
     data class ViewState(
         val isLoading: Boolean = true,
         val title: String = "",
-        val price: String = "",
-        val chosenCategoryId: Int = -1,
-        val date: String = "",
-        val placeName: String = "",
-        val description: String = "",
+        val price: Price = Price.ZERO,
+        val chosenCategoryId: Id? = null,
+        val date: ExpenseDate = ExpenseDate.now(),
+        val placeName: String? = null,
+        val description: String? = null,
         val previousTitles: List<String> = emptyList(),
         val previousPlaceNames: List<String> = emptyList(),
         val categories: List<Category> = emptyList(),
+        val type: Expense.Type = Expense.Type.Outgo,
         @StringRes
         val submitButtonText: Int = R.string.add,
         val shouldOpenKeyboard: Boolean = false,
     ) {
         data class Category(
-            val id: Int = -1,
+            val id: Id = Id.NO_ID,
             val name: String = "",
             val isSelected: Boolean = false,
         )

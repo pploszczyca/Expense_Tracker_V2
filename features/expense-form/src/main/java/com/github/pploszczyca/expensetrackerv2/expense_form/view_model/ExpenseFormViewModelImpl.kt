@@ -14,6 +14,10 @@ import com.github.pploszczyca.expensetrackerv2.usecases.expense.InsertExpense
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.UpdateExpense
 import com.github.pploszczyca.expensetrackerv2.domain.Category
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
+import com.github.pploszczyca.expensetrackerv2.domain.ExpenseDate
+import com.github.pploszczyca.expensetrackerv2.domain.Id
+import com.github.pploszczyca.expensetrackerv2.domain.Price
+import com.github.pploszczyca.expensetrackerv2.domain.orZero
 import com.github.pploszczyca.expensetrackerv2.features.expense_form.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -53,15 +57,12 @@ class ExpenseFormViewModelImpl @Inject constructor(
     private val _routeActions: MutableSharedFlow<RouteAction> = MutableSharedFlow()
     override val routeActions: SharedFlow<RouteAction> = _routeActions
 
-    private val expenseId: Int? = savedStateHandle.get<Int>("EXPENSE_ID")
+    private val expenseId: Id? = savedStateHandle.get<String>("EXPENSE_ID")?.let(Id::from)
 
     init {
         viewModelScope.launch(dispatcherProvider.default) {
             val getExpenseOrNullFlow: Flow<Expense?> =
-                when (expenseId == null || expenseId == NO_EXPENSE_ID) {
-                    true -> flowOf(null)
-                    false -> getExpense(expenseId)
-                }
+                expenseId?.let { getExpense(it) } ?: flowOf(null)
 
             combine(
                 getExpensesTitles(),
@@ -71,9 +72,9 @@ class ExpenseFormViewModelImpl @Inject constructor(
             ) { titles, places, categories, expense ->
                 _categories = categories
 
-                val chosenCategoryId = when (expense) {
+                val chosenCategoryId: Id? = when (expense) {
                     null -> categories.first().id
-                    else -> expense.category.id
+                    else -> expense.category?.id
                 }
 
                 val submitButtonTextId = when (expense == null) {
@@ -81,20 +82,29 @@ class ExpenseFormViewModelImpl @Inject constructor(
                     false -> R.string.update
                 }
 
-                return@combine ViewState(
-                    isLoading = false,
-                    title = expense?.title.orEmpty(),
-                    price = expense?.price?.toString().orEmpty(),
-                    chosenCategoryId = chosenCategoryId,
-                    date = (expense?.date ?: Date()).toFormattedString(),
-                    placeName = expense?.place.orEmpty(),
-                    description = expense?.description.orEmpty(),
-                    previousTitles = titles,
-                    previousPlaceNames = places,
-                    categories = mapToViewStateCategories(categories, chosenCategoryId),
-                    submitButtonText = submitButtonTextId,
-                    shouldOpenKeyboard = expense == null,
-                )
+                return@combine when (expense) {
+                    null -> ViewState(
+                        isLoading = false,
+                        previousTitles = titles,
+                        previousPlaceNames = places,
+                        categories = mapToViewStateCategories(categories, chosenCategoryId),
+                        submitButtonText = submitButtonTextId,
+                    )
+
+                    else -> ViewState(
+                        isLoading = false,
+                        title = expense.title,
+                        price = expense.price,
+                        chosenCategoryId = chosenCategoryId,
+                        date = expense.date,
+                        placeName = expense.place,
+                        description = expense.description,
+                        previousTitles = titles,
+                        previousPlaceNames = places,
+                        categories = mapToViewStateCategories(categories, chosenCategoryId),
+                        submitButtonText = submitButtonTextId,
+                    )
+                }
             }.collect { formViewState ->
                 _viewState.update { formViewState }
             }
@@ -103,7 +113,7 @@ class ExpenseFormViewModelImpl @Inject constructor(
 
     private fun mapToViewStateCategories(
         categories: List<Category>,
-        chosenCategoryId: Int,
+        chosenCategoryId: Id?,
     ): List<ViewState.Category> =
         categories.map {
             ViewState.Category(
@@ -121,11 +131,11 @@ class ExpenseFormViewModelImpl @Inject constructor(
 
     override fun onPriceChanged(price: String) {
         _viewState.update {
-            it.copy(price = price)
+            it.copy(price = Price.of(price))
         }
     }
 
-    override fun onCategoryChanged(categoryId: Int) {
+    override fun onCategoryChanged(categoryId: Id?) {
         _viewState.update {
             it.copy(
                 chosenCategoryId = categoryId,
@@ -134,21 +144,31 @@ class ExpenseFormViewModelImpl @Inject constructor(
         }
     }
 
-    override fun onDateChanged(date: LocalDate) {
+    override fun onDateChanged(date: ExpenseDate) {
         _viewState.update {
-            it.copy(date = date.toString())
+            it.copy(date = date)
         }
     }
 
     override fun onPlaceNameChanged(placeName: String) {
         _viewState.update {
-            it.copy(placeName = placeName)
+            it.copy(
+                placeName = when (placeName) {
+                    "" -> null
+                    else -> placeName
+                }
+            )
         }
     }
 
     override fun onDescriptionChanged(description: String) {
         _viewState.update {
-            it.copy(description = description)
+            it.copy(
+                description = when (description) {
+                    "" -> null
+                    else -> description
+                }
+            )
         }
     }
 
@@ -159,7 +179,7 @@ class ExpenseFormViewModelImpl @Inject constructor(
                 return@launch
             }
 
-            when (expenseId == null || expenseId == NO_EXPENSE_ID) {
+            when (expenseId == null) {
                 true -> performInsertingExpense()
                 false -> performUpdatingExpense(expenseId)
             }
@@ -171,37 +191,39 @@ class ExpenseFormViewModelImpl @Inject constructor(
     }
 
     private fun ViewState.isAllDataValidated(): Boolean =
-        title != "" && price != ""
+        title != "" && price != Price.ZERO
 
     private suspend fun performInsertingExpense() {
         with(viewState.value) {
             insertExpense(
                 title = title,
-                price = price.toDouble(),
-                date = date.toDate(),
+                price = price,
+                date = date,
                 description = description,
                 place = placeName,
                 category = chosenCategory(),
+                type = type,
             )
         }
     }
 
-    private suspend fun performUpdatingExpense(expenseId: Int) {
+    private suspend fun performUpdatingExpense(expenseId: Id) {
         with(viewState.value) {
             updateExpense(
                 id = expenseId,
                 title = title,
-                price = price.toDouble(),
-                date = date.toDate(),
+                price = price,
+                date = date,
                 description = description,
                 place = placeName,
                 category = chosenCategory(),
+                type = type,
             )
         }
     }
 
-    private fun ViewState.chosenCategory(): Category =
-        _categories.first { it.id == chosenCategoryId }
+    private fun ViewState.chosenCategory(): Category? =
+        chosenCategoryId?.let { _categories.firstOrNull { it.id == chosenCategoryId } }
 
     override fun onBackClicked() {
         viewModelScope.launch(dispatcherProvider.default) {

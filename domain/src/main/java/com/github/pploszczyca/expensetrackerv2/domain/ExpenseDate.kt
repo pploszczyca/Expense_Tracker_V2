@@ -14,6 +14,8 @@ value class ExpenseDate private constructor(val date: LocalDate) {
         }
 
         fun of(date: LocalDate): ExpenseDate = ExpenseDate(date)
+
+        fun now(): ExpenseDate = ExpenseDate(LocalDate.now())
     }
 
     override fun toString(): String = date.format(formatter)

@@ -30,17 +30,19 @@ import androidx.compose.ui.unit.dp
 import com.github.pploszczyca.expensetrackerv2.common_ui.auto_complite_text_field.AutoCompleteOutlinedTextField
 import com.github.pploszczyca.expensetrackerv2.common_ui.calendar_field.CalendarDialogField
 import com.github.pploszczyca.expensetrackerv2.common_ui.expense_form_text_field.ExpenseFormTextField
+import com.github.pploszczyca.expensetrackerv2.domain.ExpenseDate
+import com.github.pploszczyca.expensetrackerv2.domain.Id
+import com.github.pploszczyca.expensetrackerv2.domain.Price
 import com.github.pploszczyca.expensetrackerv2.expense_form.view_model.ExpenseFormViewModel
 import com.github.pploszczyca.expensetrackerv2.features.expense_form.R
-import java.time.LocalDate
 
 @Composable
 internal fun ExpenseForm(
     viewState: ExpenseFormViewModel.ViewState,
     onTitleChanged: (title: String) -> Unit = {},
     onPriceChanged: (price: String) -> Unit = {},
-    onCategoryChanged: (categoryId: Int) -> Unit = {},
-    onDateChanged: (date: LocalDate) -> Unit = {},
+    onCategoryChanged: (categoryId: Id) -> Unit = {},
+    onDateChanged: (date: ExpenseDate) -> Unit = {},
     onPlaceNameChanged: (placeName: String) -> Unit = {},
     onDescriptionChanged: (description: String) -> Unit = {},
     onSubmitButtonClicked: () -> Unit = {},
@@ -74,13 +76,15 @@ internal fun ExpenseForm(
         )
 
         CalendarDialogField(
-            date = viewState.date,
+            date = viewState.date.toString(),
             label = stringResource(id = R.string.expense_form_date),
-            onDatePickerPick = onDateChanged
+            onDatePickerPick = {
+                onDateChanged(ExpenseDate.of(it))
+            }
         )
 
         AutoCompleteOutlinedTextField(
-            value = viewState.placeName,
+            value = viewState.placeName.orEmpty(),
             onValueChange = onPlaceNameChanged,
             icon = Icons.Default.Place,
             label = stringResource(id = R.string.expense_form_place),
@@ -94,7 +98,7 @@ internal fun ExpenseForm(
         )
 
         ExpenseFormTextField(
-            value = viewState.description,
+            value = viewState.description.orEmpty(),
             onValueChange = onDescriptionChanged,
             icon = Icons.AutoMirrored.Default.Message,
             label = stringResource(id = R.string.expense_form_description),
@@ -141,15 +145,15 @@ internal fun ExpenseForm(
 @Composable
 fun ExpenseFormPreview() {
     val categories = listOf(
-        ExpenseFormViewModel.ViewState.Category(id = 0, name = "INCOME"),
-        ExpenseFormViewModel.ViewState.Category(id = 1, name = "OUTGO"),
+        ExpenseFormViewModel.ViewState.Category(id = Id.NO_ID, name = "Some Category"),
+        ExpenseFormViewModel.ViewState.Category(id = Id.NO_ID, name = "Shopping"),
     )
 
     val viewState = ExpenseFormViewModel.ViewState(
         title = "Example title",
-        price = "7.00",
-        chosenCategoryId = 1,
-        date = "22-03-2023",
+        price = Price.of("123.45"),
+        chosenCategoryId = null,
+        date = ExpenseDate.now(),
         placeName = "Biedronka",
         description = "Some description",
         previousTitles = emptyList(),

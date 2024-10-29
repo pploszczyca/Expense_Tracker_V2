@@ -13,5 +13,7 @@ value class Id private constructor(private val value: Uuid) {
         fun new(): Id = Id(Uuid.random())
 
         fun from(value: String): Id = Id(Uuid.parse(value))
+
+        val NO_ID = from("00000000-0000-0000-0000-000000000000")
     }
 }

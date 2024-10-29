@@ -76,6 +76,7 @@ dependencies {
     implementation(libs.compose.ui)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.activity.compose)
+    implementation(project(":domain"))
     androidTestImplementation(libs.android.test.junit)
     androidTestImplementation(libs.espresso.core)
     androidTestImplementation(libs.compose.ui.test.junit4)

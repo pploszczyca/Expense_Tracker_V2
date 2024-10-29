@@ -2,8 +2,6 @@ package com.github.pploszczyca.expensetrackerv2.features.main.features.bottom_ba
 
 import androidx.compose.material3.IconButton
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.BottomAppBar
@@ -15,7 +13,6 @@ import com.github.pploszczyca.expensetrackerv2.features.main.R
 @Composable
 fun BottomBarContent(
     viewModel: MainBottomBarViewModel,
-    isClearButtonVisible: Boolean,
     floatingActionButton: @Composable (() -> Unit)? = null,
 ) {
     BottomAppBar(
@@ -29,22 +26,6 @@ fun BottomBarContent(
                     Icons.Filled.Search,
                     contentDescription = stringResource(id = R.string.search_icon)
                 )
-            }
-
-            IconButton(onClick = { viewModel.onEvent(MainBottomBarEvent.FilterButtonClick) }) {
-                Icon(
-                    Icons.Filled.FilterList,
-                    contentDescription = stringResource(id = R.string.filter_icon)
-                )
-            }
-
-            if (isClearButtonVisible) {
-                IconButton(onClick = { viewModel.onEvent(MainBottomBarEvent.ClearButtonClick) }) {
-                    Icon(
-                        Icons.Filled.Close,
-                        contentDescription = stringResource(id = R.string.reset_icon)
-                    )
-                }
             }
         },
         floatingActionButton = floatingActionButton,

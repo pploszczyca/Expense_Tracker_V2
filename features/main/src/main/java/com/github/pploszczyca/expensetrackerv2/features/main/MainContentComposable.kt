@@ -18,10 +18,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
+import com.github.pploszczyca.expensetrackerv2.domain.Price
 import com.github.pploszczyca.expensetrackerv2.features.main.features.delete_dialog.DeleteExpenseAlertDialog
 import com.github.pploszczyca.expensetrackerv2.features.main.features.delete_dialog.DeleteExpenseDialogViewModel
-import com.github.pploszczyca.expensetrackerv2.features.main.features.filter_dialog.MainFilterDialog
-import com.github.pploszczyca.expensetrackerv2.features.main.features.filter_dialog.MainFilterDialogViewModel
 import com.github.pploszczyca.expensetrackerv2.features.main.features.list.ExpenseListViewModel
 import com.github.pploszczyca.expensetrackerv2.features.main.features.list.ExpensesList
 import com.github.pploszczyca.expensetrackerv2.features.main.features.list.ExpensesListEvent
@@ -36,7 +35,6 @@ fun MainContent(
     onConfirmDeleteButtonClick: () -> Unit,
 ) {
     val deleteExpenseDialogViewModel: DeleteExpenseDialogViewModel = hiltViewModel()
-    val filterDialogViewModel: MainFilterDialogViewModel = hiltViewModel()
     val mainViewState by mainViewStateFlow.collectAsState()
 
     mainViewState.expenseToDelete?.let {
@@ -80,14 +78,10 @@ fun MainContent(
             onConfirmButtonClick = onConfirmDeleteButtonClick
         )
     }
-
-    if (mainViewState.filterDialogVisible) {
-        MainFilterDialog(viewModel = filterDialogViewModel)
-    }
 }
 
 @Composable
-private fun MainExpensesInformation(moneyInWalletAmount: Double) {
+private fun MainExpensesInformation(moneyInWalletAmount: Price) {
     Box(
         modifier = Modifier
             .fillMaxWidth()

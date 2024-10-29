@@ -4,6 +4,7 @@ import androidx.navigation.NavHostController
 import com.github.pploszczyca.expensetrackerv2.common_kotlin.coroutines.DispatcherProvider
 import com.github.pploszczyca.expensetrackerv2.navigation.contract.NavigationRouter
 import kotlinx.coroutines.withContext
+import com.github.pploszczyca.expensetrackerv2.domain.Id
 
 internal class NavigationRouterImpl(
     private val navController: NavHostController,
@@ -17,7 +18,7 @@ internal class NavigationRouterImpl(
         navController.navigate(Routes.Main.route)
     }
 
-    override suspend fun goToExpenseForm(expenseId: Int) = withContext(dispatcherProvider.main) {
+    override suspend fun goToExpenseForm(expenseId: Id) = withContext(dispatcherProvider.main) {
         navController.navigate(Routes.ExpenseForm.route + "?EXPENSE_ID=$expenseId")
     }
 

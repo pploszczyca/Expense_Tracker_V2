@@ -15,6 +15,12 @@ data class Expense(
         data object Outgo : Type
     }
 
+    val signedAmount: Price
+        get() = when (type) {
+            is Type.Income -> price
+            is Type.Outgo -> price * Price.MINUS_ONE
+        }
+
     companion object {
         fun new(
             title: String,
@@ -39,8 +45,8 @@ data class Expense(
 
 val List<Expense>.totalIncome get(): Price = this
     .filter { it.type == Expense.Type.Income }
-    .sumOf { it.price }
+    .sumOf { it.signedAmount }
 
 val List<Expense>.totalOutgo get(): Price = this
     .filter { it.type == Expense.Type.Outgo }
-    .sumOf { it.price }
+    .sumOf { it.signedAmount }

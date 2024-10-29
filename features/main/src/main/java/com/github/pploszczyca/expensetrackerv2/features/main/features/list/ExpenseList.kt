@@ -23,6 +23,8 @@ import com.github.pploszczyca.expensetrackerv2.common_ui.theme.ExpenseTrackerV2T
 import com.github.pploszczyca.expensetrackerv2.common_ui.theme.IncomeColor
 import com.github.pploszczyca.expensetrackerv2.domain.Category
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
+import com.github.pploszczyca.expensetrackerv2.domain.ExpenseDate
+import com.github.pploszczyca.expensetrackerv2.domain.Price
 import java.time.LocalDate
 import java.util.Date
 
@@ -90,33 +92,27 @@ fun ExpensesListPreview() {
                     ExpenseListViewModel.ViewState.DailyExpense(
                         date = "2021-01-01",
                         expenses = listOf(
-                            Expense(
-                                id = 1,
-                                title = "Title",
-                                price = 100.0,
-                                category = Category(
-                                    id = 1,
-                                    name = "Category",
-                                    type = Category.Type.OUTGO,
-                                ),
-                                date = Date(),
-                                description = "Description",
+                            Expense.new(
+                                title = "Expense title",
+                                price = Price.of(50.toBigDecimal()),
+                                date = ExpenseDate.of(LocalDate.now()),
+                                description = "Some description",
+                                place = "Place",
                                 type = Expense.Type.Outgo,
-                                place = "Place",
-                            ),
-                            Expense(
-                                id = 2,
-                                title = "Second expense",
-                                price = 43.0,
-                                category = Category(
-                                    id = 1,
-                                    name = "Category",
-                                    type = Category.Type.INCOME,
+                                category = Category.new(
+                                    name = "Category name",
                                 ),
-                                date = Date(),
-                                description = "Description",
-                                type = Expense.Type.Income,
+                            ),
+                            Expense.new(
+                                title = "Expense title",
+                                price = Price.of(50.toBigDecimal()),
+                                date = ExpenseDate.of(LocalDate.now()),
+                                description = "Some description",
                                 place = "Place",
+                                type = Expense.Type.Income,
+                                category = Category.new(
+                                    name = "Category name",
+                                ),
                             )
                         ),
                         totalIncome = "100",

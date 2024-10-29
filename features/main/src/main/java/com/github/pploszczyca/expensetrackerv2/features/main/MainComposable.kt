@@ -65,7 +65,6 @@ fun MainComposable(
             bottomBar = {
                 BottomBarContent(
                     viewModel = hiltViewModel(),
-                    isClearButtonVisible = mainViewState.clearButtonVisible,
                     floatingActionButton = {
                         FloatingActionButton(
                             onClick = { viewModel.onEvent(MainEvent.OnAddNewExpenseButtonClicked) },

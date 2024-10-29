@@ -43,8 +43,11 @@ import com.github.pploszczyca.expensetrackerv2.common_ui.theme.ExpenseTrackerV2T
 import com.github.pploszczyca.expensetrackerv2.common_ui.theme.IncomeColor
 import com.github.pploszczyca.expensetrackerv2.domain.Category
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
+import com.github.pploszczyca.expensetrackerv2.domain.ExpenseDate
+import com.github.pploszczyca.expensetrackerv2.domain.Id
+import com.github.pploszczyca.expensetrackerv2.domain.Price
 import com.github.pploszczyca.expensetrackerv2.features.main.R
-import java.util.Date
+import java.time.LocalDate
 
 @Composable
 fun ExpenseCard(
@@ -88,8 +91,8 @@ fun ExpenseCard(
                 ) {
                     Text(
                         style = MaterialTheme.typography.titleLarge,
-                        text = (expense.price * expense.category.type.multiplier).toString(),
-                        color = if (expense.category.type == Category.Type.OUTGO) ExpenseColor else IncomeColor
+                        text = expense.signedAmount.toString(),
+                        color = if (expense.type == Expense.Type.Outgo) ExpenseColor else IncomeColor
                     )
 
                     Spacer(modifier = Modifier.padding(2.dp))
@@ -121,16 +124,20 @@ private fun ExtraContentExpenseCard(
     onDeleteButtonClick: (Expense) -> Unit = {},
     onEditExpenseButtonClicked: (Expense) -> Unit = {},
 ) {
-    ExtraContentRow(
-        stringResource(id = R.string.place),
-        Icons.Default.Place,
-        expense.place
-    )
-    ExtraContentRow(
-        stringResource(id = R.string.description),
-        Icons.Default.Message,
-        expense.description
-    )
+    expense.place?.let { place ->
+        ExtraContentRow(
+            stringResource(id = R.string.place),
+            Icons.Default.Place,
+            place,
+        )
+    }
+    expense.description?.let { description ->
+        ExtraContentRow(
+            stringResource(id = R.string.description),
+            Icons.Default.Message,
+            description,
+        )
+    }
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.End
@@ -157,24 +164,22 @@ private fun ExtraContentRow(
     contentString: String,
 ) {
     Spacer(modifier = Modifier.height(5.dp))
-    if (contentString.isNotEmpty()) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(2.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(contentIcon, contentDescription = null, modifier = Modifier.size(18.dp))
-                Text(
-                    style = MaterialTheme.typography.bodyMedium,
-                    text = contentName,
-                    modifier = Modifier.padding(start = 4.dp, end = 2.dp)
-                )
-            }
-            Text(style = MaterialTheme.typography.bodyMedium, text = contentString)
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(2.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Icon(contentIcon, contentDescription = null, modifier = Modifier.size(18.dp))
+            Text(
+                style = MaterialTheme.typography.bodyMedium,
+                text = contentName,
+                modifier = Modifier.padding(start = 4.dp, end = 2.dp)
+            )
         }
+        Text(style = MaterialTheme.typography.bodyMedium, text = contentString)
     }
 }
 
@@ -183,16 +188,17 @@ private fun ExtraContentRow(
 @Composable
 fun ExpenseCardPreview() {
     val category = Category(
+        id = Id.new(),
         name = "Category name",
-        type = Category.Type.INCOME,
     )
-    val expense = Expense(
+    val expense = Expense.new(
         title = "Expense title",
-        price = 50.0,
-        date = Date(),
+        price = Price.of(50.toBigDecimal()),
+        date = ExpenseDate.of(LocalDate.now()),
         description = "Some description",
         place = "Place",
-        category = category
+        type = Expense.Type.Outgo,
+        category = category,
     )
 
     ExpenseTrackerV2Theme {
@@ -205,16 +211,17 @@ fun ExpenseCardPreview() {
 @Composable
 fun ExpenseCardWithLongTitlePreview() {
     val category = Category(
+        id = Id.new(),
         name = "Category name",
-        type = Category.Type.INCOME,
     )
-    val expense = Expense(
+    val expense = Expense.new(
         title = "Long long long long long long long long title",
-        price = 50.0,
-        date = Date(),
+        price = Price.of(50.toBigDecimal()),
+        date = ExpenseDate.of(LocalDate.now()),
         description = "Some description",
         place = "Place",
-        category = category
+        type = Expense.Type.Outgo,
+        category = category,
     )
 
     ExpenseTrackerV2Theme {

@@ -6,13 +6,13 @@ import com.github.pploszczyca.expensetrackerv2.common_kotlin.coroutines.Dispatch
 import com.github.pploszczyca.expensetrackerv2.common_kotlin.extensions.updateTransform
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
 import com.github.pploszczyca.expensetrackerv2.domain.ExpenseSummary
+import com.github.pploszczyca.expensetrackerv2.domain.Price
+import com.github.pploszczyca.expensetrackerv2.domain.orZero
 import com.github.pploszczyca.expensetrackerv2.features.main.features.bottom_bar.MainBottomBarEvent
-import com.github.pploszczyca.expensetrackerv2.features.main.features.filter_dialog.MainFilterDialogEvent
 import com.github.pploszczyca.expensetrackerv2.navigation.contract.NavigationRouter
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.DeleteExpense
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.expenseSummary.GetExpenseSummary
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,7 +25,6 @@ class MainViewModel @Inject constructor(
     private val getExpenseSummary: GetExpenseSummary,
     private val deleteExpense: DeleteExpense,
     bottomBarChannel: Channel<MainBottomBarEvent>,
-    filterDialogChannel: Channel<MainFilterDialogEvent>,
     private val navigationRouter: NavigationRouter,
     private val dispatcherProvider: DispatcherProvider,
 ) : ViewModel() {
@@ -47,10 +46,6 @@ class MainViewModel @Inject constructor(
 
         viewModelScope.launch(dispatcherProvider.default) {
             bottomBarChannel.consumeEach(::onBottomBarEvent)
-        }
-
-        viewModelScope.launch(dispatcherProvider.default) {
-            filterDialogChannel.consumeEach(::onFilterDialogEvent)
         }
     }
 
@@ -98,14 +93,6 @@ class MainViewModel @Inject constructor(
 
     private fun onBottomBarEvent(event: MainBottomBarEvent) {
         when (event) {
-            MainBottomBarEvent.ClearButtonClick -> _viewState.updateTransform {
-                copy(currentMonthYearKey = null)
-            }
-
-            MainBottomBarEvent.FilterButtonClick -> _viewState.updateTransform {
-                copy(filterDialogVisible = true)
-            }
-
             MainBottomBarEvent.MenuButtonClick -> openDrawer?.invoke()
             MainBottomBarEvent.SearchButtonClick -> _viewState.updateTransform {
                 copy(topBarVisible = true)
@@ -113,39 +100,16 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun onFilterDialogEvent(event: MainFilterDialogEvent) {
-        _viewState.updateTransform {
-            when (event) {
-                MainFilterDialogEvent.CloseDialog -> copy(
-                    filterDialogVisible = false,
-                )
-
-                is MainFilterDialogEvent.OptionSelected -> copy(
-                    currentMonthYearKey = event.key,
-                    filterDialogVisible = false
-                )
-
-                MainFilterDialogEvent.ResetSelection -> copy(
-                    currentMonthYearKey = null,
-                    filterDialogVisible = false,
-                )
-            }
-        }
-    }
-
     data class ViewState(
-        val currentMonthYearKey: Expense.MonthYearKey? = null,
         val searchedTitle: String = "",
         val expenseToDelete: Expense? = null,
         val expenseSummary: ExpenseSummary? = null,
         val topBarVisible: Boolean = false,
         val deleteDialogVisible: Boolean = false,
-        val filterDialogVisible: Boolean = false,
     ) {
-        val clearButtonVisible: Boolean get() = currentMonthYearKey != null
         val mainExpenseInformationVisible: Boolean get() = topBarVisible.not()
 
-        val moneyInWalletAmount: Double
-            get() = expenseSummary?.let { it.totalIncome - it.totalOutgo } ?: 0.0
+        val moneyInWalletAmount: Price
+            get() = expenseSummary?.let { it.totalIncome - it.totalOutgo }.orZero()
     }
 }

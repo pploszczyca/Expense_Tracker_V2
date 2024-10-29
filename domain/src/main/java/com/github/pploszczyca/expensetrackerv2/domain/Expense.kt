@@ -1,26 +1,46 @@
 package com.github.pploszczyca.expensetrackerv2.domain
 
-import java.util.Date
-
 data class Expense(
-    val id: Int = NEW_EXPENSE_ID,
+    val id: Id,
     val title: String,
-    val price: Double,
-    val date: Date,
-    val description: String,
-    val place: String,
-    val category: Category,
+    val price: Price,
+    val date: ExpenseDate,
+    val description: String?,
+    val place: String?,
+    val type: Type,
+    val category: Category?,
 ) {
-    val monthYearKey: MonthYearKey
-        get() = MonthYearKey(date.year, date.month)
-
-    data class MonthYearKey(val year: Int, val month: Int)
+    sealed interface Type {
+        data object Income : Type
+        data object Outgo : Type
+    }
 
     companion object {
-        const val NEW_EXPENSE_ID = 0
+        fun new(
+            title: String,
+            price: Price,
+            date: ExpenseDate,
+            description: String?,
+            place: String?,
+            type: Type,
+            category: Category?,
+        ): Expense = Expense(
+            id = Id.new(),
+            title = title,
+            price = price,
+            date = date,
+            description = description,
+            place = place,
+            type = type,
+            category = category,
+        )
     }
 }
 
-val List<Expense>.totalIncome get() = this.filter { it.category.type == Category.Type.INCOME }.sumOf { it.price }
+val List<Expense>.totalIncome get(): Price = this
+    .filter { it.type == Expense.Type.Income }
+    .sumOf { it.price }
 
-val List<Expense>.totalOutgo get() = this.filter { it.category.type == Category.Type.OUTGO }.sumOf { it.price }
+val List<Expense>.totalOutgo get(): Price = this
+    .filter { it.type == Expense.Type.Outgo }
+    .sumOf { it.price }

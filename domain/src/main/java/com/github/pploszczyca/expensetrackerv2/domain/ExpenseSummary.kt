@@ -3,11 +3,11 @@ package com.github.pploszczyca.expensetrackerv2.domain
 data class ExpenseSummary(
     val yearlyExpenses: List<YearlyExpense>,
 ) {
-    val totalIncome: Double by lazy {
+    val totalIncome: Price by lazy {
         yearlyExpenses.sumOf { it.totalIncome }
     }
 
-    val totalOutgo: Double by lazy {
+    val totalOutgo: Price by lazy {
         yearlyExpenses.sumOf { it.totalOutgo }
     }
 
@@ -16,11 +16,11 @@ data class ExpenseSummary(
         val year: Int,
         val monthlyExpenses: List<MonthlyExpense>,
     ) {
-        val totalIncome: Double by lazy {
+        val totalIncome: Price by lazy {
             monthlyExpenses.sumOf { it.totalIncome }
         }
 
-        val totalOutgo: Double by lazy {
+        val totalOutgo: Price by lazy {
             monthlyExpenses.sumOf { it.totalOutgo }
         }
 
@@ -29,11 +29,11 @@ data class ExpenseSummary(
             val month: Int,
             val dailyExpenses: List<DailyExpense>,
         ) {
-            val totalIncome: Double by lazy {
+            val totalIncome: Price by lazy {
                 dailyExpenses.sumOf { it.totalIncome }
             }
 
-            val totalOutgo: Double by lazy {
+            val totalOutgo: Price by lazy {
                 dailyExpenses.sumOf { it.totalOutgo }
             }
 
@@ -41,11 +41,11 @@ data class ExpenseSummary(
                 val day: Int,
                 val expenses: List<Expense>,
             ) {
-                val totalIncome: Double by lazy {
+                val totalIncome: Price by lazy {
                     expenses.totalIncome
                 }
 
-                val totalOutgo: Double by lazy {
+                val totalOutgo: Price by lazy {
                     expenses.totalOutgo
                 }
             }

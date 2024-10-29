@@ -101,6 +101,7 @@ fun ExpensesListPreview() {
                                 ),
                                 date = Date(),
                                 description = "Description",
+                                type = Expense.Type.Outgo,
                                 place = "Place",
                             ),
                             Expense(
@@ -114,6 +115,7 @@ fun ExpensesListPreview() {
                                 ),
                                 date = Date(),
                                 description = "Description",
+                                type = Expense.Type.Income,
                                 place = "Place",
                             )
                         ),

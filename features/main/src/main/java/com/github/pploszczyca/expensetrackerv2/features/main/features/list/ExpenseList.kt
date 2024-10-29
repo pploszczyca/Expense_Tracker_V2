@@ -1,5 +1,6 @@
 package com.github.pploszczyca.expensetrackerv2.features.main.features.list
 
+import android.content.res.Configuration
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -15,10 +16,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.pploszczyca.expensetrackerv2.common_ui.theme.ExpenseColor
+import com.github.pploszczyca.expensetrackerv2.common_ui.theme.ExpenseTrackerV2Theme
 import com.github.pploszczyca.expensetrackerv2.common_ui.theme.IncomeColor
+import com.github.pploszczyca.expensetrackerv2.domain.Category
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
+import java.time.LocalDate
+import java.util.Date
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -70,5 +76,54 @@ fun ExpensesList(
                 )
             }
         }
+    }
+}
+
+@Preview(name = "Light Mode", uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun ExpensesListPreview() {
+    ExpenseTrackerV2Theme {
+        ExpensesList(
+            viewState = ExpenseListViewModel.ViewState(
+                dailyExpenses = listOf(
+                    ExpenseListViewModel.ViewState.DailyExpense(
+                        date = "2021-01-01",
+                        expenses = listOf(
+                            Expense(
+                                id = 1,
+                                title = "Title",
+                                price = 100.0,
+                                category = Category(
+                                    id = 1,
+                                    name = "Category",
+                                    type = Category.Type.OUTGO,
+                                ),
+                                date = Date(),
+                                description = "Description",
+                                place = "Place",
+                            ),
+                            Expense(
+                                id = 2,
+                                title = "Second expense",
+                                price = 43.0,
+                                category = Category(
+                                    id = 1,
+                                    name = "Category",
+                                    type = Category.Type.INCOME,
+                                ),
+                                date = Date(),
+                                description = "Description",
+                                place = "Place",
+                            )
+                        ),
+                        totalIncome = "100",
+                        totalOutgo = "100"
+                    )
+                )
+            ),
+            onDeleteButtonClick = {},
+            onEditExpenseButtonClicked = {}
+        )
     }
 }

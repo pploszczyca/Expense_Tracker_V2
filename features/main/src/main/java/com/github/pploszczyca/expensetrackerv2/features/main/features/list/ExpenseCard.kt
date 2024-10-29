@@ -39,6 +39,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.pploszczyca.expensetrackerv2.common_ui.theme.ExpenseColor
+import com.github.pploszczyca.expensetrackerv2.common_ui.theme.ExpenseTrackerV2Theme
 import com.github.pploszczyca.expensetrackerv2.common_ui.theme.IncomeColor
 import com.github.pploszczyca.expensetrackerv2.domain.Category
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
@@ -101,7 +102,6 @@ fun ExpenseCard(
                             .size(22.dp)
                     )
                 }
-
             }
 
             if (isCardExtended) {
@@ -195,7 +195,9 @@ fun ExpenseCardPreview() {
         category = category
     )
 
-    ExpenseCard(expense = expense)
+    ExpenseTrackerV2Theme {
+        ExpenseCard(expense = expense)
+    }
 }
 
 @Preview(name = "Light Mode", uiMode = Configuration.UI_MODE_NIGHT_NO)
@@ -215,7 +217,9 @@ fun ExpenseCardWithLongTitlePreview() {
         category = category
     )
 
-    ExpenseCard(expense = expense)
+    ExpenseTrackerV2Theme {
+        ExpenseCard(expense = expense)
+    }
 }
 
 
@@ -223,11 +227,13 @@ fun ExpenseCardWithLongTitlePreview() {
 @Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun ExtraContentRowPreview() {
-    Surface {
-        ExtraContentRow(
-            contentName = "Place",
-            contentIcon = Icons.Default.Place,
-            contentString = "Biedronka",
-        )
+    ExpenseTrackerV2Theme {
+        Surface {
+            ExtraContentRow(
+                contentName = "Place",
+                contentIcon = Icons.Default.Place,
+                contentString = "Biedronka",
+            )
+        }
     }
 }

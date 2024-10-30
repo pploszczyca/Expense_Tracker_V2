@@ -5,11 +5,10 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.github.pploszczyca.expensetrackerv2.database.models.CategoryEntity
 import com.github.pploszczyca.expensetrackerv2.database.models.ExpenseEntity
-import com.github.pploszczyca.expensetrackerv2.database.models.WalletEntity
 import com.github.pploszczyca.expensetrackerv2.database.models.view_models.ExpenseWithCategory
 
 @Database(
-    entities = [ExpenseEntity::class, CategoryEntity::class, WalletEntity::class],
+    entities = [ExpenseEntity::class, CategoryEntity::class],
     views = [ExpenseWithCategory::class],
     version = 1,
     exportSchema = false

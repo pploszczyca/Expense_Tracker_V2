@@ -20,8 +20,8 @@ internal class ExpenseMapper {
             description = expenseWithCategory.description,
             place = expenseWithCategory.place,
             type = when(expenseWithCategory.type) {
-                ExpenseEntity.Type.Income -> Expense.Type.Income
-                ExpenseEntity.Type.Outgo -> Expense.Type.Outgo
+                ExpenseEntity.Type.INCOME -> Expense.Type.Income
+                ExpenseEntity.Type.OUTGO -> Expense.Type.Outgo
             },
             category = getCategory(expenseWithCategory = expenseWithCategory),
         )
@@ -49,8 +49,8 @@ internal class ExpenseMapper {
             description = expense.description,
             place = expense.place,
             type = when(expense.type) {
-                Expense.Type.Income -> ExpenseEntity.Type.Income
-                Expense.Type.Outgo -> ExpenseEntity.Type.Outgo
+                Expense.Type.Income -> ExpenseEntity.Type.INCOME
+                Expense.Type.Outgo -> ExpenseEntity.Type.OUTGO
             },
             categoryId = expense.category?.id?.toString(),
         )

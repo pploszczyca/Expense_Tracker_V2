@@ -20,8 +20,8 @@ internal data class ExpenseEntity(
     @ColumnInfo(name = "category_id")
     val categoryId: String?,
 ) {
-    sealed interface Type {
-        data object Income : Type
-        data object Outgo : Type
+    enum class Type {
+        INCOME,
+        OUTGO,
     }
 }

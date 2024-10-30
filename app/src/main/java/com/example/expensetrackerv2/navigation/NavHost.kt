@@ -23,10 +23,14 @@ fun NavHostComposable(
             MainComposable(viewModel = hiltViewModel())
         }
         composable(
+            Routes.ExpenseForm.route
+        ) { backStackEntry ->
+            ExpenseFormEntry(viewModel = hiltViewModel<ExpenseFormViewModelImpl>(backStackEntry))
+        }
+        composable(
             Routes.ExpenseForm.route.plus("?EXPENSE_ID={EXPENSE_ID}"),
             arguments = listOf(navArgument("EXPENSE_ID") {
-                type = NavType.IntType
-                defaultValue = ExpenseFormViewModel.NO_EXPENSE_ID
+                type = NavType.StringType
             })
         ) { backStackEntry ->
             ExpenseFormEntry(viewModel = hiltViewModel<ExpenseFormViewModelImpl>(backStackEntry))

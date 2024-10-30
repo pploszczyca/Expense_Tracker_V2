@@ -9,7 +9,6 @@ import com.github.pploszczyca.expensetrackerv2.domain.Price
 import com.github.pploszczyca.expensetrackerv2.features.expense_form.R
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import java.time.LocalDate
 
 abstract class ExpenseFormViewModel : ViewModel() {
 
@@ -50,10 +49,6 @@ abstract class ExpenseFormViewModel : ViewModel() {
 
     sealed interface RouteAction {
         object ShowSnackBar : RouteAction
-    }
-
-    companion object {
-        const val NO_EXPENSE_ID = -1
     }
 }
 

@@ -73,7 +73,7 @@ class ExpenseFormViewModelImpl @Inject constructor(
                 _categories = categories
 
                 val chosenCategoryId: Id? = when (expense) {
-                    null -> categories.first().id
+                    null -> categories.firstOrNull()?.id
                     else -> expense.category?.id
                 }
 

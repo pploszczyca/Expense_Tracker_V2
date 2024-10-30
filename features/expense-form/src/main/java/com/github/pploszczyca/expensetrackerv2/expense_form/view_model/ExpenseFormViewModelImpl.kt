@@ -6,6 +6,7 @@ import com.github.pploszczyca.expensetrackerv2.common_kotlin.coroutines.Dispatch
 import com.github.pploszczyca.expensetrackerv2.navigation.contract.NavigationRouter
 import com.github.pploszczyca.expensetrackerv2.common_kotlin.extensions.toDate
 import com.github.pploszczyca.expensetrackerv2.common_kotlin.extensions.toFormattedString
+import com.github.pploszczyca.expensetrackerv2.common_kotlin.extensions.updateTransform
 import com.github.pploszczyca.expensetrackerv2.usecases.category.GetCategories
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.GetExpense
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.GetExpensesPlaces
@@ -132,6 +133,18 @@ class ExpenseFormViewModelImpl @Inject constructor(
     override fun onPriceChanged(price: String) {
         _viewState.update {
             it.copy(price = Price.of(price))
+        }
+    }
+
+    override fun onIncomeValueChanged() {
+        _viewState.updateTransform {
+            copy(type = Expense.Type.Income)
+        }
+    }
+
+    override fun onOutgoValueChanged() {
+        _viewState.updateTransform {
+            copy(type = Expense.Type.Outgo)
         }
     }
 

@@ -17,6 +17,8 @@ abstract class ExpenseFormViewModel : ViewModel() {
 
     abstract fun onTitleChanged(title: String)
     abstract fun onPriceChanged(price: String)
+    abstract fun onIncomeValueChanged()
+    abstract fun onOutgoValueChanged()
     abstract fun onCategoryChanged(categoryId: Id?)
     abstract fun onDateChanged(date: ExpenseDate)
     abstract fun onPlaceNameChanged(placeName: String)

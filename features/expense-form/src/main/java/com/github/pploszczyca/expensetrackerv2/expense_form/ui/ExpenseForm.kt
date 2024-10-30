@@ -30,6 +30,9 @@ import androidx.compose.ui.unit.dp
 import com.github.pploszczyca.expensetrackerv2.common_ui.auto_complite_text_field.AutoCompleteOutlinedTextField
 import com.github.pploszczyca.expensetrackerv2.common_ui.calendar_field.CalendarDialogField
 import com.github.pploszczyca.expensetrackerv2.common_ui.expense_form_text_field.ExpenseFormTextField
+import com.github.pploszczyca.expensetrackerv2.common_ui.switcher.SwitchValue
+import com.github.pploszczyca.expensetrackerv2.common_ui.switcher.Switcher
+import com.github.pploszczyca.expensetrackerv2.domain.Expense
 import com.github.pploszczyca.expensetrackerv2.domain.ExpenseDate
 import com.github.pploszczyca.expensetrackerv2.domain.Id
 import com.github.pploszczyca.expensetrackerv2.domain.Price
@@ -46,6 +49,8 @@ internal fun ExpenseForm(
     onPlaceNameChanged: (placeName: String) -> Unit = {},
     onDescriptionChanged: (description: String) -> Unit = {},
     onSubmitButtonClicked: () -> Unit = {},
+    onIncomeValueChanged: () -> Unit = {},
+    onOutgoValueChanged: () -> Unit = {},
 ) {
     Column {
         AutoCompleteOutlinedTextField(
@@ -73,6 +78,22 @@ internal fun ExpenseForm(
                 keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Next,
             )
+        )
+
+        Switcher(
+            value = when (viewState.type) {
+                Expense.Type.Income -> SwitchValue.On
+                Expense.Type.Outgo -> SwitchValue.Off
+            },
+            onText = "Income",
+            offText = "Outgo",
+            title = "Type:",
+            onValueChange = {
+                when (it) {
+                    SwitchValue.On -> onIncomeValueChanged()
+                    SwitchValue.Off -> onOutgoValueChanged()
+                }
+            }
         )
 
         CalendarDialogField(

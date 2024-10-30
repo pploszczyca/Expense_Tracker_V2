@@ -52,6 +52,8 @@ fun ExpenseFormEntry(
                     onPlaceNameChanged = viewModel::onPlaceNameChanged,
                     onDescriptionChanged = viewModel::onDescriptionChanged,
                     onSubmitButtonClicked = viewModel::onSubmitButtonClicked,
+                    onIncomeValueChanged = viewModel::onIncomeValueChanged,
+                    onOutgoValueChanged = viewModel::onOutgoValueChanged,
                 )
             }
         }

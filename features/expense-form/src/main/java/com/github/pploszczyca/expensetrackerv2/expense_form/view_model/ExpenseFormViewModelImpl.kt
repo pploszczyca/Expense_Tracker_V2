@@ -3,6 +3,7 @@ package com.github.pploszczyca.expensetrackerv2.expense_form.view_model
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.github.pploszczyca.expensetrackerv2.common_kotlin.coroutines.DispatcherProvider
+import com.github.pploszczyca.expensetrackerv2.common_kotlin.currencyFormatter.CurrencyFormatter
 import com.github.pploszczyca.expensetrackerv2.navigation.contract.NavigationRouter
 import com.github.pploszczyca.expensetrackerv2.common_kotlin.extensions.toDate
 import com.github.pploszczyca.expensetrackerv2.common_kotlin.extensions.toFormattedString
@@ -48,6 +49,7 @@ class ExpenseFormViewModelImpl @Inject constructor(
     private val updateExpense: UpdateExpense,
     private val dispatcherProvider: DispatcherProvider,
     private val navigationRouter: NavigationRouter,
+    private val currencyFormatter: CurrencyFormatter,
 ) : ExpenseFormViewModel() {
 
     private lateinit var _categories: List<Category>
@@ -132,7 +134,7 @@ class ExpenseFormViewModelImpl @Inject constructor(
 
     override fun onPriceChanged(price: String) {
         _viewState.update {
-            it.copy(price = Price.of(price))
+            it.copy(price = price.let(currencyFormatter::format).let(Price::of))
         }
     }
 

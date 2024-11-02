@@ -12,7 +12,7 @@ class GetExpenseSummary(
 ) {
     operator fun invoke(): Flow<ExpenseSummary> =
         repository
-            .getAll()
+            .observe()
             .map(expenseSummaryMapper::toExpenseSummary)
 
 }

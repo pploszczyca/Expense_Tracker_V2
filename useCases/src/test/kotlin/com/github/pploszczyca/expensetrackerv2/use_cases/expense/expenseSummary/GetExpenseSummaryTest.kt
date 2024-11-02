@@ -37,7 +37,7 @@ class GetExpenseSummaryTest : BehaviorSpec({
         val expenseSummary: ExpenseSummary = dummy()
         val expensesFlow: Flow<List<Expense>> = flowOf(expenses)
 
-        every { repository.getAll() } returns expensesFlow
+        every { repository.observe() } returns expensesFlow
         every { expenseSummaryMapper.toExpenseSummary(any()) } returns expenseSummary
 
         When("Get Expense Summary is invoked") {
@@ -49,7 +49,7 @@ class GetExpenseSummaryTest : BehaviorSpec({
             Then("Expense Summary is returned") {
                 actual shouldBe expenseSummary
                 verifyOrder {
-                    repository.getAll()
+                    repository.observe()
                     expenseSummaryMapper.toExpenseSummary(expenses = expenses)
                 }
             }

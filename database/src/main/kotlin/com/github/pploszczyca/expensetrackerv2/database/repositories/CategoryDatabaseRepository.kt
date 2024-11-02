@@ -11,8 +11,11 @@ internal class CategoryDatabaseRepository(
     private val expenseDao: ExpenseDao,
     private val categoryMapper: CategoryMapper = CategoryMapper(),
 ) : CategoryRepository {
-    override fun getAll(): Flow<List<Category>> =
-        expenseDao.getAllCategories().map { it.map(categoryMapper::toDomainModel) }
+    override fun observe(): Flow<List<Category>> =
+        expenseDao.observeCategories().map { it.map(categoryMapper::toDomainModel) }
+
+    override suspend fun getAll(): List<Category> =
+        expenseDao.getCategories().map(categoryMapper::toDomainModel)
 
     override suspend fun insert(category: Category) {
         expenseDao.insertAllCategories(category.let(categoryMapper::toDatabaseModel))

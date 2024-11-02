@@ -4,7 +4,9 @@ import com.github.pploszczyca.expensetrackerv2.domain.Category
 import kotlinx.coroutines.flow.Flow
 
 interface CategoryRepository {
-    fun getAll(): Flow<List<Category>>
+    fun observe(): Flow<List<Category>>
+
+    suspend fun getAll(): List<Category>
 
     suspend fun insert(categoryEntity: Category)
 

@@ -9,7 +9,6 @@ import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 
@@ -32,7 +31,7 @@ class GetCategoriesTest : BehaviorSpec({
             dummy(),
         )
 
-        every { repository.getAll() } returns flowOf(categories)
+        every { repository.observe() } returns flowOf(categories)
 
         When("UC is invoked") {
             val actual = tested(repository = repository).invoke()

@@ -60,35 +60,34 @@ class ExpenseFormViewModelImpl @Inject constructor(
     init {
         viewModelScope.launch(dispatcherProvider.default) {
             val expense: Expense? = expenseId?.let { getExpense(it) }
+            val categories: List<Category> = getCategories()
+            val previousTitles = getExpensesTitles()
+            val previousPlaceNames = getExpensesPlaces()
 
-            combine(
-                getExpensesTitles(),
-                getExpensesPlaces(),
-                getCategories(),
-            ) { titles, places, categories ->
-                _categories = categories
-                _expense.value = expense
+            _categories = categories
+            _expense.value = expense
 
-                val chosenCategoryId: Id? = when (expense) {
-                    null -> categories.firstOrNull()?.id
-                    else -> expense.category?.id
-                }
+            val chosenCategoryId: Id? = when (expense) {
+                null -> categories.firstOrNull()?.id
+                else -> expense.category?.id
+            }
 
-                val submitButtonTextId = when (expense == null) {
-                    true -> R.string.add
-                    false -> R.string.update
-                }
+            val submitButtonTextId = when (expense == null) {
+                true -> R.string.add
+                false -> R.string.update
+            }
 
-                return@combine when (expense) {
-                    null -> ViewState(
+            _viewState.updateTransform {
+                when (expense) {
+                    null -> copy(
                         isLoading = false,
-                        previousTitles = titles,
-                        previousPlaceNames = places,
                         categories = mapToViewStateCategories(categories, chosenCategoryId),
                         submitButtonText = submitButtonTextId,
+                        previousTitles = previousTitles,
+                        previousPlaceNames = previousPlaceNames,
                     )
 
-                    else -> ViewState(
+                    else -> copy(
                         isLoading = false,
                         title = expense.title,
                         price = expense.price,
@@ -96,16 +95,14 @@ class ExpenseFormViewModelImpl @Inject constructor(
                         date = expense.date,
                         placeName = expense.place,
                         description = expense.description,
-                        previousTitles = titles,
-                        previousPlaceNames = places,
                         categories = mapToViewStateCategories(categories, chosenCategoryId),
                         submitButtonText = submitButtonTextId,
                         type = expense.type,
                         shouldShowDeleteButton = true,
+                        previousTitles = previousTitles,
+                        previousPlaceNames = previousPlaceNames,
                     )
                 }
-            }.collect { formViewState ->
-                _viewState.update { formViewState }
             }
         }
     }

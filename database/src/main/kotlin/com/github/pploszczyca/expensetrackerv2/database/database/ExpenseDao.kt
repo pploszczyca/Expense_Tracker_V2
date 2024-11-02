@@ -13,10 +13,16 @@ internal abstract class ExpenseDao {
     abstract fun getAllExpenses(): Flow<List<ExpenseEntity>>
 
     @Query("SELECT * FROM category")
-    abstract fun getAllCategories(): Flow<List<CategoryEntity>>
+    abstract fun observeCategories(): Flow<List<CategoryEntity>>
+
+    @Query("SELECT * FROM category")
+    abstract suspend fun getCategories(): List<CategoryEntity>
 
     @Query("SELECT * FROM ExpenseWithCategory ORDER BY date DESC")
-    abstract fun getAllExpenseWithCategory(): Flow<List<ExpenseWithCategory>>
+    abstract fun observeExpenseWithCategory(): Flow<List<ExpenseWithCategory>>
+
+    @Query("SELECT * FROM ExpenseWithCategory ORDER BY date DESC")
+    abstract suspend fun getExpensesWithCategory(): List<ExpenseWithCategory>
 
     @Query("SELECT * FROM expense WHERE id = :expenseID")
     abstract fun getExpense(expenseID: String): Flow<ExpenseEntity>

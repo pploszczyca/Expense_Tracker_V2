@@ -5,7 +5,9 @@ import com.github.pploszczyca.expensetrackerv2.domain.Id
 import kotlinx.coroutines.flow.Flow
 
 interface ExpenseRepository {
-    fun getAll(): Flow<List<Expense>>
+    fun observe(): Flow<List<Expense>>
+
+    suspend fun getAll(): List<Expense>
 
     suspend fun get(expenseId: Id): Expense
 

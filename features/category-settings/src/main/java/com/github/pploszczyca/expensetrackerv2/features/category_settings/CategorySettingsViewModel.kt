@@ -14,6 +14,7 @@ import com.github.pploszczyca.expensetrackerv2.usecases.category.InsertCategory
 import com.github.pploszczyca.expensetrackerv2.usecases.category.UpdateCategory
 import com.github.pploszczyca.expensetrackerv2.domain.Category
 import com.github.pploszczyca.expensetrackerv2.domain.Id
+import com.github.pploszczyca.expensetrackerv2.usecases.category.ObserveCategories
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -21,14 +22,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CategorySettingsViewModel @Inject constructor(
-    getCategories: GetCategories,
+    observeCategories: ObserveCategories,
     private val insertCategory: InsertCategory,
     private val updateCategory: UpdateCategory,
     private val deleteCategory: DeleteCategory,
     private val navigationRouter: NavigationRouter,
     private val dispatcherProvider: DispatcherProvider,
 ) : ViewModel() {
-    val categories: Flow<List<Category>> = getCategories()
+    val categories: Flow<List<Category>> = observeCategories()
 
     private val _id: MutableState<Id?> = mutableStateOf(null)
     val id: State<Id?> = _id

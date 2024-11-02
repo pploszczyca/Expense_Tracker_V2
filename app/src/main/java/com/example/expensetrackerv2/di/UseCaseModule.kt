@@ -3,6 +3,7 @@ package com.example.expensetrackerv2.di
 import com.github.pploszczyca.expensetrackerv2.usecases.category.DeleteCategory
 import com.github.pploszczyca.expensetrackerv2.usecases.category.GetCategories
 import com.github.pploszczyca.expensetrackerv2.usecases.category.InsertCategory
+import com.github.pploszczyca.expensetrackerv2.usecases.category.ObserveCategories
 import com.github.pploszczyca.expensetrackerv2.usecases.category.UpdateCategory
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.DeleteExpense
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.GetAllExpenses
@@ -30,6 +31,10 @@ object UseCaseModule {
     @Provides
     fun provideGetCategories(repository: CategoryRepository): GetCategories =
         GetCategories(repository = repository)
+
+    @Provides
+    fun provideObserveCategories(repository: CategoryRepository): ObserveCategories =
+        ObserveCategories(repository = repository)
 
     @Provides
     fun provideInsertCategory(repository: CategoryRepository): InsertCategory =

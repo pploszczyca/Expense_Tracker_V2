@@ -28,13 +28,13 @@ class UpdateExpenseTest : BehaviorSpec({
     )
 
     Given("New expense attributes") {
-        val id: Id = dummy()
+        val id: Id = Id.new()
         val title = "title"
-        val price: Price = dummy()
-        val date: ExpenseDate = dummy()
+        val price: Price = Price.of(324.0)
+        val date: ExpenseDate = ExpenseDate.now()
         val description = "description"
         val place = "place"
-        val type: Expense.Type = dummy()
+        val type = Expense.Type.Income
         val category: Category = dummy()
 
         coEvery { repository.update(any()) } returns Unit

@@ -1,6 +1,5 @@
 package com.github.pploszczyca.expensetrackerv2.use_cases.expense
 
-import com.github.pploszczyca.expensetrackerv2.common_test.dummy
 import com.github.pploszczyca.expensetrackerv2.usecases.repositories.ExpenseRepository
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
 import com.github.pploszczyca.expensetrackerv2.domain.Id
@@ -12,6 +11,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 
 class GetExpenseTest : BehaviorSpec({
     isolationMode = IsolationMode.InstancePerLeaf
@@ -26,17 +26,18 @@ class GetExpenseTest : BehaviorSpec({
     )
 
     Given("Expense Id") {
-        val expenseId: Id = dummy()
-        val expenseFlow: Flow<Expense> = mockk()
+        val expenseId = Id.new()
+        val expense: Expense = mockk()
+        val expenseFlow: Flow<Expense> = flowOf(expense)
 
-        every { repository.get(any()) } returns expenseFlow
+        every { repository.get(eq(expenseId)) } returns expenseFlow
 
         When("Get expense is invoked") {
             val actual = tested(repository).invoke(expenseId = expenseId)
 
             Then("Expense is returned") {
                 actual shouldBe expenseFlow
-                verify { repository.get(expenseId = expenseId) }
+                verify { repository.get(expenseId = eq(expenseId)) }
             }
         }
     }

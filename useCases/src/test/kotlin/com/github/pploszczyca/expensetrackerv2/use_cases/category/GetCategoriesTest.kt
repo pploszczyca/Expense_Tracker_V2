@@ -3,7 +3,6 @@ package com.github.pploszczyca.expensetrackerv2.use_cases.category
 import com.github.pploszczyca.expensetrackerv2.common_test.dummy
 import com.github.pploszczyca.expensetrackerv2.usecases.repositories.CategoryRepository
 import com.github.pploszczyca.expensetrackerv2.domain.Category
-import com.github.pploszczyca.expensetrackerv2.domain.Id
 import com.github.pploszczyca.expensetrackerv2.usecases.category.GetCategories
 import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.BehaviorSpec
@@ -27,15 +26,10 @@ class GetCategoriesTest : BehaviorSpec({
     )
 
     Given("Non empty categories") {
-        val categories = listOf(
-            Category(
-                id = dummy(),
-                name = "My income",
-            ),
-            Category(
-                id = dummy(),
-                name = "My outgo",
-            ),
+        val categories: List<Category> = listOf(
+            dummy(),
+            dummy(),
+            dummy(),
         )
 
         every { repository.getAll() } returns flowOf(categories)

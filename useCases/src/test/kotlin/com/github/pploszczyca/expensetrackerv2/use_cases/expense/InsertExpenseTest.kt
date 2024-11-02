@@ -10,11 +10,10 @@ import com.github.pploszczyca.expensetrackerv2.usecases.expense.InsertExpense
 import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.BehaviorSpec
 import io.mockk.coEvery
-import io.mockk.coVerify
 import io.mockk.coVerifyOrder
+import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
-import java.util.Date
 
 class InsertExpenseTest : BehaviorSpec({
     isolationMode = IsolationMode.InstancePerLeaf
@@ -30,16 +29,16 @@ class InsertExpenseTest : BehaviorSpec({
 
     Given("New expense attributes") {
         val title = "title"
-        val price: Price = dummy()
-        val date: ExpenseDate = dummy()
+        val price: Price = Price.of(324.0)
+        val date: ExpenseDate = ExpenseDate.now()
         val description = "description"
         val place = "place"
-        val type: Expense.Type = dummy()
-        val category: Category = mockk()
+        val type = Expense.Type.Income
+        val category: Category = Category.new("fake category")
         val expense: Expense = dummy()
 
         mockkObject(Expense.Companion)
-        coEvery {
+        every {
             Expense.new(
                 title = any(),
                 price = any(),
@@ -47,7 +46,7 @@ class InsertExpenseTest : BehaviorSpec({
                 description = any(),
                 place = any(),
                 type = any(),
-                category = any()
+                category = any(),
             )
         } returns expense
         coEvery { repository.insert(any()) } returns Unit
@@ -66,13 +65,13 @@ class InsertExpenseTest : BehaviorSpec({
             Then("New expense will be inserted") {
                 coVerifyOrder {
                     Expense.new(
-                        title = title,
-                        price = price,
-                        date = date,
-                        description = description,
-                        place = place,
-                        type = type,
-                        category = category,
+                        title = eq(title),
+                        price = eq(price),
+                        date = eq(date),
+                        description = eq(description),
+                        place = eq(place),
+                        type = eq(type),
+                        category = eq(category),
                     )
                     repository.insert(expense)
                 }

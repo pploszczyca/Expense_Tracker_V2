@@ -2,8 +2,6 @@ package com.github.pploszczyca.expensetrackerv2.features.main.features.list
 
 import android.content.res.Configuration
 import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,28 +12,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropUp
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Message
+import androidx.compose.material.icons.filled.Category
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.pploszczyca.expensetrackerv2.common_ui.theme.ExpenseColor
@@ -46,7 +33,6 @@ import com.github.pploszczyca.expensetrackerv2.domain.Expense
 import com.github.pploszczyca.expensetrackerv2.domain.ExpenseDate
 import com.github.pploszczyca.expensetrackerv2.domain.Id
 import com.github.pploszczyca.expensetrackerv2.domain.Price
-import com.github.pploszczyca.expensetrackerv2.features.main.R
 import java.time.LocalDate
 
 @Composable
@@ -56,21 +42,12 @@ fun ExpenseCard(
     onDeleteButtonClick: (Expense) -> Unit = {},
     onEditExpenseButtonClicked: (Expense) -> Unit = {},
 ) {
-    var isCardExtended by remember { mutableStateOf(false) }
-
-    val dropDownIconRotation by animateFloatAsState(
-        targetValue = if (isCardExtended) 0f else -180f,
-        animationSpec = tween(250),
-    )
-
     Card(
         modifier = modifier
             .fillMaxWidth()
             .padding(4.dp)
             .animateContentSize()
-            .clickable {
-                isCardExtended = !isCardExtended
-            }
+            .clickable { onEditExpenseButtonClicked(expense) }
     ) {
         Column(modifier = Modifier.padding(10.dp)) {
             Row(
@@ -81,7 +58,6 @@ fun ExpenseCard(
                 Text(
                     style = MaterialTheme.typography.titleLarge,
                     text = expense.title,
-                    fontStyle = FontStyle.Italic,
                     modifier = Modifier.weight(1f)
                 )
 
@@ -96,24 +72,12 @@ fun ExpenseCard(
                     )
 
                     Spacer(modifier = Modifier.padding(2.dp))
-
-                    Icon(
-                        Icons.Default.ArrowDropUp,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .rotate(dropDownIconRotation)
-                            .size(22.dp)
-                    )
                 }
             }
 
-            if (isCardExtended) {
-                ExtraContentExpenseCard(
-                    expense = expense,
-                    onDeleteButtonClick = onDeleteButtonClick,
-                    onEditExpenseButtonClicked = onEditExpenseButtonClicked,
-                )
-            }
+            ExtraContentExpenseCard(
+                expense = expense,
+            )
         }
     }
 }
@@ -121,45 +85,24 @@ fun ExpenseCard(
 @Composable
 private fun ExtraContentExpenseCard(
     expense: Expense,
-    onDeleteButtonClick: (Expense) -> Unit = {},
-    onEditExpenseButtonClicked: (Expense) -> Unit = {},
 ) {
+    expense.category?.let { category ->
+        ExtraContentRow(
+            Icons.Filled.Category,
+            category.name,
+        )
+    }
     expense.place?.let { place ->
         ExtraContentRow(
-            stringResource(id = R.string.place),
             Icons.Default.Place,
             place,
         )
-    }
-    expense.description?.let { description ->
-        ExtraContentRow(
-            stringResource(id = R.string.description),
-            Icons.Default.Message,
-            description,
-        )
-    }
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.End
-    ) {
-        TextButton(onClick = {
-            onEditExpenseButtonClicked(expense)
-        }) {
-            Icon(Icons.Default.Edit, contentDescription = null)
-            Text(text = stringResource(id = R.string.edit))
-        }
-
-        TextButton(onClick = { onDeleteButtonClick(expense) }) {
-            Icon(Icons.Default.Delete, contentDescription = null)
-            Text(text = stringResource(id = R.string.delete))
-        }
     }
 }
 
 
 @Composable
 private fun ExtraContentRow(
-    contentName: String,
     contentIcon: ImageVector,
     contentString: String,
 ) {
@@ -175,11 +118,10 @@ private fun ExtraContentRow(
             Icon(contentIcon, contentDescription = null, modifier = Modifier.size(18.dp))
             Text(
                 style = MaterialTheme.typography.bodyMedium,
-                text = contentName,
+                text = contentString,
                 modifier = Modifier.padding(start = 4.dp, end = 2.dp)
             )
         }
-        Text(style = MaterialTheme.typography.bodyMedium, text = contentString)
     }
 }
 
@@ -237,7 +179,6 @@ fun ExtraContentRowPreview() {
     ExpenseTrackerV2Theme {
         Surface {
             ExtraContentRow(
-                contentName = "Place",
                 contentIcon = Icons.Default.Place,
                 contentString = "Biedronka",
             )

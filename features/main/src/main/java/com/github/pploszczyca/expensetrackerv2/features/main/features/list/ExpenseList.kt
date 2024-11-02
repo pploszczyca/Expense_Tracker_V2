@@ -29,7 +29,6 @@ import java.time.LocalDate
 @Composable
 fun ExpensesList(
     viewState: ExpenseListViewModel.ViewState,
-    onDeleteButtonClick: (Expense) -> Unit,
     onEditExpenseButtonClicked: (Expense) -> Unit,
 ) {
     LazyColumn(Modifier.padding(3.dp)) {
@@ -70,7 +69,6 @@ fun ExpensesList(
                 ExpenseCard(
                     modifier = Modifier.animateContentSize(),
                     expense = expense,
-                    onDeleteButtonClick = onDeleteButtonClick,
                     onEditExpenseButtonClicked = onEditExpenseButtonClicked,
                 )
             }
@@ -117,7 +115,6 @@ fun ExpensesListPreview() {
                     )
                 )
             ),
-            onDeleteButtonClick = {},
             onEditExpenseButtonClicked = {}
         )
     }

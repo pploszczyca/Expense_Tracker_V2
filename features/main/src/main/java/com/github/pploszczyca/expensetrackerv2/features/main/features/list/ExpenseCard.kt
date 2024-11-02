@@ -39,7 +39,6 @@ import java.time.LocalDate
 fun ExpenseCard(
     expense: Expense,
     modifier: Modifier = Modifier,
-    onDeleteButtonClick: (Expense) -> Unit = {},
     onEditExpenseButtonClicked: (Expense) -> Unit = {},
 ) {
     Card(

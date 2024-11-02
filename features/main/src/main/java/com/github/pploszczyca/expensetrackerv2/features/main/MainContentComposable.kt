@@ -17,10 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.github.pploszczyca.expensetrackerv2.domain.Expense
 import com.github.pploszczyca.expensetrackerv2.domain.Price
-import com.github.pploszczyca.expensetrackerv2.features.main.features.delete_dialog.DeleteExpenseAlertDialog
-import com.github.pploszczyca.expensetrackerv2.features.main.features.delete_dialog.DeleteExpenseDialogViewModel
 import com.github.pploszczyca.expensetrackerv2.features.main.features.list.ExpenseListViewModel
 import com.github.pploszczyca.expensetrackerv2.features.main.features.list.ExpensesList
 import com.github.pploszczyca.expensetrackerv2.features.main.features.list.ExpensesListEvent
@@ -30,18 +27,8 @@ import kotlinx.coroutines.flow.StateFlow
 fun MainContent(
     innerPadding: PaddingValues,
     mainViewStateFlow: StateFlow<MainViewModel.ViewState>,
-    onDeleteButtonClick: (Expense) -> Unit,
-    onDismissDeleteButtonClick: () -> Unit,
-    onConfirmDeleteButtonClick: () -> Unit,
 ) {
-    val deleteExpenseDialogViewModel: DeleteExpenseDialogViewModel = hiltViewModel()
     val mainViewState by mainViewStateFlow.collectAsState()
-
-    mainViewState.expenseToDelete?.let {
-        deleteExpenseDialogViewModel.init(
-            expense = it
-        )
-    }
 
     Box(modifier = Modifier.padding(innerPadding)) {
         Column(
@@ -61,7 +48,6 @@ fun MainContent(
 
             ExpensesList(
                 viewState = expensesListViewState,
-                onDeleteButtonClick = onDeleteButtonClick,
                 onEditExpenseButtonClicked = { expense ->
                     expense
                         .let(ExpensesListEvent::OnEditExpenseButtonClicked)
@@ -69,14 +55,6 @@ fun MainContent(
                 }
             )
         }
-    }
-
-    if (mainViewState.deleteDialogVisible) {
-        DeleteExpenseAlertDialog(
-            viewModel = deleteExpenseDialogViewModel,
-            onDismissClick = onDismissDeleteButtonClick,
-            onConfirmButtonClick = onConfirmDeleteButtonClick
-        )
     }
 }
 

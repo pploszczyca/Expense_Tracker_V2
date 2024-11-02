@@ -83,9 +83,6 @@ fun MainComposable(
                 MainContent(
                     innerPadding = innerPadding,
                     mainViewStateFlow = viewModel.viewState,
-                    onDeleteButtonClick = { viewModel.onEvent(MainEvent.DeleteButtonClick(it)) },
-                    onDismissDeleteButtonClick = { viewModel.onEvent(MainEvent.DismissDeleteButtonClick) },
-                    onConfirmDeleteButtonClick = { viewModel.onEvent(MainEvent.ConfirmDeleteButtonClick) }
                 )
             }
         )

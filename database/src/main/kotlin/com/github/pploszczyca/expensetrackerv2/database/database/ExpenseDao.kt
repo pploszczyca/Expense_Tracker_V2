@@ -22,7 +22,7 @@ internal abstract class ExpenseDao {
     abstract fun getExpense(expenseID: String): Flow<ExpenseEntity>
 
     @Query("SELECT * FROM ExpenseWithCategory WHERE id = :expenseID")
-    abstract fun getExpenseWithItsType(expenseID: String): Flow<ExpenseWithCategory>
+    abstract suspend fun getExpenseWithCategory(expenseID: String): ExpenseWithCategory
 
     // INSERTS
     @Insert(onConflict = OnConflictStrategy.REPLACE)

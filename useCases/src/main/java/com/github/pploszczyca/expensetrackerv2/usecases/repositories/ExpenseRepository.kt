@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 interface ExpenseRepository {
     fun getAll(): Flow<List<Expense>>
 
-    fun get(expenseId: Id): Flow<Expense>
+    suspend fun get(expenseId: Id): Expense
 
     suspend fun insert(expense: Expense)
 

@@ -20,13 +20,11 @@ import com.github.pploszczyca.expensetrackerv2.domain.Price
 import com.github.pploszczyca.expensetrackerv2.features.expense_form.R
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.DeleteExpense
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -61,15 +59,13 @@ class ExpenseFormViewModelImpl @Inject constructor(
 
     init {
         viewModelScope.launch(dispatcherProvider.default) {
-            val getExpenseOrNullFlow: Flow<Expense?> =
-                expenseId?.let { getExpense(it) } ?: flowOf(null)
+            val expense: Expense? = expenseId?.let { getExpense(it) }
 
             combine(
                 getExpensesTitles(),
                 getExpensesPlaces(),
                 getCategories(),
-                getExpenseOrNullFlow,
-            ) { titles, places, categories, expense ->
+            ) { titles, places, categories ->
                 _categories = categories
                 _expense.value = expense
 

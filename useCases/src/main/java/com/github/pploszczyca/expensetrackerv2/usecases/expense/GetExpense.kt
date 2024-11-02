@@ -8,6 +8,6 @@ import kotlinx.coroutines.flow.Flow
 class GetExpense(
     private val repository: ExpenseRepository,
 ) {
-    operator fun invoke(expenseId: Id): Flow<Expense> =
+    suspend operator fun invoke(expenseId: Id): Expense =
         repository.get(expenseId)
 }

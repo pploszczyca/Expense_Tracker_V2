@@ -107,6 +107,7 @@ class ExpenseFormViewModelImpl @Inject constructor(
                         previousPlaceNames = places,
                         categories = mapToViewStateCategories(categories, chosenCategoryId),
                         submitButtonText = submitButtonTextId,
+                        type = expense.type,
                     )
                 }
             }.collect { formViewState ->

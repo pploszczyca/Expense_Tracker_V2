@@ -18,7 +18,7 @@ class ExpenseSummaryMapper {
         }
 
     private fun List<Expense>.groupByYear(): Map<Int, List<Expense>> =
-        this.groupBy { it.date.year + YEAR_INDEX_ADJUSTMENT }
+        this.groupBy { it.date.year }
 
     private fun getMonthlyExpenses(expensesForYear: List<Expense>) =
         expensesForYear.groupByMonth()
@@ -30,7 +30,7 @@ class ExpenseSummaryMapper {
             }
 
     private fun List<Expense>.groupByMonth(): Map<Int, List<Expense>> =
-        this.groupBy { it.date.month + MONTH_INDEX_ADJUSTMENT }
+        this.groupBy { it.date.month }
 
     private fun getDailyExpenses(expenseForMonth: List<Expense>) =
         expenseForMonth.groupByDay()
@@ -43,9 +43,4 @@ class ExpenseSummaryMapper {
 
     private fun List<Expense>.groupByDay(): Map<Int, List<Expense>> =
         this.groupBy { it.date.day }
-
-    private companion object {
-        const val YEAR_INDEX_ADJUSTMENT = 1900
-        const val MONTH_INDEX_ADJUSTMENT = 1
-    }
 }

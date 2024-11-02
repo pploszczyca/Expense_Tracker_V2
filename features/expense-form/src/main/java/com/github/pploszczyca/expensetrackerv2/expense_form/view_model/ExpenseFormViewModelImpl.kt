@@ -78,10 +78,11 @@ class ExpenseFormViewModelImpl @Inject constructor(
                 when (expense) {
                     null -> copy(
                         isLoading = false,
-                        categories = mapToViewStateCategories(categories, chosenCategoryId),
+                        categories = mapToViewStateCategories(categories, null),
                         submitButtonText = submitButtonTextId,
                         previousTitles = previousTitles,
                         previousPlaceNames = previousPlaceNames,
+                        shouldOpenKeyboard = true,
                     )
 
                     else -> copy(

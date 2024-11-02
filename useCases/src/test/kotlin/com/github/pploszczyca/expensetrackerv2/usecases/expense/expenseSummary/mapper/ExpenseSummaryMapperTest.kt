@@ -1,9 +1,12 @@
 package com.github.pploszczyca.expensetrackerv2.usecases.expense.expenseSummary.mapper
 
 import com.github.pploszczyca.expensetrackerv2.common_kotlin.extensions.toDate
+import com.github.pploszczyca.expensetrackerv2.common_test.dummy
 import com.github.pploszczyca.expensetrackerv2.domain.Category
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
+import com.github.pploszczyca.expensetrackerv2.domain.ExpenseDate
 import com.github.pploszczyca.expensetrackerv2.domain.ExpenseSummary
+import com.github.pploszczyca.expensetrackerv2.domain.Price
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.every
@@ -16,23 +19,23 @@ class ExpenseSummaryMapperTest : BehaviorSpec({
     fun tested(): ExpenseSummaryMapper = ExpenseSummaryMapper()
 
     Given("List of expenses") {
-        val firstDate = LocalDate.of(2023, 7, 9).toDate()
-        val secondDate = LocalDate.of(2023, 8, 11).toDate()
-        val thirdDate = LocalDate.of(2022, 6, 11).toDate()
+        val firstDate = LocalDate.of(2023, 7, 9).let(ExpenseDate::of)
+        val secondDate = LocalDate.of(2023, 8, 11).let(ExpenseDate::of)
+        val thirdDate = LocalDate.of(2022, 6, 11).let(ExpenseDate::of)
         val firstExpense: Expense = fakeExpense(
             date = firstDate,
-            price = 30.0,
-            categoryType = Category.Type.INCOME
+            price = Price.of(30.0),
+            type = Expense.Type.Income
         )
         val secondExpense: Expense = fakeExpense(
             date = secondDate,
-            price = 40.0,
-            categoryType = Category.Type.OUTGO
+            price = Price.of(40.0),
+            type = Expense.Type.Outgo
         )
         val thirdExpense: Expense = fakeExpense(
             date = thirdDate,
-            price = 50.0,
-            categoryType = Category.Type.OUTGO
+            price = Price.of(50.0),
+            type = Expense.Type.Outgo
         )
         val expenses = listOf(
             firstExpense,
@@ -94,17 +97,12 @@ class ExpenseSummaryMapperTest : BehaviorSpec({
 })
 
 private fun fakeExpense(
-    date: Date = Date(),
-    price: Double = 42.0,
-    categoryType: Category.Type = Category.Type.INCOME,
+    date: ExpenseDate = dummy(),
+    price: Price = dummy(),
+    type: Expense.Type = dummy(),
 ): Expense =
     mockk {
         every { this@mockk.date } returns date
         every { this@mockk.price } returns price
-        every { this@mockk.category } returns fakeCategory(categoryType = categoryType)
-    }
-
-private fun fakeCategory(categoryType: Category.Type) =
-    mockk<Category> {
-        every { this@mockk.type } returns categoryType
+        every { this@mockk.type } returns type
     }

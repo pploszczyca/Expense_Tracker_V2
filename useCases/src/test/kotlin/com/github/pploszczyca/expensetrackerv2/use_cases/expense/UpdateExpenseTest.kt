@@ -1,8 +1,12 @@
 package com.github.pploszczyca.expensetrackerv2.use_cases.expense
 
+import com.github.pploszczyca.expensetrackerv2.common_test.dummy
 import com.github.pploszczyca.expensetrackerv2.usecases.repositories.ExpenseRepository
 import com.github.pploszczyca.expensetrackerv2.domain.Category
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
+import com.github.pploszczyca.expensetrackerv2.domain.ExpenseDate
+import com.github.pploszczyca.expensetrackerv2.domain.Id
+import com.github.pploszczyca.expensetrackerv2.domain.Price
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.UpdateExpense
 import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.BehaviorSpec
@@ -24,13 +28,14 @@ class UpdateExpenseTest : BehaviorSpec({
     )
 
     Given("New expense attributes") {
-        val id = 99
+        val id: Id = dummy()
         val title = "title"
-        val price = 21.37
-        val date: Date = mockk()
+        val price: Price = dummy()
+        val date: ExpenseDate = dummy()
         val description = "description"
         val place = "place"
-        val category: Category = mockk()
+        val type: Expense.Type = dummy()
+        val category: Category = dummy()
 
         coEvery { repository.update(any()) } returns Unit
 
@@ -42,6 +47,7 @@ class UpdateExpenseTest : BehaviorSpec({
                 date = date,
                 description = description,
                 place = place,
+                type = type,
                 category = category,
             )
 
@@ -53,6 +59,7 @@ class UpdateExpenseTest : BehaviorSpec({
                     date = date,
                     description = description,
                     place = place,
+                    type = type,
                     category = category,
                 )
 

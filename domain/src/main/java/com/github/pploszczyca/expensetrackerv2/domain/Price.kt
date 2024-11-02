@@ -13,6 +13,8 @@ value class Price private constructor(val amount: BigDecimal) {
 
         fun of(amount: String): Price = of(BigDecimal(amount))
 
+        fun of(amount: Double): Price = of(BigDecimal(amount))
+
         val ZERO: Price get() = of(BigDecimal.ZERO)
         val ONE: Price get() = of(BigDecimal.ONE)
         val MINUS_ONE: Price get() = of(BigDecimal.ONE.negate())

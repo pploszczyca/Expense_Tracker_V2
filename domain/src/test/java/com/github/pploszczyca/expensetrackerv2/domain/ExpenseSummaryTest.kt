@@ -4,17 +4,18 @@ import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
+import java.math.BigDecimal
 
 class ExpenseSummaryTest : BehaviorSpec({
 
     Given("List of expenses for single day") {
         val expenses = listOf(
-            fakeExpense(price = 20.0, categoryType = Category.Type.INCOME),
-            fakeExpense(price = 30.0, categoryType = Category.Type.INCOME),
-            fakeExpense(price = 50.0, categoryType = Category.Type.INCOME),
-            fakeExpense(price = 40.0, categoryType = Category.Type.OUTGO),
-            fakeExpense(price = 60.0, categoryType = Category.Type.OUTGO),
-            fakeExpense(price = 70.0, categoryType = Category.Type.OUTGO),
+            fakeExpense(price = Price.of(20.0), expenseType = Expense.Type.Income),
+            fakeExpense(price = Price.of(30.0), expenseType = Expense.Type.Income),
+            fakeExpense(price = Price.of(50.0), expenseType = Expense.Type.Income),
+            fakeExpense(price = Price.of(40.0), expenseType = Expense.Type.Outgo),
+            fakeExpense(price = Price.of(60.0), expenseType = Expense.Type.Outgo),
+            fakeExpense(price = Price.of(70.0), expenseType = Expense.Type.Outgo),
         )
 
         and("Single daily expense") {
@@ -43,20 +44,20 @@ class ExpenseSummaryTest : BehaviorSpec({
 
     Given("List of expenses for multiple days") {
         val expensesForFirstDay = listOf(
-            fakeExpense(price = 20.0, categoryType = Category.Type.INCOME),
-            fakeExpense(price = 30.0, categoryType = Category.Type.INCOME),
-            fakeExpense(price = 50.0, categoryType = Category.Type.INCOME),
-            fakeExpense(price = 40.0, categoryType = Category.Type.OUTGO),
-            fakeExpense(price = 60.0, categoryType = Category.Type.OUTGO),
-            fakeExpense(price = 70.0, categoryType = Category.Type.OUTGO),
+            fakeExpense(price = Price.of(20.0), expenseType = Expense.Type.Income),
+            fakeExpense(price = Price.of(30.0), expenseType = Expense.Type.Income),
+            fakeExpense(price = Price.of(50.0), expenseType = Expense.Type.Income),
+            fakeExpense(price = Price.of(40.0), expenseType = Expense.Type.Outgo),
+            fakeExpense(price = Price.of(60.0), expenseType = Expense.Type.Outgo),
+            fakeExpense(price = Price.of(70.0), expenseType = Expense.Type.Outgo),
         )
         val expensesForSecondDay = listOf(
-            fakeExpense(price = 10.0, categoryType = Category.Type.INCOME),
-            fakeExpense(price = 60.0, categoryType = Category.Type.INCOME),
-            fakeExpense(price = 30.0, categoryType = Category.Type.INCOME),
-            fakeExpense(price = 20.0, categoryType = Category.Type.OUTGO),
-            fakeExpense(price = 40.0, categoryType = Category.Type.OUTGO),
-            fakeExpense(price = 90.0, categoryType = Category.Type.OUTGO),
+            fakeExpense(price = Price.of(10.0), expenseType = Expense.Type.Income),
+            fakeExpense(price = Price.of(60.0), expenseType = Expense.Type.Income),
+            fakeExpense(price = Price.of(30.0), expenseType = Expense.Type.Income),
+            fakeExpense(price = Price.of(20.0), expenseType = Expense.Type.Outgo),
+            fakeExpense(price = Price.of(40.0), expenseType = Expense.Type.Outgo),
+            fakeExpense(price = Price.of(90.0), expenseType = Expense.Type.Outgo),
         )
 
         and("Daily expenses") {
@@ -96,11 +97,11 @@ class ExpenseSummaryTest : BehaviorSpec({
 
     Given("Monthly expenses") {
         val monthlyExpenses = listOf(
-            fakeMonthlyExpense(totalIncome = 20.0, totalOutgo = 10.0),
-            fakeMonthlyExpense(totalIncome = 30.0, totalOutgo = 20.0),
-            fakeMonthlyExpense(totalIncome = 10.0, totalOutgo = 10.0),
-            fakeMonthlyExpense(totalIncome = 50.0, totalOutgo = 50.0),
-            fakeMonthlyExpense(totalIncome = 10.0, totalOutgo = 20.0),
+            fakeMonthlyExpense(totalIncome = Price.of(20.0), totalOutgo = Price.of(10.0)),
+            fakeMonthlyExpense(totalIncome = Price.of(30.0), totalOutgo = Price.of(20.0)),
+            fakeMonthlyExpense(totalIncome = Price.of(10.0), totalOutgo = Price.of(10.0)),
+            fakeMonthlyExpense(totalIncome = Price.of(50.0), totalOutgo = Price.of(50.0)),
+            fakeMonthlyExpense(totalIncome = Price.of(10.0), totalOutgo = Price.of(20.0)),
         )
 
         and("Single yearly expense") {
@@ -129,11 +130,11 @@ class ExpenseSummaryTest : BehaviorSpec({
 
     Given("Yearly expenses") {
         val yearlyExpenses = listOf(
-            fakeYearlyExpense(totalIncome = 20.0, totalOutgo = 10.0),
-            fakeYearlyExpense(totalIncome = 60.0, totalOutgo = 90.0),
-            fakeYearlyExpense(totalIncome = 70.0, totalOutgo = 60.0),
-            fakeYearlyExpense(totalIncome = 30.0, totalOutgo = 40.0),
-            fakeYearlyExpense(totalIncome = 20.0, totalOutgo = 5.00),
+            fakeYearlyExpense(totalIncome = Price.of(20.0), totalOutgo = Price.of(10.0)),
+            fakeYearlyExpense(totalIncome = Price.of(60.0), totalOutgo = Price.of(90.0)),
+            fakeYearlyExpense(totalIncome = Price.of(70.0), totalOutgo = Price.of(60.0)),
+            fakeYearlyExpense(totalIncome = Price.of(30.0), totalOutgo = Price.of(40.0)),
+            fakeYearlyExpense(totalIncome = Price.of(20.0), totalOutgo = Price.of(5.00)),
         )
 
         and("Expense summary") {
@@ -161,22 +162,17 @@ class ExpenseSummaryTest : BehaviorSpec({
 })
 
 private fun fakeExpense(
-    price: Double = 42.0,
-    categoryType: Category.Type = Category.Type.INCOME,
+    price: Price = Price.of(42.0),
+    expenseType: Expense.Type = Expense.Type.Income,
 ): Expense =
     mockk {
         every { this@mockk.price } returns price
-        every { this@mockk.category } returns fakeCategory(categoryType = categoryType)
-    }
-
-private fun fakeCategory(categoryType: Category.Type) =
-    mockk<Category> {
-        every { this@mockk.type } returns categoryType
+        every { this@mockk.type } returns expenseType
     }
 
 private fun fakeMonthlyExpense(
-    totalIncome: Double,
-    totalOutgo: Double,
+    totalIncome: Price,
+    totalOutgo: Price,
 ): ExpenseSummary.YearlyExpense.MonthlyExpense =
     mockk {
         every { this@mockk.totalIncome } returns totalIncome
@@ -184,8 +180,8 @@ private fun fakeMonthlyExpense(
     }
 
 private fun fakeYearlyExpense(
-    totalIncome: Double,
-    totalOutgo: Double,
+    totalIncome: Price,
+    totalOutgo: Price,
 ): ExpenseSummary.YearlyExpense =
     mockk {
         every { this@mockk.totalIncome } returns totalIncome

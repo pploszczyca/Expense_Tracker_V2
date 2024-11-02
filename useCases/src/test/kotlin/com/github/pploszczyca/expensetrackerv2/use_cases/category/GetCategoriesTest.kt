@@ -2,12 +2,11 @@ package com.github.pploszczyca.expensetrackerv2.use_cases.category
 
 import com.github.pploszczyca.expensetrackerv2.usecases.repositories.CategoryRepository
 import com.github.pploszczyca.expensetrackerv2.domain.Category
+import com.github.pploszczyca.expensetrackerv2.domain.Id
 import com.github.pploszczyca.expensetrackerv2.usecases.category.GetCategories
 import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
-import io.mockk.coEvery
-import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.first
@@ -29,14 +28,12 @@ class GetCategoriesTest : BehaviorSpec({
     Given("Non empty categories") {
         val categories = listOf(
             Category(
-                id = 1,
+                id = Id.from("1"),
                 name = "My income",
-                type = Category.Type.INCOME
             ),
             Category(
-                id = 2,
+                id = Id.from("2"),
                 name = "My outgo",
-                type = Category.Type.OUTGO
             ),
         )
 
@@ -48,33 +45,6 @@ class GetCategoriesTest : BehaviorSpec({
             Then("Categories as result") {
                 launch {
                     actual.first() shouldBe categories
-                }
-            }
-        }
-    }
-
-    Given("Empty categories") {
-        every { repository.getAll() } returns flowOf(emptyList())
-        coEvery { repository.insert(any()) } returns Unit
-
-        When("UC is invoked") {
-            tested(repository = repository)
-                .invoke()
-                .first()
-
-            Then("Insert base categories") {
-                val baseIncomeCategory = Category(
-                    name = "INCOME",
-                    type = Category.Type.INCOME
-                )
-                val baseOutgoCategory = Category(
-                    name = "OUTGO",
-                    type = Category.Type.OUTGO
-                )
-
-                coVerify {
-                    repository.insert(baseIncomeCategory)
-                    repository.insert(baseOutgoCategory)
                 }
             }
         }

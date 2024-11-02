@@ -67,10 +67,7 @@ class ExpenseFormViewModelImpl @Inject constructor(
             _categories = categories
             _expense.value = expense
 
-            val chosenCategoryId: Id? = when (expense) {
-                null -> categories.firstOrNull()?.id
-                else -> expense.category?.id
-            }
+            val chosenCategoryId: Id? = expense?.category?.id
 
             val submitButtonTextId = when (expense == null) {
                 true -> R.string.add
@@ -144,10 +141,10 @@ class ExpenseFormViewModelImpl @Inject constructor(
     }
 
     override fun onCategoryChanged(categoryId: Id?) {
-        _viewState.update {
-            it.copy(
+        _viewState.updateTransform {
+            copy(
                 chosenCategoryId = categoryId,
-                categories = it.categories.map { category -> category.copy(isSelected = category.id == categoryId) }
+                categories = categories.map { category -> category.copy(isSelected = (category.isSelected.not() && category.id == categoryId)) }
             )
         }
     }

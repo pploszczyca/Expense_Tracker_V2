@@ -1,5 +1,6 @@
 package com.github.pploszczyca.expensetrackerv2.use_cases.category
 
+import com.github.pploszczyca.expensetrackerv2.common_test.dummy
 import com.github.pploszczyca.expensetrackerv2.usecases.repositories.CategoryRepository
 import com.github.pploszczyca.expensetrackerv2.domain.Category
 import com.github.pploszczyca.expensetrackerv2.domain.Id
@@ -28,11 +29,11 @@ class GetCategoriesTest : BehaviorSpec({
     Given("Non empty categories") {
         val categories = listOf(
             Category(
-                id = Id.from("1"),
+                id = dummy(),
                 name = "My income",
             ),
             Category(
-                id = Id.from("2"),
+                id = dummy(),
                 name = "My outgo",
             ),
         )

@@ -1,5 +1,6 @@
 package com.github.pploszczyca.expensetrackerv2.use_cases.expense
 
+import com.github.pploszczyca.expensetrackerv2.common_test.dummy
 import com.github.pploszczyca.expensetrackerv2.usecases.repositories.ExpenseRepository
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
 import com.github.pploszczyca.expensetrackerv2.domain.Id
@@ -25,7 +26,7 @@ class GetExpenseTest : BehaviorSpec({
     )
 
     Given("Expense Id") {
-        val expenseId = Id.from("1")
+        val expenseId: Id = dummy()
         val expenseFlow: Flow<Expense> = mockk()
 
         every { repository.get(any()) } returns expenseFlow

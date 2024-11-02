@@ -32,7 +32,6 @@ class CategorySettingsViewModel @Inject constructor(
     val categories: Flow<List<Category>> = observeCategories()
 
     private val _id: MutableState<Id?> = mutableStateOf(null)
-    val id: State<Id?> = _id
 
     private val _name = mutableStateOf("")
     val name: State<String> = _name
@@ -46,7 +45,6 @@ class CategorySettingsViewModel @Inject constructor(
     fun onEvent(event: CategorySettingsEvent) {
         viewModelScope.launch(dispatcherProvider.default) {
             when (event) {
-                is CategorySettingsEvent.IdChange -> _id.value = event.value
                 is CategorySettingsEvent.NameChange -> _name.value = event.value
                 is CategorySettingsEvent.CloseDeleteDialog -> closeDialog(
                     _isDeleteDialogFormVisible
@@ -80,7 +78,7 @@ class CategorySettingsViewModel @Inject constructor(
     }
 
     fun isThisNewCategory(): Boolean =
-        id.value == null
+        _id.value == null
 
     private fun openDialog(state: MutableState<Boolean>) {
         state.value = true
@@ -90,9 +88,9 @@ class CategorySettingsViewModel @Inject constructor(
         state.value = false
     }
 
-    private fun setIdNameAndType(category: Category) {
-        _id.value = category.id
-        _name.value = category.name
+    private fun setIdNameAndType(category: Category?) {
+        _id.value = category?.id
+        _name.value = category?.name.orEmpty()
     }
 
     private suspend fun insertOrUpdate(category: Category) {
@@ -104,7 +102,7 @@ class CategorySettingsViewModel @Inject constructor(
     }
 
     private fun makeCategoryFromState(): Category =
-        when (val id = id.value) {
+        when (val id = _id.value) {
             null -> Category.new(name = name.value)
             else -> Category(id = id, name = name.value)
         }

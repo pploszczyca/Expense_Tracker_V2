@@ -34,6 +34,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import java.time.LocalDate
 import java.util.Date
 import javax.inject.Inject
@@ -189,6 +190,7 @@ class ExpenseFormViewModelImpl @Inject constructor(
 
     override fun onSubmitButtonClicked() {
         viewModelScope.launch(dispatcherProvider.default) {
+            Timber.d("Submit button clicked")
             if (viewState.value.isAllDataValidated().not()) {
                 _routeActions.emit(RouteAction.ShowSnackBar)
                 return@launch
@@ -209,6 +211,7 @@ class ExpenseFormViewModelImpl @Inject constructor(
         title != "" && price != Price.ZERO
 
     private suspend fun performInsertingExpense() {
+        Timber.d("Inserting expense")
         with(viewState.value) {
             insertExpense(
                 title = title,

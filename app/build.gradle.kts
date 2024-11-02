@@ -91,4 +91,6 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
 
     implementation(libs.material3)
+
+    implementation(libs.timber)
 }

@@ -25,10 +25,10 @@ internal abstract class ExpenseDao {
     abstract fun getExpenseWithItsType(expenseID: String): Flow<ExpenseWithCategory>
 
     // INSERTS
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun insertAllExpenses(vararg expenses: ExpenseEntity)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun insertAllCategories(vararg expenses: CategoryEntity)
 
     // UPDATE

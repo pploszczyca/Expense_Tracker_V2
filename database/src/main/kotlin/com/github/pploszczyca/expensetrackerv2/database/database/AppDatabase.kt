@@ -11,7 +11,7 @@ import com.github.pploszczyca.expensetrackerv2.database.models.view_models.Expen
     entities = [ExpenseEntity::class, CategoryEntity::class],
     views = [ExpenseWithCategory::class],
     version = 1,
-    exportSchema = false
+    exportSchema = false,
 )
 @TypeConverters(Converters::class)
 internal abstract class AppDatabase : RoomDatabase() {

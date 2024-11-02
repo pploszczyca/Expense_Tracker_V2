@@ -6,7 +6,7 @@ import java.math.BigDecimal
 import java.time.LocalDate
 import java.util.*
 
-@DatabaseView("SELECT e.id, e.title, e.price, e.date, e.description, e.place, c.id AS categoryId, c.name AS categoryName, e.type FROM Expense AS e INNER JOIN Category AS c ON e.category_id = c.id")
+@DatabaseView("SELECT e.id, e.title, e.price, e.date, e.description, e.place, c.id AS categoryId, c.name AS categoryName, e.type FROM Expense AS e LEFT JOIN Category AS c ON e.category_id = c.id")
 internal data class ExpenseWithCategory(
     val id: String,
     val title: String,

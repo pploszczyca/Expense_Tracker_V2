@@ -25,6 +25,9 @@ abstract class ExpenseFormViewModel : ViewModel() {
     abstract fun onDescriptionChanged(description: String)
     abstract fun onSubmitButtonClicked()
     abstract fun onBackClicked()
+    abstract fun onDeleteButtonClicked()
+    abstract fun onDismissDeleteDialog()
+    abstract fun onDeleteConfirmed()
 
     data class ViewState(
         val isLoading: Boolean = true,
@@ -40,7 +43,9 @@ abstract class ExpenseFormViewModel : ViewModel() {
         val type: Expense.Type = Expense.Type.Outgo,
         @StringRes
         val submitButtonText: Int = R.string.add,
+        val shouldShowDeleteButton: Boolean = false,
         val shouldOpenKeyboard: Boolean = false,
+        val shouldShowDeleteDialog: Boolean = false,
     ) {
         data class Category(
             val id: Id = Id.NO_ID,

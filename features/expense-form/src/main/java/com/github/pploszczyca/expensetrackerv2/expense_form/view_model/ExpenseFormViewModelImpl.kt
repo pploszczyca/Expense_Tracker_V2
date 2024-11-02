@@ -5,8 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.github.pploszczyca.expensetrackerv2.common_kotlin.coroutines.DispatcherProvider
 import com.github.pploszczyca.expensetrackerv2.common_kotlin.currencyFormatter.CurrencyFormatter
 import com.github.pploszczyca.expensetrackerv2.navigation.contract.NavigationRouter
-import com.github.pploszczyca.expensetrackerv2.common_kotlin.extensions.toDate
-import com.github.pploszczyca.expensetrackerv2.common_kotlin.extensions.toFormattedString
 import com.github.pploszczyca.expensetrackerv2.common_kotlin.extensions.updateTransform
 import com.github.pploszczyca.expensetrackerv2.usecases.category.GetCategories
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.GetExpense
@@ -19,10 +17,9 @@ import com.github.pploszczyca.expensetrackerv2.domain.Expense
 import com.github.pploszczyca.expensetrackerv2.domain.ExpenseDate
 import com.github.pploszczyca.expensetrackerv2.domain.Id
 import com.github.pploszczyca.expensetrackerv2.domain.Price
-import com.github.pploszczyca.expensetrackerv2.domain.orZero
 import com.github.pploszczyca.expensetrackerv2.features.expense_form.R
+import com.github.pploszczyca.expensetrackerv2.usecases.expense.DeleteExpense
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,13 +27,10 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import java.time.LocalDate
-import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -51,6 +45,7 @@ class ExpenseFormViewModelImpl @Inject constructor(
     private val dispatcherProvider: DispatcherProvider,
     private val navigationRouter: NavigationRouter,
     private val currencyFormatter: CurrencyFormatter,
+    private val deleteExpense: DeleteExpense,
 ) : ExpenseFormViewModel() {
 
     private lateinit var _categories: List<Category>
@@ -61,6 +56,7 @@ class ExpenseFormViewModelImpl @Inject constructor(
     private val _routeActions: MutableSharedFlow<RouteAction> = MutableSharedFlow()
     override val routeActions: SharedFlow<RouteAction> = _routeActions
 
+    private val _expense: MutableStateFlow<Expense?> = MutableStateFlow(null)
     private val expenseId: Id? = savedStateHandle.get<String>("EXPENSE_ID")?.let(Id::from)
 
     init {
@@ -75,6 +71,7 @@ class ExpenseFormViewModelImpl @Inject constructor(
                 getExpenseOrNullFlow,
             ) { titles, places, categories, expense ->
                 _categories = categories
+                _expense.value = expense
 
                 val chosenCategoryId: Id? = when (expense) {
                     null -> categories.firstOrNull()?.id
@@ -108,6 +105,7 @@ class ExpenseFormViewModelImpl @Inject constructor(
                         categories = mapToViewStateCategories(categories, chosenCategoryId),
                         submitButtonText = submitButtonTextId,
                         type = expense.type,
+                        shouldShowDeleteButton = true,
                     )
                 }
             }.collect { formViewState ->
@@ -246,6 +244,31 @@ class ExpenseFormViewModelImpl @Inject constructor(
 
     override fun onBackClicked() {
         viewModelScope.launch(dispatcherProvider.default) {
+            navigationRouter.goBack()
+        }
+    }
+
+    override fun onDeleteButtonClicked() {
+        _viewState.update {
+            it.copy(shouldShowDeleteDialog = true)
+        }
+    }
+
+    override fun onDismissDeleteDialog() {
+        _viewState.update {
+            it.copy(shouldShowDeleteDialog = false)
+        }
+    }
+
+    override fun onDeleteConfirmed() {
+        viewModelScope.launch(dispatcherProvider.default) {
+            _expense.value?.let { expense ->
+                _viewState.update {
+                    it.copy(shouldShowDeleteDialog = false)
+                }
+                deleteExpense(expense)
+            }
+
             navigationRouter.goBack()
         }
     }

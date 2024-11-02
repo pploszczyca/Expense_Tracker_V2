@@ -2,6 +2,8 @@ package com.github.pploszczyca.expensetrackerv2.expense_form.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -12,6 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import com.github.pploszczyca.expensetrackerv2.common_ui.bar.TopAppBarAction
 import com.github.pploszczyca.expensetrackerv2.common_ui.bar.TopAppBarWithBack
 import com.github.pploszczyca.expensetrackerv2.common_ui.progress_indicator.ProgressIndicator
 import com.github.pploszczyca.expensetrackerv2.expense_form.view_model.ExpenseFormViewModel
@@ -36,6 +39,15 @@ fun ExpenseFormEntry(
             TopAppBarWithBack(
                 title = stringResource(id = R.string.expense_form),
                 onBackClicked = viewModel::onBackClicked,
+                actions = {
+                    if(viewState.shouldShowDeleteButton) {
+                        TopAppBarAction(
+                            iconImage = Icons.Default.Delete,
+                            contentDescription = "Delete Expense",
+                            onActionClicked = viewModel::onDeleteButtonClicked,
+                        )
+                    }
+                }
             )
         },
         snackbarHost = { SnackbarHost(hostState = snackBarHostState) }
@@ -43,18 +55,25 @@ fun ExpenseFormEntry(
         Box(modifier = Modifier.padding(it)) {
             when(viewState.isLoading) {
                 true -> ProgressIndicator()
-                false -> ExpenseForm(
-                    viewState = viewState,
-                    onTitleChanged = viewModel::onTitleChanged,
-                    onPriceChanged = viewModel::onPriceChanged,
-                    onCategoryChanged = viewModel::onCategoryChanged,
-                    onDateChanged = viewModel::onDateChanged,
-                    onPlaceNameChanged = viewModel::onPlaceNameChanged,
-                    onDescriptionChanged = viewModel::onDescriptionChanged,
-                    onSubmitButtonClicked = viewModel::onSubmitButtonClicked,
-                    onIncomeValueChanged = viewModel::onIncomeValueChanged,
-                    onOutgoValueChanged = viewModel::onOutgoValueChanged,
-                )
+                false -> {
+                    DeleteExpenseDialog(
+                        viewState = viewState,
+                        onDismissDeleteDialog = viewModel::onDismissDeleteDialog,
+                        onConfirmDeleteDialog = viewModel::onDeleteConfirmed,
+                    )
+                    ExpenseForm(
+                        viewState = viewState,
+                        onTitleChanged = viewModel::onTitleChanged,
+                        onPriceChanged = viewModel::onPriceChanged,
+                        onCategoryChanged = viewModel::onCategoryChanged,
+                        onDateChanged = viewModel::onDateChanged,
+                        onPlaceNameChanged = viewModel::onPlaceNameChanged,
+                        onDescriptionChanged = viewModel::onDescriptionChanged,
+                        onSubmitButtonClicked = viewModel::onSubmitButtonClicked,
+                        onIncomeValueChanged = viewModel::onIncomeValueChanged,
+                        onOutgoValueChanged = viewModel::onOutgoValueChanged,
+                    )
+                }
             }
         }
     }

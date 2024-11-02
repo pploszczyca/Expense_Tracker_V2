@@ -142,9 +142,10 @@ class ExpenseFormViewModelImpl @Inject constructor(
 
     override fun onCategoryChanged(categoryId: Id?) {
         _viewState.updateTransform {
+            val chosenCategoryId = categoryId?.takeUnless { categories.any { it.id == categoryId && it.isSelected } }
             copy(
-                chosenCategoryId = categoryId,
-                categories = categories.map { category -> category.copy(isSelected = (category.isSelected.not() && category.id == categoryId)) }
+                chosenCategoryId = chosenCategoryId,
+                categories = categories.map { category -> category.copy(isSelected = (category.id == chosenCategoryId)) }
             )
         }
     }

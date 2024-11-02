@@ -7,6 +7,8 @@ data class ExpenseSummary(
 
     val totalOutgo: Price = yearlyExpenses.sumOf { it.totalOutgo }
 
+    val total: Price = totalIncome + totalOutgo
+
 
     data class YearlyExpense(
         val year: Int,

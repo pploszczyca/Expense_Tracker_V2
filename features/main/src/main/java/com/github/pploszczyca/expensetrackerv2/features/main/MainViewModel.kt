@@ -85,6 +85,6 @@ class MainViewModel @Inject constructor(
         val mainExpenseInformationVisible: Boolean get() = topBarVisible.not()
 
         val moneyInWalletAmount: Price
-            get() = expenseSummary?.let { it.totalIncome - it.totalOutgo }.orZero()
+            get() = expenseSummary?.total.orZero()
     }
 }

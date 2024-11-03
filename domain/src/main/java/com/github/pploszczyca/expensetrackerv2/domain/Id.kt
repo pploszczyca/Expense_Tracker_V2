@@ -4,8 +4,7 @@ import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 @OptIn(ExperimentalUuidApi::class)
-@JvmInline
-value class Id private constructor(private val value: Uuid) {
+data class Id(private val value: Uuid) {
 
     override fun toString(): String = value.toString()
 

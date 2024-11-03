@@ -3,8 +3,7 @@ package com.github.pploszczyca.expensetrackerv2.domain
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-@JvmInline
-value class ExpenseDate private constructor(val date: LocalDate) {
+data class ExpenseDate(val date: LocalDate) {
     companion object {
         private val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
 

@@ -3,8 +3,7 @@ package com.github.pploszczyca.expensetrackerv2.domain
 import java.math.BigDecimal
 import java.math.RoundingMode
 
-@JvmInline
-value class Price private constructor(val amount: BigDecimal) {
+data class Price(val amount: BigDecimal) {
     companion object {
         fun of(amount: BigDecimal): Price =
             amount

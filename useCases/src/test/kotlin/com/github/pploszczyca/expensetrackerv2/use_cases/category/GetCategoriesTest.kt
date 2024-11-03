@@ -7,6 +7,7 @@ import com.github.pploszczyca.expensetrackerv2.usecases.category.GetCategories
 import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
@@ -31,15 +32,13 @@ class GetCategoriesTest : BehaviorSpec({
             dummy(),
         )
 
-        every { repository.observe() } returns flowOf(categories)
+        coEvery { repository.getAll() } returns categories
 
         When("UC is invoked") {
             val actual = tested(repository = repository).invoke()
 
             Then("Categories as result") {
-                launch {
-                    actual.first() shouldBe categories
-                }
+                actual shouldBe categories
             }
         }
     }

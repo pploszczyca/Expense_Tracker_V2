@@ -2,9 +2,6 @@ package com.github.pploszczyca.expensetrackerv2.domain
 
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
-import io.mockk.every
-import io.mockk.mockk
-import java.math.BigDecimal
 
 class ExpenseSummaryTest : BehaviorSpec({
 
@@ -28,7 +25,7 @@ class ExpenseSummaryTest : BehaviorSpec({
                 val totalIncome = dailyExpense.totalIncome
 
                 Then("Should equal to sum of all income expenses") {
-                    totalIncome shouldBe 100.0
+                    totalIncome shouldBe Price.of(100.00)
                 }
             }
 
@@ -36,7 +33,7 @@ class ExpenseSummaryTest : BehaviorSpec({
                 val totalIncome = dailyExpense.totalOutgo
 
                 Then("Should equal to sum of all outgo expenses") {
-                    totalIncome shouldBe 170.0
+                    totalIncome shouldBe Price.of(170.00)
                 }
             }
         }
@@ -80,7 +77,7 @@ class ExpenseSummaryTest : BehaviorSpec({
                     val totalIncome = monthlyExpense.totalIncome
 
                     Then("Should equal to sum of all income expenses") {
-                        totalIncome shouldBe 200.0
+                        totalIncome shouldBe Price.of(200.00)
                     }
                 }
 
@@ -88,7 +85,7 @@ class ExpenseSummaryTest : BehaviorSpec({
                     val totalOutgo = monthlyExpense.totalOutgo
 
                     Then("Should equal to sum of all outgo expenses") {
-                        totalOutgo shouldBe 320.0
+                        totalOutgo shouldBe Price.of(320.00)
                     }
                 }
             }
@@ -114,7 +111,7 @@ class ExpenseSummaryTest : BehaviorSpec({
                 val totalIncome = yearlyExpense.totalIncome
 
                 Then("Should equal to sum of all income expenses") {
-                    totalIncome shouldBe 120.0
+                    totalIncome shouldBe Price.of(120.00)
                 }
             }
 
@@ -122,7 +119,7 @@ class ExpenseSummaryTest : BehaviorSpec({
                 val totalOutgo = yearlyExpense.totalOutgo
 
                 Then("Should equal to sum of all outgo expenses") {
-                    totalOutgo shouldBe 110.0
+                    totalOutgo shouldBe Price.of(110.00)
                 }
             }
         }
@@ -146,7 +143,7 @@ class ExpenseSummaryTest : BehaviorSpec({
                 val totalIncome = expenseSummary.totalIncome
 
                 Then("Should equal to sum of all income expenses") {
-                    totalIncome shouldBe 200.0
+                    totalIncome shouldBe Price.of(200.00)
                 }
             }
 
@@ -154,7 +151,7 @@ class ExpenseSummaryTest : BehaviorSpec({
                 val totalOutgo = expenseSummary.totalOutgo
 
                 Then("Should equal to sum of all income expenses") {
-                    totalOutgo shouldBe 205.0
+                    totalOutgo shouldBe Price.of(205.00)
                 }
             }
         }
@@ -165,25 +162,54 @@ private fun fakeExpense(
     price: Price = Price.of(42.0),
     expenseType: Expense.Type = Expense.Type.Income,
 ): Expense =
-    mockk {
-        every { this@mockk.price } returns price
-        every { this@mockk.type } returns expenseType
-    }
+    Expense.new(
+        title = "Title",
+        price = price,
+        date = ExpenseDate.now(),
+        description = "Description",
+        place = "Place",
+        type = expenseType,
+        category = null,
+    )
 
 private fun fakeMonthlyExpense(
     totalIncome: Price,
     totalOutgo: Price,
 ): ExpenseSummary.YearlyExpense.MonthlyExpense =
-    mockk {
-        every { this@mockk.totalIncome } returns totalIncome
-        every { this@mockk.totalOutgo } returns totalOutgo
-    }
+    ExpenseSummary.YearlyExpense.MonthlyExpense(
+        month = 1,
+        dailyExpenses = listOf(
+            ExpenseSummary.YearlyExpense.MonthlyExpense.DailyExpense(
+                day = 1,
+                expenses = listOf(
+                    fakeExpense(
+                        price = totalIncome,
+                        expenseType = Expense.Type.Income
+                    )
+                ),
+            ),
+            ExpenseSummary.YearlyExpense.MonthlyExpense.DailyExpense(
+                day = 2,
+                expenses = listOf(
+                    fakeExpense(
+                        price = totalOutgo,
+                        expenseType = Expense.Type.Outgo
+                    )
+                ),
+            )
+        ),
+    )
 
 private fun fakeYearlyExpense(
     totalIncome: Price,
     totalOutgo: Price,
 ): ExpenseSummary.YearlyExpense =
-    mockk {
-        every { this@mockk.totalIncome } returns totalIncome
-        every { this@mockk.totalOutgo } returns totalOutgo
-    }
+    ExpenseSummary.YearlyExpense(
+        year = 2023,
+        monthlyExpenses = listOf(
+            fakeMonthlyExpense(
+                totalIncome = totalIncome,
+                totalOutgo = totalOutgo
+            )
+        ),
+    )

@@ -66,7 +66,7 @@ fun ExpenseCard(
                 ) {
                     Text(
                         style = MaterialTheme.typography.titleLarge,
-                        text = expense.signedAmount.toString(),
+                        text = expense.signedPrice.toString(),
                         color = if (expense.type == Expense.Type.Outgo) ExpenseColor else IncomeColor
                     )
 

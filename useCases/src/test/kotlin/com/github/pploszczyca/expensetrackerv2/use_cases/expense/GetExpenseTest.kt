@@ -7,11 +7,9 @@ import com.github.pploszczyca.expensetrackerv2.usecases.expense.GetExpense
 import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
-import io.mockk.every
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
-import io.mockk.verify
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
 
 class GetExpenseTest : BehaviorSpec({
     isolationMode = IsolationMode.InstancePerLeaf
@@ -28,16 +26,15 @@ class GetExpenseTest : BehaviorSpec({
     Given("Expense Id") {
         val expenseId = Id.new()
         val expense: Expense = mockk()
-        val expenseFlow: Flow<Expense> = flowOf(expense)
 
-        every { repository.get(eq(expenseId)) } returns expenseFlow
+        coEvery { repository.get(expenseId) } returns expense
 
         When("Get expense is invoked") {
             val actual = tested(repository).invoke(expenseId = expenseId)
 
             Then("Expense is returned") {
-                actual shouldBe expenseFlow
-                verify { repository.get(expenseId = eq(expenseId)) }
+                actual shouldBe expense
+                coVerify { repository.get(expenseId = expenseId) }
             }
         }
     }

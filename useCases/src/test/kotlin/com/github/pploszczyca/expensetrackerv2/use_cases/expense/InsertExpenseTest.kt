@@ -65,13 +65,13 @@ class InsertExpenseTest : BehaviorSpec({
             Then("New expense will be inserted") {
                 coVerifyOrder {
                     Expense.new(
-                        title = eq(title),
-                        price = eq(price),
-                        date = eq(date),
-                        description = eq(description),
-                        place = eq(place),
-                        type = eq(type),
-                        category = eq(category),
+                        title = title,
+                        price = price,
+                        date = date,
+                        description = description,
+                        place = place,
+                        type = type,
+                        category = category,
                     )
                     repository.insert(expense)
                 }

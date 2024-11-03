@@ -1,14 +1,19 @@
 package com.github.pploszczyca.expensetrackerv2.expense_form.view_model
 
 import androidx.lifecycle.SavedStateHandle
+import com.github.pploszczyca.expensetrackerv2.common_kotlin.currencyFormatter.CurrencyFormatter
 import com.github.pploszczyca.expensetrackerv2.features.expense_form.R
-import com.github.pploszczyca.expensetrackerv2.common_kotlin.extensions.toDate
-import com.github.pploszczyca.expensetrackerv2.common_kotlin.extensions.toFormattedString
 import com.github.pploszczyca.expensetrackerv2.common_test.UnconfinedDispatcherProvider
+import com.github.pploszczyca.expensetrackerv2.common_test.dummy
+import com.github.pploszczyca.expensetrackerv2.common_test.noOp
 import com.github.pploszczyca.expensetrackerv2.navigation.contract.NavigationRouter
 import com.github.pploszczyca.expensetrackerv2.usecases.category.GetCategories
 import com.github.pploszczyca.expensetrackerv2.domain.Category
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
+import com.github.pploszczyca.expensetrackerv2.domain.ExpenseDate
+import com.github.pploszczyca.expensetrackerv2.domain.Id
+import com.github.pploszczyca.expensetrackerv2.domain.Price
+import com.github.pploszczyca.expensetrackerv2.usecases.expense.DeleteExpense
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.GetExpense
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.GetExpensesPlaces
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.GetExpensesTitles
@@ -20,34 +25,16 @@ import io.kotest.data.forAll
 import io.kotest.data.row
 import io.kotest.matchers.shouldBe
 import io.mockk.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.setMain
-import java.time.LocalDate
 import java.util.*
+import kotlin.time.Duration.Companion.seconds
+import kotlin.time.DurationUnit
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class ExpenseFormViewModelImplTest : BehaviorSpec({
     isolationMode = IsolationMode.InstancePerLeaf
     coroutineTestScope = true
 
-    val testDispatcher = StandardTestDispatcher()
-
-    beforeAny {
-        Dispatchers.setMain(testDispatcher)
-    }
-
-    afterAny {
-        Dispatchers.resetMain()
-    }
-
-    // Needed to run all UCs for example just after VM initialization
-    fun runAllAsynchronousTasks() {
-        testDispatcher.scheduler.advanceUntilIdle()
-    }
+    timeout = 1.seconds.toLong(DurationUnit.MILLISECONDS)
 
     val savedStateHandle: SavedStateHandle = mockk()
     val getExpensesTitles: GetExpensesTitles = mockk()
@@ -56,19 +43,21 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
     val getExpense: GetExpense = mockk()
     val insertExpense: InsertExpense = mockk()
     val updateExpense: UpdateExpense = mockk()
-    val navigationRouter: NavigationRouter = mockk {
-        every { goBack() } returns Unit
-    }
+    val navigationRouter: NavigationRouter = mockk(relaxed = true)
+    val currencyFormatter: CurrencyFormatter = mockk()
+    val deleteExpense: DeleteExpense = mockk()
 
     fun tested(
-        savedStateHandle: SavedStateHandle = mockk(),
-        getExpensesTitles: GetExpensesTitles = mockk(),
-        getExpensesPlaces: GetExpensesPlaces = mockk(),
-        getCategories: GetCategories = mockk(),
-        getExpense: GetExpense = mockk(),
-        insertExpense: InsertExpense = mockk(),
-        updateExpense: UpdateExpense = mockk(),
-        navigationRouter: NavigationRouter = mockk(),
+        savedStateHandle: SavedStateHandle = noOp(),
+        getExpensesTitles: GetExpensesTitles = noOp(),
+        getExpensesPlaces: GetExpensesPlaces = noOp(),
+        getCategories: GetCategories = noOp(),
+        getExpense: GetExpense = noOp(),
+        insertExpense: InsertExpense = noOp(),
+        updateExpense: UpdateExpense = noOp(),
+        navigationRouter: NavigationRouter = noOp(),
+        currencyFormatter: CurrencyFormatter = noOp(),
+        deleteExpense: DeleteExpense = noOp(),
     ): ExpenseFormViewModel =
         ExpenseFormViewModelImpl(
             savedStateHandle = savedStateHandle,
@@ -80,43 +69,35 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
             updateExpense = updateExpense,
             dispatcherProvider = UnconfinedDispatcherProvider,
             navigationRouter = navigationRouter,
-        ).apply {
-            runAllAsynchronousTasks()
-        }
+            currencyFormatter = currencyFormatter,
+            deleteExpense = deleteExpense,
+        )
 
-    Given("New expense Id is provided") {
-        val expenseId = ExpenseFormViewModel.NO_EXPENSE_ID
-        val titles: List<String> = mockk()
-        val places: List<String> = mockk()
-        val categoryId = 78
+    Given("Expense id is not provided") {
+        val titles: List<String> = dummy()
+        val places: List<String> = dummy()
+        val categoryId = Id.new()
         val categoryName = "categoryName"
-        val secondCategoryId = 90
+        val secondCategoryId = Id.new()
         val secondCategoryName = "secondCategoryName"
         val category = Category(
             id = categoryId,
             name = categoryName,
-            type = Category.Type.INCOME,
         )
         val secondCategory = Category(
             id = secondCategoryId,
             name = secondCategoryName,
-            type = Category.Type.INCOME,
         )
         val categories: List<Category> = listOf(category, secondCategory)
         val viewState = ExpenseFormViewModel.ViewState(
-            title = "",
-            price = "",
-            chosenCategoryId = categoryId,
-            date = Date().toFormattedString(),
-            placeName = "",
-            description = "",
+            isLoading = false,
             previousTitles = titles,
             previousPlaceNames = places,
             categories = listOf(
                 ExpenseFormViewModel.ViewState.Category(
                     id = categoryId,
                     name = categoryName,
-                    isSelected = true,
+                    isSelected = false,
                 ),
                 ExpenseFormViewModel.ViewState.Category(
                     id = secondCategoryId,
@@ -125,12 +106,13 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
                 ),
             ),
             submitButtonText = R.string.add,
+            shouldOpenKeyboard = true,
         )
 
-        every { savedStateHandle.get<Int>("EXPENSE_ID") } returns expenseId
-        every { getExpensesTitles() } returns flowOf(titles)
-        every { getExpensesPlaces() } returns flowOf(places)
-        every { getCategories() } returns flowOf(categories)
+        every { savedStateHandle.get<Int>("EXPENSE_ID") } returns null
+        coEvery { getExpensesTitles() } returns titles
+        coEvery { getExpensesPlaces() } returns places
+        coEvery { getCategories() } returns categories
 
         When("View model is initialized") {
             val actualViewState = tested(
@@ -166,26 +148,29 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
 
         When("New price will be given") {
             val price = "2.00"
+            val priceBigDecimal = price.toBigDecimal()
+
+            every { currencyFormatter.format(price) } returns priceBigDecimal
 
             val actualViewState = tested(
                 savedStateHandle = savedStateHandle,
                 getExpensesTitles = getExpensesTitles,
                 getExpensesPlaces = getExpensesPlaces,
                 getCategories = getCategories,
+                currencyFormatter = currencyFormatter,
             ).apply {
                 onPriceChanged(price)
             }.viewState.value
 
             Then("Price will be changed") {
-                val expectedViewState = viewState.copy(price = price)
+                val expectedViewState = viewState.copy(price = Price.of(priceBigDecimal))
 
                 actualViewState shouldBe expectedViewState
             }
         }
 
         When("New date will be given") {
-            val stringDate = "2000-06-12"
-            val date = LocalDate.parse(stringDate)
+            val date = ExpenseDate.now()
 
             val actualViewState = tested(
                 savedStateHandle = savedStateHandle,
@@ -197,7 +182,7 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
             }.viewState.value
 
             Then("Date will be changed") {
-                val expectedViewState = viewState.copy(date = stringDate)
+                val expectedViewState = viewState.copy(date = date)
 
                 actualViewState shouldBe expectedViewState
             }
@@ -274,23 +259,26 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
         }
 
         forAll(
-            row("", ""),
-            row("title", ""),
-            row("", "2.00")
-        ) { title, price ->
+            row("", "", Price.ZERO.amount),
+            row("title", "", Price.ZERO.amount),
+            row("", "2.00, ", 2.00.toBigDecimal())
+        ) { title, price, formattedPrice ->
             And("Data are not valid (title: $title, price: $price)") {
                 When("Submit button is clicked") {
+                    every { currencyFormatter.format(price) } returns formattedPrice
+
                     val routeActions = tested(
                         savedStateHandle = savedStateHandle,
                         getExpensesTitles = getExpensesTitles,
                         getExpensesPlaces = getExpensesPlaces,
                         getCategories = getCategories,
                         insertExpense = insertExpense,
+                        currencyFormatter = currencyFormatter,
                     ).apply {
                         onTitleChanged(title)
                         onPriceChanged(price)
                         onSubmitButtonClicked()
-                    }.routeActions.first()
+                    }.routeActions.firstOrNull()
 
                     Then("SnackBar should be showed") {
                         routeActions shouldBe ExpenseFormViewModel.RouteAction.ShowSnackBar
@@ -306,12 +294,12 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
         And("Data for new expense are valid") {
             val title = "New title"
             val price = "50.00"
-            val stringDate = "2000-06-12"
-            val date = LocalDate.parse(stringDate)
+            val date = ExpenseDate.now()
             val placeName = "new placeName"
             val description = "new description"
 
-            coEvery { insertExpense(any(), any(), any(), any(), any(), any()) } returns Unit
+            coEvery { insertExpense(any(), any(), any(), any(), any(), any(), any()) } returns Unit
+            every { currencyFormatter.format(price) } returns price.toBigDecimal()
 
             When("Data are valid") {
                 And("Submit button is clicked") {
@@ -322,6 +310,7 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
                         getCategories = getCategories,
                         insertExpense = insertExpense,
                         navigationRouter = navigationRouter,
+                        currencyFormatter = currencyFormatter,
                     ).apply {
                         onTitleChanged(title)
                         onPriceChanged(price)
@@ -329,19 +318,20 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
                         onCategoryChanged(secondCategoryId)
                         onPlaceNameChanged(placeName)
                         onDescriptionChanged(description)
+                        onIncomeValueChanged()
                         onSubmitButtonClicked()
-                        runAllAsynchronousTasks()
                     }
 
                     Then("New expense should be inserted") {
                         coVerify {
                             insertExpense(
                                 title = title,
-                                price = 50.00,
-                                date = stringDate.toDate(),
+                                price = Price.of(price),
+                                date = date,
                                 place = placeName,
                                 description = description,
                                 category = secondCategory,
+                                type = Expense.Type.Income,
                             )
                         }
                     }
@@ -373,27 +363,27 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
     Given("Expense to update") {
         val titles: List<String> = mockk()
         val places: List<String> = mockk()
-        val categoryId = 78
+        val categoryId = Id.new()
         val categoryName = "categoryName"
-        val secondCategoryId = 90
+        val secondCategoryId = Id.new()
         val secondCategoryName = "secondCategoryName"
         val category = Category(
             id = categoryId,
             name = categoryName,
-            type = Category.Type.INCOME,
         )
         val secondCategory = Category(
             id = secondCategoryId,
             name = secondCategoryName,
-            type = Category.Type.INCOME,
         )
         val categories: List<Category> = listOf(category, secondCategory)
-        val expenseId = 9
+        val expenseIdUuid = UUID.randomUUID().toString()
+        val expenseId = Id.from(expenseIdUuid)
         val title = "expenseTitle"
-        val price = 50.00
-        val date = Date()
+        val price = Price.of(324.0)
+        val date = ExpenseDate.now()
         val description = "expenseDescription"
         val place = "expensePlace"
+        val type = Expense.Type.Outgo
         val expense = Expense(
             id = expenseId,
             title = title,
@@ -402,12 +392,13 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
             description = description,
             place = place,
             category = category,
+            type = type,
         )
         val viewState = ExpenseFormViewModel.ViewState(
             title = title,
-            price = price.toString(),
+            price = price,
             chosenCategoryId = categoryId,
-            date = Date().toFormattedString(),
+            date = date,
             placeName = place,
             description = description,
             previousTitles = titles,
@@ -425,13 +416,16 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
                 ),
             ),
             submitButtonText = R.string.update,
+            isLoading = false,
+            type = type,
+            shouldShowDeleteButton = true,
         )
 
-        every { savedStateHandle.get<Int>("EXPENSE_ID") } returns expenseId
-        every { getExpensesTitles() } returns flowOf(titles)
-        every { getExpensesPlaces() } returns flowOf(places)
-        every { getCategories() } returns flowOf(categories)
-        every { getExpense(any()) } returns flowOf(expense)
+        every { savedStateHandle.get<String>("EXPENSE_ID") } returns expenseIdUuid
+        coEvery { getExpensesTitles() } returns titles
+        coEvery { getExpensesPlaces() } returns places
+        coEvery { getCategories() } returns categories
+        coEvery { getExpense(any()) } returns expense
 
         When("View model is initialized") {
             val actualViewState = tested(
@@ -443,7 +437,7 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
             ).viewState.value
 
             Then("View state will be set up for updating expense") {
-                verify { getExpense(expenseId) }
+                coEvery { getExpense(expenseId) }
 
                 actualViewState shouldBe viewState
             }
@@ -452,12 +446,12 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
         And("Data for updating expense are valid") {
             val newTitle = "New title"
             val newPrice = "50.00"
-            val newStringDate = "2000-06-12"
-            val newDate = LocalDate.parse(newStringDate)
+            val newDate = ExpenseDate.now()
             val newPlaceName = "new placeName"
             val newDescription = "new description"
 
-            coEvery { updateExpense(any(), any(), any(), any(), any(), any(), any()) } returns Unit
+            coEvery { updateExpense(any(), any(), any(), any(), any(), any(), any(), any()) } returns Unit
+            every { currencyFormatter.format(newPrice) } returns newPrice.toBigDecimal()
 
             When("Data are valid") {
                 And("Submit button is clicked") {
@@ -469,6 +463,7 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
                         getExpense = getExpense,
                         updateExpense = updateExpense,
                         navigationRouter = navigationRouter,
+                        currencyFormatter = currencyFormatter,
                     ).apply {
                         onTitleChanged(newTitle)
                         onPriceChanged(newPrice)
@@ -476,8 +471,8 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
                         onCategoryChanged(secondCategoryId)
                         onPlaceNameChanged(newPlaceName)
                         onDescriptionChanged(newDescription)
+                        onOutgoValueChanged()
                         onSubmitButtonClicked()
-                        runAllAsynchronousTasks()
                     }
 
                     Then("New expense should be inserted") {
@@ -485,11 +480,12 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
                             updateExpense(
                                 id = expenseId,
                                 title = newTitle,
-                                price = 50.00,
-                                date = newStringDate.toDate(),
+                                price = Price.of(newPrice),
+                                date = newDate,
                                 place = newPlaceName,
                                 description = newDescription,
                                 category = secondCategory,
+                                type = Expense.Type.Outgo,
                             )
                         }
                     }

@@ -63,4 +63,5 @@ dependencies {
     testImplementation(libs.kotest.assertions.core)
     testImplementation(libs.kotest.property)
     testImplementation(libs.mockk)
+    testImplementation(libs.turbine)
 }

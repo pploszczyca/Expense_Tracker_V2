@@ -1,6 +1,8 @@
 package com.github.pploszczyca.expensetrackerv2.expense_form.view_model
 
 import androidx.lifecycle.SavedStateHandle
+import app.cash.turbine.test
+import com.github.pploszczyca.expensetrackerv2.common_kotlin.coroutines.DispatcherProvider
 import com.github.pploszczyca.expensetrackerv2.common_kotlin.currencyFormatter.CurrencyFormatter
 import com.github.pploszczyca.expensetrackerv2.features.expense_form.R
 import com.github.pploszczyca.expensetrackerv2.common_test.UnconfinedDispatcherProvider
@@ -25,16 +27,19 @@ import io.kotest.data.forAll
 import io.kotest.data.row
 import io.kotest.matchers.shouldBe
 import io.mockk.*
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.setMain
 import java.util.*
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.DurationUnit
 
 class ExpenseFormViewModelImplTest : BehaviorSpec({
     isolationMode = IsolationMode.InstancePerLeaf
-    coroutineTestScope = true
-
-    timeout = 1.seconds.toLong(DurationUnit.MILLISECONDS)
 
     val savedStateHandle: SavedStateHandle = mockk()
     val getExpensesTitles: GetExpensesTitles = mockk()
@@ -267,21 +272,24 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
                 When("Submit button is clicked") {
                     every { currencyFormatter.format(price) } returns formattedPrice
 
-                    val routeActions = tested(
+                    val viewModel = tested(
                         savedStateHandle = savedStateHandle,
                         getExpensesTitles = getExpensesTitles,
                         getExpensesPlaces = getExpensesPlaces,
                         getCategories = getCategories,
                         insertExpense = insertExpense,
                         currencyFormatter = currencyFormatter,
-                    ).apply {
-                        onTitleChanged(title)
-                        onPriceChanged(price)
-                        onSubmitButtonClicked()
-                    }.routeActions.firstOrNull()
+                    )
 
                     Then("SnackBar should be showed") {
-                        routeActions shouldBe ExpenseFormViewModel.RouteAction.ShowSnackBar
+                        viewModel.routeActions.test {
+                            with(viewModel) {
+                                onTitleChanged(title)
+                                onPriceChanged(price)
+                                onSubmitButtonClicked()
+                            }
+                            awaitItem() shouldBe ExpenseFormViewModel.RouteAction.ShowSnackBar
+                        }
                     }
 
                     Then("Insert new expense should not be executed") {

@@ -504,5 +504,69 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
                 }
             }
         }
+
+        When("Delete button is clicked") {
+            coEvery { deleteExpense(expense) } returns Unit
+
+            val actual = tested(
+                savedStateHandle = savedStateHandle,
+                getExpensesTitles = getExpensesTitles,
+                getExpensesPlaces = getExpensesPlaces,
+                getCategories = getCategories,
+                getExpense = getExpense,
+                navigationRouter = navigationRouter,
+            ).apply {
+                onDeleteButtonClicked()
+            }.viewState.value
+
+            Then("Should show delete dialog") {
+                actual shouldBe viewState.copy(shouldShowDeleteDialog = true)
+            }
+        }
+
+        When("Delete dialog is confirmed") {
+            coEvery { deleteExpense(expense) } returns Unit
+
+            val actual = tested(
+                savedStateHandle = savedStateHandle,
+                getExpensesTitles = getExpensesTitles,
+                getExpensesPlaces = getExpensesPlaces,
+                getCategories = getCategories,
+                getExpense = getExpense,
+                deleteExpense = deleteExpense,
+                navigationRouter = navigationRouter,
+            ).apply {
+                onDeleteConfirmed()
+            }.viewState.value
+
+            Then("Should hide delete dialog") {
+                actual shouldBe viewState.copy(shouldShowDeleteDialog = false)
+            }
+
+            Then("Expense should be deleted") {
+                coVerify { deleteExpense(expense) }
+            }
+
+            Then("Go back") {
+                coVerify { navigationRouter.goBack() }
+            }
+        }
+
+        When("Delete dialog is canceled") {
+            val actual = tested(
+                savedStateHandle = savedStateHandle,
+                getExpensesTitles = getExpensesTitles,
+                getExpensesPlaces = getExpensesPlaces,
+                getCategories = getCategories,
+                getExpense = getExpense,
+                navigationRouter = navigationRouter,
+            ).apply {
+                onDismissDeleteDialog()
+            }.viewState.value
+
+            Then("Should hide delete dialog") {
+                actual shouldBe viewState.copy(shouldShowDeleteDialog = false)
+            }
+        }
     }
 })

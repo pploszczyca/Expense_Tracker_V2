@@ -13,6 +13,8 @@ import com.github.pploszczyca.expensetrackerv2.usecases.expense.expenseSummary.G
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.consumeEach
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -29,7 +31,8 @@ class MainViewModel @Inject constructor(
     private val _viewState: MutableStateFlow<ViewState> = MutableStateFlow(ViewState())
     val viewState: StateFlow<ViewState> get() = _viewState
 
-    var openDrawer: (() -> Unit)? = null    // TODO: Think how to change it
+    private val _routeAction: MutableSharedFlow<RouteAction> = MutableSharedFlow()
+    val routeAction: Flow<RouteAction> get() = _routeAction
 
     init {
         viewModelScope.launch(dispatcherProvider.default) {
@@ -42,7 +45,9 @@ class MainViewModel @Inject constructor(
         }
 
         viewModelScope.launch(dispatcherProvider.default) {
-            bottomBarChannel.consumeEach(::onBottomBarEvent)
+            bottomBarChannel.consumeEach {
+                onBottomBarEvent(it)
+            }
         }
     }
 
@@ -62,15 +67,22 @@ class MainViewModel @Inject constructor(
                 }
 
                 MainEvent.OnAddNewExpenseButtonClicked -> navigationRouter.goToExpenseForm()
-                MainEvent.OnCategorySettingsItemClicked -> navigationRouter.goToCategorySettings()
-                MainEvent.OnStatisticsItemClicked -> navigationRouter.goToExpenseStatistics()
+                MainEvent.OnCategorySettingsItemClicked -> {
+                    _routeAction.emit(RouteAction.CloseDrawer)
+                    navigationRouter.goToCategorySettings()
+                }
+                MainEvent.OnStatisticsItemClicked -> {
+                    _routeAction.emit(RouteAction.CloseDrawer)
+                    navigationRouter.goToExpenseStatistics()
+                }
             }
         }
     }
 
-    private fun onBottomBarEvent(event: MainBottomBarEvent) {
+    private suspend fun onBottomBarEvent(event: MainBottomBarEvent) {
         when (event) {
-            MainBottomBarEvent.MenuButtonClick -> openDrawer?.invoke()
+            MainBottomBarEvent.MenuButtonClick ->
+                _routeAction.emit(RouteAction.OpenDrawer)
             MainBottomBarEvent.SearchButtonClick -> _viewState.updateTransform {
                 copy(topBarVisible = true)
             }
@@ -86,5 +98,10 @@ class MainViewModel @Inject constructor(
 
         val moneyInWalletAmount: Price
             get() = expenseSummary?.total.orZero()
+    }
+
+    sealed interface RouteAction {
+        data object OpenDrawer : RouteAction
+        data object CloseDrawer : RouteAction
     }
 }

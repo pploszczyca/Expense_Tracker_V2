@@ -43,7 +43,6 @@ dependencies {
     implementation(project(":common:common-kotlin"))
     implementation(project(":navigation:navigation-contract"))
 
-
     implementation(libs.androidx.core)
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.compose.ui.tooling)
@@ -57,4 +56,6 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
     implementation(libs.hilt.navigation.compose)
+
+    implementation(libs.timber)
 }

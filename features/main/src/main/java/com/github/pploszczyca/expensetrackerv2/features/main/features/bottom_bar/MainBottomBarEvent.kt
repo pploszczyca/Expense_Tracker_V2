@@ -1,6 +1,6 @@
 package com.github.pploszczyca.expensetrackerv2.features.main.features.bottom_bar
 
 sealed interface MainBottomBarEvent {
-    object MenuButtonClick : MainBottomBarEvent
-    object SearchButtonClick : MainBottomBarEvent
+    data object MenuButtonClick : MainBottomBarEvent
+    data object SearchButtonClick : MainBottomBarEvent
 }

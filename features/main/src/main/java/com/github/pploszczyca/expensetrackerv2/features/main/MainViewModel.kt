@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -53,6 +54,7 @@ class MainViewModel @Inject constructor(
 
     fun onEvent(event: MainEvent) {
         viewModelScope.launch(dispatcherProvider.default) {
+            Timber.d("MainEvent: $event")
             when (event) {
                 is MainEvent.SearchedTitleChange ->
                     _viewState.updateTransform {
@@ -80,6 +82,7 @@ class MainViewModel @Inject constructor(
     }
 
     private suspend fun onBottomBarEvent(event: MainBottomBarEvent) {
+        Timber.d("MainBottomBarEvent: $event")
         when (event) {
             MainBottomBarEvent.MenuButtonClick ->
                 _routeAction.emit(RouteAction.OpenDrawer)

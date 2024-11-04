@@ -1,31 +1,22 @@
 import org.gradle.api.initialization.resolve.RepositoriesMode
 
-include(":common:common-test")
-
-
-include(":features:main")
-
-
-include(":features:category-settings")
-
-
-include(":features:expense-statistics")
-
-
-include(":features:expense-form")
-
-
-include(":common:common-kotlin")
-
-
-include(":common:common-ui")
-
-
-include(":navigation:navigation-contract")
-
-
-include(":navigation")
-
+listOf(
+    ":app",
+    ":domain",
+    ":useCases",
+    ":database",
+    ":common:common-kotlin",
+    ":common:common-ui",
+    ":common:common-test",
+    ":features:main",
+    ":features:category-settings",
+    ":features:expense-statistics",
+    ":features:expense-form",
+    ":navigation:navigation-contract",
+    ":navigation",
+).forEach {
+    include(it)
+}
 
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
@@ -37,7 +28,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "Expense Tracker V2"
 
-include(":app")
-include(":domain")
-include(":useCases")
-include(":database")

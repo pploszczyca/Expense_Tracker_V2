@@ -1,19 +1,18 @@
 package com.github.pploszczyca.expensetrackerv2.use_cases.expense
 
 import com.github.pploszczyca.expensetrackerv2.common_test.dummy
-import com.github.pploszczyca.expensetrackerv2.usecases.repositories.ExpenseRepository
 import com.github.pploszczyca.expensetrackerv2.domain.Category
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
 import com.github.pploszczyca.expensetrackerv2.domain.ExpenseDate
 import com.github.pploszczyca.expensetrackerv2.domain.Id
 import com.github.pploszczyca.expensetrackerv2.domain.Price
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.UpdateExpense
+import com.github.pploszczyca.expensetrackerv2.usecases.repositories.ExpenseRepository
 import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.BehaviorSpec
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
-import java.util.Date
 
 class UpdateExpenseTest : BehaviorSpec({
     isolationMode = IsolationMode.InstancePerLeaf

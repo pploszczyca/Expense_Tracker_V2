@@ -40,7 +40,7 @@ fun ExpenseFormEntry(
                 title = stringResource(id = R.string.expense_form),
                 onBackClicked = viewModel::onBackClicked,
                 actions = {
-                    if(viewState.shouldShowDeleteButton) {
+                    if (viewState.shouldShowDeleteButton) {
                         TopAppBarAction(
                             iconImage = Icons.Default.Delete,
                             contentDescription = "Delete Expense",
@@ -53,7 +53,7 @@ fun ExpenseFormEntry(
         snackbarHost = { SnackbarHost(hostState = snackBarHostState) }
     ) {
         Box(modifier = Modifier.padding(it)) {
-            when(viewState.isLoading) {
+            when (viewState.isLoading) {
                 true -> ProgressIndicator()
                 false -> {
                     DeleteExpenseDialog(

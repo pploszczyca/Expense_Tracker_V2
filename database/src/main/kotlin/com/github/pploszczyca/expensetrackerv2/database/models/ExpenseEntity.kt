@@ -5,7 +5,6 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.math.BigDecimal
 import java.time.LocalDate
-import java.util.Date
 
 @Entity(tableName = "expense")
 internal data class ExpenseEntity(

@@ -2,9 +2,9 @@ package com.example.expensetrackerv2.navigation
 
 import androidx.navigation.NavHostController
 import com.github.pploszczyca.expensetrackerv2.common_kotlin.coroutines.DispatcherProvider
+import com.github.pploszczyca.expensetrackerv2.domain.Id
 import com.github.pploszczyca.expensetrackerv2.navigation.contract.NavigationRouter
 import kotlinx.coroutines.withContext
-import com.github.pploszczyca.expensetrackerv2.domain.Id
 import timber.log.Timber
 
 internal class NavigationRouterImpl(

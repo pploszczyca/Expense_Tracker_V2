@@ -2,19 +2,17 @@ package com.github.pploszczyca.expensetrackerv2.features.category_settings
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.pploszczyca.expensetrackerv2.common_kotlin.coroutines.DispatcherProvider
-import com.github.pploszczyca.expensetrackerv2.navigation.contract.NavigationRouter
-import com.github.pploszczyca.expensetrackerv2.usecases.category.DeleteCategory
-import com.github.pploszczyca.expensetrackerv2.usecases.category.GetCategories
-import com.github.pploszczyca.expensetrackerv2.usecases.category.InsertCategory
-import com.github.pploszczyca.expensetrackerv2.usecases.category.UpdateCategory
 import com.github.pploszczyca.expensetrackerv2.domain.Category
 import com.github.pploszczyca.expensetrackerv2.domain.Id
+import com.github.pploszczyca.expensetrackerv2.navigation.contract.NavigationRouter
+import com.github.pploszczyca.expensetrackerv2.usecases.category.DeleteCategory
+import com.github.pploszczyca.expensetrackerv2.usecases.category.InsertCategory
 import com.github.pploszczyca.expensetrackerv2.usecases.category.ObserveCategories
+import com.github.pploszczyca.expensetrackerv2.usecases.category.UpdateCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch

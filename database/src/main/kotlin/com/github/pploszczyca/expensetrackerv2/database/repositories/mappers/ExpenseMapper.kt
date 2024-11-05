@@ -4,9 +4,9 @@ import com.github.pploszczyca.expensetrackerv2.database.models.ExpenseEntity
 import com.github.pploszczyca.expensetrackerv2.database.models.view_models.ExpenseWithCategory
 import com.github.pploszczyca.expensetrackerv2.domain.Category
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
+import com.github.pploszczyca.expensetrackerv2.domain.ExpenseDate
 import com.github.pploszczyca.expensetrackerv2.domain.Id
 import com.github.pploszczyca.expensetrackerv2.domain.Price
-import com.github.pploszczyca.expensetrackerv2.domain.ExpenseDate
 
 internal class ExpenseMapper {
     fun toDomainModel(
@@ -19,7 +19,7 @@ internal class ExpenseMapper {
             date = expenseWithCategory.date.let(ExpenseDate::of),
             description = expenseWithCategory.description,
             place = expenseWithCategory.place,
-            type = when(expenseWithCategory.type) {
+            type = when (expenseWithCategory.type) {
                 ExpenseEntity.Type.INCOME -> Expense.Type.Income
                 ExpenseEntity.Type.OUTGO -> Expense.Type.Outgo
             },
@@ -48,7 +48,7 @@ internal class ExpenseMapper {
             date = expense.date.date,
             description = expense.description,
             place = expense.place,
-            type = when(expense.type) {
+            type = when (expense.type) {
                 Expense.Type.Income -> ExpenseEntity.Type.INCOME
                 Expense.Type.Outgo -> ExpenseEntity.Type.OUTGO
             },

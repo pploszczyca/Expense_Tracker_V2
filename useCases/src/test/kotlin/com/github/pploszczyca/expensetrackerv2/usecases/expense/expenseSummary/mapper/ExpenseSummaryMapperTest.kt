@@ -1,8 +1,6 @@
 package com.github.pploszczyca.expensetrackerv2.usecases.expense.expenseSummary.mapper
 
-import com.github.pploszczyca.expensetrackerv2.common_kotlin.extensions.toDate
 import com.github.pploszczyca.expensetrackerv2.common_test.dummy
-import com.github.pploszczyca.expensetrackerv2.domain.Category
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
 import com.github.pploszczyca.expensetrackerv2.domain.ExpenseDate
 import com.github.pploszczyca.expensetrackerv2.domain.ExpenseSummary
@@ -12,7 +10,6 @@ import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
 import java.time.LocalDate
-import java.util.Date
 
 class ExpenseSummaryMapperTest : BehaviorSpec({
 

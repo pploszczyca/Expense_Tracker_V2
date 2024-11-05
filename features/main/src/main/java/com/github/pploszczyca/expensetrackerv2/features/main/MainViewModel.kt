@@ -73,6 +73,7 @@ class MainViewModel @Inject constructor(
                     _routeAction.emit(RouteAction.CloseDrawer)
                     navigationRouter.goToCategorySettings()
                 }
+
                 MainEvent.OnStatisticsItemClicked -> {
                     _routeAction.emit(RouteAction.CloseDrawer)
                     navigationRouter.goToExpenseStatistics()
@@ -86,6 +87,7 @@ class MainViewModel @Inject constructor(
         when (event) {
             MainBottomBarEvent.MenuButtonClick ->
                 _routeAction.emit(RouteAction.OpenDrawer)
+
             MainBottomBarEvent.SearchButtonClick -> _viewState.updateTransform {
                 copy(topBarVisible = true)
             }

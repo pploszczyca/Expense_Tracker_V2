@@ -19,7 +19,8 @@ internal class ExpenseDatabaseRepository(
         dao.getExpensesWithCategory().map(expenseMapper::toDomainModel)
 
     override suspend fun get(expenseId: Id): Expense =
-        dao.getExpenseWithCategory(expenseID = expenseId.toString()).let(expenseMapper::toDomainModel)
+        dao.getExpenseWithCategory(expenseID = expenseId.toString())
+            .let(expenseMapper::toDomainModel)
 
     override suspend fun insert(expense: Expense) {
         dao.insertAllExpenses(expense.let(expenseMapper::toDatabaseModel))

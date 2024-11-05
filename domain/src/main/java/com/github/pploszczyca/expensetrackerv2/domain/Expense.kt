@@ -43,13 +43,16 @@ data class Expense(
     }
 }
 
-val List<Expense>.total get(): Price = this
-    .sumOf { it.signedPrice }
+val List<Expense>.total
+    get(): Price = this
+        .sumOf { it.signedPrice }
 
-val List<Expense>.totalIncome get(): Price = this
-    .filter { it.type == Expense.Type.Income }
-    .sumOf { it.price }
+val List<Expense>.totalIncome
+    get(): Price = this
+        .filter { it.type == Expense.Type.Income }
+        .sumOf { it.price }
 
-val List<Expense>.totalOutgo get(): Price = this
-    .filter { it.type == Expense.Type.Outgo }
-    .sumOf { it.price }
+val List<Expense>.totalOutgo
+    get(): Price = this
+        .filter { it.type == Expense.Type.Outgo }
+        .sumOf { it.price }

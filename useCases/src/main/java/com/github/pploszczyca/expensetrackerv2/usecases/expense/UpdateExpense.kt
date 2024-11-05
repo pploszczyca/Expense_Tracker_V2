@@ -6,7 +6,6 @@ import com.github.pploszczyca.expensetrackerv2.domain.ExpenseDate
 import com.github.pploszczyca.expensetrackerv2.domain.Id
 import com.github.pploszczyca.expensetrackerv2.domain.Price
 import com.github.pploszczyca.expensetrackerv2.usecases.repositories.ExpenseRepository
-import java.util.Date
 
 class UpdateExpense(
     private val repository: ExpenseRepository,

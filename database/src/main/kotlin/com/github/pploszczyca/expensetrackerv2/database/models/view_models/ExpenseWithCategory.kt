@@ -4,7 +4,6 @@ import androidx.room.DatabaseView
 import com.github.pploszczyca.expensetrackerv2.database.models.ExpenseEntity
 import java.math.BigDecimal
 import java.time.LocalDate
-import java.util.*
 
 @DatabaseView("SELECT e.id, e.title, e.price, e.date, e.description, e.place, c.id AS categoryId, c.name AS categoryName, e.type FROM Expense AS e LEFT JOIN Category AS c ON e.category_id = c.id")
 internal data class ExpenseWithCategory(

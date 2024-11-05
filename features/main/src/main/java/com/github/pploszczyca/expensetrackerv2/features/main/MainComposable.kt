@@ -16,7 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.pploszczyca.expensetrackerv2.common_ui.bar.SearchTopAppBar
@@ -24,7 +23,6 @@ import com.github.pploszczyca.expensetrackerv2.features.main.features.bottom_bar
 import com.github.pploszczyca.expensetrackerv2.features.main.features.drawer.DrawerContent
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @Composable
 fun MainComposable(

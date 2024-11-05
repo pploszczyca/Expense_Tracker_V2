@@ -4,28 +4,26 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.github.pploszczyca.expensetrackerv2.common_kotlin.coroutines.DispatcherProvider
 import com.github.pploszczyca.expensetrackerv2.common_kotlin.currencyFormatter.CurrencyFormatter
-import com.github.pploszczyca.expensetrackerv2.navigation.contract.NavigationRouter
 import com.github.pploszczyca.expensetrackerv2.common_kotlin.extensions.updateTransform
-import com.github.pploszczyca.expensetrackerv2.usecases.category.GetCategories
-import com.github.pploszczyca.expensetrackerv2.usecases.expense.GetExpense
-import com.github.pploszczyca.expensetrackerv2.usecases.expense.GetExpensesPlaces
-import com.github.pploszczyca.expensetrackerv2.usecases.expense.GetExpensesTitles
-import com.github.pploszczyca.expensetrackerv2.usecases.expense.InsertExpense
-import com.github.pploszczyca.expensetrackerv2.usecases.expense.UpdateExpense
 import com.github.pploszczyca.expensetrackerv2.domain.Category
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
 import com.github.pploszczyca.expensetrackerv2.domain.ExpenseDate
 import com.github.pploszczyca.expensetrackerv2.domain.Id
 import com.github.pploszczyca.expensetrackerv2.domain.Price
 import com.github.pploszczyca.expensetrackerv2.features.expense_form.R
+import com.github.pploszczyca.expensetrackerv2.navigation.contract.NavigationRouter
+import com.github.pploszczyca.expensetrackerv2.usecases.category.GetCategories
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.DeleteExpense
+import com.github.pploszczyca.expensetrackerv2.usecases.expense.GetExpense
+import com.github.pploszczyca.expensetrackerv2.usecases.expense.GetExpensesPlaces
+import com.github.pploszczyca.expensetrackerv2.usecases.expense.GetExpensesTitles
+import com.github.pploszczyca.expensetrackerv2.usecases.expense.InsertExpense
+import com.github.pploszczyca.expensetrackerv2.usecases.expense.UpdateExpense
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -144,7 +142,8 @@ class ExpenseFormViewModelImpl @Inject constructor(
 
     override fun onCategoryChanged(categoryId: Id?) {
         _viewState.updateTransform {
-            val chosenCategoryId = categoryId?.takeUnless { categories.any { it.id == categoryId && it.isSelected } }
+            val chosenCategoryId =
+                categoryId?.takeUnless { categories.any { it.id == categoryId && it.isSelected } }
             copy(
                 chosenCategoryId = chosenCategoryId,
                 categories = categories.map { category -> category.copy(isSelected = (category.id == chosenCategoryId)) }

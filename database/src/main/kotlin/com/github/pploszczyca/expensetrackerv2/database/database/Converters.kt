@@ -4,7 +4,6 @@ import androidx.room.TypeConverter
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.util.Date
 
 internal class Converters {
     private val formatter = DateTimeFormatter.ISO_LOCAL_DATE

@@ -1,6 +1,11 @@
 package com.github.pploszczyca.expensetrackerv2.database.database
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Update
 import com.github.pploszczyca.expensetrackerv2.database.models.CategoryEntity
 import com.github.pploszczyca.expensetrackerv2.database.models.ExpenseEntity
 import com.github.pploszczyca.expensetrackerv2.database.models.view_models.ExpenseWithCategory

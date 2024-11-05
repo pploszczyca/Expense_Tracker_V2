@@ -37,7 +37,8 @@ fun Switcher(
                 text = it,
                 style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier.padding(end = 16.dp)
-            ) }
+            )
+        }
         Row(
             Modifier
                 .weight(1f)

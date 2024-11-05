@@ -1,10 +1,10 @@
 package com.github.pploszczyca.expensetrackerv2.common_kotlin.currencyFormatter
 
 import io.kotest.core.spec.style.BehaviorSpec
-import io.kotest.matchers.shouldBe
-import java.math.BigDecimal
 import io.kotest.data.forAll
 import io.kotest.data.row
+import io.kotest.matchers.shouldBe
+import java.math.BigDecimal
 
 class CurrencyFormatterTest : BehaviorSpec({
 

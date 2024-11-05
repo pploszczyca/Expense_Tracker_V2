@@ -2,19 +2,18 @@ package com.github.pploszczyca.expensetrackerv2.expense_form.view_model
 
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
-import com.github.pploszczyca.expensetrackerv2.common_kotlin.coroutines.DispatcherProvider
 import com.github.pploszczyca.expensetrackerv2.common_kotlin.currencyFormatter.CurrencyFormatter
-import com.github.pploszczyca.expensetrackerv2.features.expense_form.R
 import com.github.pploszczyca.expensetrackerv2.common_test.UnconfinedDispatcherProvider
 import com.github.pploszczyca.expensetrackerv2.common_test.dummy
 import com.github.pploszczyca.expensetrackerv2.common_test.noOp
-import com.github.pploszczyca.expensetrackerv2.navigation.contract.NavigationRouter
-import com.github.pploszczyca.expensetrackerv2.usecases.category.GetCategories
 import com.github.pploszczyca.expensetrackerv2.domain.Category
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
 import com.github.pploszczyca.expensetrackerv2.domain.ExpenseDate
 import com.github.pploszczyca.expensetrackerv2.domain.Id
 import com.github.pploszczyca.expensetrackerv2.domain.Price
+import com.github.pploszczyca.expensetrackerv2.features.expense_form.R
+import com.github.pploszczyca.expensetrackerv2.navigation.contract.NavigationRouter
+import com.github.pploszczyca.expensetrackerv2.usecases.category.GetCategories
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.DeleteExpense
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.GetExpense
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.GetExpensesPlaces
@@ -26,17 +25,13 @@ import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.data.forAll
 import io.kotest.data.row
 import io.kotest.matchers.shouldBe
-import io.mockk.*
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.setMain
-import java.util.*
-import kotlin.time.Duration.Companion.seconds
-import kotlin.time.DurationUnit
+import io.mockk.Called
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
+import java.util.UUID
 
 class ExpenseFormViewModelImplTest : BehaviorSpec({
     isolationMode = IsolationMode.InstancePerLeaf
@@ -458,7 +453,18 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
             val newPlaceName = "new placeName"
             val newDescription = "new description"
 
-            coEvery { updateExpense(any(), any(), any(), any(), any(), any(), any(), any()) } returns Unit
+            coEvery {
+                updateExpense(
+                    any(),
+                    any(),
+                    any(),
+                    any(),
+                    any(),
+                    any(),
+                    any(),
+                    any()
+                )
+            } returns Unit
             every { currencyFormatter.format(newPrice) } returns newPrice.toBigDecimal()
 
             When("Data are valid") {

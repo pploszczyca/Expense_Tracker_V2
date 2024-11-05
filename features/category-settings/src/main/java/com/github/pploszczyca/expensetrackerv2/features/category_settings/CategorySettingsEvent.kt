@@ -6,7 +6,7 @@ sealed interface CategorySettingsEvent {
     data class NameChange(val value: String) : CategorySettingsEvent
     data class OpenFormDialog(val value: Category? = null) : CategorySettingsEvent
     data object CloseFormDialog : CategorySettingsEvent
-    data class DialogFormSubmit(val name: String) : CategorySettingsEvent
+    data object DialogFormSubmit : CategorySettingsEvent
     data class OpenDeleteDialog(val value: Category) : CategorySettingsEvent
     data object CloseDeleteDialog : CategorySettingsEvent
     data object DeleteDialogSubmit : CategorySettingsEvent

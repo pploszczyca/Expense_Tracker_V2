@@ -61,9 +61,15 @@ fun CategorySettings(viewModel: CategorySettingsViewModel) {
                 }
             }
 
-            if (isDialogFormVisible) {
-                CategoryDialogForm(modelView = viewModel)
-            }
+            val categoryName by viewModel.name
+            CategoryDialogForm(
+                isDialogVisible = isDialogFormVisible,
+                categoryName = categoryName,
+                confirmButtonText = stringResource(id = R.string.add),
+                onNameChange = { viewModel.onEvent(CategorySettingsEvent.NameChange(it)) },
+                onDismiss = { viewModel.onEvent(CategorySettingsEvent.CloseFormDialog) },
+                onConfirm = { viewModel.onEvent(CategorySettingsEvent.DialogFormSubmit) },
+            )
 
             CategoryDeleteDialog(
                 isDialogVisible = isDeleteDialogFormVisible,

@@ -62,7 +62,6 @@ class CategorySettingsViewModel @Inject constructor(
                 }
 
                 is CategorySettingsEvent.DialogFormSubmit -> {
-                    _name.value = event.name
                     insertOrUpdate(makeCategoryFromState())
                     onEvent(CategorySettingsEvent.CloseFormDialog)
                 }

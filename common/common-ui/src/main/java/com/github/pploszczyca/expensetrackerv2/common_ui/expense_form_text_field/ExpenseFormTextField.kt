@@ -23,7 +23,7 @@ fun ExpenseFormTextField(
     value: Any,
     modifier: Modifier = Modifier,
     onValueChange: (String) -> Unit = {},
-    icon: ImageVector,
+    icon: ImageVector? = null,
     label: String = "",
     keyboardOptions: KeyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words),
     enabled: Boolean = true,
@@ -44,12 +44,7 @@ fun ExpenseFormTextField(
         onValueChange = onValueChange,
         label = { Text(label) },
         keyboardOptions = keyboardOptions,
-        leadingIcon = {
-            Icon(
-                icon,
-                contentDescription = null
-            )
-        },
+        leadingIcon = icon?.let { { Icon(it, contentDescription = null) } },
         enabled = enabled,
         readOnly = readOnly,
         modifier = modifier

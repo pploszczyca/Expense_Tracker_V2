@@ -15,7 +15,7 @@ fun DeleteExpenseDialog(
     Dialog(
         isDialogVisible = viewState.shouldShowDeleteDialog,
         title = stringResource(id = R.string.delete_expense_title),
-        description = stringResource(id = R.string.delete_expense_question),
+        text = stringResource(id = R.string.delete_expense_question),
         confirmButtonText = stringResource(id = R.string.yes),
         dismissButtonText = stringResource(id = R.string.no),
         onDismiss = { onDismissDeleteDialog() },

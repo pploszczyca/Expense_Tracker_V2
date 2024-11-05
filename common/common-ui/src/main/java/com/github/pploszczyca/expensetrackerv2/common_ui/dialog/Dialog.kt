@@ -9,7 +9,28 @@ import androidx.compose.runtime.Composable
 fun Dialog(
     isDialogVisible: Boolean,
     title: String,
-    description: String,
+    text: String,
+    confirmButtonText: String,
+    dismissButtonText: String,
+    onDismiss: () -> Unit,
+    onConfirm: () -> Unit,
+) {
+    Dialog(
+        isDialogVisible = isDialogVisible,
+        title = title,
+        text = { Text(text) },
+        confirmButtonText = confirmButtonText,
+        dismissButtonText = dismissButtonText,
+        onDismiss = onDismiss,
+        onConfirm = onConfirm,
+    )
+}
+
+@Composable
+fun Dialog(
+    isDialogVisible: Boolean,
+    title: String,
+    text: @Composable () -> Unit,
     confirmButtonText: String,
     dismissButtonText: String,
     onDismiss: () -> Unit,
@@ -18,7 +39,7 @@ fun Dialog(
     if (isDialogVisible) {
         AlertDialog(onDismissRequest = onDismiss,
             title = { Text(title) },
-            text = { Text(description) },
+            text = text,
             confirmButton = {
                 TextButton(onClick = onConfirm) {
                     Text(text = confirmButtonText)

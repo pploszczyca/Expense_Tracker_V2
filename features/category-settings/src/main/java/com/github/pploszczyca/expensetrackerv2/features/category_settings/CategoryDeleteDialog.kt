@@ -13,7 +13,7 @@ fun CategoryDeleteDialog(
     Dialog(
         isDialogVisible = isDialogVisible,
         title = stringResource(id = R.string.delete_type_of_expense_title),
-        description = stringResource(id = R.string.delete_type_of_expense_question),
+        text = stringResource(id = R.string.delete_type_of_expense_question),
         confirmButtonText = stringResource(id = R.string.delete),
         dismissButtonText = stringResource(id = R.string.cancel),
         onDismiss = onDismiss,

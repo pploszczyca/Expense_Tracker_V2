@@ -1,46 +1,33 @@
 package com.github.pploszczyca.expensetrackerv2.features.category_settings
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
+import com.github.pploszczyca.expensetrackerv2.common_ui.dialog.Dialog
+import com.github.pploszczyca.expensetrackerv2.common_ui.expense_form_text_field.ExpenseFormTextField
 
 @Composable
 fun CategoryDialogForm(
-    modelView: CategorySettingsViewModel,
+    isDialogVisible: Boolean,
+    categoryName: String,
+    confirmButtonText: String,
+    onNameChange: (String) -> Unit,
+    onDismiss: () -> Unit,
+    onConfirm: () -> Unit,
 ) {
-    val name by modelView.name
-
-    val confirmButtonTitle =
-        stringResource(id = if (modelView.isThisNewCategory()) R.string.add else R.string.update)
-
-    AlertDialog(
-        title = { Text(text = stringResource(id = R.string.type_of_expense_form_title)) },
+    Dialog(
+        isDialogVisible = isDialogVisible,
+        title = stringResource(id = R.string.type_of_expense_form_title),
         text = {
-            Column {
-                OutlinedTextField(
-                    value = name,
-                    label = { Text(stringResource(id = R.string.name)) },
-                    onValueChange = { modelView.onEvent(CategorySettingsEvent.NameChange(it)) })
-            }
+            ExpenseFormTextField(
+                value = categoryName,
+                onValueChange = onNameChange,
+                label = stringResource(id = R.string.name),
+                focusOnLoad = isDialogVisible,
+            )
         },
-        dismissButton = {
-            TextButton(onClick = { modelView.onEvent(CategorySettingsEvent.CloseFormDialog) }) {
-                Text(text = stringResource(id = R.string.cancel))
-            }
-        },
-        confirmButton = {
-            TextButton(onClick = {
-                modelView.onEvent(
-                    CategorySettingsEvent.DialogFormSubmit(name = name)
-                )
-            }) {
-                Text(text = confirmButtonTitle)
-            }
-        },
-        onDismissRequest = { modelView.onEvent(CategorySettingsEvent.CloseFormDialog) })
+        confirmButtonText = confirmButtonText,
+        dismissButtonText = stringResource(id = R.string.cancel),
+        onDismiss = onDismiss,
+        onConfirm = onConfirm,
+    )
 }

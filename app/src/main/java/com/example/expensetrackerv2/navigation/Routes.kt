@@ -1,8 +1,8 @@
 package com.example.expensetrackerv2.navigation
 
 sealed class Routes(val route: String) {
-    object Main : Routes("main/")
-    object ExpenseForm : Routes("expenseForm/")
-    object ExpenseStatistics : Routes("expenseStatistics/")
-    object CategorySettings : Routes("categorySettings/")
+    data object Main : Routes("main/")
+    data object ExpenseForm : Routes("expenseForm/")
+    data object ExpenseStatistics : Routes("expenseStatistics/")
+    data object CategorySettings : Routes("categorySettings/")
 }

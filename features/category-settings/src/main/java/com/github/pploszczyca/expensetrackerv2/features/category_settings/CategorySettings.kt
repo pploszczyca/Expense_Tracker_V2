@@ -65,8 +65,10 @@ fun CategorySettings(viewModel: CategorySettingsViewModel) {
                 CategoryDialogForm(modelView = viewModel)
             }
 
-            if (isDeleteDialogFormVisible) {
-                CategoryDeleteDialog(modelView = viewModel)
-            }
+            CategoryDeleteDialog(
+                isDialogVisible = isDeleteDialogFormVisible,
+                onDismiss = { viewModel.onEvent(CategorySettingsEvent.CloseDeleteDialog) },
+                onConfirm = { viewModel.onEvent(CategorySettingsEvent.DeleteDialogSubmit) },
+            )
         })
 }

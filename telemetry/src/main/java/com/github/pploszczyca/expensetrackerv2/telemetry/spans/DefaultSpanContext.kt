@@ -12,4 +12,12 @@ class DefaultSpanContext : SpanContext {
             span.end()
         }
     }
+
+    override suspend fun <T> inSpanSuspend(spanName: String, block: suspend context(SpanContext) () -> T): T {
+        val span = tracer.spanBuilder(spanName).startSpan()
+
+        return block(this).also {
+            span.end()
+        }
+    }
 }

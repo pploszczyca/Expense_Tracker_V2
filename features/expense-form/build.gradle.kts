@@ -6,6 +6,14 @@ plugins {
     alias(libs.plugins.compose.compiler)
 }
 
+
+kotlin {
+    compilerOptions {
+        freeCompilerArgs.add("-Xcontext-receivers")
+    }
+}
+
+
 android {
     compileSdk = 35
 
@@ -42,6 +50,8 @@ dependencies {
     implementation(project(":common:common-ui"))
     implementation(project(":common:common-kotlin"))
     implementation(project(":navigation:navigation-contract"))
+
+    implementation(project(":telemetry"))
 
     implementation(libs.androidx.core)
     implementation(libs.lifecycle.viewmodel.ktx)

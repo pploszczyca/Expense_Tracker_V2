@@ -12,6 +12,8 @@ import com.github.pploszczyca.expensetrackerv2.domain.Id
 import com.github.pploszczyca.expensetrackerv2.domain.Price
 import com.github.pploszczyca.expensetrackerv2.features.expense_form.R
 import com.github.pploszczyca.expensetrackerv2.navigation.contract.NavigationRouter
+import com.github.pploszczyca.expensetrackerv2.telemetry.spans.DefaultSpanContext
+import com.github.pploszczyca.expensetrackerv2.telemetry.spans.SpanContext
 import com.github.pploszczyca.expensetrackerv2.usecases.category.GetCategories
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.DeleteExpense
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.GetExpense
@@ -58,21 +60,42 @@ class ExpenseFormViewModelImpl @Inject constructor(
 
     init {
         viewModelScope.launch(dispatcherProvider.default) {
-            val expense: Expense? = expenseId?.let { getExpense(it) }
-            val categories: List<Category> = getCategories()
-            val previousTitles = getExpensesTitles()
-            val previousPlaceNames = getExpensesPlaces()
-
-            _categories = categories
-            _expense.value = expense
-
-            val chosenCategoryId: Id? = expense?.category?.id
-
-            val submitButtonTextId = when (expense == null) {
-                true -> R.string.add
-                false -> R.string.update
+            with(DefaultSpanContext()) {
+                inSpanSuspend("createViewState") {
+                    createViewState(
+                        getExpense = getExpense,
+                        getCategories = getCategories,
+                        getExpensesTitles = getExpensesTitles,
+                        getExpensesPlaces = getExpensesPlaces,
+                    )
+                }
             }
+        }
+    }
 
+    context(SpanContext)
+    private suspend fun createViewState(
+        getExpense: GetExpense,
+        getCategories: GetCategories,
+        getExpensesTitles: GetExpensesTitles,
+        getExpensesPlaces: GetExpensesPlaces
+    ) {
+        val expense: Expense? = expenseId?.let { getExpense(it) }
+        val categories: List<Category> = getCategories()
+        val previousTitles = getExpensesTitles()
+        val previousPlaceNames = getExpensesPlaces()
+
+        _categories = categories
+        _expense.value = expense
+
+        val chosenCategoryId: Id? = expense?.category?.id
+
+        val submitButtonTextId = when (expense == null) {
+            true -> R.string.add
+            false -> R.string.update
+        }
+
+        inSpanSuspend("view state update") {
             _viewState.updateTransform {
                 when (expense) {
                     null -> copy(

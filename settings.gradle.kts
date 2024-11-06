@@ -26,3 +26,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Expense Tracker V2"
 
+include(":telemetry")

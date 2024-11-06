@@ -21,6 +21,7 @@ kotest = "5.9.1"
 mockk = "1.13.13"
 timber = "5.0.1"
 turbine = "1.2.0"
+opentelemetry = "1.43.0"
 
 [plugins]
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
@@ -56,3 +57,7 @@ kotest-property = { group = "io.kotest", name = "kotest-property", version.ref =
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
+opentelemetry-api = { group = "io.opentelemetry", name = "opentelemetry-api", version.ref = "opentelemetry" }
+opentelemetry-sdk = { group = "io.opentelemetry", name = "opentelemetry-sdk", version.ref = "opentelemetry" }
+opentelemetry-tracing = { group = "io.opentelemetry", name = "opentelemetry-sdk-tracing", version.ref = "opentelemetry" }
+opentelemetry-exporter-otlp = { group = "io.opentelemetry", name = "opentelemetry-exporter-otlp", version.ref = "opentelemetry" }

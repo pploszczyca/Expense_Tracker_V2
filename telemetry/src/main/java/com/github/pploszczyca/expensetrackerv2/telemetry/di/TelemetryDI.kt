@@ -1,19 +1,19 @@
 package com.github.pploszczyca.expensetrackerv2.telemetry.di
 
+import com.github.pploszczyca.expensetrackerv2.telemetry.preprocessors.BaseSpanProcessor
 import io.opentelemetry.api.OpenTelemetry
-import io.opentelemetry.exporter.otlp.trace.OtlpGrpcSpanExporter
 import io.opentelemetry.sdk.OpenTelemetrySdk
 import io.opentelemetry.sdk.trace.SdkTracerProvider
-import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor
 
 object TelemetryDI {
     private lateinit var openTelemetry: OpenTelemetry
 
-    fun init() {
-        val spanExporter = OtlpGrpcSpanExporter.builder().build()
+    fun init(
+        log: (String) -> Unit,
+    ) {
         val tracerProvider = SdkTracerProvider
             .builder()
-            .addSpanProcessor(SimpleSpanProcessor.create(spanExporter))
+            .addSpanProcessor(BaseSpanProcessor(log))
             .build()
         openTelemetry = OpenTelemetrySdk
             .builder()
@@ -21,7 +21,7 @@ object TelemetryDI {
             .buildAndRegisterGlobal()
     }
 
-    fun getOpenTelemetry(): OpenTelemetry {
+    internal fun getOpenTelemetry(): OpenTelemetry {
         require(TelemetryDI::openTelemetry.isInitialized) { "TelemetryDI not initialized" }
         return openTelemetry
     }

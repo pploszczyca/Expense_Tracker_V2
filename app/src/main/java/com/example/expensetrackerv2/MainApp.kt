@@ -14,6 +14,6 @@ class MainApp : Application() {
         Timber.plant(Timber.DebugTree())
 
         Timber.d("Initializing Telemetry")
-        TelemetryDI.init()
+        TelemetryDI.init(log = Timber::d)
     }
 }

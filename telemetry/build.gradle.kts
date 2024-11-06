@@ -2,6 +2,17 @@ plugins {
     id("kotlin")
 }
 
+kotlin {
+    sourceSets {
+        all {
+            languageSettings {
+                optIn("kotlin.experimental.contextReceivers")
+            }
+        }
+    }
+}
+
+
 dependencies {
     implementation(libs.opentelemetry.api)
     implementation(libs.opentelemetry.sdk)

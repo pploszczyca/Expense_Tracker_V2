@@ -1,4 +1,4 @@
-package com.github.pploszczyca.expensetrackerv2.telemetry
+package com.github.pploszczyca.expensetrackerv2.telemetry.di
 
 import io.opentelemetry.api.OpenTelemetry
 import io.opentelemetry.exporter.otlp.trace.OtlpGrpcSpanExporter
@@ -22,7 +22,7 @@ object TelemetryDI {
     }
 
     fun getOpenTelemetry(): OpenTelemetry {
-        require(::openTelemetry.isInitialized) { "TelemetryDI not initialized" }
+        require(TelemetryDI::openTelemetry.isInitialized) { "TelemetryDI not initialized" }
         return openTelemetry
     }
 }

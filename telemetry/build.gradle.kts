@@ -3,19 +3,13 @@ plugins {
 }
 
 kotlin {
-    sourceSets {
-        all {
-            languageSettings {
-                optIn("kotlin.experimental.contextReceivers")
-            }
-        }
+    compilerOptions {
+        freeCompilerArgs.add("-Xcontext-receivers")
     }
 }
-
 
 dependencies {
     implementation(libs.opentelemetry.api)
     implementation(libs.opentelemetry.sdk)
-    implementation(libs.opentelemetry.tracing)
     implementation(libs.opentelemetry.exporter.otlp)
 }

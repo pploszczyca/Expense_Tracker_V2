@@ -74,6 +74,8 @@ dependencies {
     implementation(project(":features:expense-statistics"))
     implementation(project(":features:category-settings"))
 
+    implementation(project(":telemetry"))
+
     implementation(libs.androidx.core)
     implementation(libs.appcompat)
     implementation(libs.compose.ui)

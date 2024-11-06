@@ -1,6 +1,7 @@
 package com.example.expensetrackerv2
 
 import android.app.Application
+import com.github.pploszczyca.expensetrackerv2.telemetry.di.TelemetryDI
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
@@ -11,5 +12,8 @@ class MainApp : Application() {
         super.onCreate()
 
         Timber.plant(Timber.DebugTree())
+
+        Timber.d("Initializing Telemetry")
+        TelemetryDI.init()
     }
 }

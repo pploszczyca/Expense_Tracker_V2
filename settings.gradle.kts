@@ -12,6 +12,7 @@ listOf(
     ":features:expense-form",
     ":navigation:navigation-contract",
     ":navigation",
+    ":telemetry",
 ).forEach {
     include(it)
 }
@@ -25,5 +26,3 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "Expense Tracker V2"
-
-include(":telemetry")

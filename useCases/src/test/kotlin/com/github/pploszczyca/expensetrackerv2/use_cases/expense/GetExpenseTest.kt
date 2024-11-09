@@ -1,7 +1,9 @@
 package com.github.pploszczyca.expensetrackerv2.use_cases.expense
 
+import com.github.pploszczyca.expensetrackerv2.common_test.CustomBehaviorSpec
 import com.github.pploszczyca.expensetrackerv2.domain.Expense
 import com.github.pploszczyca.expensetrackerv2.domain.Id
+import com.github.pploszczyca.expensetrackerv2.telemetry.spans.SpanContext
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.GetExpense
 import com.github.pploszczyca.expensetrackerv2.usecases.repositories.ExpenseRepository
 import io.kotest.core.spec.IsolationMode
@@ -11,8 +13,12 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 
-class GetExpenseTest : BehaviorSpec({
-    isolationMode = IsolationMode.InstancePerLeaf
+class GetExpenseTest : CustomBehaviorSpec({
+    getExpenseTest()
+})
+
+context(SpanContext, BehaviorSpec)
+private fun getExpenseTest() {
     coroutineTestScope = true
 
     val repository: ExpenseRepository = mockk()
@@ -38,4 +44,4 @@ class GetExpenseTest : BehaviorSpec({
             }
         }
     }
-})
+}

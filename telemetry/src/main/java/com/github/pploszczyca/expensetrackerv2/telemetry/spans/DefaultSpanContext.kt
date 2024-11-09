@@ -5,7 +5,7 @@ import io.opentelemetry.api.trace.Span
 import io.opentelemetry.api.trace.SpanKind
 import io.opentelemetry.context.Context
 
-class DefaultSpanContext : SpanContext {
+internal class DefaultSpanContext : SpanContext {
     private val tracer get() = TelemetryDI.getOpenTelemetry().getTracer("expense-tracker")
 
     override fun <T> inSpan(spanName: String, block: context(SpanContext) () -> T): T {

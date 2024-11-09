@@ -3,6 +3,7 @@ package com.github.pploszczyca.expensetrackerv2.expense_form.view_model
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import com.github.pploszczyca.expensetrackerv2.common_kotlin.currencyFormatter.CurrencyFormatter
+import com.github.pploszczyca.expensetrackerv2.common_test.CustomBehaviorSpec
 import com.github.pploszczyca.expensetrackerv2.common_test.UnconfinedDispatcherProvider
 import com.github.pploszczyca.expensetrackerv2.common_test.dummy
 import com.github.pploszczyca.expensetrackerv2.common_test.noOp
@@ -13,6 +14,8 @@ import com.github.pploszczyca.expensetrackerv2.domain.Id
 import com.github.pploszczyca.expensetrackerv2.domain.Price
 import com.github.pploszczyca.expensetrackerv2.features.expense_form.R
 import com.github.pploszczyca.expensetrackerv2.navigation.contract.NavigationRouter
+import com.github.pploszczyca.expensetrackerv2.telemetry.spans.SpanContext
+import com.github.pploszczyca.expensetrackerv2.telemetry.spans.SpanFactory
 import com.github.pploszczyca.expensetrackerv2.usecases.category.GetCategories
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.DeleteExpense
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.GetExpense
@@ -20,7 +23,6 @@ import com.github.pploszczyca.expensetrackerv2.usecases.expense.GetExpensesPlace
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.GetExpensesTitles
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.InsertExpense
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.UpdateExpense
-import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.data.forAll
 import io.kotest.data.row
@@ -33,9 +35,12 @@ import io.mockk.mockk
 import io.mockk.verify
 import java.util.UUID
 
-class ExpenseFormViewModelImplTest : BehaviorSpec({
-    isolationMode = IsolationMode.InstancePerLeaf
+class ExpenseFormViewModelImplTest : CustomBehaviorSpec({
+    expenseFormViewModelImplTest()
+})
 
+context(SpanContext, BehaviorSpec)
+private fun expenseFormViewModelImplTest() {
     val savedStateHandle: SavedStateHandle = mockk()
     val getExpensesTitles: GetExpensesTitles = mockk()
     val getExpensesPlaces: GetExpensesPlaces = mockk()
@@ -71,6 +76,9 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
             navigationRouter = navigationRouter,
             currencyFormatter = currencyFormatter,
             deleteExpense = deleteExpense,
+            spanContextFactory = object : SpanFactory {
+                override fun create(): SpanContext = this@SpanContext
+            },
         )
 
     Given("Expense id is not provided") {
@@ -575,4 +583,4 @@ class ExpenseFormViewModelImplTest : BehaviorSpec({
             }
         }
     }
-})
+}

@@ -1,18 +1,19 @@
 # Expense Tracker V2
 
-Simple Expense Tracker app for managing your expenses/incomes.
+Simple Expense Tracker Android application for managing your expenses/incomes.
 
 ## Technologies/Libraries
 
-* Kotlin
+* Kotlin 2.0
 * Jetpack Compose
+* Coroutines
+* Material Design 3
 * Room Database
 * Hilt
-* MVVM architectural pattern
+* OpenTelemetry
+* Timber
 * Kotest
 * Mockk
-* [Compose Material Dialogs](https://github.com/vanpra/compose-material-dialogs) - for date dialog
-  picker
 
 ## Installation
 

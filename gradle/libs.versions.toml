@@ -59,5 +59,3 @@ timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "tim
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 opentelemetry-api = { group = "io.opentelemetry", name = "opentelemetry-api", version.ref = "opentelemetry" }
 opentelemetry-sdk = { group = "io.opentelemetry", name = "opentelemetry-sdk", version.ref = "opentelemetry" }
-opentelemetry-tracing = { group = "io.opentelemetry", name = "opentelemetry-sdk-tracing", version.ref = "opentelemetry" }
-opentelemetry-exporter-otlp = { group = "io.opentelemetry", name = "opentelemetry-exporter-otlp", version.ref = "opentelemetry" }

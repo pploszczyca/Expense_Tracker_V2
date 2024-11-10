@@ -9,6 +9,10 @@ on:
     branches:
       - '*'
 
+concurrency:
+  group: build-release-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build-release:
 

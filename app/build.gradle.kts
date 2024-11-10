@@ -77,7 +77,6 @@ dependencies {
 
     implementation(project(":telemetry"))
 
-    implementation(libs.androidx.core)
     implementation(libs.appcompat)
     implementation(libs.compose.ui)
     implementation(libs.lifecycle.runtime.ktx)

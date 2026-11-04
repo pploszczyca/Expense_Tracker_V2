@@ -30,6 +30,8 @@ fun ExpenseFormTextField(
     readOnly: Boolean = false,
     colors: TextFieldColors = OutlinedTextFieldDefaults.colors(),
     focusOnLoad: Boolean = false,
+    isError: Boolean = false,
+    supportingText: String? = null,
 ) {
     val focusRequester = remember { FocusRequester() }
 
@@ -47,9 +49,12 @@ fun ExpenseFormTextField(
         leadingIcon = icon?.let { { Icon(it, contentDescription = null) } },
         enabled = enabled,
         readOnly = readOnly,
+        isError = isError,
+        supportingText = supportingText?.let { { Text(it) } },
+        singleLine = true,
         modifier = modifier
             .fillMaxWidth()
-            .padding(5.dp)
+            .padding(horizontal = 12.dp, vertical = 4.dp)
             .focusRequester(focusRequester),
         colors = colors,
     )

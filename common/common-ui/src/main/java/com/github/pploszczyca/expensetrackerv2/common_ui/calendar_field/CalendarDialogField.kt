@@ -24,6 +24,20 @@ import com.github.pploszczyca.expensetrackerv2.common.common_ui.R
 import com.github.pploszczyca.expensetrackerv2.common_kotlin.extensions.toLocalDate
 import com.github.pploszczyca.expensetrackerv2.common_ui.expense_form_text_field.ExpenseFormTextField
 import java.time.LocalDate
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
+
+private fun parseInitialDateMillis(dateString: String): Long? {
+    val patterns = listOf("dd-MM-yyyy", "yyyy-MM-dd", "dd.MM.yyyy")
+    for (pattern in patterns) {
+        try {
+            val localDate = LocalDate.parse(dateString, DateTimeFormatter.ofPattern(pattern))
+            return localDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()
+        } catch (_: Exception) {
+        }
+    }
+    return null
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -34,7 +48,6 @@ fun CalendarDialogField(
     icon: ImageVector = Icons.Default.Today,
     onDatePickerPick: (dateFromDialog: LocalDate) -> Unit = {},
 ) {
-    val datePickerState = rememberDatePickerState()
     var showModal by remember { mutableStateOf(false) }
 
     ExpenseFormTextField(
@@ -55,6 +68,9 @@ fun CalendarDialogField(
     )
 
     if (showModal) {
+        val datePickerState = rememberDatePickerState(
+            initialSelectedDateMillis = parseInitialDateMillis(date)
+        )
         DatePickerDialog(
             onDismissRequest = { showModal = false },
             confirmButton = {

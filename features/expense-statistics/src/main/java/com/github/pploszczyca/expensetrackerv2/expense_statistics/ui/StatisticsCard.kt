@@ -10,29 +10,35 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun StatisticsCard(title: String, number: String, color: Color) {
+fun StatisticsCard(
+    title: String,
+    number: String,
+    color: Color,
+    modifier: Modifier = Modifier,
+) {
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .padding(2.dp)
+            .padding(4.dp)
     ) {
         Column(
-            modifier = Modifier.padding(4.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp)
+            modifier = Modifier.padding(14.dp),
+            verticalArrangement = Arrangement.spacedBy(6.dp)
         ) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.titleSmall,
-                modifier = Modifier.padding(start = 8.dp)
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             Text(
                 text = number,
                 color = color,
-                style = MaterialTheme.typography.displaySmall,
-                modifier = Modifier.padding(start = 8.dp)
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Bold,
             )
         }
     }

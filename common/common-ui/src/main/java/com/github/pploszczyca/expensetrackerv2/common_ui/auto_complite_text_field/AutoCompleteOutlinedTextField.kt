@@ -33,10 +33,12 @@ fun AutoCompleteOutlinedTextField(
     suggestionsInput: List<String> = emptyList(),
     keyboardOptions: KeyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words),
     focusOnLoad: Boolean = false,
+    isError: Boolean = false,
+    supportingText: String? = null,
 ) {
     var shouldShowDropdown by remember { mutableStateOf(false) }
     val suggestions = suggestionsInput.filterIf(shouldShowDropdown && value.isNotEmpty()) {
-        it.contains(value)
+        it.contains(value, ignoreCase = true) && !it.equals(value, ignoreCase = true)
     }
 
     Column(modifier = Modifier.fillMaxWidth()) {
@@ -47,6 +49,8 @@ fun AutoCompleteOutlinedTextField(
             label = label,
             keyboardOptions = keyboardOptions,
             focusOnLoad = focusOnLoad,
+            isError = isError,
+            supportingText = supportingText,
             modifier = Modifier
                 .onFocusChanged {
                     shouldShowDropdown = it.isFocused

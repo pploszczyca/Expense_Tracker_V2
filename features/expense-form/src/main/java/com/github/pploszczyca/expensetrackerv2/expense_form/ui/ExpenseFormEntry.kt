@@ -84,12 +84,13 @@ private fun HandleRouteActions(
     routeAction: SharedFlow<ExpenseFormViewModel.RouteAction>,
     snackBarHostState: SnackbarHostState,
 ) {
+    val errorMessage = stringResource(id = R.string.expense_form_data_incorrect)
     LaunchedEffect(Unit) {
         routeAction
             .collectLatest {
                 when (it) {
                     ExpenseFormViewModel.RouteAction.ShowSnackBar ->
-                        snackBarHostState.showSnackbar("Something is wrong :(((")
+                        snackBarHostState.showSnackbar(errorMessage)
                 }
             }
     }

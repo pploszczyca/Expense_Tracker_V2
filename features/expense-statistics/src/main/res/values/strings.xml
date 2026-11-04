@@ -3,6 +3,13 @@
     <string name="total">Total</string>
     <string name="total_expenses">Total Expenses</string>
     <string name="total_incomes">Total Incomes</string>
-    <string name="from_date">From Date:</string>
-    <string name="to_date">To Date:</string>
+    <string name="from_date">From</string>
+    <string name="to_date">To</string>
+    <string name="preset_this_month">This Month</string>
+    <string name="preset_last_7_days">Last 7 Days</string>
+    <string name="preset_this_year">This Year</string>
+    <string name="preset_all_time">All Time</string>
+    <string name="spending_by_category">Expenses by Category</string>
+    <string name="uncategorized">Uncategorized</string>
+    <string name="no_expenses_in_period">No expenses recorded in this period</string>
 </resources>

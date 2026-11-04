@@ -60,22 +60,28 @@ fun MainContent(
 
 @Composable
 private fun MainExpensesInformation(moneyInWalletAmount: Price) {
-    Box(
+    androidx.compose.material3.ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(32.dp),
-        contentAlignment = Alignment.Center,
+            .padding(horizontal = 12.dp, vertical = 8.dp),
     ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 20.dp, horizontal = 16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Text(
-                stringResource(id = R.string.in_wallet),
-                style = MaterialTheme.typography.displaySmall,
+                text = stringResource(id = R.string.in_wallet),
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
             )
             Text(
-                moneyInWalletAmount.toString(),
-                style = MaterialTheme.typography.displayLarge,
+                text = moneyInWalletAmount.toString(),
+                style = MaterialTheme.typography.displayMedium,
                 textAlign = TextAlign.Center,
+                modifier = Modifier.padding(top = 4.dp),
             )
         }
     }

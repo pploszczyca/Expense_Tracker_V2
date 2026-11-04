@@ -30,4 +30,6 @@
     <string name="reset">Reset</string>
 
     <string name="main_filter_dialog_tile">Choose filter</string>
+    <string name="empty_expenses_title">No transactions found</string>
+    <string name="empty_expenses_subtitle">Tap the + button below to add a new expense or adjust your search.</string>
 </resources>

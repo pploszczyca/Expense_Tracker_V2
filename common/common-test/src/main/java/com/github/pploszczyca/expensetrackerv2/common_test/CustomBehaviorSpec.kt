@@ -5,14 +5,18 @@ import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.BehaviorSpec
 
 abstract class CustomBehaviorSpec(
-    body: context(SpanContext, BehaviorSpec) () -> Unit = {}
+    body: context(SpanContext) BehaviorSpec.() -> Unit = {}
 ) : BehaviorSpec({
     isolationMode = IsolationMode.InstancePerLeaf
 
-    body(NoOpSpanContext(), this)
+    context(NoOpSpanContext()) {
+        body(this)
+    }
 })
 
 private class NoOpSpanContext : SpanContext {
-    override fun <T> inSpan(spanName: String, block: SpanContext.() -> T): T = block()
-    override suspend fun <T> inSpanSuspend(spanName: String, block: suspend SpanContext.() -> T): T = block()
+    override fun <T> inSpan(spanName: String, block: context(SpanContext) () -> T): T =
+        context(this) { block() }
+    override suspend fun <T> inSpanSuspend(spanName: String, block: suspend context(SpanContext) () -> T): T =
+        context(this) { block() }
 }

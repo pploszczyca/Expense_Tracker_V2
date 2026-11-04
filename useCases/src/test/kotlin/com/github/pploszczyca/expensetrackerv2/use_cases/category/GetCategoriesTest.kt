@@ -16,8 +16,8 @@ class GetCategoriesTest : CustomBehaviorSpec({
     getCategoriesTest()
 })
 
-context(SpanContext, BehaviorSpec)
-private fun getCategoriesTest() {
+context(_: SpanContext)
+private fun BehaviorSpec.getCategoriesTest() {
     coroutineTestScope = true
 
     val repository: CategoryRepository = mockk()

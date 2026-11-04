@@ -21,7 +21,7 @@ internal class DefaultSpanContext : SpanContext {
 
         val span = spanBuilder.startSpan()
         return Context.current().with(span).makeCurrent().use {
-            block(this).also {
+            context(this) { block() }.also {
                 span.end()
             }
         }
@@ -40,7 +40,7 @@ internal class DefaultSpanContext : SpanContext {
 
         val span = spanBuilder.startSpan()
         return Context.current().with(span).makeCurrent().use {
-            block(this).also {
+            context(this) { block() }.also {
                 span.end()
             }
         }

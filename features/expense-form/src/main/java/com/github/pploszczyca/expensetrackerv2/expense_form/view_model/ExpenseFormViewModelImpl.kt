@@ -14,6 +14,7 @@ import com.github.pploszczyca.expensetrackerv2.features.expense_form.R
 import com.github.pploszczyca.expensetrackerv2.navigation.contract.NavigationRouter
 import com.github.pploszczyca.expensetrackerv2.telemetry.spans.SpanContext
 import com.github.pploszczyca.expensetrackerv2.telemetry.spans.SpanFactory
+import com.github.pploszczyca.expensetrackerv2.telemetry.spans.inSpanSuspend
 import com.github.pploszczyca.expensetrackerv2.usecases.category.GetCategories
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.DeleteExpense
 import com.github.pploszczyca.expensetrackerv2.usecases.expense.GetExpense
@@ -61,7 +62,7 @@ class ExpenseFormViewModelImpl @Inject constructor(
 
     init {
         viewModelScope.launch(dispatcherProvider.default) {
-            with(spanContextFactory.create()) {
+            context(spanContextFactory.create()) {
                 inSpanSuspend("createViewState") {
                     createViewState(
                         getExpense = getExpense,
@@ -74,7 +75,7 @@ class ExpenseFormViewModelImpl @Inject constructor(
         }
     }
 
-    context(SpanContext)
+    context(_: SpanContext)
     private suspend fun createViewState(
         getExpense: GetExpense,
         getCategories: GetCategories,

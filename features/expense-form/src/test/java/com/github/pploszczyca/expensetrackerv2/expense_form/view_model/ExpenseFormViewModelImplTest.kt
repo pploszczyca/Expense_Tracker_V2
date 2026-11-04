@@ -39,8 +39,8 @@ class ExpenseFormViewModelImplTest : CustomBehaviorSpec({
     expenseFormViewModelImplTest()
 })
 
-context(SpanContext, BehaviorSpec)
-private fun expenseFormViewModelImplTest() {
+context(spanContext: SpanContext)
+private fun BehaviorSpec.expenseFormViewModelImplTest() {
     val savedStateHandle: SavedStateHandle = mockk()
     val getExpensesTitles: GetExpensesTitles = mockk()
     val getExpensesPlaces: GetExpensesPlaces = mockk()
@@ -77,7 +77,7 @@ private fun expenseFormViewModelImplTest() {
             currencyFormatter = currencyFormatter,
             deleteExpense = deleteExpense,
             spanContextFactory = object : SpanFactory {
-                override fun create(): SpanContext = this@SpanContext
+                override fun create(): SpanContext = spanContext
             },
         )
 

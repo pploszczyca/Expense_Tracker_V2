@@ -17,8 +17,8 @@ class GetExpenseTest : CustomBehaviorSpec({
     getExpenseTest()
 })
 
-context(SpanContext, BehaviorSpec)
-private fun getExpenseTest() {
+context(_: SpanContext)
+private fun BehaviorSpec.getExpenseTest() {
     coroutineTestScope = true
 
     val repository: ExpenseRepository = mockk()

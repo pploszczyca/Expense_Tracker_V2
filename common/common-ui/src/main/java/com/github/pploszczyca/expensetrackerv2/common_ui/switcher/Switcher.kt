@@ -61,7 +61,7 @@ fun Switcher(
                 shape = SegmentedButtonDefaults.itemShape(index = 1, count = 2),
                 colors = SegmentedButtonDefaults.colors(
                     activeContainerColor = IncomeColor.copy(alpha = 0.18f),
-                    activeContentColor = Color(0xFF2E7D32),
+                    activeContentColor = IncomeColor,
                     activeBorderColor = IncomeColor,
                 ),
             ) {

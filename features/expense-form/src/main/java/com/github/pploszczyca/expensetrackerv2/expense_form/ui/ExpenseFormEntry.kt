@@ -37,7 +37,9 @@ fun ExpenseFormEntry(
     Scaffold(
         topBar = {
             TopAppBarWithBack(
-                title = stringResource(id = R.string.expense_form),
+                title = stringResource(
+                    id = if (viewState.shouldShowDeleteButton) R.string.edit_expense_form else R.string.expense_form
+                ),
                 onBackClicked = viewModel::onBackClicked,
                 actions = {
                     if (viewState.shouldShowDeleteButton) {

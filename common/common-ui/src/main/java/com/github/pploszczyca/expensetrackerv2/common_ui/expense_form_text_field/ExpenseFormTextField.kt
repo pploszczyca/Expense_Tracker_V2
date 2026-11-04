@@ -2,8 +2,10 @@ package com.github.pploszczyca.expensetrackerv2.common_ui.expense_form_text_fiel
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -15,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 
@@ -32,6 +35,9 @@ fun ExpenseFormTextField(
     focusOnLoad: Boolean = false,
     isError: Boolean = false,
     supportingText: String? = null,
+    singleLine: Boolean = true,
+    minLines: Int = 1,
+    textStyle: TextStyle = LocalTextStyle.current,
 ) {
     val focusRequester = remember { FocusRequester() }
 
@@ -51,7 +57,11 @@ fun ExpenseFormTextField(
         readOnly = readOnly,
         isError = isError,
         supportingText = supportingText?.let { { Text(it) } },
-        singleLine = true,
+        singleLine = singleLine,
+        minLines = minLines,
+        maxLines = if (singleLine) 1 else 4,
+        textStyle = textStyle,
+        shape = RoundedCornerShape(14.dp),
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 12.dp, vertical = 4.dp)

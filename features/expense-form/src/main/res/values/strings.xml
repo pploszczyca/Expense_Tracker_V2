@@ -1,12 +1,16 @@
 <resources>
-    <string name="expense_form">Form</string>
+    <string name="expense_form">New Transaction</string>
+    <string name="edit_expense_form">Edit Transaction</string>
     <string name="expense_form_title">Title</string>
-    <string name="expense_form_price">Price</string>
+    <string name="expense_form_price">Amount</string>
     <string name="expense_form_date">Date</string>
-    <string name="expense_form_place">Place</string>
-    <string name="expense_form_description">Description</string>
-    <string name="expense_form_category">Category (optional)</string>
+    <string name="expense_form_place">Place (optional)</string>
+    <string name="expense_form_description">Notes / Description (optional)</string>
+    <string name="expense_form_category">Category</string>
+    <string name="expense_form_details">Details</string>
     <string name="expense_form_type">Transaction type</string>
+    <string name="date_today">Today</string>
+    <string name="date_yesterday">Yesterday</string>
     <string name="expense_form_title_error">Title is required</string>
     <string name="expense_form_price_error">Enter an amount greater than 0.00</string>
     <string name="expense_form_data_incorrect">Please fill in Title and Price greater than 0</string>
